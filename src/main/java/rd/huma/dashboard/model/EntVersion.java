@@ -1,7 +1,8 @@
 package rd.huma.dashboard.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -13,20 +14,23 @@ import javax.persistence.Table;
 public class EntVersion implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5201971151423246320L;
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	private String numero;
-	private String dueno;
-	private String correoDueno;
-	
+	private String autor;
+	private List<String> duenos;
+	private List<String> jiraNumbers;
+	private List<String> ticketNumbers;
+	private String branchOrigen;
+
 	private String comentario;
-	
-	private LocalDateTime fecha;
+
+	private Instant momentoCreacion = Instant.now();
 
 	public String getNumero() {
 		return numero;
@@ -36,20 +40,40 @@ public class EntVersion implements Serializable{
 		this.numero = numero;
 	}
 
-	public String getDueno() {
-		return dueno;
+	public List<String> getDuenos() {
+		return duenos;
 	}
 
-	public void setDueno(String dueno) {
-		this.dueno = dueno;
+	public void setDuenos(List<String> duenos) {
+		this.duenos = duenos;
 	}
 
-	public String getCorreoDueno() {
-		return correoDueno;
+	public List<String> getJiraNumbers() {
+		return jiraNumbers;
 	}
 
-	public void setCorreoDueno(String correoDueno) {
-		this.correoDueno = correoDueno;
+	public void setJiraNumbers(List<String> jiraNumbers) {
+		this.jiraNumbers = jiraNumbers;
+	}
+
+	public List<String> getTicketNumbers() {
+		return ticketNumbers;
+	}
+
+	public void setTicketNumbers(List<String> ticketNumbers) {
+		this.ticketNumbers = ticketNumbers;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getComentario() {
@@ -60,30 +84,36 @@ public class EntVersion implements Serializable{
 		this.comentario = comentario;
 	}
 
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
-
 	public String getId() {
 		return id;
+	}
+
+	public String getBranchOrigen() {
+		return branchOrigen;
+	}
+
+	public void setBranchOrigen(String branchOrigen) {
+		this.branchOrigen = branchOrigen;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((autor == null) ? 0 : autor.hashCode());
+		result = prime * result
+				+ ((branchOrigen == null) ? 0 : branchOrigen.hashCode());
 		result = prime * result
 				+ ((comentario == null) ? 0 : comentario.hashCode());
-		result = prime * result
-				+ ((correoDueno == null) ? 0 : correoDueno.hashCode());
-		result = prime * result + ((dueno == null) ? 0 : dueno.hashCode());
-		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((duenos == null) ? 0 : duenos.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((jiraNumbers == null) ? 0 : jiraNumbers.hashCode());
+		result = prime * result
+				+ ((momentoCreacion == null) ? 0 : momentoCreacion.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		result = prime * result
+				+ ((ticketNumbers == null) ? 0 : ticketNumbers.hashCode());
 		return result;
 	}
 
@@ -99,6 +129,20 @@ public class EntVersion implements Serializable{
 			return false;
 		}
 		EntVersion other = (EntVersion) obj;
+		if (autor == null) {
+			if (other.autor != null) {
+				return false;
+			}
+		} else if (!autor.equals(other.autor)) {
+			return false;
+		}
+		if (branchOrigen == null) {
+			if (other.branchOrigen != null) {
+				return false;
+			}
+		} else if (!branchOrigen.equals(other.branchOrigen)) {
+			return false;
+		}
 		if (comentario == null) {
 			if (other.comentario != null) {
 				return false;
@@ -106,25 +150,11 @@ public class EntVersion implements Serializable{
 		} else if (!comentario.equals(other.comentario)) {
 			return false;
 		}
-		if (correoDueno == null) {
-			if (other.correoDueno != null) {
+		if (duenos == null) {
+			if (other.duenos != null) {
 				return false;
 			}
-		} else if (!correoDueno.equals(other.correoDueno)) {
-			return false;
-		}
-		if (dueno == null) {
-			if (other.dueno != null) {
-				return false;
-			}
-		} else if (!dueno.equals(other.dueno)) {
-			return false;
-		}
-		if (fecha == null) {
-			if (other.fecha != null) {
-				return false;
-			}
-		} else if (!fecha.equals(other.fecha)) {
+		} else if (!duenos.equals(other.duenos)) {
 			return false;
 		}
 		if (id == null) {
@@ -134,6 +164,20 @@ public class EntVersion implements Serializable{
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
+		if (jiraNumbers == null) {
+			if (other.jiraNumbers != null) {
+				return false;
+			}
+		} else if (!jiraNumbers.equals(other.jiraNumbers)) {
+			return false;
+		}
+		if (momentoCreacion == null) {
+			if (other.momentoCreacion != null) {
+				return false;
+			}
+		} else if (!momentoCreacion.equals(other.momentoCreacion)) {
+			return false;
+		}
 		if (numero == null) {
 			if (other.numero != null) {
 				return false;
@@ -141,10 +185,15 @@ public class EntVersion implements Serializable{
 		} else if (!numero.equals(other.numero)) {
 			return false;
 		}
+		if (ticketNumbers == null) {
+			if (other.ticketNumbers != null) {
+				return false;
+			}
+		} else if (!ticketNumbers.equals(other.ticketNumbers)) {
+			return false;
+		}
 		return true;
 	}
-	
-	
-	
-	
+
+
 }

@@ -13,17 +13,21 @@ import javax.persistence.Table;
 public class EntAplicacion implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8506267188084434427L;
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	private String nombre;
-	
+
+	private String jiraKey;
+
+	private String svnPath;
+
 	private int prioridad;
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -39,13 +43,29 @@ public class EntAplicacion implements Serializable {
 	public String getId() {
 		return id;
 	}
-	
+
 	public int getPrioridad() {
 		return prioridad;
 	}
 
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
+	}
+
+	public String getJiraKey() {
+		return jiraKey;
+	}
+
+	public void setJiraKey(String jiraKey) {
+		this.jiraKey = jiraKey;
+	}
+
+	public String getSvnPath() {
+		return svnPath;
+	}
+
+	public void setSvnPath(String svnPath) {
+		this.svnPath = svnPath;
 	}
 
 	@Override
@@ -85,6 +105,6 @@ public class EntAplicacion implements Serializable {
 		}
 		return true;
 	}
-	
-	
+
+
 }

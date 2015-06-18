@@ -1,6 +1,7 @@
 package rd.huma.dashboard.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 public class EntAmbiente implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6521232680596057448L;
 
@@ -20,12 +21,15 @@ public class EntAmbiente implements Serializable {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	
 	private String nombre;
 
 	private EntAplicacion aplicacion;
-	
-	private String jobJenkins;
+
+	private String jobJenkinsDeployements;
+
+	private boolean inicioFlujo;
+
+	private List<String> duenos;
 
 	public String getNombre() {
 		return nombre;
@@ -43,16 +47,32 @@ public class EntAmbiente implements Serializable {
 		this.aplicacion = aplicacion;
 	}
 
-	public String getJobJenkins() {
-		return jobJenkins;
+	public List<String> getDuenos() {
+		return duenos;
 	}
 
-	public void setJobJenkins(String jobJenkins) {
-		this.jobJenkins = jobJenkins;
+	public void setDuenos(List<String> duenos) {
+		this.duenos = duenos;
 	}
-	
+
 	public String getId() {
 		return id;
+	}
+
+	public boolean isInicioFlujo() {
+		return inicioFlujo;
+	}
+
+	public void setInicioFlujo(boolean inicioFlujo) {
+		this.inicioFlujo = inicioFlujo;
+	}
+
+	public String getJobJenkinsDeployements() {
+		return jobJenkinsDeployements;
+	}
+
+	public void setJobJenkinsDeployements(String jobJenkinsDeployements) {
+		this.jobJenkinsDeployements = jobJenkinsDeployements;
 	}
 
 	@Override
@@ -63,7 +83,7 @@ public class EntAmbiente implements Serializable {
 				+ ((aplicacion == null) ? 0 : aplicacion.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
-				+ ((jobJenkins == null) ? 0 : jobJenkins.hashCode());
+				+ ((jobJenkinsDeployements == null) ? 0 : jobJenkinsDeployements.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		return result;
 	}
@@ -94,11 +114,11 @@ public class EntAmbiente implements Serializable {
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
-		if (jobJenkins == null) {
-			if (other.jobJenkins != null) {
+		if (jobJenkinsDeployements == null) {
+			if (other.jobJenkinsDeployements != null) {
 				return false;
 			}
-		} else if (!jobJenkins.equals(other.jobJenkins)) {
+		} else if (!jobJenkinsDeployements.equals(other.jobJenkinsDeployements)) {
 			return false;
 		}
 		if (nombre == null) {
@@ -110,6 +130,4 @@ public class EntAmbiente implements Serializable {
 		}
 		return true;
 	}
-	
-	
 }

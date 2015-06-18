@@ -12,17 +12,19 @@ import javax.persistence.Table;
 @Table(name="FILA_DEPLOYEMENT")
 public class EntFilaDeployement implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7034287352452940249L;
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	private EntServidor servidor;
 	private EntVersion version;
 	private LocalDateTime fecha;
-	
+	private EntAmbiente ambiente;
+
+
 	public EntServidor getServidor() {
 		return servidor;
 	}
@@ -43,6 +45,13 @@ public class EntFilaDeployement implements Serializable {
 	}
 	public String getId() {
 		return id;
+	}
+
+	public EntAmbiente getAmbiente() {
+		return ambiente;
+	}
+	public void setAmbiente(EntAmbiente ambiente) {
+		this.ambiente = ambiente;
 	}
 	@Override
 	public int hashCode() {
@@ -97,7 +106,7 @@ public class EntFilaDeployement implements Serializable {
 		}
 		return true;
 	}
-	
-	
-	
+
+
+
 }

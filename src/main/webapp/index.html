@@ -24,9 +24,9 @@
 
 							<header id="header">
 								<h1><a href="#" id="logo">Versiones</a></h1>
-								 <div ng-controller="AplicacionesListController as aplicacionesList">
+								 <div ng-controller="appController as app">
 								<nav id="nav">
-										<a ng-repeat="aplicacion in aplicacionesList.todos" href="app.html?aplicacion={{aplicacion.text}}" class="{{aplicacion.css}}">{{aplicacion.text}}</a>
+										<a ng-repeat="aplicacion in app.aplicaciones" href="app.html?aplicacion={{aplicacion.nombre}}" class="{{aplicacion.css}}">{{aplicacion.nombre}}</a>
 									</nav>
 								</div>
 							</header>
@@ -45,7 +45,7 @@
 
 				</div>
 			</div>
-			
+
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
