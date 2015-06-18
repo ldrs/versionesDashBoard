@@ -61,7 +61,7 @@
 									<div class="2u">Fecha</div>
 									<div class="2u">Operaciones</div>
 								</div>
-								<div  ng-repeat="version in app.versionesFila">
+								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
 									<div class="row">
 										<div class="2u v versionNumber">{{version.numero}}</div>
 										<div class="2u v">{{version.autor}}</div>

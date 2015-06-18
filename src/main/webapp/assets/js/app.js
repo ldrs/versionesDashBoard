@@ -32,8 +32,9 @@ angular.module('versionesApp', [])
                       ];
 
     app.versionesFila = [
-                              {"numero":"10.19278.7","autor":"ronny_jimenez","dueno":"alejandra_perez", "branchOrigen":"19270.00", "fechaVersion":"17/06/2015 11:52", "controles":"block", "tickets" : ["1050"], "jiras":["SGF-1550"]},
-                              {"numero":"10.13278.3","autor":"galo_escobar","dueno":"yunior_echavarriga", "branchOrigen":"17270.00", "fechaVersion":"12/05/2015 11:52", "controles":"block", "tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"]},
+                              {"prioridad":1, "numero":"10.19278.7","autor":"ronny_jimenez","dueno":"alejandra_perez", "branchOrigen":"19270.00", "fechaVersion":"17/06/2015 11:52", "controles":"block", "tickets" : ["1050"], "jiras":["SGF-1550"]},
+                              {"prioridad":3, "numero":"10.13278.3","autor":"galo_escobar","dueno":"yunior_echavarriga", "branchOrigen":"17270.00", "fechaVersion":"12/05/2015 11:52", "controles":"block", "tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"]},
+                              {"prioridad":2, "numero":"10.132df8.3","autor":"eudris","dueno":"yunior_echavarriga", "branchOrigen":"17270.00", "fechaVersion":"12/05/2015 11:52", "controles":"block", "tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"]},
                               ];
 
 
