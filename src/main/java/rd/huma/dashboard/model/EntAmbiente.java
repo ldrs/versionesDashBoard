@@ -27,9 +27,9 @@ public class EntAmbiente implements Serializable {
 
 	private String jobJenkinsDeployements;
 
-	private boolean inicioFlujo;
-
 	private List<String> duenos;
+	
+	private int orden;
 
 	public String getNombre() {
 		return nombre;
@@ -58,13 +58,15 @@ public class EntAmbiente implements Serializable {
 	public String getId() {
 		return id;
 	}
+	
+	
 
-	public boolean isInicioFlujo() {
-		return inicioFlujo;
+	public int getOrden() {
+		return orden;
 	}
 
-	public void setInicioFlujo(boolean inicioFlujo) {
-		this.inicioFlujo = inicioFlujo;
+	public void setOrden(int orden) {
+		this.orden = orden;
 	}
 
 	public String getJobJenkinsDeployements() {

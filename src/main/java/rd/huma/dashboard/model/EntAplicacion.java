@@ -26,7 +26,7 @@ public class EntAplicacion implements Serializable {
 
 	private String svnPath;
 
-	private int prioridad;
+	private int orden;
 
 	public String getNombre() {
 		return nombre;
@@ -44,13 +44,7 @@ public class EntAplicacion implements Serializable {
 		return id;
 	}
 
-	public int getPrioridad() {
-		return prioridad;
-	}
 
-	public void setPrioridad(int prioridad) {
-		this.prioridad = prioridad;
-	}
 
 	public String getJiraKey() {
 		return jiraKey;
@@ -66,6 +60,16 @@ public class EntAplicacion implements Serializable {
 
 	public void setSvnPath(String svnPath) {
 		this.svnPath = svnPath;
+	}
+	
+	
+
+	public int getOrden() {
+		return orden;
+	}
+
+	public void setOrden(int orden) {
+		this.orden = orden;
 	}
 
 	@Override
