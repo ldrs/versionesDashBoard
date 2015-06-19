@@ -18,8 +18,8 @@ angular.module('versionesApp', [])
     app.ambiente = queryString.ambiente;
 
     app.aplicaciones = [
-                      {nombre:'sigef', css : ""},
-                      {nombre:'esigef', css : ""}];
+                      {nombre:'sigef', css : "", "jira":"SGF", "svn":"sigef","id":"xcsdfsfsdfsd"},
+                      {nombre:'esigef', css : "", "jira":"ESG", "svn":"esigef","id":"xcsdfsfsdsdsd"}];
 
 
 

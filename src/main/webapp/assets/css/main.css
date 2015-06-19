@@ -1605,3 +1605,33 @@ ul.link-list li:first-child {
 	float: left;
 	margin-right: 	5px;'
 }
+.aplicacion{
+	float: left;
+	margin-right: 20px;
+}
+
+.headerSTitulo{
+  float: right;
+  margin-right: 20px;
+}
+
+.aplicationSelection{
+	float: left;
+	margin-right: 20px
+}
+
+.ascurrent-page-item{
+  text-decoration: underline;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.as{
+	  padding: 10px;
+}
+
+.accordion-content{
+	margin-top: 30px
+}
