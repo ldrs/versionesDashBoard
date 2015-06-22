@@ -44,8 +44,6 @@ public class EntAplicacion implements Serializable {
 		return id;
 	}
 
-
-
 	public String getJiraKey() {
 		return jiraKey;
 	}
@@ -61,8 +59,6 @@ public class EntAplicacion implements Serializable {
 	public void setSvnPath(String svnPath) {
 		this.svnPath = svnPath;
 	}
-	
-	
 
 	public int getOrden() {
 		return orden;

@@ -109,19 +109,24 @@
 
 			<div class="container">
 					<div class="row main-row">
-					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px">
+					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px" ng-controller="appController as app">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
 									<a class="accordion-toggle">Configuracion Servidores</a>
 								</nav>
 							</header>
 								<div class="accordion-content">
-								<div class="row">
-									<div>Ruta Jira<br/><input name="jira"/></div>
-									<div>Ruta SysAid<br/><input name="sysaid"/></div>
-									<div>Ruta Nexus<br/><input name="nexus"/></div>
-									<div>Ruta SVN<br/><input name="jira"/></div>
-									<div>Ruta Jenkins<br/><input name="jenkins"/></div>
+								<div class="rowApplicacion">
+									<div style="display: inline-block; width: 100%;">
+										<div ng-repeat="servidor in app.servidores">
+												<div class="aplicationSelection as{{servidor.css}}">{{servidor.nombre}}<div style="display: none">{{servidor.id}}</div></div>
+										</div>
+									</div>
+									<br/><br/><br/>
+									<div  class="aplicacion">Adm Usuario<br/><input name="usuarioServidor"/></div>
+									<div  class="aplicacion">Adm Password<br/><input name="pwdServidor"/></div>
+									<div  class="aplicacion">Ruta<br/><input name="rutaEntregaServidor"/></div>
+									<div  class="aplicacion">Nombre<br/><input name="nombreServidor"/></div>
 								</div>
 							</div>
 						</div>

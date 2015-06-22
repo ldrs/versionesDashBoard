@@ -1,12 +1,15 @@
 package rd.huma.dashboard.model;
 
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,29 +17,37 @@ import javax.persistence.Table;
 public class EntServidor implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -305284689798835460L;
-	
+
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
-	
+
+
 	private String nombre;
 
+	@JoinColumn
+	@ManyToOne
 	private EntAmbiente ambiente;
-	
+
 	//Configuraciones
 	private String rutaEntrada;
-	
-	
+
+	private String usuario;
+	private String password;
+
+	private String baseDatos;
+
 	//Estados
 	@Enumerated(EnumType.STRING)
 	private EEstadoServidor estadoServidor = EEstadoServidor.LIBRE;
-	
+
+	@JoinColumn
+	@ManyToOne
 	private EntVersion versionActual;
-	
-	
+
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -69,6 +80,26 @@ public class EntServidor implements Serializable {
 	}
 	public String getId() {
 		return id;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+	public String getPassword() {
+		return new String(Base64.getDecoder().decode(password.getBytes())).substring(id.length());
+	}
+	public void setPassword(String password) {
+		this.password =  new String(Base64.getEncoder().encode((id+password).getBytes()));
+	}
+
+	public String getBaseDatos() {
+		return baseDatos;
+	}
+	public void setBaseDatos(String baseDatos) {
+		this.baseDatos = baseDatos;
 	}
 	@Override
 	public int hashCode() {
@@ -138,7 +169,7 @@ public class EntServidor implements Serializable {
 		}
 		return true;
 	}
-	
-	
-	
+
+
+
 }

@@ -10,8 +10,8 @@ public enum EEstadoServidor {
 	},
 	OCUPADO,
 	NO_DISPONIBLE;
-	
-	
+
+
 	public boolean disponibleVersion(){
 		return false;
 	};
