@@ -28,7 +28,7 @@ public class EntAmbiente implements Serializable {
 	private String jobJenkinsDeployements;
 
 	private List<String> duenos;
-	
+
 	private int orden;
 
 	public String getNombre() {
@@ -58,8 +58,8 @@ public class EntAmbiente implements Serializable {
 	public String getId() {
 		return id;
 	}
-	
-	
+
+
 
 	public int getOrden() {
 		return orden;

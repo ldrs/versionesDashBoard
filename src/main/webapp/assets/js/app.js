@@ -19,16 +19,17 @@ angular.module('versionesApp', [])
 
     app.aplicaciones = [
                       {nombre:'sigef', css : "", "jira":"SGF", "svn":"sigef","id":"xcsdfsfsdfsd"},
-                      {nombre:'esigef', css : "", "jira":"ESG", "svn":"esigef","id":"xcsdfsfsdsdsd"}];
+                      {nombre:'esigef', css : "", "jira":"ESG", "svn":"esigef","id":"xcsdfsfsdsdsd"}
+                      ];
 
 
 
     app.ambientes = [
-                      {text:'desarrollo', activo:false, css : ""},
-                      {text:'testing', activo:false, css : ""},
-                      {text:'preproduccion', activo:false, css : ""},
-                      {text:'helpdesk', activo:false, css : ""},
-                      {text:'produccion', activo:false, css : ""},
+                      {nombre:'desarrollo', activo:false, css : "","orden" : 1},
+                      {nombre:'testing', activo:false, css : "","orden" : 2},
+                      {nombre:'preproduccion', activo:false, css : "","orden" : 3},
+                      {nombre:'helpdesk', activo:false, css : "","orden" : 4},
+                      {nombre:'produccion', activo:false, css : "","orden" : 5},
                       ];
 
     app.versionesFila = [
@@ -55,40 +56,18 @@ angular.module('versionesApp', [])
     		o.css="current-page-item";
     		o.activo=true;
     	}
-    })
+    });
 
      app.ambientes.forEach(function(o){
-    	 o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.text;
+    	 o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
     	if (! app.ambiente){
-    		app.ambiente = o.text;
+    		app.ambiente = o.nombre;
     	}
-    	if (o.text===app.ambiente){
+    	if (o.nombre===app.ambiente){
     		o.css="current-page-item";
     		o.activo=true;
     	}
     })
 
-    app.addTodo = function() {
-      app.aplicaciones.push({text:app.todoText, done:false});
-      app.todoText = '';
-    };
-
-    app.remaining = function() {
-      var count = 0;
-      angular.forEach(app.todos, function(todo) {
-        count += todo.done ? 0 : 1;
-      });
-      return count;
-    };
-
-    app.archive = function() {
-      var oldTodos = app.aplicaciones;
-      app.aplicaciones = [];
-      angular.forEach(oldTodos, function(todo) {
-        if (!todo.done) app.aplicaciones.push(todo);
-      });
-    };
   })
-
   ;
-

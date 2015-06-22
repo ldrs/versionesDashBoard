@@ -39,10 +39,9 @@
 						<div class="12u" ng-controller="appController as app" style="padding: 0 0 0 50px">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
-									<a ng-repeat="ambiente in app.ambientes" href="{{ambiente.href}}" class="{{ambiente.css}}">{{ambiente.text}}</a>
+									<a ng-repeat="ambiente in app.ambientes | OrderBy:'orden'" href="{{ambiente.href}}" class="{{ambiente.css}}">{{ambiente.nombre}}</a>
 								</nav>
 							</header>
-
 						</div>
 					</div>
 				</div>

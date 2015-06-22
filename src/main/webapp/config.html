@@ -2,7 +2,7 @@
 
 <html ng-app="versionesApp">
 <head>
-		<title>Versiones</title>
+		<title>Configuracion - Versiones</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<script src="assets/js/angular.min.js"></script>
@@ -90,15 +90,16 @@
 							</header>
 							<div class="accordion-content">
 								<div class="rowApplicacion">
-									<div ng-repeat="ambiente in app.ambientes">
-											<div class="aplicationSelection as{{aplicacion.css}}" title="{{aplicacion.jira}}">{{aplicacion.nombre}}<div style="display: none">{{aplicacion.id}}</div></div>
+									<div style="display: inline-block; width: 100%;">
+										<div ng-repeat="ambiente in app.ambientes">
+												<div class="aplicationSelection as{{ambiente.css}}">{{ambiente.nombre}}<div style="display: none">{{ambiente.id}}</div></div>
+										</div>
 									</div>
-
-									<div>Ruta Jira<br/><input name="jira"/></div>
-									<div>Ruta SysAid<br/><input name="sysaid"/></div>
-									<div>Ruta Nexus<br/><input name="nexus"/></div>
-									<div>Ruta SVN<br/><input name="jira"/></div>
-									<div>Ruta Jenkins<br/><input name="jenkins"/></div>
+									<br/><br/><br/>
+									<div  class="aplicacion">Nombre<br/><input name="nombreAmbiente"/></div>
+									<div  class="aplicacion">Job Jenkins<br/><input name="jobJenkinsAmbiente"/></div>
+									<div  class="aplicacion">Orden<br/><input name="ordenAmbiente"/></div>
+									<div  class="aplicacion">Duenos<br/><input name="duenosAmbiente"/></div>
 								</div>
 							</div>
 						</div>
