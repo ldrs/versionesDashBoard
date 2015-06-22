@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+
+<html ng-app="versionesApp">
+<head>
+		<title>Versiones</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="assets/js/angular.min.js"></script>
+		<script src="assets/js/app.js"></script>
+		<script src="assets/js/config.js"></script>
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+
+
+    <body>
+
+		<div id="page-wrapper">
+			<div id="header-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="12u">
+
+							<header id="header">
+								<h1><a href="index.html" id="logo">Configuraciones</a></h1>
+							</header>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="main" style="padding-bottom: 1.2em;">
+				<div class="container">
+					<div class="row main-row">
+						<div class="12u"  style="padding: 0 0 0 50px">
+							<header id="headerAmbientes">
+								<nav id="ambientes">
+									<a id="configGeneral" class="accordion-toggle">Configuracion General</a>
+								</nav>
+							</header>
+							<div class="accordion-content">
+								<div class="row">
+									<div>Ruta Jira<br/><input name="jira"/></div>
+									<div>Ruta SysAid<br/><input name="sysaid"/></div>
+									<div>Ruta Nexus<br/><input name="nexus"/></div>
+									<div>Ruta SVN<br/><input name="jira"/></div>
+									<div>Ruta Jenkins<br/><input name="jenkins"/></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="footer-wrapper">
+				<div class="container">
+					<div class="row main-row">
+					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px"  ng-controller="appController as app">
+							<header id="headerAmbientes">
+								<nav id="ambientes">
+									<a class="accordion-toggle">Configuracion Aplicaciones</a>
+									<div class="headerSTitulo">{{app.aplicacion}}</div>
+								</nav>
+							</header>
+								<div class="accordion-content">
+								<div class="rowAplicacion">
+
+									<div ng-repeat="aplicacion in app.aplicaciones">
+										<div class="aplicationSelection as{{aplicacion.css}}" title="{{aplicacion.jira}}">{{aplicacion.nombre}}<div style="display: none">{{aplicacion.id}}</div></div>
+									</div>
+									<br/><br/><br/>
+									<div class="aplicacion">Nombre<br/><input name="aplicacion" /></div>
+									<div class="aplicacion">Jira<br/><input name="jiraKey"/></div>
+									<div class="aplicacion">Svn Path<br/><input name="svnPath"/></div>
+									<br/><br/><br/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			<div class="container">
+					<div class="row main-row">
+					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px" ng-controller="appController as app">
+							<header id="headerAmbientes">
+								<nav id="ambientes">
+									<a class="accordion-toggle">Configuracion Ambientes</a>
+									<div class="headerSTitulo">{{app.ambiente}}</div>
+								</nav>
+							</header>
+							<div class="accordion-content">
+								<div class="rowApplicacion">
+									<div ng-repeat="ambiente in app.ambientes">
+											<div class="aplicationSelection as{{aplicacion.css}}" title="{{aplicacion.jira}}">{{aplicacion.nombre}}<div style="display: none">{{aplicacion.id}}</div></div>
+									</div>
+
+									<div>Ruta Jira<br/><input name="jira"/></div>
+									<div>Ruta SysAid<br/><input name="sysaid"/></div>
+									<div>Ruta Nexus<br/><input name="nexus"/></div>
+									<div>Ruta SVN<br/><input name="jira"/></div>
+									<div>Ruta Jenkins<br/><input name="jenkins"/></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			<div class="container">
+					<div class="row main-row">
+					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px">
+							<header id="headerAmbientes">
+								<nav id="ambientes">
+									<a class="accordion-toggle">Configuracion Servidores</a>
+								</nav>
+							</header>
+								<div class="accordion-content">
+								<div class="row">
+									<div>Ruta Jira<br/><input name="jira"/></div>
+									<div>Ruta SysAid<br/><input name="sysaid"/></div>
+									<div>Ruta Nexus<br/><input name="nexus"/></div>
+									<div>Ruta SVN<br/><input name="jira"/></div>
+									<div>Ruta Jenkins<br/><input name="jenkins"/></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+   		 <script type="text/javascript">
+		  $(document).ready(function($) {
+		    $('.accordion-toggle').click(function(){
+		     var content =	$(this).parent().parent().next();
+		      //Expand or collapse this panel
+		      content.slideToggle('fast');
+
+		      //Hide the other panels
+		      $(".accordion-content").not(content).slideUp('fast');
+
+
+		    });
+		      $("#configGeneral").click();
+		  });
+	</script>
+	</body>
+
+</html>
