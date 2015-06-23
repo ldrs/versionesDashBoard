@@ -54,10 +54,10 @@
 				<div class="container">
 					<div class="row main-row">
 					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px"  ng-controller="appController as app">
-							<header id="headerAmbientes">
-								<nav id="ambientes">
+							<header id="headerAplicaciones">
+								<nav id="Aplicaciones">
 									<a class="accordion-toggle">{{app.configuraciones.tituloAplicaciones}}</a>
-									<div class="saveIcon" ng-click="guardarAplicaciones()" style="float: right;  margin-right: 50px; margin-top: 15px;"></div>
+									<div id="guardarAplicaciones" class="saveIcon" ng-click="guardarAplicaciones()" style="float: right;  display: none"></div>
 									<div class="headerSTitulo" ng-model="aplicacion.nombre">{{app.aplicacionSeleccionado.nombre}}</div>
 								</nav>
 							</header>
@@ -85,7 +85,7 @@
 					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px" ng-controller="appController as app">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
-									<a class="accordion-toggle">Configuracion Ambientes</a>
+									<a class="accordion-toggle">{{app.configuraciones.tituloAmbientes}}</a>
 									<div class="headerSTitulo">{{app.ambiente}}</div>
 								</nav>
 							</header>

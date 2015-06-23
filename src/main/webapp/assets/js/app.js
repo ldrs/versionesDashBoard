@@ -13,15 +13,14 @@ function toQueryString(page){
 
 angular.module('versionesApp', [])
   .controller('appController', ['$scope', function($scope) {
-	var tituloAplicacion = "Configuracion Aplicaciones";
+	var tituloAplicacion = "Configuracion Aplicaciones",tituloAmbiente = "Configuracion Aplicaciones";
     var app = this;
-
 
 
     app.aplicacion = queryString.aplicacion;
     app.ambiente = queryString.ambiente;
     app.modificado = {aplicaciones : false};
-    app.configuraciones = {"tituloAplicaciones":tituloAplicacion};
+    app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 
     app.aplicaciones = [
                       {nombre:'sigef', css : "", "jira":"SGF", "svn":"sigef","id":"xcsdfsfsdfsd"},
@@ -85,10 +84,21 @@ angular.module('versionesApp', [])
      		o.css="";
       		o.activo=false;
      	 });
-       	 $scope.aplicacion = s;
-       	app.aplicacion=s.nombre;
-       	 s.css="current-page-item";
+      $scope.aplicacion = s;
+      app.aplicacion=s.nombre;
+      s.css="current-page-item";
     };
+
+    var seleccionAmbiente = function(s){
+   	 app.ambienteSeleccionado = s;
+      	 app.ambientes.forEach(function(o){
+    		o.css="";
+     		o.activo=false;
+    	 });
+     $scope.ambiente = s;
+     app.ambiente=s.nombre;
+     s.css="current-page-item";
+   };
 
     $scope.adicionarAplicacion = function(){
     	 var o = {nombre:'?', css : "", "jira":"?", "svn":"?","id":"?"};
@@ -98,7 +108,20 @@ angular.module('versionesApp', [])
     	 app.modificado.aplicaciones = true;
     	 app.configuraciones.tituloAplicaciones="*"+tituloAplicacion;
     	 $("input[name='aplicacion']" ).focus();
+    	 $("#guardarAplicaciones").css("display","block");
      }
+
+    $scope.adicionarAmbiente = function(){
+
+   	 var o = {nombre:'?', css : "", "orden":"?","id":"?"};
+
+     seleccionAmbiente(o);
+   	 app.ambientes.push(o);
+   	 app.modificado.ambientes = true;
+   	 app.configuraciones.tituloAplicaciones="*"+tituloAplicacion;
+   	 $("input[name='nombreAmbiente']" ).focus();
+   	 $("#guardarAmbientes").css("display","block");
+    }
 
     $scope.seleccionarAplicacion = function(o){
     	seleccionAplicacion(o);
@@ -107,10 +130,8 @@ angular.module('versionesApp', [])
     $scope.guardarAplicaciones = function(){
     	 app.configuraciones.tituloAplicaciones=tituloAplicacion;
     	 app.modificado.aplicaciones = false;
+    	 $("#guardarAplicaciones").css("display","none");
     }
-
-
-
 
   }])
   ;
