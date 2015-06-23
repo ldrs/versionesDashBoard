@@ -7,7 +7,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/app.js"></script>
-		<script src="assets/js/config.js"></script>
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
@@ -15,7 +14,7 @@
 
 
     <body>
-
+		<form>
 		<div id="page-wrapper">
 			<div id="header-wrapper">
 				<div class="container">
@@ -57,20 +56,22 @@
 					<div class="12u"  style="margin-top:50px; ;padding: 0 0 0 50px"  ng-controller="appController as app">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
-									<a class="accordion-toggle">Configuracion Aplicaciones</a>
-									<div class="headerSTitulo">{{app.aplicacion}}</div>
+									<a class="accordion-toggle">{{app.configuraciones.tituloAplicaciones}}</a>
+									<div class="saveIcon" ng-click="guardarAplicaciones()" style="float: right;  margin-right: 50px; margin-top: 15px;"></div>
+									<div class="headerSTitulo" ng-model="aplicacion.nombre">{{app.aplicacionSeleccionado.nombre}}</div>
 								</nav>
 							</header>
 								<div class="accordion-content">
 								<div class="rowAplicacion">
 
 									<div ng-repeat="aplicacion in app.aplicaciones">
-										<div class="aplicationSelection as{{aplicacion.css}}" title="{{aplicacion.jira}}">{{aplicacion.nombre}}<div style="display: none">{{aplicacion.id}}</div></div>
+										<div class="aplicationSelection as{{aplicacion.css}}" title="{{aplicacion.jira}}" ng-click="seleccionarAplicacion(aplicacion)">{{aplicacion.nombre}}<div style="display: none">{{aplicacion.id}}</div></div>
 									</div>
 									<br/><br/><br/>
-									<div class="aplicacion">Nombre<br/><input name="aplicacion" /></div>
-									<div class="aplicacion">Jira<br/><input name="jiraKey"/></div>
-									<div class="aplicacion">Svn Path<br/><input name="svnPath"/></div>
+									<div class="aplicacion">Nombre<br/><input name="aplicacion" ng-model="aplicacion.nombre" value="{{app.aplicacionSeleccionado.nombre}}"/></div>
+									<div class="aplicacion">Jira<br/><input name="jiraKey"   ng-model="aplicacion.jira" value="{{app.aplicacionSeleccionado.jira}}"/></div>
+									<div class="aplicacion">Svn Path<br/><input name="svnPath"   ng-model="aplicacion.svn"  value="{{app.aplicacionSeleccionado.svn}}"/></div>
+									<div class="button" style="float: right; padding: 10px;" ng-click="adicionarAplicacion()">Adicionar</div>
 									<br/><br/><br/>
 								</div>
 							</div>
@@ -161,6 +162,7 @@
 		      $("#configGeneral").click();
 		  });
 	</script>
+	</form>
 	</body>
 
 </html>

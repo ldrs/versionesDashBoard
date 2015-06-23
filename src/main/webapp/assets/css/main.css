@@ -1635,3 +1635,9 @@ ul.link-list li:first-child {
 .accordion-content{
 	margin-top: 30px
 }
+.saveIcon {
+		background: url(images/save.png);
+		width: 48px;
+		height: 48px;
+		float: right;  margin-right: 50px; margin-top: 15px;
+}

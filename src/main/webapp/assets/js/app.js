@@ -12,10 +12,16 @@ function toQueryString(page){
 
 
 angular.module('versionesApp', [])
-  .controller('appController', function() {
+  .controller('appController', ['$scope', function($scope) {
+	var tituloAplicacion = "Configuracion Aplicaciones";
     var app = this;
+
+
+
     app.aplicacion = queryString.aplicacion;
     app.ambiente = queryString.ambiente;
+    app.modificado = {aplicaciones : false};
+    app.configuraciones = {"tituloAplicaciones":tituloAplicacion};
 
     app.aplicaciones = [
                       {nombre:'sigef', css : "", "jira":"SGF", "svn":"sigef","id":"xcsdfsfsdfsd"},
@@ -55,6 +61,7 @@ angular.module('versionesApp', [])
     	if (o.nombre===app.aplicacion){
     		o.css="current-page-item";
     		o.activo=true;
+    		app.aplicacionSeleccionado=o;
     	}
     });
 
@@ -66,8 +73,44 @@ angular.module('versionesApp', [])
     	if (o.nombre===app.ambiente){
     		o.css="current-page-item";
     		o.activo=true;
+    		o.ambienteSeleccionado=o;
     	}
     })
 
-  })
+    $scope.aplicacion = app.aplicacionSeleccionado;
+
+     var seleccionAplicacion = function(s){
+    	 app.aplicacionSeleccionado = s;
+       	 app.aplicaciones.forEach(function(o){
+     		o.css="";
+      		o.activo=false;
+     	 });
+       	 $scope.aplicacion = s;
+       	app.aplicacion=s.nombre;
+       	 s.css="current-page-item";
+    };
+
+    $scope.adicionarAplicacion = function(){
+    	 var o = {nombre:'?', css : "", "jira":"?", "svn":"?","id":"?"};
+
+    	 seleccionAplicacion(o);
+    	 app.aplicaciones.push(o);
+    	 app.modificado.aplicaciones = true;
+    	 app.configuraciones.tituloAplicaciones="*"+tituloAplicacion;
+    	 $("input[name='aplicacion']" ).focus();
+     }
+
+    $scope.seleccionarAplicacion = function(o){
+    	seleccionAplicacion(o);
+    }
+
+    $scope.guardarAplicaciones = function(){
+    	 app.configuraciones.tituloAplicaciones=tituloAplicacion;
+    	 app.modificado.aplicaciones = false;
+    }
+
+
+
+
+  }])
   ;
