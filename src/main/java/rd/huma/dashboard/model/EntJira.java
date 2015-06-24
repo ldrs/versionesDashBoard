@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TICKET-JIRA")
+@Table(name="TICKET_JIRA")
 public class EntJira extends AEntModelo {
 
 	/**

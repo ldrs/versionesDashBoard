@@ -1,5 +1,7 @@
 package rd.huma.dashboard.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,6 +24,16 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	@JoinColumn
 	@ManyToOne
 	private EntFilaDeployement fila;
+
+
+	private LocalDateTime fecha;
+
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
 
 
 	@Override

@@ -7,9 +7,10 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="VERSION")
+@Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
 public class EntVersion implements Serializable{
 
 	/**
@@ -24,6 +25,8 @@ public class EntVersion implements Serializable{
 	private String autor;
 	private String branchOrigen;
 	private String revisionSVN;
+
+	private String svnOrigen;
 
 	private String comentario;
 
@@ -75,6 +78,14 @@ public class EntVersion implements Serializable{
 
 	public void setRevisionSVN(String revisionSVN) {
 		this.revisionSVN = revisionSVN;
+	}
+
+	public String getSvnOrigen() {
+		return svnOrigen;
+	}
+
+	public void setSvnOrigen(String svnOrigen) {
+		this.svnOrigen = svnOrigen;
 	}
 
 	@Override

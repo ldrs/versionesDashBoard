@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TICKET-SYSAID")
+@Table(name="TICKET_SYSAID")
 public class EntTicketSysAid extends AEntModelo {
 
 	/**
