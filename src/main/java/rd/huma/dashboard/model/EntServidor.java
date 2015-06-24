@@ -1,28 +1,22 @@
 package rd.huma.dashboard.model;
 
-import java.io.Serializable;
 import java.util.Base64;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="SERVIDOR")
-public class EntServidor implements Serializable {
+public class EntServidor extends AEntModelo {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -305284689798835460L;
-
-	@Id
-	private String id = UUID.randomUUID().toString();
 
 
 	private String nombre;
@@ -78,9 +72,6 @@ public class EntServidor implements Serializable {
 	public void setVersionActual(EntVersion versionActual) {
 		this.versionActual = versionActual;
 	}
-	public String getId() {
-		return id;
-	}
 
 	public String getUsuario() {
 		return usuario;
@@ -89,10 +80,10 @@ public class EntServidor implements Serializable {
 		this.usuario = usuario;
 	}
 	public String getPassword() {
-		return new String(Base64.getDecoder().decode(password.getBytes())).substring(id.length());
+		return new String(Base64.getDecoder().decode(password.getBytes())).substring(getId().length());
 	}
 	public void setPassword(String password) {
-		this.password =  new String(Base64.getEncoder().encode((id+password).getBytes()));
+		this.password =  new String(Base64.getEncoder().encode((getId()+password).getBytes()));
 	}
 
 	public String getBaseDatos() {
@@ -104,15 +95,19 @@ public class EntServidor implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((ambiente == null) ? 0 : ambiente.hashCode());
 		result = prime * result
+				+ ((baseDatos == null) ? 0 : baseDatos.hashCode());
+		result = prime * result
 				+ ((estadoServidor == null) ? 0 : estadoServidor.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result
+				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result
 				+ ((rutaEntrada == null) ? 0 : rutaEntrada.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		result = prime * result
 				+ ((versionActual == null) ? 0 : versionActual.hashCode());
 		return result;
@@ -122,7 +117,7 @@ public class EntServidor implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof EntServidor)) {
@@ -136,14 +131,14 @@ public class EntServidor implements Serializable {
 		} else if (!ambiente.equals(other.ambiente)) {
 			return false;
 		}
-		if (estadoServidor != other.estadoServidor) {
-			return false;
-		}
-		if (id == null) {
-			if (other.id != null) {
+		if (baseDatos == null) {
+			if (other.baseDatos != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!baseDatos.equals(other.baseDatos)) {
+			return false;
+		}
+		if (estadoServidor != other.estadoServidor) {
 			return false;
 		}
 		if (nombre == null) {
@@ -153,11 +148,25 @@ public class EntServidor implements Serializable {
 		} else if (!nombre.equals(other.nombre)) {
 			return false;
 		}
+		if (password == null) {
+			if (other.password != null) {
+				return false;
+			}
+		} else if (!password.equals(other.password)) {
+			return false;
+		}
 		if (rutaEntrada == null) {
 			if (other.rutaEntrada != null) {
 				return false;
 			}
 		} else if (!rutaEntrada.equals(other.rutaEntrada)) {
+			return false;
+		}
+		if (usuario == null) {
+			if (other.usuario != null) {
+				return false;
+			}
+		} else if (!usuario.equals(other.usuario)) {
 			return false;
 		}
 		if (versionActual == null) {
@@ -169,7 +178,4 @@ public class EntServidor implements Serializable {
 		}
 		return true;
 	}
-
-
-
 }

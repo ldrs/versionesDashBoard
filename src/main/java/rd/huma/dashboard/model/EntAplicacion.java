@@ -1,24 +1,18 @@
 package rd.huma.dashboard.model;
 
-import java.io.Serializable;
-import java.util.UUID;
-
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="APLICACION")
-public class EntAplicacion implements Serializable {
+public class EntAplicacion extends AEntModelo {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -8506267188084434427L;
 
-	@Id
-	private String id = UUID.randomUUID().toString();
 
 	private String nombre;
 
@@ -36,13 +30,6 @@ public class EntAplicacion implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getId() {
-		return id;
-	}
 
 	public String getJiraKey() {
 		return jiraKey;
@@ -71,9 +58,11 @@ public class EntAplicacion implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		int result = super.hashCode();
+		result = prime * result + ((jiraKey == null) ? 0 : jiraKey.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result + orden;
+		result = prime * result + ((svnPath == null) ? 0 : svnPath.hashCode());
 		return result;
 	}
 
@@ -82,18 +71,18 @@ public class EntAplicacion implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof EntAplicacion)) {
 			return false;
 		}
 		EntAplicacion other = (EntAplicacion) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (jiraKey == null) {
+			if (other.jiraKey != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!jiraKey.equals(other.jiraKey)) {
 			return false;
 		}
 		if (nombre == null) {
@@ -103,8 +92,19 @@ public class EntAplicacion implements Serializable {
 		} else if (!nombre.equals(other.nombre)) {
 			return false;
 		}
+		if (orden != other.orden) {
+			return false;
+		}
+		if (svnPath == null) {
+			if (other.svnPath != null) {
+				return false;
+			}
+		} else if (!svnPath.equals(other.svnPath)) {
+			return false;
+		}
 		return true;
 	}
+
 
 
 }

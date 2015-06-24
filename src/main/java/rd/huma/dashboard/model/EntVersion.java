@@ -2,7 +2,6 @@ package rd.huma.dashboard.model;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -23,10 +22,8 @@ public class EntVersion implements Serializable{
 
 	private String numero;
 	private String autor;
-	private List<String> duenos;
-	private List<String> jiraNumbers;
-	private List<String> ticketNumbers;
 	private String branchOrigen;
+	private String revisionSVN;
 
 	private String comentario;
 
@@ -38,30 +35,6 @@ public class EntVersion implements Serializable{
 
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-
-	public List<String> getDuenos() {
-		return duenos;
-	}
-
-	public void setDuenos(List<String> duenos) {
-		this.duenos = duenos;
-	}
-
-	public List<String> getJiraNumbers() {
-		return jiraNumbers;
-	}
-
-	public void setJiraNumbers(List<String> jiraNumbers) {
-		this.jiraNumbers = jiraNumbers;
-	}
-
-	public List<String> getTicketNumbers() {
-		return ticketNumbers;
-	}
-
-	public void setTicketNumbers(List<String> ticketNumbers) {
-		this.ticketNumbers = ticketNumbers;
 	}
 
 	public String getAutor() {
@@ -96,6 +69,14 @@ public class EntVersion implements Serializable{
 		this.branchOrigen = branchOrigen;
 	}
 
+	public String getRevisionSVN() {
+		return revisionSVN;
+	}
+
+	public void setRevisionSVN(String revisionSVN) {
+		this.revisionSVN = revisionSVN;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -105,15 +86,12 @@ public class EntVersion implements Serializable{
 				+ ((branchOrigen == null) ? 0 : branchOrigen.hashCode());
 		result = prime * result
 				+ ((comentario == null) ? 0 : comentario.hashCode());
-		result = prime * result + ((duenos == null) ? 0 : duenos.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((jiraNumbers == null) ? 0 : jiraNumbers.hashCode());
 		result = prime * result
 				+ ((momentoCreacion == null) ? 0 : momentoCreacion.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		result = prime * result
-				+ ((ticketNumbers == null) ? 0 : ticketNumbers.hashCode());
+				+ ((revisionSVN == null) ? 0 : revisionSVN.hashCode());
 		return result;
 	}
 
@@ -150,25 +128,11 @@ public class EntVersion implements Serializable{
 		} else if (!comentario.equals(other.comentario)) {
 			return false;
 		}
-		if (duenos == null) {
-			if (other.duenos != null) {
-				return false;
-			}
-		} else if (!duenos.equals(other.duenos)) {
-			return false;
-		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
 		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		if (jiraNumbers == null) {
-			if (other.jiraNumbers != null) {
-				return false;
-			}
-		} else if (!jiraNumbers.equals(other.jiraNumbers)) {
 			return false;
 		}
 		if (momentoCreacion == null) {
@@ -185,15 +149,13 @@ public class EntVersion implements Serializable{
 		} else if (!numero.equals(other.numero)) {
 			return false;
 		}
-		if (ticketNumbers == null) {
-			if (other.ticketNumbers != null) {
+		if (revisionSVN == null) {
+			if (other.revisionSVN != null) {
 				return false;
 			}
-		} else if (!ticketNumbers.equals(other.ticketNumbers)) {
+		} else if (!revisionSVN.equals(other.revisionSVN)) {
 			return false;
 		}
 		return true;
 	}
-
-
 }

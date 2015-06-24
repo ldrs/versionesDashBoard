@@ -1,17 +1,18 @@
 package rd.huma.dashboard.model;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="CONFIGURACION_GENERAL")
-public class EntConfiguracionGeneral {
+public class EntConfiguracionGeneral extends AEntModelo {
 
-	@Id
-	private String id = UUID.randomUUID().toString();
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -3334366160213466672L;
+
 
 	private String rutaJira;
 	private String usrJira;
@@ -100,8 +101,128 @@ public class EntConfiguracionGeneral {
 	public void setPwdJenkins(String pwdJenkins) {
 		this.pwdJenkins = pwdJenkins;
 	}
-	public String getId() {
-		return id;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((pwdJenkins == null) ? 0 : pwdJenkins.hashCode());
+		result = prime * result + ((pwdJira == null) ? 0 : pwdJira.hashCode());
+		result = prime * result + ((pwdSvn == null) ? 0 : pwdSvn.hashCode());
+		result = prime * result
+				+ ((pwdSysaid == null) ? 0 : pwdSysaid.hashCode());
+		result = prime * result
+				+ ((rutaJenkins == null) ? 0 : rutaJenkins.hashCode());
+		result = prime * result
+				+ ((rutaJira == null) ? 0 : rutaJira.hashCode());
+		result = prime * result + ((rutaSvn == null) ? 0 : rutaSvn.hashCode());
+		result = prime * result
+				+ ((rutaSysaid == null) ? 0 : rutaSysaid.hashCode());
+		result = prime * result
+				+ ((usrJenkins == null) ? 0 : usrJenkins.hashCode());
+		result = prime * result + ((usrJira == null) ? 0 : usrJira.hashCode());
+		result = prime * result + ((usrSvn == null) ? 0 : usrSvn.hashCode());
+		result = prime * result
+				+ ((usrSysaid == null) ? 0 : usrSysaid.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof EntConfiguracionGeneral)) {
+			return false;
+		}
+		EntConfiguracionGeneral other = (EntConfiguracionGeneral) obj;
+		if (pwdJenkins == null) {
+			if (other.pwdJenkins != null) {
+				return false;
+			}
+		} else if (!pwdJenkins.equals(other.pwdJenkins)) {
+			return false;
+		}
+		if (pwdJira == null) {
+			if (other.pwdJira != null) {
+				return false;
+			}
+		} else if (!pwdJira.equals(other.pwdJira)) {
+			return false;
+		}
+		if (pwdSvn == null) {
+			if (other.pwdSvn != null) {
+				return false;
+			}
+		} else if (!pwdSvn.equals(other.pwdSvn)) {
+			return false;
+		}
+		if (pwdSysaid == null) {
+			if (other.pwdSysaid != null) {
+				return false;
+			}
+		} else if (!pwdSysaid.equals(other.pwdSysaid)) {
+			return false;
+		}
+		if (rutaJenkins == null) {
+			if (other.rutaJenkins != null) {
+				return false;
+			}
+		} else if (!rutaJenkins.equals(other.rutaJenkins)) {
+			return false;
+		}
+		if (rutaJira == null) {
+			if (other.rutaJira != null) {
+				return false;
+			}
+		} else if (!rutaJira.equals(other.rutaJira)) {
+			return false;
+		}
+		if (rutaSvn == null) {
+			if (other.rutaSvn != null) {
+				return false;
+			}
+		} else if (!rutaSvn.equals(other.rutaSvn)) {
+			return false;
+		}
+		if (rutaSysaid == null) {
+			if (other.rutaSysaid != null) {
+				return false;
+			}
+		} else if (!rutaSysaid.equals(other.rutaSysaid)) {
+			return false;
+		}
+		if (usrJenkins == null) {
+			if (other.usrJenkins != null) {
+				return false;
+			}
+		} else if (!usrJenkins.equals(other.usrJenkins)) {
+			return false;
+		}
+		if (usrJira == null) {
+			if (other.usrJira != null) {
+				return false;
+			}
+		} else if (!usrJira.equals(other.usrJira)) {
+			return false;
+		}
+		if (usrSvn == null) {
+			if (other.usrSvn != null) {
+				return false;
+			}
+		} else if (!usrSvn.equals(other.usrSvn)) {
+			return false;
+		}
+		if (usrSysaid == null) {
+			if (other.usrSysaid != null) {
+				return false;
+			}
+		} else if (!usrSysaid.equals(other.usrSysaid)) {
+			return false;
+		}
+		return true;
 	}
 
 

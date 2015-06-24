@@ -1,16 +1,13 @@
 package rd.huma.dashboard.model;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
-
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="AMBIENTE")
-public class EntAmbiente implements Serializable {
+public class EntAmbiente extends AEntModelo{
 
 	/**
 	 *
@@ -18,16 +15,14 @@ public class EntAmbiente implements Serializable {
 	private static final long serialVersionUID = 6521232680596057448L;
 
 
-	@Id
-	private String id = UUID.randomUUID().toString();
-
 	private String nombre;
 
-	private EntAplicacion aplicacion;
 
 	private String jobJenkinsDeployements;
 
-	private List<String> duenos;
+	@JoinColumn
+	@ManyToOne
+	private EntAplicacion aplicacion;
 
 	private int orden;
 
@@ -46,20 +41,6 @@ public class EntAmbiente implements Serializable {
 	public void setAplicacion(EntAplicacion aplicacion) {
 		this.aplicacion = aplicacion;
 	}
-
-	public List<String> getDuenos() {
-		return duenos;
-	}
-
-	public void setDuenos(List<String> duenos) {
-		this.duenos = duenos;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-
 
 	public int getOrden() {
 		return orden;
@@ -80,13 +61,15 @@ public class EntAmbiente implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((aplicacion == null) ? 0 : aplicacion.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((jobJenkinsDeployements == null) ? 0 : jobJenkinsDeployements.hashCode());
+		result = prime
+				* result
+				+ ((jobJenkinsDeployements == null) ? 0
+						: jobJenkinsDeployements.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result + orden;
 		return result;
 	}
 
@@ -95,7 +78,7 @@ public class EntAmbiente implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof EntAmbiente)) {
@@ -107,13 +90,6 @@ public class EntAmbiente implements Serializable {
 				return false;
 			}
 		} else if (!aplicacion.equals(other.aplicacion)) {
-			return false;
-		}
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (jobJenkinsDeployements == null) {
@@ -130,6 +106,12 @@ public class EntAmbiente implements Serializable {
 		} else if (!nombre.equals(other.nombre)) {
 			return false;
 		}
+		if (orden != other.orden) {
+			return false;
+		}
 		return true;
 	}
+
+
+
 }
