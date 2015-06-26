@@ -7,8 +7,6 @@ import javax.transaction.Transactional;
 
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
-import rd.huma.dashboard.servicios.background.MonitorEjecutor;
-import rd.huma.dashboard.servicios.background.ejecutores.EjecutorVersion;
 
 @Transactional
 @Stateless
@@ -19,7 +17,7 @@ public class ServicioVersion {
 
 	@Inject
 	private ServicioPersona servicioPersona;
-	
+
 
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
@@ -36,7 +34,7 @@ public class ServicioVersion {
 		versionDueno.setDueno(servicioPersona.buscaOCreaPersona(autor));
 
 		entityManager.persist(versionDueno);
-		
+
 
 		return version;
 	}

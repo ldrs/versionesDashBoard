@@ -8,21 +8,21 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
-@ApplicationScoped 
+@ApplicationScoped
 public class MonitorEjecutor {
-	
+
 	private ScheduledExecutorService scheduler;
 
 	@PostConstruct
 	public void inicializar(){
 		scheduler = Executors.newScheduledThreadPool(50);
 	}
-	
+
 	@PreDestroy
 	 public void cleanup() {
 	   scheduler.shutdown();
 	 }
-	
+
 	public void ejecutarAsync(Ejecutor ejecutor){
 		scheduler.schedule(ejecutor, 500, TimeUnit.MILLISECONDS);
 	}
