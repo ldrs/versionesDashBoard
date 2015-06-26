@@ -21,10 +21,18 @@
     <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
     <version.jboss.spec.javaee.7.0>1.0.0.Final</version.jboss.spec.javaee.7.0>
     <version.jboss.bom>8.2.0.Final</version.jboss.bom>
+    <svnKit.version>1.8.10</svnKit.version>
 
   </properties>
 
   <dependencies>
+
+	<dependency>
+			<groupId>org.tmatesoft.svnkit</groupId>
+			<artifactId>svnkit</artifactId>
+			<version>${svnKit.version}</version>
+		</dependency>
+		
 
 
     <dependency>
@@ -104,6 +112,8 @@
     		<version>1.2</version>
     		<scope>provided</scope>
 		</dependency>
+		
+	
 
   </dependencies>
 
