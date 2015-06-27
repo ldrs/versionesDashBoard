@@ -8,7 +8,7 @@ import javax.ws.rs.QueryParam;
 
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
-import rd.huma.dashboard.servicios.background.ejecutores.EjecutorVersion;
+import rd.huma.dashboard.servicios.background.ejecutores.version.EjecutorVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("/nuevaVersion")
