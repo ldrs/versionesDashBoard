@@ -1,10 +1,12 @@
 package rd.huma.dashboard.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="CONFIGURACION_GENERAL")
+@NamedQuery(name="configuracionGeneral", query="SELECT E from EntConfiguracionGeneral")
 public class EntConfiguracionGeneral extends AEntModelo {
 
 

@@ -1,11 +1,14 @@
 package rd.huma.dashboard.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="APLICACION")
+@NamedQueries({@NamedQuery(name="aplicacion.buscar",query="SELECT E from EntAplicacion where E.nombre = :nomApp")})
 public class EntAplicacion extends AEntModelo {
 
 	/**
