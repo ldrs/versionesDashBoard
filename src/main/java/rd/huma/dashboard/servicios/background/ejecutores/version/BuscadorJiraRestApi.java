@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -9,18 +10,19 @@ import javax.ws.rs.core.MediaType;
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.EntJira;
-import rd.huma.dashboard.model.jira.JiraModel;
-import rd.huma.dashboard.util.Authenticator;
+import rd.huma.dashboard.model.jira.Issues;
+import rd.huma.dashboard.model.jira.Jiras;
 
-public class BuscadorJiraPorQueryBranch {
+public class BuscadorJiraRestApi {
 
 	private EntConfiguracionGeneral configuracionGeneral;
 	private EntAplicacion aplicacion;
 	private String branchOrigen;
-	
-	
-	
-	public BuscadorJiraPorQueryBranch(
+	private List<Issues> issues;
+
+
+
+	public BuscadorJiraRestApi(
 			EntConfiguracionGeneral configuracionGeneral,
 			EntAplicacion aplicacion, String branchOrigen) {
 		this.configuracionGeneral = configuracionGeneral;
@@ -29,20 +31,31 @@ public class BuscadorJiraPorQueryBranch {
 	}
 
 	public List<EntJira> encuentra(){
-		JiraModel modelos = ClientBuilder	.newClient()
+		List<EntJira> jiraRetorno = new ArrayList<EntJira>();
+		Jiras jiras = ClientBuilder	.newClient()
 						.target(getUrlJira())
-						.register(new Authenticator(configuracionGeneral.getUsrJira(), configuracionGeneral.getPwdJira()))
 						.request(MediaType.APPLICATION_JSON)
-						.get(JiraModel.class)
+						.get(Jiras.class)
 						;
-		
-		List<EntJira> jiras = new ArrayList<EntJira>();
-		return jiras;
+		this.issues = Arrays.asList(jiras.getIssues());
+		issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey())));
+
+		return jiraRetorno;
 	}
-	
+
+	private EntJira nuevoJira(String numero){
+		EntJira nuevoJira = new EntJira();
+		nuevoJira.setNumero(numero);
+		return nuevoJira;
+	}
+
+	public List<Issues> getIssues() {
+		return issues;
+	}
+
 	private String getUrlJira(){
 		return new StringBuilder(150)	.append(configuracionGeneral.getRutaJira())
-								.append("/rest/api/2/search?")
+								.append("rest/api/2/search?jql=")
 								.append(aplicacion.getNombreCampoJiraLineaDesarrollo())
 								.append("~")
 								.append(branchOrigen).toString();

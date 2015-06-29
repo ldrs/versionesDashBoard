@@ -5,7 +5,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_JIRA")
-public class EntJira extends AEntModelo {
+public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	/**
 	 *
@@ -14,7 +14,7 @@ public class EntJira extends AEntModelo {
 
 
 	private String numero;
-	
+
 	public String getNumero() {
 		return numero;
 	}
@@ -54,6 +54,8 @@ public class EntJira extends AEntModelo {
 		return true;
 	}
 
-
-
+	@Override
+	public int compareTo(EntJira o) {
+		return o.numero.compareTo(numero);
+	}
 }

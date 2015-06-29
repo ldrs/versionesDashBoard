@@ -21,6 +21,8 @@
     <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
     <version.jboss.spec.javaee.7.0>1.0.0.Final</version.jboss.spec.javaee.7.0>
     <version.jboss.bom>8.2.0.Final</version.jboss.bom>
+    <version.jersey>2.11</version.jersey>
+
 
   </properties>
 
@@ -108,6 +110,26 @@
     		<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${version.jersey}</version>
+		</dependency>
+
+<dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>${version.jersey}</version>
+    <scope>test</scope>
+</dependency>
+
+
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-jaxrs</artifactId>
+	<version>3.0.11.Final</version>
+	    <scope>test</scope>
+</dependency>
 
 
   </dependencies>

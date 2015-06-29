@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="Persona")
 @NamedQueries({@NamedQuery(name="buscaPersonaSVN", query="SELECT E from EntPersona E where E.usuarioSVN = :usrSVN") })
-public class EntPersona  extends AEntModelo {
+public class EntPersona  extends AEntModelo implements Comparable<EntPersona> {
 
 
 	/**
@@ -94,6 +94,8 @@ public class EntPersona  extends AEntModelo {
 		return true;
 	}
 
-
-
+	@Override
+	public int compareTo(EntPersona o) {
+		return o.usuarioSvn.compareTo(usuarioSvn);
+	}
 }

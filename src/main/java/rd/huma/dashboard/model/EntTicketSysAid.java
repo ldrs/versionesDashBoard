@@ -5,7 +5,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_SYSAID")
-public class EntTicketSysAid extends AEntModelo {
+public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketSysAid> {
 
 	/**
 	 *
@@ -15,6 +15,13 @@ public class EntTicketSysAid extends AEntModelo {
 
 	private String numero;
 
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
 
 	@Override
 	public int hashCode() {
@@ -48,5 +55,8 @@ public class EntTicketSysAid extends AEntModelo {
 	}
 
 
-
+	@Override
+	public int compareTo(EntTicketSysAid o) {
+		return o.numero.compareTo(numero);
+	}
 }

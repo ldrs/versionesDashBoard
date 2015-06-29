@@ -3,13 +3,8 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import static rd.huma.dashboard.servicios.transaccional.ServicioAplicacion.getCacheAplicacion;
 import static rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral.getCacheConfiguracionGeneral;
 import static rd.huma.dashboard.servicios.transaccional.ServicioVersion.getInstanciaTransaccional;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
-import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.servicios.background.Ejecutor;
 
@@ -17,8 +12,8 @@ public class EjecutorVersion  extends Ejecutor{
 
 	private EntVersion version;
 	private EntConfiguracionGeneral configuracionGeneral;
+	private ProcesadorTickets procesadorTickets;
 
-	
 	public EjecutorVersion(EntVersion version) {
 		this.version = version;
 	}
@@ -34,24 +29,10 @@ public class EjecutorVersion  extends Ejecutor{
 																	new BuscadorComentario(version, configuracionGeneral).encuentraComentario()
 																	);
 		EntAplicacion aplicacion = getCacheAplicacion(version.getSvnOrigen()).orElseThrow(() -> new IllegalStateException("aplicacion  No esta"));
-		
-		procesarTodosJiras(aplicacion);
+
+		procesadorTickets = ProcesadorTickets.of(configuracionGeneral, version, aplicacion).procesaJiras();
+
+
 
 	}
-	
-	private void procesarTodosJiras(EntAplicacion aplicacion){
-		List<EntJira> jirasEncontradoComentarios = BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira();
-
-		List<EntJira> jirasEncontradosBranches = new BuscadorJiraPorQueryBranch(configuracionGeneral,aplicacion,version.getBranchOrigen()).encuentra();
-		List<EntJira> todos = new ArrayList<>();
-		todos.addAll(jirasEncontradoComentarios);
-		todos.addAll(jirasEncontradosBranches);
-		todos.stream().distinct().forEach(this::procesarJira);
-	}
-	
-	private void procesarJira(EntJira jira){
-		
-	}
-	
-	
 }
