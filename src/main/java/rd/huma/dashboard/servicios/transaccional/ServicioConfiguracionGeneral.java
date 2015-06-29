@@ -26,8 +26,7 @@ public class ServicioConfiguracionGeneral {
 		EntConfiguracionGeneral entConfiguracionGeneral = cache.get(CACHE);
 		if (entConfiguracionGeneral == null){
 			synchronized(ServicioConfiguracionGeneral.class){
-				Stateless anotacion = ServicioConfiguracionGeneral.class.getAnnotation(Stateless.class);
-				ServicioConfiguracionGeneral instancia = CDI.current().select(ServicioConfiguracionGeneral.class,anotacion).get();
+				ServicioConfiguracionGeneral instancia = CDI.current().select(ServicioConfiguracionGeneral.class,ServicioConfiguracionGeneral.class.getAnnotations()).get();
 				Optional<EntConfiguracionGeneral> opcionalConfig = instancia.getConfiguracionGeneral();
 				if (opcionalConfig.isPresent()){
 					cache.put(CACHE, entConfiguracionGeneral);

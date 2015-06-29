@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -37,5 +38,18 @@ public class ServicioVersion {
 
 
 		return version;
+	}
+	
+	
+	public EntVersion actualizarVersion(String idVersion, String comentario){
+		EntVersion version = entityManager.find(EntVersion.class, idVersion);
+		version.setComentario(comentario);
+		entityManager.persist(version);
+		return version;
+	}
+	
+	public static ServicioVersion getInstanciaTransaccional(){
+		
+		return CDI.current().select(ServicioVersion.class, ServicioVersion.class.getAnnotations()).get();
 	}
 }

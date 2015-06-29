@@ -13,7 +13,7 @@ public class BuscadorJiraEnComentario {
 	private String comentario;
 	private String llaveJira;
 	
-	public BuscadorJiraEnComentario(String comentario, String llaveJira) {
+	private BuscadorJiraEnComentario(String comentario, String llaveJira) {
 		this.comentario = comentario;
 		this.llaveJira = llaveJira+"-";
 	}
@@ -49,5 +49,10 @@ public class BuscadorJiraEnComentario {
 		
 		return lst;
 	} 
+	
+	
+	public static BuscadorJiraEnComentario of(String comentario, String llaveJira){
+		return new BuscadorJiraEnComentario(comentario, llaveJira);
+	}
 	
 }

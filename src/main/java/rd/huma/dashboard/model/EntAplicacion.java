@@ -22,6 +22,8 @@ public class EntAplicacion extends AEntModelo {
 	private String jiraKey;
 
 	private String svnPath;
+	
+	private String nombreCampoJiraLineaDesarrollo = "LineaDesarrollo";
 
 	private int orden;
 
@@ -56,6 +58,17 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setOrden(int orden) {
 		this.orden = orden;
+	}
+	
+	
+
+	public String getNombreCampoJiraLineaDesarrollo() {
+		return nombreCampoJiraLineaDesarrollo;
+	}
+
+	public void setNombreCampoJiraLineaDesarrollo(
+			String nombreCampoJiraLineaDesarrollo) {
+		this.nombreCampoJiraLineaDesarrollo = nombreCampoJiraLineaDesarrollo;
 	}
 
 	@Override
