@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.EntTicketSysAid;
 
 @Stateless
+@Servicio
 public class ServicioTicketSysaid {
 
 	@Inject

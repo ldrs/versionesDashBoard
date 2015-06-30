@@ -22,7 +22,7 @@
     <version.jboss.spec.javaee.7.0>1.0.0.Final</version.jboss.spec.javaee.7.0>
     <version.jboss.bom>8.2.0.Final</version.jboss.bom>
     <version.jersey>2.11</version.jersey>
-
+	<version.hazelcast>3.5</version.hazelcast>
 
   </properties>
 
@@ -39,6 +39,12 @@
       <artifactId>cache-api</artifactId>
       <version>1.0.0</version>
     </dependency>
+
+    <dependency>
+    <groupId>com.hazelcast</groupId>
+    <artifactId>hazelcast</artifactId>
+    <version>${version.hazelcast}</version>
+</dependency>
 
 
      <!-- Import the CDI API, we use provided scope as the API is included in JBoss WildFly -->
