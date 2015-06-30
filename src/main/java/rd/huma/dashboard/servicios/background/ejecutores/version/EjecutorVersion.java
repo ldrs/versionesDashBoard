@@ -34,5 +34,7 @@ public class EjecutorVersion  extends Ejecutor{
 
 		new ProcesadorDatos(procesadorTickets).grabarDatos();
 
+		new BuscadorPropiedades(configuracionGeneral, aplicacion, version).procesar();
+
 	}
 }

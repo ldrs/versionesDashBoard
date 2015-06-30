@@ -10,6 +10,7 @@ import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
 import rd.huma.dashboard.model.EntVersionJira;
+import rd.huma.dashboard.model.EntVersionPropiedades;
 import rd.huma.dashboard.model.EntVersionTicket;
 
 @Transactional
@@ -59,6 +60,14 @@ public class ServicioVersion {
 	public void crearVersionTicketSysAid(String numero, EntVersion version) {
 		EntVersionTicket versionTicket = new EntVersionTicket();
 		versionTicket.setTicketSysAid(servicioTicketSysaid.encuentraOSalva(numero));
+		versionTicket.setVersion(version);
+		entityManager.persist(versionTicket);
+	}
+
+	public void crearVersionPropiedad(String nombre, String valor, EntVersion version) {
+		EntVersionPropiedades versionTicket = new EntVersionPropiedades();
+		versionTicket.setPropiedad(nombre);
+		versionTicket.setValor(valor);
 		versionTicket.setVersion(version);
 		entityManager.persist(versionTicket);
 	}
