@@ -20,11 +20,9 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	@ManyToOne
 	private EntVersion version;
 
-
 	@JoinColumn
 	@ManyToOne
 	private EntFilaDeployement fila;
-
 
 	private LocalDateTime fecha;
 
@@ -35,7 +33,6 @@ public class EntFilaDeployementVersion extends AEntModelo {
 		this.fecha = fecha;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -44,7 +41,6 @@ public class EntFilaDeployementVersion extends AEntModelo {
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

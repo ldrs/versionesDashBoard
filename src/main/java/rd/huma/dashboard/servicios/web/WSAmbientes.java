@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios;
+package rd.huma.dashboard.servicios.web;
 
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
