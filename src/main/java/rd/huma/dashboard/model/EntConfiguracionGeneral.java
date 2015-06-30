@@ -31,6 +31,12 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	private String rutaJenkins;
 	private String usrJenkins;
 	private String pwdJenkins;
+
+
+	private String nombreCampoJiraLineaDesarrollo = "cf[10810]";
+
+	private String nombreCampoSysAid = "customfield_10902";
+
 	public String getRutaJira() {
 		return rutaJira;
 	}
@@ -226,6 +232,20 @@ public class EntConfiguracionGeneral extends AEntModelo {
 		}
 		return true;
 	}
+
+	public String getNombreCampoJiraLineaDesarrollo() {
+		return nombreCampoJiraLineaDesarrollo;
+	}
+	public void setNombreCampoJiraLineaDesarrollo(String nombreCampoJiraLineaDesarrollo) {
+		this.nombreCampoJiraLineaDesarrollo = nombreCampoJiraLineaDesarrollo;
+	}
+	public String getNombreCampoSysAid() {
+		return nombreCampoSysAid;
+	}
+	public void setNombreCampoSysAid(String nombreCampoSysAid) {
+		this.nombreCampoSysAid = nombreCampoSysAid;
+	}
+
 
 
 }

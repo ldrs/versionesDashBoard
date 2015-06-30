@@ -13,6 +13,9 @@ import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
+import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
+import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
+import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 
 public class ProcesadorTickets {
 	private EntConfiguracionGeneral configuracionGeneral;
@@ -32,7 +35,7 @@ public class ProcesadorTickets {
 
 	public ProcesadorTickets procesaJiras(){
 		List<EntJira> jirasEncontradoComentarios = BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira();
-		this.buscadorJiraQuery =  new BuscadorJiraRestApi(configuracionGeneral,aplicacion,version.getBranchOrigen());
+		this.buscadorJiraQuery =  new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.BRANCH, version.getBranchOrigen()));
 
 		List<EntJira> jirasEncontradosBranches = buscadorJiraQuery.encuentra();
 		List<EntJira> todos = new ArrayList<>();
@@ -49,7 +52,7 @@ public class ProcesadorTickets {
 	}
 
 	private void buscarInformacionJira(EntJira jira){
-
+		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())).getIssues().stream().forEach(this::collectInformationTicket);
 	}
 
 	private void collectInformationTicket(EntJira jira){
