@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntVersion;
@@ -27,11 +28,13 @@ class ProcesadorDatos {
 		List<EntJira> jiraGrabados = new ArrayList<>();
 		procesadorTickets.getJiras().forEach(j->  {jiraGrabados.add(servicioJira.encuentraOSalva(j.getNumero(), j.getEstado()));});
 		jiraGrabados.forEach(this::grabarVersionJira);
-
+		Set<String> duenos = procesadorTickets.getDuenos();
+		duenos.remove(version.getAutor());
+		duenos.stream().forEach(d -> { servicioVersion.crearVersionDueno(d, version);  }  );
+		procesadorTickets.getTicketSysAid().stream().forEach(t -> servicioVersion.crearVersionTicketSysAid(t.getNumero(), version));
 	}
 
 	private void grabarVersionJira(EntJira jira){
 		servicioVersion.crearVersionJira(jira, version);
 	}
-
 }

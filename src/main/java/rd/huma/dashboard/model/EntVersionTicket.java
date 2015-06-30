@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "VERSION_JIRA")
+@Table(name = "VERSION_TICKET")
 public class EntVersionTicket extends AEntModelo {
 
 	/**

@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,29 +53,28 @@ public class ProcesadorTickets {
 	}
 
 	private void buscarInformacionJira(EntJira jira){
-		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())).getIssues().stream().forEach(this::collectInformationTicket);
+		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())).getIssues().stream().forEach( i-> {collectInformationTicket(jira, i); });
 	}
 
 	private void collectInformationTicket(EntJira jira){
 
 		Optional<Issues> issueFound = buscadorJiraQuery.getIssues().stream().filter(j -> j.getKey().equals(jira.getNumero())).findFirst();
 		if (issueFound.isPresent()){
-			collectInformationTicket(issueFound.get());
+			collectInformationTicket(jira,issueFound.get());
 		}else{
 			paraEncontrarInformacionJira.add(jira);
 		}
 		jiras.add(jira);
 	}
 
-	private void collectInformationTicket(Issues issues){
+	private void collectInformationTicket(EntJira jira,Issues issues){
 		Fields fields = issues.getFields();
 		ticketSysAid.add(nuevoTicketSysAid(fields.getSysAidTicket()));
 		duenos.add(fields.getAssignee().getName());
 		duenos.add(fields.getReporter().getName());
 		duenos.add(fields.getCreator().getName());
+		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
 	}
-
-
 
 	private EntTicketSysAid nuevoTicketSysAid(String numero){
 		EntTicketSysAid ticketSysAid = new EntTicketSysAid();
@@ -94,4 +94,11 @@ public class ProcesadorTickets {
 		return jiras;
 	}
 
+	public Set<String> getDuenos() {
+		return new HashSet<>(duenos);
+	}
+
+	Set<EntTicketSysAid> getTicketSysAid() {
+		return ticketSysAid;
+	}
 }

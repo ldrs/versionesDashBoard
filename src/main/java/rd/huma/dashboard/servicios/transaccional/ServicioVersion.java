@@ -7,8 +7,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import rd.huma.dashboard.model.EntJira;
-import rd.huma.dashboard.model.EntPersona;
-import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
 import rd.huma.dashboard.model.EntVersionJira;
@@ -24,7 +22,8 @@ public class ServicioVersion {
 	@Inject
 	private ServicioPersona servicioPersona;
 
-
+	@Inject
+	private ServicioTicketSysaid servicioTicketSysaid;
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
 		EntVersion version = new EntVersion();
@@ -57,9 +56,9 @@ public class ServicioVersion {
 		entityManager.persist(versionJira);
 	}
 
-	public void crearVersionJira(EntTicketSysAid ticketSysaid, EntVersion version) {
+	public void crearVersionTicketSysAid(String numero, EntVersion version) {
 		EntVersionTicket versionTicket = new EntVersionTicket();
-		versionTicket.setTicketSysAid(ticketSysaid);
+		versionTicket.setTicketSysAid(servicioTicketSysaid.encuentraOSalva(numero));
 		versionTicket.setVersion(version);
 		entityManager.persist(versionTicket);
 	}
