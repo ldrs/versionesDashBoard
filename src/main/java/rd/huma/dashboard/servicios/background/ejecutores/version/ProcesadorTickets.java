@@ -86,4 +86,8 @@ public class ProcesadorTickets {
 		return new ProcesadorTickets(configuracionGeneral, version, aplicacion);
 	}
 
+	public EntVersion getVersion() {
+		return version;
+	}
+
 }
