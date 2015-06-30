@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios.background.ejecutores.version;
+package rd.huma.dashboard.servicios.integracion.jira;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,33 +7,23 @@ import java.util.List;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
-import rd.huma.dashboard.model.EntAplicacion;
-import rd.huma.dashboard.model.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Jiras;
 
 public class BuscadorJiraRestApi {
 
-	private EntConfiguracionGeneral configuracionGeneral;
-	private EntAplicacion aplicacion;
-	private String branchOrigen;
 	private List<Issues> issues;
+	private JiraQuery jiraQuery;
 
-
-
-	public BuscadorJiraRestApi(
-			EntConfiguracionGeneral configuracionGeneral,
-			EntAplicacion aplicacion, String branchOrigen) {
-		this.configuracionGeneral = configuracionGeneral;
-		this.aplicacion = aplicacion;
-		this.branchOrigen = branchOrigen;
+	public BuscadorJiraRestApi(	JiraQuery jiraQuery){
+		this.jiraQuery = jiraQuery;
 	}
 
 	public List<EntJira> encuentra(){
 		List<EntJira> jiraRetorno = new ArrayList<EntJira>();
 		Jiras jiras = ClientBuilder	.newClient()
-						.target(getUrlJira())
+						.target(jiraQuery.getUrl())
 						.request(MediaType.APPLICATION_JSON)
 						.get(Jiras.class)
 						;
@@ -51,13 +41,5 @@ public class BuscadorJiraRestApi {
 
 	public List<Issues> getIssues() {
 		return issues;
-	}
-
-	private String getUrlJira(){
-		return new StringBuilder(150)	.append(configuracionGeneral.getRutaJira())
-								.append("rest/api/2/search?jql=")
-								.append(aplicacion.getNombreCampoJiraLineaDesarrollo())
-								.append("~")
-								.append(branchOrigen).toString();
 	}
 }

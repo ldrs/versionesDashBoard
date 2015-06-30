@@ -23,10 +23,6 @@ public class EntAplicacion extends AEntModelo {
 
 	private String svnPath;
 
-	private String nombreCampoJiraLineaDesarrollo = "cf[10810]";
-
-	private String nombreCampoSysAid = "customfield_10902";
-
 	private String nombrePropiedadesPom;
 
 	private int orden;
@@ -62,22 +58,6 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setOrden(int orden) {
 		this.orden = orden;
-	}
-
-	public String getNombreCampoJiraLineaDesarrollo() {
-		return nombreCampoJiraLineaDesarrollo;
-	}
-
-	public void setNombreCampoJiraLineaDesarrollo(String nombreCampoJiraLineaDesarrollo) {
-		this.nombreCampoJiraLineaDesarrollo = nombreCampoJiraLineaDesarrollo;
-	}
-
-	public String getNombreCampoSysAid() {
-		return nombreCampoSysAid;
-	}
-
-	public void setNombreCampoSysAid(String nombreCampoSysAid) {
-		this.nombreCampoSysAid = nombreCampoSysAid;
 	}
 
 	public String getNombrePropiedadesPom() {

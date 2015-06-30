@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
+import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 
 public class BuscadorJiraPorQueryBranchTest {
 
@@ -22,6 +23,6 @@ public class BuscadorJiraPorQueryBranchTest {
 		aplicacion.setOrden(1);
 		aplicacion.setSvnPath("sigef");
 
-		new BuscadorJiraRestApi(config,aplicacion, "20150629.19491.00").encuentra();
+	//	new BuscadorJiraRestApi(config,aplicacion, "20150629.19491.00").encuentra();
 	}
 }

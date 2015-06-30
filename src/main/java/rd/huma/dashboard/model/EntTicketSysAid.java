@@ -1,10 +1,13 @@
 package rd.huma.dashboard.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_SYSAID")
+@NamedQueries({@NamedQuery(name="buscar.versionTicket", query="SELECT E from EntTicketSysAid E where E.numero = :num")})
 public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketSysAid> {
 
 	/**
@@ -22,6 +25,9 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+
+
+
 
 	@Override
 	public int hashCode() {

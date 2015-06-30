@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -13,6 +14,9 @@ import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
+import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
+import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
+import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 
 public class ProcesadorTickets {
 	private EntConfiguracionGeneral configuracionGeneral;
@@ -32,7 +36,7 @@ public class ProcesadorTickets {
 
 	public ProcesadorTickets procesaJiras(){
 		List<EntJira> jirasEncontradoComentarios = BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira();
-		this.buscadorJiraQuery =  new BuscadorJiraRestApi(configuracionGeneral,aplicacion,version.getBranchOrigen());
+		this.buscadorJiraQuery =  new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.BRANCH, version.getBranchOrigen()));
 
 		List<EntJira> jirasEncontradosBranches = buscadorJiraQuery.encuentra();
 		List<EntJira> todos = new ArrayList<>();
@@ -49,29 +53,28 @@ public class ProcesadorTickets {
 	}
 
 	private void buscarInformacionJira(EntJira jira){
-
+		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())).getIssues().stream().forEach( i-> {collectInformationTicket(jira, i); });
 	}
 
 	private void collectInformationTicket(EntJira jira){
 
 		Optional<Issues> issueFound = buscadorJiraQuery.getIssues().stream().filter(j -> j.getKey().equals(jira.getNumero())).findFirst();
 		if (issueFound.isPresent()){
-			collectInformationTicket(issueFound.get());
+			collectInformationTicket(jira,issueFound.get());
 		}else{
 			paraEncontrarInformacionJira.add(jira);
 		}
 		jiras.add(jira);
 	}
 
-	private void collectInformationTicket(Issues issues){
+	private void collectInformationTicket(EntJira jira,Issues issues){
 		Fields fields = issues.getFields();
 		ticketSysAid.add(nuevoTicketSysAid(fields.getSysAidTicket()));
 		duenos.add(fields.getAssignee().getName());
 		duenos.add(fields.getReporter().getName());
 		duenos.add(fields.getCreator().getName());
+		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
 	}
-
-
 
 	private EntTicketSysAid nuevoTicketSysAid(String numero){
 		EntTicketSysAid ticketSysAid = new EntTicketSysAid();
@@ -83,4 +86,19 @@ public class ProcesadorTickets {
 		return new ProcesadorTickets(configuracionGeneral, version, aplicacion);
 	}
 
+	public EntVersion getVersion() {
+		return version;
+	}
+
+	public Iterable<EntJira> getJiras() {
+		return jiras;
+	}
+
+	public Set<String> getDuenos() {
+		return new HashSet<>(duenos);
+	}
+
+	Set<EntTicketSysAid> getTicketSysAid() {
+		return ticketSysAid;
+	}
 }

@@ -1,10 +1,13 @@
 package rd.huma.dashboard.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_JIRA")
+@NamedQueries({@NamedQuery(name="buscar.jiraNumero",query="SELECT E from EntJira E where e.numero = :numJira")})
 public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	/**
@@ -15,12 +18,24 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	private String numero;
 
+	private String estado;
+
 	public String getNumero() {
 		return numero;
 	}
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	@Override

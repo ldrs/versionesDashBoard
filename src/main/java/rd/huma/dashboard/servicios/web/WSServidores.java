@@ -15,7 +15,7 @@ import rd.huma.dashboard.model.EntServidor;
 @Path("/servidores")
 public class WSServidores {
 
-	
+
 	@GET
 	public String servidores(@QueryParam("ambiente") String ambiente){
 		JsonArrayBuilder builder = createArrayBuilder();
@@ -25,17 +25,17 @@ public class WSServidores {
 																				.add("id",s.getId())
 														 )
 										);
-		
+
 		return builder.build().toString();
 	}
-	
+
 	private List<EntServidor> getServidores(){
 		List<EntServidor> lst = new ArrayList<>();
 		lst.add(nuevoServidor("172.16.7.30:7777"));
 		lst.add(nuevoServidor("172.16.7.30:8888"));
 		return lst;
 	}
-	
+
 	private EntServidor nuevoServidor(String nombre){
 		EntServidor servidor = new EntServidor();
 		servidor.setNombre(nombre);
