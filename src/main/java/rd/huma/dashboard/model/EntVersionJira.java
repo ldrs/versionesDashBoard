@@ -23,6 +23,21 @@ public class EntVersionJira extends AEntModelo {
 	@ManyToOne
 	private EntJira jira;
 
+	public EntVersion getVersion() {
+		return version;
+	}
+
+	public void setVersion(EntVersion version) {
+		this.version = version;
+	}
+
+	public EntJira getJira() {
+		return jira;
+	}
+
+	public void setJira(EntJira jira) {
+		this.jira = jira;
+	}
 
 	@Override
 	public int hashCode() {

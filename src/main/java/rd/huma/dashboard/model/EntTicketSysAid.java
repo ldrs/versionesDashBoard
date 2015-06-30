@@ -23,6 +23,9 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 		this.numero = numero;
 	}
 
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

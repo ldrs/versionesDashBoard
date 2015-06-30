@@ -21,18 +21,33 @@ public class EntVersionTicket extends AEntModelo {
 
 	@JoinColumn
 	@ManyToOne
-	private EntJira jira;
+	private EntTicketSysAid ticketSysAid;
 
+	public EntVersion getVersion() {
+		return version;
+	}
+
+	public void setVersion(EntVersion version) {
+		this.version = version;
+	}
+
+	public EntTicketSysAid getTicketSysAid() {
+		return ticketSysAid;
+	}
+
+	public void setTicketSysAid(EntTicketSysAid ticketSysAid) {
+		this.ticketSysAid = ticketSysAid;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((jira == null) ? 0 : jira.hashCode());
+		result = prime * result
+				+ ((ticketSysAid == null) ? 0 : ticketSysAid.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -46,11 +61,11 @@ public class EntVersionTicket extends AEntModelo {
 			return false;
 		}
 		EntVersionTicket other = (EntVersionTicket) obj;
-		if (jira == null) {
-			if (other.jira != null) {
+		if (ticketSysAid == null) {
+			if (other.ticketSysAid != null) {
 				return false;
 			}
-		} else if (!jira.equals(other.jira)) {
+		} else if (!ticketSysAid.equals(other.ticketSysAid)) {
 			return false;
 		}
 		if (version == null) {
@@ -62,6 +77,8 @@ public class EntVersionTicket extends AEntModelo {
 		}
 		return true;
 	}
+
+
 
 
 

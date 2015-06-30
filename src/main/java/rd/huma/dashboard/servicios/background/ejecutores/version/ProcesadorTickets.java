@@ -90,4 +90,8 @@ public class ProcesadorTickets {
 		return version;
 	}
 
+	public Iterable<EntJira> getJiras() {
+		return jiras;
+	}
+
 }

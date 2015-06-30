@@ -32,7 +32,7 @@ public class EjecutorVersion  extends Ejecutor{
 
 		procesadorTickets = ProcesadorTickets.of(configuracionGeneral, version, aplicacion).procesaJiras();
 
-
+		new ProcesadorDatos(procesadorTickets).grabarDatos();
 
 	}
 }

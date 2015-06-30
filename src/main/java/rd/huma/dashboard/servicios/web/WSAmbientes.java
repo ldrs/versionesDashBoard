@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios;
+package rd.huma.dashboard.servicios.web;
 
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
@@ -26,10 +26,10 @@ public class WSAmbientes {
 																				.add("orden",s.getOrden())
 														 )
 										);
-		
+
 		return builder.build().toString();
 	}
-	
+
 	private List<EntAmbiente> getAmbientes(){
 		List<EntAmbiente> lst = new ArrayList<>();
 		lst.add(nuevoAmbiente("desarollo"));
@@ -38,7 +38,7 @@ public class WSAmbientes {
 		lst.add(nuevoAmbiente("produccion"));
 		return lst;
 	}
-	
+
 	private EntAmbiente nuevoAmbiente(String nombre){
 		EntAmbiente servidor = new EntAmbiente();
 		servidor.setNombre(nombre);
