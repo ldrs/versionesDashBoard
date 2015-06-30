@@ -11,13 +11,14 @@ import javax.ws.rs.Produces;
 
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionJira;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("/versionConsulta")
 public class WSVersionesConsulta {
 
 	@Inject
-	private ServicioVersion servicioVersion;
+	private @Servicio ServicioVersion servicioVersion;
 
 	@GET
 	@Produces("text/plain")

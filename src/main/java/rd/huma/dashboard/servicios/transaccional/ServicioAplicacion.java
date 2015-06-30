@@ -34,7 +34,7 @@ public class ServicioAplicacion {
 				ServicioAplicacion instancia = CDI.current().select(ServicioAplicacion.class,anotacion).get();
 				Optional<EntAplicacion> opcionalConfig = instancia.getAplicacion(nombre);
 				if (opcionalConfig.isPresent()){
-					cache.put(nombre, aplicacion);
+					cache.put(nombre, opcionalConfig.get());
 				}
 				return opcionalConfig;
 

@@ -22,10 +22,10 @@ public class ServicioVersion {
 	private EntityManager entityManager;
 
 	@Inject
-	private ServicioPersona servicioPersona;
+	private @Servicio ServicioPersona servicioPersona;
 
 	@Inject
-	private ServicioTicketSysaid servicioTicketSysaid;
+	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
 		EntVersion version = new EntVersion();

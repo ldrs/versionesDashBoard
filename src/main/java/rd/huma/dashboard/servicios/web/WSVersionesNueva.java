@@ -8,13 +8,14 @@ import javax.ws.rs.QueryParam;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.version.EjecutorVersion;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("/versionNueva")
 public class WSVersionesNueva {
 
 	@Inject
-	private ServicioVersion servicioVersion;
+	private @Servicio ServicioVersion servicioVersion;
 
 	@Inject
 	private MonitorEjecutor monitorEjecutor;
