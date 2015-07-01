@@ -28,8 +28,6 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 		this.numero = numero;
 	}
 
-
-
 	public String getEstado() {
 		return estado;
 	}

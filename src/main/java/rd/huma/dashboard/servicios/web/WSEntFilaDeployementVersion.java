@@ -9,8 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -18,9 +16,7 @@ import rd.huma.dashboard.model.EntAmbiente;
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntFilaDeployement;
 import rd.huma.dashboard.model.EntFilaDeployementVersion;
-import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntServidor;
-import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
 import rd.huma.dashboard.model.EntVersionJira;

@@ -3,6 +3,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
+import rd.huma.dashboard.model.EEstadoVersion;
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.EntVersion;
@@ -24,7 +25,8 @@ public class BuscadorPropiedades {
 	public void procesar(){
 		Response get = ClientBuilder.newClient().target(getRutaSvn()).request().get();
 		if (get.getStatus()==404){//no existe version
-
+			servicioVersion.actualizarEstado(EEstadoVersion.BRANCH_ELIMINADO, version);
+			return;
 		}
 
 		String datos = get.readEntity(String.class);

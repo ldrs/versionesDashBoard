@@ -29,18 +29,18 @@ public class BuscadorJiraRestApi {
 						.get(Jiras.class)
 						;
 		this.issues = Arrays.asList(jiras.getIssues());
-		issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey())));
+		issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey(), j.getFields().getStatus().getName())));
 
 		return jiraRetorno;
 	}
 
-	private EntJira nuevoJira(String numero){
+	private EntJira nuevoJira(String numero, String estado){
 		EntJira nuevoJira = new EntJira();
 		nuevoJira.setNumero(numero);
+		nuevoJira.setEstado(estado);
 		return nuevoJira;
 	}
 
 	public List<Issues> getIssues() {
 		return issues;
-	}
-}
+	}}

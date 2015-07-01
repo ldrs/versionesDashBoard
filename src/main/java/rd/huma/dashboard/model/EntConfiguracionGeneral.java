@@ -16,19 +16,19 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	private static final long serialVersionUID = -3334366160213466672L;
 
 
-	private String rutaJira;
+	private String rutaJira = "http://172.16.7.42:8080/";
 	private String usrJira;
 	private String pwdJira;
 
-	private String rutaSysaid;
+	private String rutaSysaid = "http://serviciossiafe.hacienda.gov.do:8080/";
 	private String usrSysaid;
 	private String pwdSysaid;
 
-	private String rutaSvn;
+	private String rutaSvn = "http://172.16.7.35:9880/svn/";
 	private String usrSvn;
 	private String pwdSvn;
 
-	private String rutaJenkins;
+	private String rutaJenkins = "http://172.16.7.39:8080/";
 	private String usrJenkins;
 	private String pwdJenkins;
 
