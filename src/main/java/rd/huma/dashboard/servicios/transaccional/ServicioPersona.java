@@ -3,12 +3,11 @@ package rd.huma.dashboard.servicios.transaccional;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import rd.huma.dashboard.model.EntPersona;
 
 @Stateless
-@Transactional
+@Servicio
 public class ServicioPersona {
 
 	@Inject

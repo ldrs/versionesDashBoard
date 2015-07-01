@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="APLICACION")
-@NamedQueries({@NamedQuery(name="aplicacion.buscar",query="SELECT E from EntAplicacion where E.nombre = :nomApp")})
+@NamedQueries({@NamedQuery(name="aplicacion.buscar",query="SELECT E from EntAplicacion E where E.nombre = :nomApp")})
 public class EntAplicacion extends AEntModelo {
 
 	/**

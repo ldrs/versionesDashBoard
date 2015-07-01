@@ -8,13 +8,15 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.EntJira;
 
 @Stateless
+@Servicio
 public class ServicioJira {
 
 	@Inject
 	private EntityManager entityManager;
 
 	public static ServicioJira getInstanciaTransaccional() {
-		return CDI.current().select(ServicioJira.class, ServicioJira.class.getAnnotations()).get();
+		Servicio servicio = ServicioJira.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioJira.class, servicio).get();
 	}
 
 	public EntJira encuentraOSalva(String numero, String estado) {

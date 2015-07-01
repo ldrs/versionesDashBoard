@@ -1,18 +1,20 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
 import rd.huma.dashboard.model.EntVersionJira;
+import rd.huma.dashboard.model.EntVersionPropiedades;
 import rd.huma.dashboard.model.EntVersionTicket;
 
-@Transactional
+@Servicio
 @Stateless
 public class ServicioVersion {
 
@@ -20,10 +22,10 @@ public class ServicioVersion {
 	private EntityManager entityManager;
 
 	@Inject
-	private ServicioPersona servicioPersona;
+	private @Servicio ServicioPersona servicioPersona;
 
 	@Inject
-	private ServicioTicketSysaid servicioTicketSysaid;
+	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
 		EntVersion version = new EntVersion();
@@ -63,6 +65,14 @@ public class ServicioVersion {
 		entityManager.persist(versionTicket);
 	}
 
+	public void crearVersionPropiedad(String nombre, String valor, EntVersion version) {
+		EntVersionPropiedades versionTicket = new EntVersionPropiedades();
+		versionTicket.setPropiedad(nombre);
+		versionTicket.setValor(valor);
+		versionTicket.setVersion(version);
+		entityManager.persist(versionTicket);
+	}
+
 	public void crearVersionDueno(String persona, EntVersion version) {
 		EntVersionDuenos versionDueno = new EntVersionDuenos();
 		versionDueno.setVersion(version);
@@ -72,10 +82,21 @@ public class ServicioVersion {
 	}
 
 
+	public List<EntVersion> buscaUltimaVersiones() {
+		return entityManager.createNamedQuery("buscar.versionTodas",EntVersion.class).setMaxResults(50).getResultList();
+	}
+
+	public List<EntVersionJira> buscaJiras(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionJiraPorVersion",EntVersionJira.class)
+				.setParameter("ver", version)
+				.getResultList();
+	}
+
 
 	public static ServicioVersion getInstanciaTransaccional(){
-
-		return CDI.current().select(ServicioVersion.class, ServicioVersion.class.getAnnotations()).get();
+		Servicio servicio = ServicioVersion.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioVersion.class, servicio).get();
 	}
+
 
 }

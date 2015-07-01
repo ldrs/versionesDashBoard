@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="CONFIGURACION_GENERAL")
-@NamedQuery(name="configuracionGeneral", query="SELECT E from EntConfiguracionGeneral")
+@NamedQuery(name="configuracionGeneral", query="SELECT E from EntConfiguracionGeneral E")
 public class EntConfiguracionGeneral extends AEntModelo {
 
 

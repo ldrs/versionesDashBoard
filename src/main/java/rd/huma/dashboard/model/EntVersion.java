@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
+@NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E")
+				 }
+				)
 public class EntVersion extends AEntModelo implements Serializable{
 
 	/**
@@ -75,6 +80,10 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	public void setSvnOrigen(String svnOrigen) {
 		this.svnOrigen = svnOrigen;
+	}
+
+	public Instant getMomentoCreacion() {
+		return momentoCreacion;
 	}
 
 	@Override
