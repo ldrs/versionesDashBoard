@@ -44,7 +44,7 @@ public class ServicioVersion {
 
 	public EntVersion actualizarEstado(EEstadoVersion esperandoFila,		EntVersion versionTmp) {
 		EntVersion version = entityManager.find(EntVersion.class, versionTmp.getId());
-		version.setEstado(versionTmp.getEstado());
+		version.setEstado(esperandoFila);
 		entityManager.persist(version);
 		return version;
 

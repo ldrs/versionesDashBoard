@@ -22,7 +22,7 @@
     <version.jboss.spec.javaee.7.0>1.0.0.Final</version.jboss.spec.javaee.7.0>
     <version.jboss.bom>8.2.0.Final</version.jboss.bom>
     <version.jersey>2.11</version.jersey>
-	<version.hazelcast>3.5</version.hazelcast>
+	<version.infinispan>7.2.3.Final</version.infinispan>
 
   </properties>
 
@@ -43,7 +43,7 @@
 <dependency>
   <groupId>org.infinispan</groupId>
   <artifactId>infinispan-embedded</artifactId>
-  <version>7.2.3.Final</version>
+  <version>${version.infinispan}</version>
 </dependency>
 
 
