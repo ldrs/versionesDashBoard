@@ -21,12 +21,7 @@ public class ServicioAplicacion {
 	private EntityManager entityManager;
 
 	public static Optional<EntAplicacion> getCacheAplicacion(String nombre){
-		CacheManager manager =  Caching.getCachingProvider().getCacheManager();
-		Cache<String, EntAplicacion> cache = manager.getCache("APLICACIONES", String.class, EntAplicacion.class);
-		if (cache == null){
-			cache = manager.createCache("APLICACIONES", new MutableConfiguration<String, EntAplicacion>().setStoreByValue(false).setManagementEnabled(true).setTypes(String.class, EntAplicacion.class));
-		}
-
+		Cache<String, EntAplicacion> cache = getCache();
 		EntAplicacion aplicacion = cache.get(nombre);
 		if (aplicacion == null){
 			synchronized(ServicioAplicacion.class){
@@ -41,6 +36,16 @@ public class ServicioAplicacion {
 			}
 		}
 		return Optional.ofNullable(aplicacion);
+	}
+
+
+	private static Cache<String, EntAplicacion> getCache(){
+		CacheManager manager =  Caching.getCachingProvider().getCacheManager();
+		Cache<String, EntAplicacion> cache = manager.getCache("APLICACIONES", String.class, EntAplicacion.class);
+		if (cache == null){
+			cache = manager.createCache("APLICACIONES", new MutableConfiguration<String, EntAplicacion>().setStoreByValue(false).setManagementEnabled(true).setTypes(String.class, EntAplicacion.class));
+		}
+		return cache;
 	}
 
 	public Optional<EntAplicacion> getAplicacion(String nombre) {
@@ -62,6 +67,11 @@ public class ServicioAplicacion {
 		aplicacion.setNombrePropiedadesPom(nombrePropiedadesPom);
 
 		entityManager.persist(aplicacion);
+		Cache<String, EntAplicacion> cache = getCache();
+		if (cache.containsKey(nombre)){
+			cache.put(nombre, aplicacion);
+		}
+
 		return aplicacion;
 	}
 }

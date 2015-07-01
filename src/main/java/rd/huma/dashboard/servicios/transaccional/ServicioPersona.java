@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -12,6 +14,10 @@ public class ServicioPersona {
 
 	@Inject
 	private EntityManager entityManager;
+
+	public List<EntPersona> buscarPersonas(){
+		return entityManager.createNamedQuery("buscaPersonas",EntPersona.class).getResultList();
+	}
 
 	public EntPersona buscaOCreaPersona(String usuarioSVN){
 		return entityManager.createNamedQuery("buscaPersonaSVN", EntPersona.class)

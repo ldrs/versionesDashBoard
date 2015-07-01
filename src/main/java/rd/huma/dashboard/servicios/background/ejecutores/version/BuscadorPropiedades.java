@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
@@ -21,7 +22,12 @@ public class BuscadorPropiedades {
 	}
 
 	public void procesar(){
-		String datos = ClientBuilder.newClient().target(getRutaSvn()).request().get().readEntity(String.class);
+		Response get = ClientBuilder.newClient().target(getRutaSvn()).request().get();
+		if (get.getStatus()==404){//no existe version
+
+		}
+
+		String datos = get.readEntity(String.class);
 		for (String propiedad : aplicacion.getNombrePropiedadesPom().split(",")){
 			int index = datos.indexOf("<"+propiedad+">");
 			if (index!=-1){

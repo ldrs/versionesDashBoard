@@ -10,7 +10,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.EntVersionDuenos;
 import rd.huma.dashboard.model.EntVersionJira;
+import rd.huma.dashboard.model.EntVersionPropiedades;
+import rd.huma.dashboard.model.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
@@ -32,21 +35,55 @@ public class WSVersionesConsulta {
 	private void consultaInt(JsonArrayBuilder builder, EntVersion version){
 		builder.add(createObjectBuilder()
 						.add("version", version.getNumero())
+						.add("estado", version.getEstado().name())
 						.add("autor", version.getAutor())
 						.add("branchOrigen", version.getBranchOrigen())
 						.add("fecha", version.getMomentoCreacion().toString())
 						.add("jiras", consultaJiras(version))
-
+						.add("tickets", consultaTickets(version))
+						.add("propiedades", consultaPropiedades(version))
+						.add("duenos", consultaDuenos(version))
 					);
 	}
 
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaJiras(version).stream().forEach(j -> {agregaJira(builder, j);});
+		servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
 		return builder;
 	}
 
-	private void agregaJira(JsonArrayBuilder builder, EntVersionJira jira){
+	private JsonArrayBuilder consultaTickets(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+	private JsonArrayBuilder consultaPropiedades(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaPropiedades(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+
+	private JsonArrayBuilder consultaDuenos(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaDuenos(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionJira jira){
 		builder.add(jira.getJira().getNumero());
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionTicket jira){
+		builder.add(jira.getTicketSysAid().getNumero());
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionPropiedades jira){
+		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionDuenos jira){
+		builder.add(jira.getDueno().getUsuarioSvn());
 	}
 }

@@ -23,12 +23,7 @@ public class ServicioConfiguracionGeneral {
 	private EntityManager entityManager;
 
 	public static Optional<EntConfiguracionGeneral> getCacheConfiguracionGeneral(){
-		CacheManager manager =  Caching.getCachingProvider().getCacheManager();
-		Cache<Integer, EntConfiguracionGeneral> cache = manager.getCache("CONFIGURACION_GENERAL", Integer.class, EntConfiguracionGeneral.class);
-		if (cache == null){
-			cache = manager.createCache("CONFIGURACION_GENERAL", new MutableConfiguration<Integer, EntConfiguracionGeneral>().setStoreByValue(false).setManagementEnabled(true).setTypes(Integer.class, EntConfiguracionGeneral.class));
-		}
-
+		Cache<Integer, EntConfiguracionGeneral> cache = getCache();
 		EntConfiguracionGeneral entConfiguracionGeneral = cache.get(CACHE);
 		if (entConfiguracionGeneral == null){
 			synchronized(ServicioConfiguracionGeneral.class){
@@ -43,6 +38,15 @@ public class ServicioConfiguracionGeneral {
 			}
 		}
 		return Optional.ofNullable(entConfiguracionGeneral);
+	}
+
+	private static Cache<Integer, EntConfiguracionGeneral> getCache(){
+		CacheManager manager =  Caching.getCachingProvider().getCacheManager();
+		Cache<Integer, EntConfiguracionGeneral> cache = manager.getCache("CONFIGURACION_GENERAL", Integer.class, EntConfiguracionGeneral.class);
+		if (cache == null){
+			cache = manager.createCache("CONFIGURACION_GENERAL", new MutableConfiguration<Integer, EntConfiguracionGeneral>().setStoreByValue(false).setManagementEnabled(true).setTypes(Integer.class, EntConfiguracionGeneral.class));
+		}
+		return cache;
 	}
 
 
@@ -73,6 +77,10 @@ public class ServicioConfiguracionGeneral {
 
 
 		 entityManager.persist(configuracionGeneral);
+		 if (getCache().get(CACHE)!=null){
+			 getCache().put(CACHE, configuracionGeneral);
+		 }
+
 		 return configuracionGeneral;
 	}
 }

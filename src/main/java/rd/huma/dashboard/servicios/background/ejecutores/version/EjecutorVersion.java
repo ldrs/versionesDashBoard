@@ -3,10 +3,12 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import static rd.huma.dashboard.servicios.transaccional.ServicioAplicacion.getCacheAplicacion;
 import static rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral.getCacheConfiguracionGeneral;
 import static rd.huma.dashboard.servicios.transaccional.ServicioVersion.getInstanciaTransaccional;
+import rd.huma.dashboard.model.EEstadoVersion;
 import rd.huma.dashboard.model.EntAplicacion;
 import rd.huma.dashboard.model.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorVersion  extends Ejecutor{
 
@@ -24,7 +26,8 @@ public class EjecutorVersion  extends Ejecutor{
 																			() -> new IllegalStateException("Configuracion General No esta")
 																		);
 
-		version =	getInstanciaTransaccional().actualizarVersion(
+		ServicioVersion servicio = getInstanciaTransaccional();
+		version =	servicio.actualizarVersion(
 																	version.getId(),
 																	new BuscadorComentario(version, configuracionGeneral).encuentraComentario()
 																	);
@@ -36,5 +39,6 @@ public class EjecutorVersion  extends Ejecutor{
 
 		new BuscadorPropiedades(configuracionGeneral, aplicacion, version).procesar();
 
+		servicio.actualizarEstado(EEstadoVersion.ESPERANDO_FILA,version);
 	}
 }

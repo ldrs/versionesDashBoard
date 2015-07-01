@@ -3,10 +3,20 @@ package rd.huma.dashboard.model;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "VERSION_DUENOS")
+@NamedQueries(
+		{
+			@NamedQuery(name="buscar.versionDuenosPorVersion", query="select E from EntVersionDuenos E where E.version = :ver"),
+			@NamedQuery(name="buscar.versionDuenos", query="select E from EntVersionDuenos E order by E.version.momentoCreacion desc")
+
+		}
+
+		)
 public class EntVersionDuenos extends AEntModelo {
 
 	/**

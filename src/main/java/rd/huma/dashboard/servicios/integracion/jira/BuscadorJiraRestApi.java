@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.integracion.jira;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -13,7 +14,7 @@ import rd.huma.dashboard.model.jira.Jiras;
 
 public class BuscadorJiraRestApi {
 
-	private List<Issues> issues;
+	private List<Issues> issues = Collections.emptyList();
 	private JiraQuery jiraQuery;
 
 	public BuscadorJiraRestApi(	JiraQuery jiraQuery){

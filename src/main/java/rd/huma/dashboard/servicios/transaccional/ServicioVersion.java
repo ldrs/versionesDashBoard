@@ -7,6 +7,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import rd.huma.dashboard.model.EEstadoVersion;
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntVersion;
 import rd.huma.dashboard.model.EntVersionDuenos;
@@ -40,6 +41,15 @@ public class ServicioVersion {
 
 		return version;
 	}
+
+	public EntVersion actualizarEstado(EEstadoVersion esperandoFila,		EntVersion versionTmp) {
+		EntVersion version = entityManager.find(EntVersion.class, versionTmp.getId());
+		version.setEstado(versionTmp.getEstado());
+		entityManager.persist(version);
+		return version;
+
+	}
+
 
 
 	public EntVersion actualizarVersion(String idVersion, String comentario){
@@ -92,11 +102,35 @@ public class ServicioVersion {
 				.getResultList();
 	}
 
+	public List<EntVersionTicket> buscaTickets(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionTicketPorVersion",EntVersionTicket.class)
+				.setParameter("ver", version)
+				.getResultList();
+	}
+
+	public List<EntVersionPropiedades> buscaPropiedades(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionPropiedadesPorVersion",EntVersionPropiedades.class)
+				.setParameter("ver", version)
+				.getResultList();
+	}
+
+	public List<EntVersionDuenos> buscaDuenos(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionDuenosPorVersion",EntVersionDuenos.class)
+				.setParameter("ver", version)
+				.getResultList();
+	}
+
+
+	public List<EntVersionDuenos> buscaDuenos(){
+		return entityManager.createNamedQuery("buscar.versionDuenos",EntVersionDuenos.class).getResultList();
+	}
 
 	public static ServicioVersion getInstanciaTransaccional(){
 		Servicio servicio = ServicioVersion.class.getAnnotation(Servicio.class);
 		return CDI.current().select(ServicioVersion.class, servicio).get();
 	}
+
+
 
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -32,6 +33,9 @@ public class EntVersion extends AEntModelo implements Serializable{
 	private String comentario;
 
 	private Instant momentoCreacion = Instant.now();
+
+	@Enumerated
+	private EEstadoVersion estado = EEstadoVersion.ESPERANDO_DATOS_INTEGRACION;
 
 	public String getNumero() {
 		return numero;
@@ -84,6 +88,14 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	public Instant getMomentoCreacion() {
 		return momentoCreacion;
+	}
+
+	public EEstadoVersion getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EEstadoVersion estado) {
+		this.estado = estado;
 	}
 
 	@Override
