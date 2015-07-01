@@ -33,6 +33,18 @@ public class EntFilaDeployementVersion extends AEntModelo {
 		this.fecha = fecha;
 	}
 
+	public EntVersion getVersion() {
+		return version;
+	}
+	public void setVersion(EntVersion version) {
+		this.version = version;
+	}
+	public EntFilaDeployement getFila() {
+		return fila;
+	}
+	public void setFila(EntFilaDeployement fila) {
+		this.fila = fila;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
