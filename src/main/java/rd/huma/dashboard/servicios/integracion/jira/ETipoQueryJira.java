@@ -8,7 +8,7 @@ public enum ETipoQueryJira {
 
 		@Override
 		String getURLInterno(StringBuilder url,	EntConfiguracionGeneral configuracionGeneral, String value) {
-			return url.append(configuracionGeneral.getNombreCampoJiraLineaDesarrollo()).append('=').append(value).toString() ;
+			return url.append("key").append('=').append(value).toString();
 		}
 
 
@@ -18,7 +18,7 @@ public enum ETipoQueryJira {
 
 		@Override
 		String getURLInterno(StringBuilder url,	EntConfiguracionGeneral configuracionGeneral, String value) {
-			return url.append("key").append('=').append(value).toString();
+			return url.append(configuracionGeneral.getNombreCampoJiraLineaDesarrollo()).append('~').append(value).toString() ;
 		}
 
 

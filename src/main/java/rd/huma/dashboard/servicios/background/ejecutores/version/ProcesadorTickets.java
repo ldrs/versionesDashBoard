@@ -12,6 +12,8 @@ import rd.huma.dashboard.model.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.jira.Assignee;
+import rd.huma.dashboard.model.jira.Creator;
 import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
@@ -70,9 +72,17 @@ public class ProcesadorTickets {
 	private void collectInformationTicket(EntJira jira,Issues issues){
 		Fields fields = issues.getFields();
 		ticketSysAid.add(nuevoTicketSysAid(fields.getSysAidTicket()));
-		duenos.add(fields.getAssignee().getName());
+		Assignee asignado = fields.getAssignee();
+		if (asignado!=null){
+			duenos.add(asignado.getName());
+		}
+
 		duenos.add(fields.getReporter().getName());
-		duenos.add(fields.getCreator().getName());
+		Creator creator = fields.getCreator();
+		if (creator!=null && !"pds".equals(creator.getName())){
+			duenos.add(creator.getName());
+		}
+
 		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
 	}
 
