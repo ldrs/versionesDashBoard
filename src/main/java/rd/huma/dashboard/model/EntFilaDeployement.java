@@ -23,8 +23,4 @@ public class EntFilaDeployement extends AEntModelo {
 	public void setAmbiente(EntAmbiente ambiente) {
 		this.ambiente = ambiente;
 	}
-
-
-
-
 }
