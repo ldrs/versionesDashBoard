@@ -25,7 +25,14 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	private EntFilaDeployement fila;
 
 	private LocalDateTime fecha;
+	private int prioridad;
 
+	public int getPrioridad() {
+		return prioridad;
+	}
+	public void setPrioridad(int prioridad) {
+		this.prioridad = prioridad;
+	}
 	public LocalDateTime getFecha() {
 		return fecha;
 	}

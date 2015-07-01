@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,31 +20,70 @@ import rd.huma.dashboard.model.EntFilaDeployement;
 import rd.huma.dashboard.model.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.EntServidor;
+import rd.huma.dashboard.model.EntTicketSysAid;
 import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.EntVersionDuenos;
+import rd.huma.dashboard.model.EntVersionJira;
+import rd.huma.dashboard.model.EntVersionPropiedades;
+import rd.huma.dashboard.model.EntVersionTicket;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("/filaDeploymentVersion")
 public class WSEntFilaDeployementVersion {
-	//Json a retornar:
-	//{"prioridad":1, "numero":"10.19278.7","autor":"ronny_jimenez",
-	//"dueno":"alejandra_perez", "branchOrigen":"19270.00", "fechaVersion":"17/06/2015 11:52",
-	//"controles":"block", "tickets" : ["1050"], "jiras":["SGF-1550"]},
+	@Inject
+	private @Servicio ServicioVersion servicioVersion;
 
 	@GET
 	public String aplicaciones(){
 		JsonArrayBuilder builder = createArrayBuilder();
 		getFilaDeploymentVersion().stream().forEach(f -> builder.add(createObjectBuilder()
-																				.add("prioridad", "")
+																				.add("prioridad", f.getPrioridad())
 																				.add("numero", f.getVersion().getNumero())
 																				.add("autor", f.getVersion().getAutor())
-																				.add("dueno", "")
+																				.add("dueno", consultaDuenos(f.getVersion()))
 																				.add("branchOrigen", f.getVersion().getBranchOrigen())
-																				.add("fechaVersion", f.getFecha().toString())
-																				.add("controles", "")
-																				.add("tickets", "")
-																				.add("jiras", f.getFila().getAmbiente().getAplicacion().getJiraKey())
-																	)
+																				.add("fechaVersion", f.getVersion().getMomentoCreacion().toString())
+																				.add("controles", "block")
+																				.add("tickets", consultaTickets(f.getVersion()))
+																				.add("jiras", consultaJiras(f.getVersion())))
 													);
 		return builder.build().toString();
+	}
+
+
+	private JsonArrayBuilder consultaJiras(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+	private JsonArrayBuilder consultaTickets(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+	private JsonArrayBuilder consultaDuenos(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaDuenos(version).stream().forEach(j -> {agrega(builder, j);});
+		return builder;
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionJira jira){
+		builder.add(jira.getJira().getNumero());
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionTicket jira){
+		builder.add(jira.getTicketSysAid().getNumero());
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionPropiedades jira){
+		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
+	}
+
+	private void agrega(JsonArrayBuilder builder, EntVersionDuenos jira){
+		builder.add(jira.getDueno().getUsuarioSvn());
 	}
 
 	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(){
@@ -78,6 +118,7 @@ public class WSEntFilaDeployementVersion {
 		LocalDateTime fecha = LocalDateTime.now();
 
 		EntFilaDeployementVersion filaDeployementVersion = new EntFilaDeployementVersion();
+		filaDeployementVersion.setPrioridad(0);
 		filaDeployementVersion.setFecha(fecha);
 		filaDeployementVersion.setVersion(version);
 		filaDeployementVersion.setFila(fila);
