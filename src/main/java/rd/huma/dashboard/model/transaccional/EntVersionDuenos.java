@@ -1,4 +1,4 @@
-package rd.huma.dashboard.model;
+package rd.huma.dashboard.model.transaccional;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

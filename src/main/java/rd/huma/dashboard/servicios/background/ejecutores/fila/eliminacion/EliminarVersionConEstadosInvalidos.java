@@ -5,10 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import rd.huma.dashboard.model.EEstadoDeployement;
-import rd.huma.dashboard.model.EEstadoVersion;
-import rd.huma.dashboard.model.EntFilaDeployement;
-import rd.huma.dashboard.model.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EEstadoVersion;
+import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
+import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 
 public class EliminarVersionConEstadosInvalidos {
@@ -28,7 +27,7 @@ public class EliminarVersionConEstadosInvalidos {
 	
 
 	private EntFilaDeployement procesar(ServicioFila servicio, EntFilaDeployementVersion filaVersion){
-		servicio.salirFila(filaVersion, EEstadoDeployement.CANCELADO_VERSION_NO_DISPONIBLE);
+		servicio.salirFila(filaVersion);
 		
 		return filaVersion.getFila();
 	}

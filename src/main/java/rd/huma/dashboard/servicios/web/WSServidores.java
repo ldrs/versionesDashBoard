@@ -11,7 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import rd.huma.dashboard.model.EntServidor;
+import rd.huma.dashboard.model.transaccional.EntServidor;
 @Path("/servidores")
 public class WSServidores {
 

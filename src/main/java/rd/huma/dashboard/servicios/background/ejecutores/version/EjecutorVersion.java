@@ -3,10 +3,10 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import static rd.huma.dashboard.servicios.transaccional.ServicioAplicacion.getCacheAplicacion;
 import static rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral.getCacheConfiguracionGeneral;
 import static rd.huma.dashboard.servicios.transaccional.ServicioVersion.getInstanciaTransaccional;
-import rd.huma.dashboard.model.EEstadoVersion;
-import rd.huma.dashboard.model.EntAplicacion;
-import rd.huma.dashboard.model.EntConfiguracionGeneral;
-import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.transaccional.EEstadoVersion;
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.background.Ejecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 

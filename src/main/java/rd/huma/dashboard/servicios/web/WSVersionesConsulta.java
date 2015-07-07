@@ -9,11 +9,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import rd.huma.dashboard.model.EntVersion;
-import rd.huma.dashboard.model.EntVersionDuenos;
-import rd.huma.dashboard.model.EntVersionJira;
-import rd.huma.dashboard.model.EntVersionPropiedades;
-import rd.huma.dashboard.model.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
+import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
+import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 

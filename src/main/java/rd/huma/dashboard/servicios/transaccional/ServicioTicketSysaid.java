@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.EntTicketSysAid;
+import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 
 @Stateless
 @Servicio

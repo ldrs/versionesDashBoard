@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.EntPersona;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 
 @Stateless
 @Servicio

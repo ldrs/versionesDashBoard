@@ -10,7 +10,7 @@ import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import rd.huma.dashboard.model.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
 
 @Path("/aplicaciones")
 public class WSAplicaciones {

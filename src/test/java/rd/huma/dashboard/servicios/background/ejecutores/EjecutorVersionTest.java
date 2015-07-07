@@ -3,7 +3,7 @@ package rd.huma.dashboard.servicios.background.ejecutores;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.background.ejecutores.version.EjecutorVersion;
 
 public class EjecutorVersionTest {

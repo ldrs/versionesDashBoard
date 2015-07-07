@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rd.huma.dashboard.model.EntJira;
+import rd.huma.dashboard.model.transaccional.EntJira;
 
 public class BuscadorJiraEnComentario {
 

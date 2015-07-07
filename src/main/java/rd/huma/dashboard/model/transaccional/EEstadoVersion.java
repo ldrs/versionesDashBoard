@@ -1,4 +1,4 @@
-package rd.huma.dashboard.model;
+package rd.huma.dashboard.model.transaccional;
 
 public enum EEstadoVersion {
 

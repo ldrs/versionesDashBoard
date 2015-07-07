@@ -3,8 +3,8 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import rd.huma.dashboard.model.EntAplicacion;
-import rd.huma.dashboard.model.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 
 public class BuscadorJiraPorQueryBranchTest {

@@ -5,7 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.version.EjecutorVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;

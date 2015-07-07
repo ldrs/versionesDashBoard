@@ -1,4 +1,4 @@
-package rd.huma.dashboard.model;
+package rd.huma.dashboard.model.transaccional;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name="FILA_DEPLOYEMENT_VERSION")
 @NamedQueries({
-	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDeployementVersion F join F.version V where V.estado in :est" )
+	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDeployementVersion F join F.version V where V.estado in :est" ),
+	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDeployementVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
+	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDeployementVersion F join F.version V where F = :fil and V.branch = :bra order by V.momentoCreacion"),
+	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDeployementVersion F where F.fila = :fil  order by prioridad")
+	
 })
 public class EntFilaDeployementVersion extends AEntModelo {
 

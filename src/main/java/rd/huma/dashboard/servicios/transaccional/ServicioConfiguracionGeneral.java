@@ -11,7 +11,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 
 @Stateless
 @Servicio

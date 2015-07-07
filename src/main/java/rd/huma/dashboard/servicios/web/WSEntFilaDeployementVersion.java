@@ -12,16 +12,16 @@ import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import rd.huma.dashboard.model.EntAmbiente;
-import rd.huma.dashboard.model.EntAplicacion;
-import rd.huma.dashboard.model.EntFilaDeployement;
-import rd.huma.dashboard.model.EntFilaDeployementVersion;
-import rd.huma.dashboard.model.EntServidor;
-import rd.huma.dashboard.model.EntVersion;
-import rd.huma.dashboard.model.EntVersionDuenos;
-import rd.huma.dashboard.model.EntVersionJira;
-import rd.huma.dashboard.model.EntVersionPropiedades;
-import rd.huma.dashboard.model.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.EntAmbiente;
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
+import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EntServidor;
+import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
+import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
+import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 

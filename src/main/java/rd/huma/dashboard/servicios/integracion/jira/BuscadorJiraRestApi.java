@@ -8,9 +8,9 @@ import java.util.List;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
-import rd.huma.dashboard.model.EntJira;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Jiras;
+import rd.huma.dashboard.model.transaccional.EntJira;
 
 public class BuscadorJiraRestApi {
 

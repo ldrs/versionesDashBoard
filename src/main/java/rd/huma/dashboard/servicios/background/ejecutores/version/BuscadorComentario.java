@@ -3,8 +3,8 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import rd.huma.dashboard.model.EntConfiguracionGeneral;
-import rd.huma.dashboard.model.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.util.IOUtil;
 
 class BuscadorComentario {
