@@ -9,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
 import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
+import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.EjecutorEliminadorFilas;
 
 @ApplicationScoped
 public class MonitorEjecutor {
@@ -19,6 +20,7 @@ public class MonitorEjecutor {
 	public void inicializar(){
 		scheduler = Executors.newScheduledThreadPool(50);
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy

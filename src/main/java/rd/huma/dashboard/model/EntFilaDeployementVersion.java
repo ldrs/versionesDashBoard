@@ -5,10 +5,15 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="FILA_DEPLOYEMENT_VERSION")
+@NamedQueries({
+	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDeployementVersion F join F.version V where V.estado in :est" )
+})
 public class EntFilaDeployementVersion extends AEntModelo {
 
 	/**

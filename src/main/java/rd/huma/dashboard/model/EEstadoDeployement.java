@@ -6,5 +6,5 @@ public enum EEstadoDeployement {
 	DEPLOY,
 	UNDEPLOY,
 	CANCELADO,
-	
+	CANCELADO_VERSION_NO_DISPONIBLE
 }

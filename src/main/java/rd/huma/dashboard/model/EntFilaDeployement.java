@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="FILA_DEPLOYEMENT")
-public class EntFilaDeployement extends AEntModelo {
+public class EntFilaDeployement extends AEntModelo implements Comparable<EntFilaDeployement> {
 	/**
 	 *
 	 */
@@ -22,5 +22,9 @@ public class EntFilaDeployement extends AEntModelo {
 	}
 	public void setAmbiente(EntAmbiente ambiente) {
 		this.ambiente = ambiente;
+	}
+	@Override
+	public int compareTo(EntFilaDeployement o) {
+		return ambiente.getNombre().compareTo(o.ambiente.getNombre());
 	}
 }
