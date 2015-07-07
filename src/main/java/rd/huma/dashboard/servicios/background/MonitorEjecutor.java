@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
+
 @ApplicationScoped
 public class MonitorEjecutor {
 
@@ -16,6 +18,7 @@ public class MonitorEjecutor {
 	@PostConstruct
 	public void inicializar(){
 		scheduler = Executors.newScheduledThreadPool(50);
+		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy

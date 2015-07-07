@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -27,6 +28,10 @@ public class ServicioVersion {
 
 	@Inject
 	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
+	
+	public List<EntVersion> buscaVersiones(Set<EEstadoVersion> estados){
+		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
+	}
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
 		EntVersion version = new EntVersion();
