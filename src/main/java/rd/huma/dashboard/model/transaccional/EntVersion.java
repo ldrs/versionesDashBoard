@@ -1,7 +1,7 @@
 package rd.huma.dashboard.model.transaccional;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -33,7 +33,7 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	private String comentario;
 
-	private Instant momentoCreacion = Instant.now();
+	private LocalDateTime momentoCreacion = LocalDateTime.now();
 
 	@Enumerated
 	private EEstadoVersion estado = EEstadoVersion.ESPERANDO_DATOS_INTEGRACION;
@@ -87,7 +87,7 @@ public class EntVersion extends AEntModelo implements Serializable{
 		this.svnOrigen = svnOrigen;
 	}
 
-	public Instant getMomentoCreacion() {
+	public LocalDateTime getMomentoCreacion() {
 		return momentoCreacion;
 	}
 

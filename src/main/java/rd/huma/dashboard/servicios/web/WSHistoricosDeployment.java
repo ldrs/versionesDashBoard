@@ -12,7 +12,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import rd.huma.dashboard.model.*;
 import rd.huma.dashboard.model.transaccional.EEstadoDeployement;
 import rd.huma.dashboard.model.transaccional.EntHistoricoDeployement;
 import rd.huma.dashboard.model.transaccional.EntServidor;

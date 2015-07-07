@@ -1,4 +1,4 @@
-package rd.huma.dashboard.model.servicios;
+package rd.huma.dashboard.model.fila;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 
