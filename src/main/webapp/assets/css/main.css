@@ -1557,10 +1557,19 @@ ul.link-list li:first-child {
   padding-bottom: 10px;
   padding-top: 3px;
   float: left;
-  border: 1px solid;
   padding: 10px;
   margin-top: 5px;
+  margin-left: 5px;
 }
+
+.versionRow{
+	display: inline-block;
+	width: 100%;
+	border: 1px solid;
+	  padding: 10px 0px 10px 0px;
+	    margin-bottom: 15px;
+}
+
 .server{
 	border: 1px solid #ccc;
 	width: 150px;
@@ -1608,6 +1617,14 @@ ul.link-list li:first-child {
 .aplicacion{
 	float: left;
 	margin-right: 20px;
+	padding: 0;
+}
+
+.rowFila{
+	margin-top: 0px;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
 }
 
 .headerSTitulo{
@@ -1640,4 +1657,48 @@ ul.link-list li:first-child {
 		width: 48px;
 		height: 48px;
 		float: right;  margin-right: 50px; margin-top: 15px;
+}
+
+.c1{
+	width: 150px;
+}
+
+.c2{
+	width: 10%;
+}
+.c3{
+	width: 15%;
+}
+
+.c4{
+	width: 20%;
+}
+.c5{
+	width: 25%;
+}
+
+.rowHeaderFila{
+	margin-top: 10px;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	border: 1px solid;
+	border-radius:5px;
+}
+.bottomUp{
+		background: #fff url(images/up.png) no-repeat;
+		width: 40px;
+		height: 40px;
+}
+
+.bottomDown{
+		background: #fff url(images/down.png) no-repeat;
+		width: 40px;
+		height: 40px;
+}
+
+.bottomCancelar{
+		background: #fff url(images/cancelar.png) no-repeat;
+		width: 40px;
+		height: 40px;
 }

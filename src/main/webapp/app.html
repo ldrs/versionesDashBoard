@@ -39,7 +39,7 @@
 						<div class="12u" ng-controller="appController as app" style="padding: 0 0 0 50px">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
-									<a ng-repeat="ambiente in app.ambientes | OrderBy:'orden'" href="{{ambiente.href}}" class="{{ambiente.css}}">{{ambiente.nombre}}</a>
+									<a ng-repeat="ambiente in app.ambientes" href="{{ambiente.href}}" class="{{ambiente.css}}">{{ambiente.nombre}}</a>
 								</nav>
 							</header>
 						</div>
@@ -49,29 +49,29 @@
 			<div id="footer-wrapper">
 				<div class="container">
 					<div class="row">
-						<div class="10u 12u(mobile)">
-							<h2>Fila de Espera</h2>
+			
+							<h2 style="margin-bottom: 0;">Fila de Espera</h2>
 							<div ng-controller="appController as app" style="width: 100%">
-								<div class="row">
-									<div class="2u">Numero</div>
-									<div class="2u">Autor</div>
-									<div class="2u">Dueño</div>
-									<div class="1u">Branch</div>
-									<div class="2u">Fecha</div>
-									<div class="2u">Operaciones</div>
+								<div class="row rowFila rowHeaderFila">
+									<div class="aplicacion c1" style="color: black">Numero</div>
+									<div class="aplicacion c3" style="color: black">Autor</div>
+									<div class="aplicacion c3" style="color: black">Branch</div>
+									<div class="aplicacion c2" style="color: black">Fecha</div>
+									<div class="aplicacion c4" style="color: black;float: right">Operaciones</div>
 								</div>
+								
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
-									<div class="row">
-										<div class="2u v versionNumber">{{version.numero}}</div>
-										<div class="2u v">{{version.autor}}</div>
-										<div class="2u v">{{version.dueno}}</div>
-										<div class="1u v">{{version.branchOrigen}}</div>
-										<div class="2u v">{{version.fechaVersion}}</div>
-										<div class="2u v">
+								<div class="versionRow">
+										<div class="row rowFila">
+										<div class="aplicacion v versionNumber c1">{{version.numero}}</div>
+										<div class="aplicacion v c3">{{version.autor}}</div>
+										<div class="aplicacion v c3">{{version.branchOrigen}}</div>
+										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
+										<div class="aplicacion v c4" style="float: right">
 											<div style="display: {{version.controles}}">
-													<div class="operacion" ng-click="app.upVersion()">Up</div>
-													<div class="operacion" ng-click="app.downVersion()">Down</div>
-													<div class="operacion" ng-click="app.cancelVersion()">Cancelar</div>
+													<div class="operacion bottomUp" ng-click="app.upVersion()"></div>
+													<div class="operacion bottomDown" ng-click="app.downVersion()"></div>
+													<div class="operacion bottomCancelar" ng-click="app.cancelVersion()"></div>
 											</div>
 										</div>
 									</div>
@@ -81,11 +81,13 @@
 										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 
 									</div>
+									<div class="tickets">
+										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="dueno">{{dueno}}</a></div>
+									</div>
+								</div>
 
 								</div>
 							</div>
-
-						</div>
 
 
 					</div>

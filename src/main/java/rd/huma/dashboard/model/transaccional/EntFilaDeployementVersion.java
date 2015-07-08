@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDeployementVersion F join F.version V where V.estado in :est" ),
 	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDeployementVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
-	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDeployementVersion F join F.version V where F = :fil and V.branch = :bra order by V.momentoCreacion"),
+	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDeployementVersion F join F.version V where F = :fil and V.branchOrigen = :bra order by V.momentoCreacion"),
 	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDeployementVersion F where F.fila = :fil  order by prioridad")
 	
 })
