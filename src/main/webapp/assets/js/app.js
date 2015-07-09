@@ -19,11 +19,11 @@ versionesApp.factory("Aplicaciones", function($resource) {
 });
 
 versionesApp.factory("VersionesFilas", function($resource) {
-	return $resource("/dashboard/api/filaDeploymentVersion");
+	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente");
 });
 
 versionesApp.factory("Ambientes", function($resource) {
-	return $resource("/dashboard/api/ambientes/:idAmbiente");
+	return $resource("/dashboard/api/ambientes/:idAplicacion");
 });
 
 versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,VersionesFilas) {
@@ -36,18 +36,24 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.modificado = {aplicaciones : false};
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 
-	Aplicaciones.query(function(data){
-		app.aplicaciones = data;
-	});
+
+	
+	app.actualizaFila=function(){
+		VersionesFilas.query({idAmbiente:app.ambienteId}, function(data) {
+			app.versionesFila = data;
+		});
+
+	}
 
 	app.actualizarAmbiente=function(){
-		Ambientes.query({idAmbiente:$scope.aplicacion.id}, function(data){
+		Ambientes.query({idAplicacion:$scope.aplicacion.id}, function(data){
 			app.ambientes = data;
 		
 			app.ambientes.forEach(function(o){
 				o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
 				if (! app.ambiente){
 					app.ambiente = o.nombre;
+					app.ambienteId=o.id;
 				}
 				if (o.nombre===app.ambiente){
 					o.css="current-page-item";
@@ -66,16 +72,16 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 				});
 				$scope.ambiente = s;
 				app.ambiente=s.nombre;
+				app.ambienteId=s.id;
 				s.css="current-page-item";
 			};
+			app.actualizaFila();
 		});
 	}
 
-
-
-	VersionesFilas.query(function(data) {
-		app.versionesFila = data;
-
+	Aplicaciones.query(function(data){
+		app.aplicaciones = data;
+		
 		app.aplicaciones.forEach(function(o) {
 			if (!app.aplicacion) {
 				app.aplicacion = o.nombre;
@@ -103,8 +109,11 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		};
 
 		app.actualizarAmbiente();
+		
 	});
 
+
+	
 
 	app.servidores = [
 	                  {nombre:'172.16.7.30:7101', basedatos:"MHDDEV01", version : "10.11278.7", "estado" : "no_disponible","tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"], "deploy":"block"},

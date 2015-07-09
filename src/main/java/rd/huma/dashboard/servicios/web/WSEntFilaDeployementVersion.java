@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -22,15 +23,15 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaFila;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaVersion;
 
-@Path("/filaDeploymentVersion")
+@Path("/filaDeploymentVersion/{idAmbiente}")
 public class WSEntFilaDeployementVersion {
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
 
 	@GET
-	public String aplicaciones(){
+	public String aplicaciones(@PathParam("idAmbiente") String idAmbiente ){
 		JsonArrayBuilder builder = createArrayBuilder();
-		getFilaDeploymentVersion().stream().forEach(f -> builder.add(createObjectBuilder()
+		getFilaDeploymentVersion(idAmbiente).stream().forEach(f -> builder.add(createObjectBuilder()
 																				.add("prioridad", f.getPrioridad())
 																				.add("numero", f.getVersion().getNumero())
 																				.add("autor", f.getVersion().getAutor())
@@ -48,8 +49,8 @@ public class WSEntFilaDeployementVersion {
 
 	
 
-	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(){
-		return SimulaFila.filas();
+	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
+		return SimulaFila.filas(id);
 	}
 	
 	private JsonArrayBuilder consultaJiras(EntVersion version){

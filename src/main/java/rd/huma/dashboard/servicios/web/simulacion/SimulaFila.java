@@ -2,7 +2,10 @@ package rd.huma.dashboard.servicios.web.simulacion;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -12,18 +15,20 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 
 public class SimulaFila {
 	
-	private static List<EntFilaDeployementVersion> filas = new ArrayList<>();
-	
+	private static Map<String, List<EntFilaDeployementVersion>> filas = new HashMap<>(); 
+	private static List<EntFilaDeployementVersion> tmp = new ArrayList<>();
 	static{
+		filas.put(SimulacionAmbientes.getAmbientes().get(SimulacionAplicacion.getSigef().getId()).stream().findFirst().get().getId() , tmp);
 		SimulaVersion.getVersiones().forEach(SimulaFila::nuevaFilaDeploymentVersion);
 	}
 	
-	public static List<EntFilaDeployementVersion> filas(){
-		return filas;
+	public static List<EntFilaDeployementVersion> filas(String id){
+		return filas.getOrDefault(id, Collections.emptyList());
 	}
 
 	
 	private static EntFilaDeployementVersion nuevaFilaDeploymentVersion(EntVersion version){
+		List<EntFilaDeployementVersion> f = new ArrayList<>();
 
 		EntAplicacion app = SimulacionAplicacion.getSigef();
 
@@ -43,7 +48,7 @@ public class SimulaFila {
 		filaDeployementVersion.setFecha(fecha);
 		filaDeployementVersion.setVersion(version);
 		filaDeployementVersion.setFila(fila);
-		filas.add(filaDeployementVersion);
+		tmp.add(filaDeployementVersion);
 		return filaDeployementVersion;
 	}
 }
