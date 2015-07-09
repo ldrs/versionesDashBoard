@@ -32,6 +32,10 @@ public class SimulacionAplicacion {
 	public static EntAplicacion getSigef() {
 		return sigef;
 	}
+	
+	public static EntAplicacion getEsigef() {
+		return esigef;
+	}
 	public static List<EntAplicacion> getAplicaciones() {
 		return aplicaciones;
 	}	
