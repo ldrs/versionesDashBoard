@@ -11,6 +11,7 @@ import rd.huma.dashboard.model.transaccional.EntAplicacion;
 public class SimulacionAmbientes {
 
 	private static final Map<String, List<EntAmbiente>> AMBIENTES = new HashMap<String, List<EntAmbiente>>();
+	private static  EntAmbiente desarrolloSigef;
 	
 	static{
 		EntAplicacion sigef = SimulacionAplicacion.getSigef();
@@ -19,6 +20,10 @@ public class SimulacionAmbientes {
 		EntAplicacion esigef = SimulacionAplicacion.getEsigef();
 		AMBIENTES.put(esigef.getId(), getAmbienteESigef(esigef));
 		
+	}
+	
+	public static EntAmbiente getDesarrolloSigef() {
+		return desarrolloSigef;
 	}
 	
 	public static Map<String, List<EntAmbiente>> getAmbientes() {
@@ -36,7 +41,7 @@ public class SimulacionAmbientes {
 	
 	private static List<EntAmbiente> getAmbienteSigef(EntAplicacion sigef){
 		List<EntAmbiente> ambientesSigef = new ArrayList<>();
-		ambientesSigef.add(nuevoAmbiente(sigef,"desarrollo",1));
+		ambientesSigef.add(desarrolloSigef =nuevoAmbiente(sigef,"desarrollo",1));
 		ambientesSigef.add(nuevoAmbiente(sigef,"testing",2));
 		ambientesSigef.add(nuevoAmbiente(sigef,"preproduccion",3));
 		ambientesSigef.add(nuevoAmbiente(sigef,"helpdesk",4));

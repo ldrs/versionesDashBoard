@@ -22,11 +22,15 @@ versionesApp.factory("VersionesFilas", function($resource) {
 	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente");
 });
 
+versionesApp.factory("Servidores", function($resource) {
+	return $resource("/dashboard/api/servidores/:idAmbiente");
+});
+
 versionesApp.factory("Ambientes", function($resource) {
 	return $resource("/dashboard/api/ambientes/:idAplicacion");
 });
 
-versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,VersionesFilas) {
+versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,VersionesFilas,Servidores) {
 	var tituloAplicacion = "Configuracion Aplicaciones",tituloAmbiente = "Configuracion Aplicaciones";
 	var app = this;
 
@@ -39,13 +43,30 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 
 	
 	app.actualizaFila=function(){
+		if (!app.ambienteId){
+			return;
+		}
 		VersionesFilas.query({idAmbiente:app.ambienteId}, function(data) {
 			app.versionesFila = data;
 		});
 
 	}
+	
+	app.actualizaServidores=function(){
+		if (!app.ambienteId){
+			return;
+		}
+		Servidores.query({idAmbiente:app.ambienteId}, function(data) {
+			app.servidores = data;
+		});
+		
+	}
 
 	app.actualizarAmbiente=function(){
+		if (!$scope.aplicacion.id){
+			return;
+		}
+		
 		Ambientes.query({idAplicacion:$scope.aplicacion.id}, function(data){
 			app.ambientes = data;
 		
@@ -76,6 +97,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 				s.css="current-page-item";
 			};
 			app.actualizaFila();
+			app.actualizaServidores();
 		});
 	}
 
@@ -111,20 +133,6 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		app.actualizarAmbiente();
 		
 	});
-
-
-	
-
-	app.servidores = [
-	                  {nombre:'172.16.7.30:7101', basedatos:"MHDDEV01", version : "10.11278.7", "estado" : "no_disponible","tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"], "deploy":"block"},
-	                  {nombre:'172.16.7.30:8888', basedatos:"MHDDEV02", version : "10.1128.7", "estado" : "no_disponible","tickets" : ["30"], "jiras":["SGF-151"], "display":"block"},
-	                  {nombre:'172.16.7.21:7777', basedatos:"MHDDEV03", version : "NONE", "estado" : "disponible", "deploy":"none"},
-	                  ];
-
-
-
-
-
 
 	muevePrioridad=function(v,d,limit){
 		if (v.prioridad==limit){

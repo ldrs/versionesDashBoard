@@ -19,18 +19,24 @@ public class SimulaVersion {
 
 	
 	private static List<EntVersion> versiones = new ArrayList<EntVersion>();
+	private static List<EntVersion> versionesServidores = new ArrayList<EntVersion>();
 	private static Map<EntVersion, List<EntVersionJira>> jiras = new HashMap<>();
 	private static Map<EntVersion, List<EntVersionTicket>> tickets = new HashMap<>();
 	private static Map<EntVersion, List<EntVersionDuenos>> duenos = new HashMap<>();
 	
 	static{
 		for (int i= 0;i<=new Random(1).nextInt(7);i++){
-			nuevaVersion();
+			nuevaVersion(versiones);
 		}
+		nuevaVersion(versionesServidores);
 	}
 	
 	public static List<EntVersion> getVersiones() {
 		return versiones;
+	}
+	
+	public static List<EntVersion> getVersionesServidores() {
+		return versionesServidores;
 	}
 	
 	public static Map<EntVersion, List<EntVersionJira>> getJiras() {
@@ -45,7 +51,7 @@ public class SimulaVersion {
 		return duenos;
 	}
 	
-	private static void nuevaVersion(){
+	private static void nuevaVersion(List<EntVersion> versiones){
 		EntVersion version = new EntVersion();
 		version.setNumero(UUID.randomUUID().toString());
 		version.setAutor(UUID.randomUUID().toString());

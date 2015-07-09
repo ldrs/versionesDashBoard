@@ -28,8 +28,6 @@ public class SimulaFila {
 
 	
 	private static EntFilaDeployementVersion nuevaFilaDeploymentVersion(EntVersion version){
-		List<EntFilaDeployementVersion> f = new ArrayList<>();
-
 		EntAplicacion app = SimulacionAplicacion.getSigef();
 
 		EntAmbiente ambiente = new EntAmbiente();
