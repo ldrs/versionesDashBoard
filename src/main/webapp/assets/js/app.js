@@ -11,8 +11,18 @@ function toQueryString(page){
 }
 
 
-angular.module('versionesApp', [])
-  .controller('appController', ['$scope', function($scope) {
+var versionesApp = angular.module('versionesApp',['ngResource']);
+
+
+versionesApp.factory("Aplicaciones", function($resource) {
+  return $resource("/dashboard/api/aplicaciones");
+});
+
+versionesApp.factory("VersionesFilas", function($resource) {
+  return $resource("/dashboard/api/filaDeploymentVersion");
+});
+
+versionesApp.controller('appController', function($scope,Aplicaciones,VersionesFilas) {
 	var tituloAplicacion = "Configuracion Aplicaciones",tituloAmbiente = "Configuracion Aplicaciones";
     var app = this;
 
@@ -21,13 +31,10 @@ angular.module('versionesApp', [])
     app.ambiente = queryString.ambiente;
     app.modificado = {aplicaciones : false};
     app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
-
-    app.aplicaciones = [
-                      {nombre:'sigef', css : "", "jira":"SGF", "svn":"sigef","id":"xcsdfsfsdfsd"},
-                      {nombre:'esigef', css : "", "jira":"ESG", "svn":"esigef","id":"xcsdfsfsdsdsd"}
-                      ];
-
-
+    
+    Aplicaciones.query(function(data){
+    	app.aplicaciones = data;
+    });
 
     app.ambientes = [
                       {nombre:'desarrollo', activo:false, css : "","orden" : 1},
@@ -37,11 +44,37 @@ angular.module('versionesApp', [])
                       {nombre:'produccion', activo:false, css : "","orden" : 5},
                       ];
 
-    app.versionesFila = [
-                              {"prioridad":1, "numero":"10.19278.7","autor":"ronny_jimenez","duenos":["alejandra_perez","ronny_jimenez"], "branchOrigen":"19270.00", "fechaVersion":"17/06/2015 11:52", "controles":"block", "tickets" : ["1050"], "jiras":["SGF-1550"]},
-                              {"prioridad":3, "numero":"10.13278.3","autor":"galo_escobar","duenos":["yunior_echavarriga","galo_escobar"], "branchOrigen":"17270.00", "fechaVersion":"12/05/2015 11:52", "controles":"block", "tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"]},
-                              {"prioridad":2, "numero":"10.132df8.3","autor":"eudris","duenos":["yunior_echavarriga","eudris"], "branchOrigen":"17270.00", "fechaVersion":"12/05/2015 11:52", "controles":"block", "tickets" : ["2540","3050"], "jiras":["SGF-150","SGF-1551","SGF-750"]},
-                              ];
+					                            
+           VersionesFilas.query(function(data) {
+						app.versionesFila = data;
+
+						app.aplicaciones.forEach(function(o) {
+							if (!app.aplicacion) {
+								app.aplicacion = o.nombre;
+							}
+
+							if (o.nombre === app.aplicacion) {
+								o.css = "current-page-item";
+								o.activo = true;
+								app.aplicacionSeleccionado = o;
+							}
+						});
+						
+
+					    $scope.aplicacion = app.aplicacionSeleccionado;
+					    
+					    var seleccionAplicacion = function(s){
+					    	 app.aplicacionSeleccionado = s;
+					       	 app.aplicaciones.forEach(function(o){
+					     		o.css="";
+					      		o.activo=false;
+					     	 });
+					      $scope.aplicacion = s;
+					      app.aplicacion=s.nombre;
+					      s.css="current-page-item";
+					    };
+
+					});
 
 
     app.servidores = [
@@ -51,18 +84,7 @@ angular.module('versionesApp', [])
                           ];
 
 
-
-    app.aplicaciones.forEach(function(o){
-    	if (! app.aplicacion){
-    		app.aplicacion = o.nombre;
-    	}
-
-    	if (o.nombre===app.aplicacion){
-    		o.css="current-page-item";
-    		o.activo=true;
-    		app.aplicacionSeleccionado=o;
-    	}
-    });
+   
 
      app.ambientes.forEach(function(o){
     	 o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
@@ -76,18 +98,7 @@ angular.module('versionesApp', [])
     	}
     })
 
-    $scope.aplicacion = app.aplicacionSeleccionado;
-
-     var seleccionAplicacion = function(s){
-    	 app.aplicacionSeleccionado = s;
-       	 app.aplicaciones.forEach(function(o){
-     		o.css="";
-      		o.activo=false;
-     	 });
-      $scope.aplicacion = s;
-      app.aplicacion=s.nombre;
-      s.css="current-page-item";
-    };
+   
 
     var seleccionAmbiente = function(s){
    	 app.ambienteSeleccionado = s;
@@ -99,6 +110,33 @@ angular.module('versionesApp', [])
      app.ambiente=s.nombre;
      s.css="current-page-item";
    };
+   
+    muevePrioridad=function(v,d,limit){
+   		 if (v.prioridad==limit){
+   			return;
+   		}
+   
+   		var cacheVersiones={};
+   		for (i = 0; i < app.versionesFila.length; i++) {
+   			var tmp = app.versionesFila[i];
+   			cacheVersiones[tmp.prioridad]=tmp;
+   		}
+   		v2 =cacheVersiones[v.prioridad+d];
+   		if (v2){
+			v2.prioridad=v.prioridad;
+			v.prioridad+=d;
+   		}
+   		
+    }
+   
+   
+   $scope.upVersion = function(v){
+   		muevePrioridad(v,1,1);
+   }
+   
+      $scope.downVersion = function(v){
+      	muevePrioridad(v,-1,app.versionesFila.length);
+   }
 
     $scope.adicionarAplicacion = function(){
     	 var o = {nombre:'?', css : "", "jira":"?", "svn":"?","id":"?"};
@@ -133,5 +171,5 @@ angular.module('versionesApp', [])
     	 $("#guardarAplicaciones").css("display","none");
     }
 
-  }])
+  })
   ;

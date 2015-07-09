@@ -6,6 +6,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<script src="assets/js/angular.min.js"></script>
+		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/app.js"></script>
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -69,9 +70,9 @@
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
 										<div class="aplicacion v c4" style="float: right">
 											<div style="display: {{version.controles}}">
-													<div class="operacion bottomUp" ng-click="app.upVersion()"></div>
-													<div class="operacion bottomDown" ng-click="app.downVersion()"></div>
-													<div class="operacion bottomCancelar" ng-click="app.cancelVersion()"></div>
+													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
+													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
+													<div class="operacion bottomCancelar" ng-click="cancelarVersion(version)"></div>
 											</div>
 										</div>
 									</div>
