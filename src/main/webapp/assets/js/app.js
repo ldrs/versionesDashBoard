@@ -53,12 +53,12 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 				o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
 				if (! app.ambiente){
 					app.ambiente = o.nombre;
-					app.ambienteId=o.id;
 				}
 				if (o.nombre===app.ambiente){
 					o.css="current-page-item";
 					o.activo=true;
 					o.ambienteSeleccionado=o;
+					app.ambienteId=o.id;
 				}
 			})
 			
