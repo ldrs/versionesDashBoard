@@ -23,12 +23,13 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaFila;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaVersion;
 
-@Path("/filaDeploymentVersion/{idAmbiente}")
-public class WSEntFilaDeployementVersion {
+@Path("/filaDeploymentVersion")
+public class WSFilaDeployementVersion {
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
 
 	@GET
+	@Path("/{idAmbiente}")
 	public String aplicaciones(@PathParam("idAmbiente") String idAmbiente ){
 		JsonArrayBuilder builder = createArrayBuilder();
 		getFilaDeploymentVersion(idAmbiente).stream().forEach(f -> builder.add(createObjectBuilder()

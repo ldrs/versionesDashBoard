@@ -13,7 +13,7 @@
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 	</head>
 
-    <body>
+    <body ng-controller="appController as app">
 		<div id="page-wrapper">
 			<div id="header-wrapper">
 				<div class="container">
@@ -22,7 +22,7 @@
 
 							<header id="header">
 								<h1><a href="index.html" id="logo">versiones</a></h1>
-								 <div ng-controller="appController as app">
+								 <div >
 
 									<nav id="nav">
 										<a ng-repeat="aplicacion in app.aplicaciones" href="app.html?aplicacion={{aplicacion.nombre}}" class="{{aplicacion.css}}">{{aplicacion.nombre}}</a>
@@ -37,7 +37,7 @@
 			<div id="main" style="padding-bottom: 1.2em;">
 				<div class="container">
 					<div class="row main-row">
-						<div class="12u" ng-controller="appController as app" style="padding: 0 0 0 50px">
+						<div class="12u"  style="padding: 0 0 0 50px">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
 									<a ng-repeat="ambiente in app.ambientes" href="{{ambiente.href}}" class="{{ambiente.css}}">{{ambiente.nombre}}</a>
@@ -52,7 +52,7 @@
 					<div class="row">
 			
 							<h2 style="margin-bottom: 0;">Fila de Espera</h2>
-							<div ng-controller="appController as app" style="width: 100%">
+							<div  style="width: 100%">
 								<div class="row rowFila rowHeaderFila">
 									<div class="aplicacion c1" style="color: black">Numero</div>
 									<div class="aplicacion c3" style="color: black">Autor</div>
@@ -94,7 +94,7 @@
 					</div>
 
 				</div>
-				<div class="container" ng-controller="appController as app" style="padding-top: 50px;padding-bottom: 50px">
+				<div class="container" style="padding-top: 50px;padding-bottom: 50px">
 					<h2>Servidores</h2>
 					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores">
 						<div><a href="http://{{servidor.nombre}}/{{app.aplicacion}}" target="aplicacion">{{servidor.nombre}}</a></div>
