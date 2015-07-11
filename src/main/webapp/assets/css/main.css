@@ -1,10 +1,4 @@
-@import url("http://fonts.googleapis.com/css?family=Ubuntu+Condensed");
-
-/*
-	Minimaxing by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+@import url(http://fonts.googleapis.com/css?family=Roboto&subset=latin,latin-ext);
 
 /* Reset */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
@@ -1701,4 +1695,17 @@ ul.link-list li:first-child {
 		background: #fff url(images/cancelar.png) no-repeat;
 		width: 40px;
 		height: 40px;
+}
+
+dialog {  
+    width: 500px;  
+    background:#e8e8e8;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    padding: 15px 10px 20px 20px;
+}  
+
+.eliminaFila{}
+.cierraVentana{
+	  float: right;
 }

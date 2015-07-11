@@ -152,6 +152,21 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.actualizaFila();
 		});
 	}
+	
+	$scope.cancelarVersionDialog = function(v){
+		$("#dig"+v.id).css("display","block");
+	}
+	
+	$scope.cerrarVersionDialog = function(v){
+		$("#dig"+v.id).css("display","none");
+	}
+	
+	$scope.eliminaVersion = function(v){
+		VerrsionesFila.elimina({"idFila":v.id}).$promise.then(function(data){
+			app.actualizaFila();
+		});
+		$scope.cerrarVersionDialog(v);
+	}
 
 	$scope.adicionarAplicacion = function(){
 		var o = {nombre:'?', css : "", "jira":"?", "svn":"?","id":"?"};
@@ -188,3 +203,4 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 
 })
 ;
+
