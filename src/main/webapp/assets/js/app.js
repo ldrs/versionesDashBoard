@@ -19,7 +19,11 @@ versionesApp.factory("Aplicaciones", function($resource) {
 });
 
 versionesApp.factory("VersionesFilas", function($resource) {
-	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente");
+	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente",null,{
+		'filas':{ 'method':'GET','isArray':true},
+        'sube': { 'method':'GET','url':'/dashboard/api/filasPrioridad/sube/:idFila'},
+        'baja': { 'method':'GET','url':'/dashboard/api/filasPrioridad/baja/:idFila'}
+    });
 });
 
 versionesApp.factory("Servidores", function($resource) {
@@ -46,7 +50,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		if (!app.ambienteId){
 			return;
 		}
-		VersionesFilas.query({idAmbiente:app.ambienteId}, function(data) {
+		VersionesFilas.filas({idAmbiente:app.ambienteId}, function(data) {
 			app.versionesFila = data;
 		});
 
@@ -134,31 +138,19 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		
 	});
 
-	muevePrioridad=function(v,d,limit){
-		if (v.prioridad==limit){
-			return;
-		}
 
-		var cacheVersiones={};
-		for (i = 0; i < app.versionesFila.length; i++) {
-			var tmp = app.versionesFila[i];
-			cacheVersiones[tmp.prioridad]=tmp;
-		}
-		v2 =cacheVersiones[v.prioridad+d];
-		if (v2){
-			v2.prioridad=v.prioridad;
-			v.prioridad+=d;
-		}
-
-	}
 
 
 	$scope.upVersion = function(v){
-		muevePrioridad(v,1,1);
+		VersionesFilas.sube({"idFila":v.id}).$promise.then(function(data){
+			app.actualizaFila();
+		});
 	}
 
 	$scope.downVersion = function(v){
-		muevePrioridad(v,-1,app.versionesFila.length);
+		VersionesFilas.baja({"idFila":v.id}).$promise.then(function(data){
+			app.actualizaFila();
+		});
 	}
 
 	$scope.adicionarAplicacion = function(){

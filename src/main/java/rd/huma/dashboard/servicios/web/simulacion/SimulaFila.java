@@ -42,11 +42,31 @@ public class SimulaFila {
 		LocalDateTime fecha = LocalDateTime.now();
 
 		EntFilaDeployementVersion filaDeployementVersion = new EntFilaDeployementVersion();
-		filaDeployementVersion.setPrioridad(filas.size()+1);
+		filaDeployementVersion.setPrioridad(tmp.size()+1);
 		filaDeployementVersion.setFecha(fecha);
 		filaDeployementVersion.setVersion(version);
 		filaDeployementVersion.setFila(fila);
 		tmp.add(filaDeployementVersion);
 		return filaDeployementVersion;
+	}
+
+
+	public static void subePrioridad(String id) {
+		tmp.stream().filter(f -> f.getId().equals(id)).findFirst().ifPresent(version -> findOther(version,-1));
+	}
+
+
+	public static void bajaPrioridad(String id) {
+		tmp.stream().filter(f -> f.getId().equals(id)).findFirst().ifPresent(version -> findOther(version,1));
+	}
+	
+	private static void findOther(EntFilaDeployementVersion version, int direccion){
+		tmp.stream().filter(f -> f.getPrioridad()==version.getPrioridad()+direccion).findFirst().ifPresent(vother -> intercambiaPrioridad(version,vother));
+	}
+	
+	private static void intercambiaPrioridad(EntFilaDeployementVersion v1, EntFilaDeployementVersion v2){
+		int prioridadTmp = v1.getPrioridad();
+		v1.setPrioridad(v2.getPrioridad());
+		v2.setPrioridad(prioridadTmp);
 	}
 }

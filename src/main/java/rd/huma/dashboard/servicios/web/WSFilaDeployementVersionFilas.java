@@ -23,16 +23,17 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaFila;
 import rd.huma.dashboard.servicios.web.simulacion.SimulaVersion;
 
-@Path("/filaDeploymentVersion")
-public class WSFilaDeployementVersion {
+@Path("filaDeploymentVersion")
+public class WSFilaDeployementVersionFilas {
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
 
 	@GET
-	@Path("/{idAmbiente}")
-	public String aplicaciones(@PathParam("idAmbiente") String idAmbiente ){
+	@Path("{idAmbiente}")
+	public String filas(@PathParam("idAmbiente") String idAmbiente ){
 		JsonArrayBuilder builder = createArrayBuilder();
 		getFilaDeploymentVersion(idAmbiente).stream().forEach(f -> builder.add(createObjectBuilder()
+																				.add("id", f.getId())
 																				.add("prioridad", f.getPrioridad())
 																				.add("numero", f.getVersion().getNumero())
 																				.add("autor", f.getVersion().getAutor())
@@ -46,9 +47,8 @@ public class WSFilaDeployementVersion {
 													);
 		return builder.build().toString();
 	}
-
-
 	
+
 
 	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
 		return SimulaFila.filas(id);
