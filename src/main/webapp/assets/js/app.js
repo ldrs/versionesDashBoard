@@ -22,7 +22,8 @@ versionesApp.factory("VersionesFilas", function($resource) {
 	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente",null,{
 		'filas':{ 'method':'GET','isArray':true},
         'sube': { 'method':'GET','url':'/dashboard/api/filasPrioridad/sube/:idFila'},
-        'baja': { 'method':'GET','url':'/dashboard/api/filasPrioridad/baja/:idFila'}
+        'baja': { 'method':'GET','url':'/dashboard/api/filasPrioridad/baja/:idFila'},
+        'elimina': { 'method':'GET','url':'/dashboard/api/filasPrioridad/elimina/:idFila'}
     });
 });
 
@@ -162,7 +163,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	}
 	
 	$scope.eliminaVersion = function(v){
-		VerrsionesFila.elimina({"idFila":v.id}).$promise.then(function(data){
+		VersionesFilas.elimina({"idFila":v.id}).$promise.then(function(data){
 			app.actualizaFila();
 		});
 		$scope.cerrarVersionDialog(v);

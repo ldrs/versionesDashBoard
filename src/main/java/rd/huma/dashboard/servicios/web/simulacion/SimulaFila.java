@@ -69,4 +69,9 @@ public class SimulaFila {
 		v1.setPrioridad(v2.getPrioridad());
 		v2.setPrioridad(prioridadTmp);
 	}
+
+
+	public static void elimina(String id) {
+		tmp.stream().filter(f -> f.getId().equals(id)).findFirst().ifPresent(version-> tmp.remove(version));
+	}
 }

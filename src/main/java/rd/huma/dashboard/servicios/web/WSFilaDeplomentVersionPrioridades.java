@@ -25,4 +25,12 @@ public class WSFilaDeplomentVersionPrioridades {
 		return "{}";
 	}
 	
+	@GET
+	@Path("elimina/{id}")
+	public String eliminaPrioridad(@PathParam("id") String id){
+		SimulaFila.elimina(id);
+		
+		return "{}";
+	}
+	
 }

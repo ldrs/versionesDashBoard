@@ -8,7 +8,7 @@
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/app.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Roboto&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
@@ -74,6 +74,7 @@
 													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
 													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
 													<dialog id="dig{{version.id}}">
+													<div class="bottomCancelar" style="float: left;margin-right: 20px;background-color: black;border: 1px solid black;border-radius: 30px;"></div>
 														<h3>Esta seguro que quiere eliminar de la fila la version {{version.numero}}</h3>
 														<p>Esta operacion puede ser reversada, recupuerandola de versiones historicas.</p>
 														<button class="eliminaFila" ng-click="eliminaVersion(version)">Eliminar</button>
