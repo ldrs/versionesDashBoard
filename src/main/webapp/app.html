@@ -112,7 +112,7 @@
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 						</div>
-						<div class="button" style="display: {{servidor.deploy}}">Undeploy</div>
+						<div class="button" style="display: {{servidor.deploy}}" ng-click="undeploy">Undeploy</div>
 					</div>
 				</div>
 			</div>

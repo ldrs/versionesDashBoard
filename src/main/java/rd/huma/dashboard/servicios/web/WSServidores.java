@@ -31,6 +31,7 @@ public class WSServidores {
 																				.add("estado", s.getEstadoServidor().name())
 																				.add("tickets", tickets(s.getVersionActual()))
 																				.add("jiras", jiras(s.getVersionActual()))
+																				.add("deploy", s.getVersionActual() == null ? "none":"blocked")
 														 )
 										);
 

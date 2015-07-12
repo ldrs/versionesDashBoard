@@ -28,7 +28,10 @@ versionesApp.factory("VersionesFilas", function($resource) {
 });
 
 versionesApp.factory("Servidores", function($resource) {
-	return $resource("/dashboard/api/servidores/:idAmbiente");
+	return $resource("/dashboard/api/servidores/:idAmbiente",null,{
+		'delAmbiente':{ 'method':'GET','isArray':true},
+		'undeploy':{'method':'GET','URL':'/dashboard/api/servidores/undeploy/:idServidor'}
+	});
 });
 
 versionesApp.factory("Ambientes", function($resource) {
@@ -61,7 +64,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		if (!app.ambienteId){
 			return;
 		}
-		Servidores.query({idAmbiente:app.ambienteId}, function(data) {
+		Servidores.delAmbiente({idAmbiente:app.ambienteId}, function(data) {
 			app.servidores = data;
 		});
 		
@@ -86,9 +89,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 					o.ambienteSeleccionado=o;
 					app.ambienteId=o.id;
 				}
-			})
-			
-			
+			});
 			
 			var seleccionAmbiente = function(s){
 				app.ambienteSeleccionado = s;
@@ -167,6 +168,12 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.actualizaFila();
 		});
 		$scope.cerrarVersionDialog(v);
+	}
+	
+	$scope.undeploy=function(s){
+		Servidores.undeploy({'idServidor':s.id}).$promise.then(function(data){
+			app.actualizaServidores();
+		});
 	}
 
 	$scope.adicionarAplicacion = function(){
