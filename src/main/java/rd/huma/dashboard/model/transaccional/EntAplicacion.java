@@ -27,6 +27,8 @@ public class EntAplicacion extends AEntModelo {
 
 	private int orden;
 
+	private String rutaSvnAmbiente;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -66,6 +68,14 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setNombrePropiedadesPom(String nombrePropiedadesPom) {
 		this.nombrePropiedadesPom = nombrePropiedadesPom;
+	}
+
+	public String getRutaSvnAmbiente() {
+		return rutaSvnAmbiente;
+	}
+
+	public void setRutaSvnAmbiente(String rutaSvnAmbiente) {
+		this.rutaSvnAmbiente = rutaSvnAmbiente;
 	}
 
 	@Override

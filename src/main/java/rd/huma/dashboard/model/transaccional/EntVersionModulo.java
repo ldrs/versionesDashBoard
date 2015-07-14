@@ -18,7 +18,9 @@ public class EntVersionModulo extends AEntModelo{
 	@ManyToOne
 	private EntVersion version;
 
-	private String modulo;
+	private String grupo;
+	private String artefacto;
+	private String paquete;
 
 	public EntVersion getVersion() {
 		return version;
@@ -28,11 +30,27 @@ public class EntVersionModulo extends AEntModelo{
 		this.version = version;
 	}
 
-	public String getModulo() {
-		return modulo;
+	public String getGrupo() {
+		return grupo;
 	}
 
-	public void setModulo(String modulo) {
-		this.modulo = modulo;
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
+	}
+
+	public String getArtefacto() {
+		return artefacto;
+	}
+
+	public void setArtefacto(String artefacto) {
+		this.artefacto = artefacto;
+	}
+
+	public String getPaquete() {
+		return paquete;
+	}
+
+	public void setPaquete(String paquete) {
+		this.paquete = paquete;
 	}
 }

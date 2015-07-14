@@ -35,6 +35,8 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	private String comentario;
 
+	private String rutaSvnAmbiente;
+
 	private LocalDateTime momentoCreacion = LocalDateTime.now();
 
 	@Enumerated
@@ -99,6 +101,20 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	public void setEstado(EEstadoVersion estado) {
 		this.estado = estado;
+	}
+
+
+
+	public String getRutaSvnAmbiente() {
+		return rutaSvnAmbiente;
+	}
+
+	public void setRutaSvnAmbiente(String rutaSvnAmbiente) {
+		this.rutaSvnAmbiente = rutaSvnAmbiente;
+	}
+
+	public void setMomentoCreacion(LocalDateTime momentoCreacion) {
+		this.momentoCreacion = momentoCreacion;
 	}
 
 	@Override

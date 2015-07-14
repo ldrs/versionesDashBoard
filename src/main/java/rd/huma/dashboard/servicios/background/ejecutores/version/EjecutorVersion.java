@@ -39,6 +39,8 @@ public class EjecutorVersion  extends Ejecutor{
 
 		new BuscadorPropiedades(configuracionGeneral, aplicacion, version).procesar();
 
+		new BuscadorModulos(configuracionGeneral,aplicacion, version).procesar();
+
 		servicio.actualizarEstado(EEstadoVersion.ESPERANDO_FILA,version);
 	}
 }

@@ -12,6 +12,7 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -45,6 +46,10 @@ public class ServicioVersion {
 		crearVersionDueno(autor, version);
 
 		return version;
+	}
+
+	public EntVersion merge(EntVersion versionTmp){
+		return entityManager.merge(versionTmp);
 	}
 
 	public EntVersion actualizarEstado(EEstadoVersion esperandoFila,		EntVersion versionTmp) {
@@ -83,6 +88,10 @@ public class ServicioVersion {
 		versionTicket.setValor(valor);
 		versionTicket.setVersion(version);
 		entityManager.persist(versionTicket);
+	}
+
+	public void crearVersionModulo(EntVersionModulo versionModulo) {
+		entityManager.persist(versionModulo);
 	}
 
 	public void crearVersionDueno(String persona, EntVersion version) {
@@ -131,6 +140,8 @@ public class ServicioVersion {
 		Servicio servicio = ServicioVersion.class.getAnnotation(Servicio.class);
 		return CDI.current().select(ServicioVersion.class, servicio).get();
 	}
+
+
 
 
 
