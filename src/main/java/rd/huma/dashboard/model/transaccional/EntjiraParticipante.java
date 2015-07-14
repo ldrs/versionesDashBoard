@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 
 @Entity
-public class EntjiraParticipante extends AEntModelo{
+public class EntjiraParticipante extends AEntModelo implements Comparable<EntjiraParticipante>{
 
 	/**
 	 * 
@@ -93,7 +93,9 @@ public class EntjiraParticipante extends AEntModelo{
 		return true;
 	}
 
-	
-	
-	
+	@Override
+	public int compareTo(EntjiraParticipante o) {
+		return jira.getNumero().compareTo(o.getJira().getNumero())
+			+ participante.getUsuarioSvn().compareTo(o.getParticipante().getUsuarioSvn());
+	}	
 }

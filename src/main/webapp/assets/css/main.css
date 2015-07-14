@@ -1717,6 +1717,8 @@ dialog {
     text-align: right;
     padding-right: 25px;
     padding-top: 2PX;
-    COLOR: WHITE;
 }
+.inicioSesion a{
+    COLOR: #FFF;
+	
 }
