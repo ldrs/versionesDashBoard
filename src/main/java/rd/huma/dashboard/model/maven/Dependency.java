@@ -15,6 +15,8 @@ public class Dependency {
 
 	private String classifier;
 
+	private String type;
+
 	public String getGroupId() {
 		return groupId;
 	}
@@ -45,5 +47,13 @@ public class Dependency {
 
 	public void setClassifier(String classifier) {
 		this.classifier = classifier;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
