@@ -8,13 +8,13 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.transaccional.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 
 @Servicio
 @Stateless

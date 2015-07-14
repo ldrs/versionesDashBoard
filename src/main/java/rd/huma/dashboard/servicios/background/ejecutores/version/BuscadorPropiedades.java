@@ -3,10 +3,10 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
-import rd.huma.dashboard.model.transaccional.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class BuscadorPropiedades {

@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
+
 @Entity
 @Table(name="SERVIDOR")
 public class EntServidor extends AEntModelo {

@@ -7,9 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.fila.FilaBranch;
-import rd.huma.dashboard.model.transaccional.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 
 public class EliminarVersionConBranchDuplicado {

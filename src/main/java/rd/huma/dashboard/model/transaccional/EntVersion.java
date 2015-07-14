@@ -10,6 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
+
 @Entity
 @Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
 @NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E")

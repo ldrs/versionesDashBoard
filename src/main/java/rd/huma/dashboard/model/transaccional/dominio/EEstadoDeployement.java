@@ -1,4 +1,4 @@
-package rd.huma.dashboard.model.transaccional;
+package rd.huma.dashboard.model.transaccional.dominio;
 
 public enum EEstadoDeployement {
 

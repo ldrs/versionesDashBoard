@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoDeployement;
+
 @Entity
 @Table(name="HISTORICO_DEPLOYEMENT")
 public class EntHistoricoDeployement extends AEntModelo{

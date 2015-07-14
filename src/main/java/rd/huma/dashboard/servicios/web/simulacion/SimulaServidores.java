@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rd.huma.dashboard.model.transaccional.EEstadoServidor;
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntServidor;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
 public class SimulaServidores {
 
