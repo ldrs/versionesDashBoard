@@ -1709,3 +1709,14 @@ dialog {
 .cierraVentana{
 	  float: right;
 }
+.inicioSesion{
+	 position: absolute;
+    float: right;
+    top: 0;
+    width: 100%;
+    text-align: right;
+    padding-right: 25px;
+    padding-top: 2PX;
+    COLOR: WHITE;
+}
+}
