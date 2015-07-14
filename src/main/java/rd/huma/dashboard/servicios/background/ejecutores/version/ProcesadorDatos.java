@@ -32,6 +32,8 @@ class ProcesadorDatos {
 		duenos.remove(version.getAutor());
 		duenos.stream().forEach(d -> { servicioVersion.crearVersionDueno(d, version);  }  );
 		procesadorTickets.getTicketSysAid().stream().forEach(t -> servicioVersion.crearVersionTicketSysAid(t.getNumero(), version));
+
+		procesadorTickets.getParticipantes().stream().forEach(servicioJira::salvarParticipante);
 	}
 
 	private void grabarVersionJira(EntJira jira){

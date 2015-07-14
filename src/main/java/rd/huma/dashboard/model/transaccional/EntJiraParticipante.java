@@ -5,14 +5,19 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 
 @Entity
-public class EntjiraParticipante extends AEntModelo implements Comparable<EntjiraParticipante>{
+@Table(name="JIRA_PARTICIPANTE")
+@NamedQueries({@NamedQuery(name="jiraParticipante.buscar", query="Select E from EntJiraParticipante E join E.participante P join E.jira J where P.usuarioSVN = :usr and J.numero = :numJira")})
+public class EntJiraParticipante extends AEntModelo implements Comparable<EntJiraParticipante>{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -6546012185692906820L;
 
@@ -20,8 +25,8 @@ public class EntjiraParticipante extends AEntModelo implements Comparable<Entjir
 	@JoinColumn
 	@ManyToOne
 	private EntJira jira;
-	
-	
+
+
 	@JoinColumn
 	@ManyToOne
 	private EntPersona participante;
@@ -72,10 +77,10 @@ public class EntjiraParticipante extends AEntModelo implements Comparable<Entjir
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntjiraParticipante)) {
+		if (!(obj instanceof EntJiraParticipante)) {
 			return false;
 		}
-		EntjiraParticipante other = (EntjiraParticipante) obj;
+		EntJiraParticipante other = (EntJiraParticipante) obj;
 		if (jira == null) {
 			if (other.jira != null) {
 				return false;
@@ -94,8 +99,8 @@ public class EntjiraParticipante extends AEntModelo implements Comparable<Entjir
 	}
 
 	@Override
-	public int compareTo(EntjiraParticipante o) {
+	public int compareTo(EntJiraParticipante o) {
 		return jira.getNumero().compareTo(o.getJira().getNumero())
 			+ participante.getUsuarioSvn().compareTo(o.getParticipante().getUsuarioSvn());
-	}	
+	}
 }

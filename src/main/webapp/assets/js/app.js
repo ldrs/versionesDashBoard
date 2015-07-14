@@ -42,14 +42,11 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	var tituloAplicacion = "Configuracion Aplicaciones",tituloAmbiente = "Configuracion Aplicaciones";
 	var app = this;
 
-
 	app.aplicacion = queryString.aplicacion;
 	app.ambiente = queryString.ambiente;
 	app.modificado = {aplicaciones : false};
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 
-
-	
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
 			return;
@@ -59,7 +56,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		});
 
 	}
-	
+
 	app.actualizaServidores=function(){
 		if (!app.ambienteId){
 			return;
@@ -67,17 +64,17 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		Servidores.delAmbiente({idAmbiente:app.ambienteId}, function(data) {
 			app.servidores = data;
 		});
-		
+
 	}
 
 	app.actualizarAmbiente=function(){
 		if (!$scope.aplicacion.id){
 			return;
 		}
-		
+
 		Ambientes.query({idAplicacion:$scope.aplicacion.id}, function(data){
 			app.ambientes = data;
-		
+
 			app.ambientes.forEach(function(o){
 				o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
 				if (! app.ambiente){
@@ -90,7 +87,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 					app.ambienteId=o.id;
 				}
 			});
-			
+
 			var seleccionAmbiente = function(s){
 				app.ambienteSeleccionado = s;
 				app.ambientes.forEach(function(o){
@@ -109,7 +106,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 
 	Aplicaciones.query(function(data){
 		app.aplicaciones = data;
-		
+
 		app.aplicaciones.forEach(function(o) {
 			if (!app.aplicacion) {
 				app.aplicacion = o.nombre;
@@ -137,10 +134,8 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		};
 
 		app.actualizarAmbiente();
-		
+
 	});
-
-
 
 
 	$scope.upVersion = function(v){
@@ -154,22 +149,22 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.actualizaFila();
 		});
 	}
-	
+
 	$scope.cancelarVersionDialog = function(v){
 		$("#dig"+v.id).css("display","block");
 	}
-	
+
 	$scope.cerrarVersionDialog = function(v){
 		$("#dig"+v.id).css("display","none");
 	}
-	
+
 	$scope.eliminaVersion = function(v){
 		VersionesFilas.elimina({"idFila":v.id}).$promise.then(function(data){
 			app.actualizaFila();
 		});
 		$scope.cerrarVersionDialog(v);
 	}
-	
+
 	$scope.undeploy=function(s){
 		Servidores.undeploy({'idServidor':s.id}).$promise.then(function(data){
 			app.actualizaServidores();

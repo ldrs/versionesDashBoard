@@ -14,8 +14,11 @@ import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
@@ -29,6 +32,8 @@ public class ProcesadorTickets {
 	private List<EntJira> jiras = new ArrayList<>();
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
 	private Set<String> duenos = new TreeSet<>();
+	private Set<EntJiraParticipante> participantes = new TreeSet<>();
+
 
 	private ProcesadorTickets(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion) {
 		this.configuracionGeneral = configuracionGeneral;
@@ -75,12 +80,28 @@ public class ProcesadorTickets {
 		Assignee asignado = fields.getAssignee();
 		if (asignado!=null){
 			duenos.add(asignado.getName());
+			EntJiraParticipante participante = new EntJiraParticipante();
+			participante.setJira(jira);
+			EntPersona persona =  new EntPersona();
+			persona.setCorreo(asignado.getEmailAddress());
+			persona.setUsuarioSvn(asignado.getName());
+			participante.setTipo(ETipoParticipante.DESARROLLADOR);
+			participantes.add(participante);
 		}
 
 		duenos.add(fields.getReporter().getName());
 		Creator creator = fields.getCreator();
 		if (creator!=null && !"pds".equals(creator.getName())){
 			duenos.add(creator.getName());
+
+
+			EntJiraParticipante participante = new EntJiraParticipante();
+			participante.setJira(jira);
+			EntPersona persona =  new EntPersona();
+			persona.setCorreo(creator.getEmailAddress());
+			persona.setUsuarioSvn(creator.getName());
+			participante.setTipo(ETipoParticipante.FUNCIONAL);
+			participantes.add(participante);
 		}
 
 		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
@@ -106,6 +127,10 @@ public class ProcesadorTickets {
 
 	public Set<String> getDuenos() {
 		return new HashSet<>(duenos);
+	}
+
+	public Set<EntJiraParticipante> getParticipantes() {
+		return participantes;
 	}
 
 	Set<EntTicketSysAid> getTicketSysAid() {

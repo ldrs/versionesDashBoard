@@ -28,7 +28,7 @@ public class ServicioVersion {
 
 	@Inject
 	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
-	
+
 	public List<EntVersion> buscaVersiones(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
 	}
@@ -56,15 +56,12 @@ public class ServicioVersion {
 	}
 
 
-
 	public EntVersion actualizarVersion(String idVersion, String comentario){
 		EntVersion version = entityManager.find(EntVersion.class, idVersion);
 		version.setComentario(comentario);
 		entityManager.persist(version);
 		return version;
 	}
-
-
 
 	public void crearVersionJira(EntJira jira, EntVersion version) {
 		EntVersionJira versionJira = new EntVersionJira();
