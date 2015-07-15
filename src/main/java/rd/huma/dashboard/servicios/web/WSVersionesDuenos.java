@@ -22,7 +22,7 @@ public class WSVersionesDuenos {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
 
 		servicioVersion.buscaDuenos().stream().forEach( p -> builder.add(	Json.createObjectBuilder()
-																	.add("Nombre", p.getDueno().getUsuarioSvn())
+																	.add("Nombre", p.getParticipante().getUsuarioSvn())
 																	.add("svn", p.getVersion().getNumero())
 
 																));

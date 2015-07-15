@@ -10,9 +10,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
-import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
+import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -79,11 +79,11 @@ public class WSVersionesConsulta {
 		builder.add(jira.getTicketSysAid().getNumero());
 	}
 
-	private void agrega(JsonArrayBuilder builder, EntVersionPropiedades jira){
+	private void agrega(JsonArrayBuilder builder, EntVersionPropiedad jira){
 		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
 	}
 
-	private void agrega(JsonArrayBuilder builder, EntVersionDuenos jira){
-		builder.add(jira.getDueno().getUsuarioSvn());
+	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
+		builder.add(jira.getParticipante().getUsuarioSvn());
 	}
 }

@@ -11,7 +11,7 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 
@@ -22,7 +22,7 @@ public class SimulaVersion {
 	private static List<EntVersion> versionesServidores = new ArrayList<EntVersion>();
 	private static Map<EntVersion, List<EntVersionJira>> jiras = new HashMap<>();
 	private static Map<EntVersion, List<EntVersionTicket>> tickets = new HashMap<>();
-	private static Map<EntVersion, List<EntVersionDuenos>> duenos = new HashMap<>();
+	private static Map<EntVersion, List<EntVersionParticipante>> duenos = new HashMap<>();
 	
 	static{
 		for (int i= 0;i<=new Random(1).nextInt(7);i++){
@@ -47,7 +47,7 @@ public class SimulaVersion {
 		return tickets;
 	}
 	
-	public static Map<EntVersion, List<EntVersionDuenos>> getDuenos() {
+	public static Map<EntVersion, List<EntVersionParticipante>> getDuenos() {
 		return duenos;
 	}
 	
@@ -98,11 +98,11 @@ public class SimulaVersion {
 			jira.setCorreo("depende@gmail.com");
 			
 			
-			EntVersionDuenos versionJira = new EntVersionDuenos();
-			versionJira.setDueno(jira);
+			EntVersionParticipante versionJira = new EntVersionParticipante();
+			versionJira.setParticipante(jira);
 			versionJira.setVersion(version);
 			
-			List<EntVersionDuenos> lst = duenos.get(version);
+			List<EntVersionParticipante> lst = duenos.get(version);
 			if (lst == null){
 				lst = new ArrayList<>();
 				duenos.put(version, lst);

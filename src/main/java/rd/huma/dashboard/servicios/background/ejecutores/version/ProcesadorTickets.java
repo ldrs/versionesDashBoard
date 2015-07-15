@@ -85,7 +85,7 @@ public class ProcesadorTickets {
 			EntPersona persona =  new EntPersona();
 			persona.setCorreo(asignado.getEmailAddress());
 			persona.setUsuarioSvn(asignado.getName());
-			participante.setTipo(ETipoParticipante.DESARROLLADOR);
+			participante.setTipo(ETipoParticipante.ASIGNADO);
 			participantes.add(participante);
 		}
 
@@ -100,7 +100,7 @@ public class ProcesadorTickets {
 			EntPersona persona =  new EntPersona();
 			persona.setCorreo(creator.getEmailAddress());
 			persona.setUsuarioSvn(creator.getName());
-			participante.setTipo(ETipoParticipante.FUNCIONAL);
+			participante.setTipo(ETipoParticipante.REPORTADOR);
 			participantes.add(participante);
 		}
 

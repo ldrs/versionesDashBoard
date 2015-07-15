@@ -9,8 +9,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VERSION_PROPIEDADES")
-@NamedQueries({@NamedQuery(name="buscar.versionPropiedadesPorVersion", query="select E from EntVersionPropiedades E where E.version = :ver")})
-public class EntVersionPropiedades extends AEntModelo {
+@NamedQueries({@NamedQuery(name="buscar.versionPropiedadesPorVersion", query="select E from EntVersionPropiedad E where E.version = :ver")})
+public class EntVersionPropiedad extends AEntModelo {
 
 	/**
 	 *
@@ -68,10 +68,10 @@ public class EntVersionPropiedades extends AEntModelo {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntVersionPropiedades)) {
+		if (!(obj instanceof EntVersionPropiedad)) {
 			return false;
 		}
-		EntVersionPropiedades other = (EntVersionPropiedades) obj;
+		EntVersionPropiedad other = (EntVersionPropiedad) obj;
 		if (propiedad == null) {
 			if (other.propiedad != null) {
 				return false;

@@ -11,10 +11,10 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
-import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
-import rd.huma.dashboard.model.transaccional.EntVersionPropiedades;
+import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 
@@ -84,7 +84,7 @@ public class ServicioVersion {
 	}
 
 	public void crearVersionPropiedad(String nombre, String valor, EntVersion version) {
-		EntVersionPropiedades versionTicket = new EntVersionPropiedades();
+		EntVersionPropiedad versionTicket = new EntVersionPropiedad();
 		versionTicket.setPropiedad(nombre);
 		versionTicket.setValor(valor);
 		versionTicket.setVersion(version);
@@ -96,9 +96,9 @@ public class ServicioVersion {
 	}
 
 	public void crearVersionDueno(String persona, EntVersion version) {
-		EntVersionDuenos versionDueno = new EntVersionDuenos();
+		EntVersionParticipante versionDueno = new EntVersionParticipante();
 		versionDueno.setVersion(version);
-		versionDueno.setDueno(servicioPersona.buscaOCreaPersona(persona));
+		versionDueno.setParticipante(servicioPersona.buscaOCreaPersona(persona));
 
 		entityManager.persist(versionDueno);
 	}
@@ -120,21 +120,21 @@ public class ServicioVersion {
 				.getResultList();
 	}
 
-	public List<EntVersionPropiedades> buscaPropiedades(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionPropiedadesPorVersion",EntVersionPropiedades.class)
+	public List<EntVersionPropiedad> buscaPropiedades(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionPropiedadesPorVersion",EntVersionPropiedad.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}
 
-	public List<EntVersionDuenos> buscaDuenos(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionDuenosPorVersion",EntVersionDuenos.class)
+	public List<EntVersionParticipante> buscaDuenos(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionDuenosPorVersion",EntVersionParticipante.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}
 
 
-	public List<EntVersionDuenos> buscaDuenos(){
-		return entityManager.createNamedQuery("buscar.versionDuenos",EntVersionDuenos.class).getResultList();
+	public List<EntVersionParticipante> buscaDuenos(){
+		return entityManager.createNamedQuery("buscar.versionDuenos",EntVersionParticipante.class).getResultList();
 	}
 
 	public static ServicioVersion getInstanciaTransaccional(){

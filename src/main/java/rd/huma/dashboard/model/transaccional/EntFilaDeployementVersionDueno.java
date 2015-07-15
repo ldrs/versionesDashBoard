@@ -3,41 +3,31 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "VERSION_DUENOS")
-@NamedQueries(
-		{
-			@NamedQuery(name="buscar.versionDuenosPorVersion", query="select E from EntVersionDuenos E where E.version = :ver"),
-			@NamedQuery(name="buscar.versionDuenos", query="select E from EntVersionDuenos E order by E.version.momentoCreacion desc")
-
-		}
-
-		)
-public class EntVersionDuenos extends AEntModelo {
+@Table(name="FILA_DEPLOYEMENT_VERSION_DUENO")
+public class EntFilaDeployementVersionDueno extends AEntModelo {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = -1463334352869305962L;
+	private static final long serialVersionUID = 5239345670233534356L;
+
 
 	@JoinColumn
 	@ManyToOne
-	private EntVersion version;
-
+	private EntFilaDeployementVersion version;
 
 	@JoinColumn
 	@ManyToOne
 	private EntPersona dueno;
 
-	public EntVersion getVersion() {
+	public EntFilaDeployementVersion getVersion() {
 		return version;
 	}
 
-	public void setVersion(EntVersion version) {
+	public void setVersion(EntFilaDeployementVersion version) {
 		this.version = version;
 	}
 
@@ -66,10 +56,10 @@ public class EntVersionDuenos extends AEntModelo {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntVersionDuenos)) {
+		if (!(obj instanceof EntFilaDeployementVersionDueno)) {
 			return false;
 		}
-		EntVersionDuenos other = (EntVersionDuenos) obj;
+		EntFilaDeployementVersionDueno other = (EntFilaDeployementVersionDueno) obj;
 		if (dueno == null) {
 			if (other.dueno != null) {
 				return false;
@@ -86,7 +76,4 @@ public class EntVersionDuenos extends AEntModelo {
 		}
 		return true;
 	}
-
-
-
 }
