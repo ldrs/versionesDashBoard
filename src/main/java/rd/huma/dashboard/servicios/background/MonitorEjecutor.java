@@ -10,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.EjecutorEliminadorFilas;
+import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 
 @ApplicationScoped
 public class MonitorEjecutor {
@@ -21,6 +22,7 @@ public class MonitorEjecutor {
 		scheduler = Executors.newScheduledThreadPool(50);
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
 	}
 
 	@PreDestroy
