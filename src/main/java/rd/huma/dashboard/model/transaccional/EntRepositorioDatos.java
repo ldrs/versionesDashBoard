@@ -3,10 +3,14 @@ package rd.huma.dashboard.model.transaccional;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="REPOSITORIO_DATOS")
+@NamedQueries({@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.schema = :sc and E.servicio = :serv")})
+
 public class EntRepositorioDatos extends AEntModelo {
 
 	/**
