@@ -8,6 +8,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 
 import rd.huma.dashboard.model.maven.Project;
+import rd.huma.dashboard.model.transaccional.Artefacto;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -42,9 +43,11 @@ public class BuscadorModulos {
 		}
 		EntVersionModulo versionModulo = new EntVersionModulo();
 		versionModulo.setVersion(version);
-		versionModulo.setArtefacto(project.getArtifactId());
-		versionModulo.setGrupo(project.getGroupId() == null ? project.getParent().getGroupId() : project.getGroupId());
-		versionModulo.setPaquete(project.getPackaging() == null ? "jar" : project.getPackaging());
+		 Artefacto artefacto =  new Artefacto();
+		 artefacto.setArtefacto(project.getArtifactId());
+		 artefacto.setGrupo(project.getGroupId() == null ? project.getParent().getGroupId() : project.getGroupId());
+		 artefacto.setPaquete(project.getPackaging() == null ? "jar" : project.getPackaging());
+		 versionModulo.setArtefacto(artefacto);
 		modulos.add(versionModulo);
 
 		if (root){

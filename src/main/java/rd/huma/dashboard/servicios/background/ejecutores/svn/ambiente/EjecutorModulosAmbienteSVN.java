@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVN;
 import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.integracion.svn.ambiente.ServicioAmbienteSvnBuscaModulos;
 import rd.huma.dashboard.servicios.transaccional.ServicioModuloAmbienteSVN;
 
 public class EjecutorModulosAmbienteSVN extends Ejecutor {
@@ -26,6 +27,6 @@ public class EjecutorModulosAmbienteSVN extends Ejecutor {
 	}
 
 	private void procesar(EntAmbienteSVN ambienteSVN){
-
+		new ServicioAmbienteSvnBuscaModulos(ambienteSVN).procesar().forEach(servicio::buscarCrear);
 	}
 }

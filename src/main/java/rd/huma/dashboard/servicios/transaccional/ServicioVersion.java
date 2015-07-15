@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionDuenos;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
@@ -139,6 +140,18 @@ public class ServicioVersion {
 	public static ServicioVersion getInstanciaTransaccional(){
 		Servicio servicio = ServicioVersion.class.getAnnotation(Servicio.class);
 		return CDI.current().select(ServicioVersion.class, servicio).get();
+	}
+
+	public List<EntVersionModulo> buscaModulos(EntVersion version) {
+		return entityManager.createNamedQuery("buscar.versionModulo",EntVersionModulo.class).setParameter("v", version).getResultList();
+		
+	}
+
+	public void crearAlerta(EntVersionAlerta alerta) {
+		if (alerta == null){
+			return;
+		}
+		entityManager.persist(alerta);
 	}
 
 

@@ -14,8 +14,9 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 
 @Entity
 @Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
-@NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E")
-				 , @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est")
+@NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E"),
+				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
+				  
 				 }
 				)
 public class EntVersion extends AEntModelo implements Serializable{

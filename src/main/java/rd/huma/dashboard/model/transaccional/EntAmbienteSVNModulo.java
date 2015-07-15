@@ -1,13 +1,22 @@
 package rd.huma.dashboard.model.transaccional;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "AMBIENTE_SVN_MODULO")
-public class EntAmbienteSVNModulo extends AEntModelo {
+@NamedQueries({
+	@NamedQuery(name="ambienteSvnModulo.buscar", query = "SELECT E from EntAmbienteSVNModulo E where E.ambienteSVN = :amb and E.artefacto.grupo = :grp and E.artefacto.artefacto = :art and E.artefacto.paquete = :paq and E.artefacto.clasificador is null"),
+	@NamedQuery(name="ambienteSvnModulo.buscarConClaficador", query = "SELECT E from EntAmbienteSVNModulo E where E.ambienteSVN = :amb and E.artefacto.grupo = :grp and E.artefacto.artefacto = :art and E.artefacto.paquete = :paq and E.artefacto.clasificador = : claf"),
+	@NamedQuery(name="ambienteSvnModulo.buscarRuta", query = "SELECT E from EntAmbienteSVNModulo E JOIN E.ambienteSVN A where A.rutaSvnAmbiente  = :rut")
+	
+				})
+public class EntAmbienteSVNModulo extends AEntModelo  {
 
 	/**
 	 *
@@ -18,10 +27,8 @@ public class EntAmbienteSVNModulo extends AEntModelo {
 	@ManyToOne
 	private EntAmbienteSVN ambienteSVN;
 
-	private String grupo;
-	private String artefacto;
-	private String paquete;
-	private String clasificador;
+	@Embedded
+	private Artefacto artefacto;
 
 	public EntAmbienteSVN getAmbienteSVN() {
 		return ambienteSVN;
@@ -31,40 +38,15 @@ public class EntAmbienteSVNModulo extends AEntModelo {
 		this.ambienteSVN = ambienteSVN;
 	}
 
-	public String getGrupo() {
-		return grupo;
-	}
-
-	public void setGrupo(String grupo) {
-		this.grupo = grupo;
-	}
-
-	public String getArtefacto() {
+	public Artefacto getArtefacto() {
 		return artefacto;
 	}
 
-	public void setArtefacto(String artefacto) {
+	public void setArtefacto(Artefacto artefacto) {
 		this.artefacto = artefacto;
 	}
 
-	public String getPaquete() {
-		return paquete;
-	}
+	
 
-	public void setPaquete(String paquete) {
-		this.paquete = paquete;
-	}
 
-	public String getClasificador() {
-		return clasificador;
-	}
-
-	public void setClasificador(String clasificador) {
-		this.clasificador = clasificador;
-	}
-
-	@Override
-	public String toString() {
-		return new StringBuilder(350).append(grupo).append(':').append(artefacto).append(clasificador == null ? "": ':'+clasificador).append(paquete == null ? "" : ':'+paquete).toString();
-	}
 }

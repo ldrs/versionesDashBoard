@@ -1,12 +1,15 @@
 package rd.huma.dashboard.model.transaccional;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="VERSION_MODULO")
+@NamedQuery(name="buscar.versionModulo",query="SELECT E from EntVersionModulo E where E.version in :e")
 public class EntVersionModulo extends AEntModelo{
 
 	/**
@@ -17,10 +20,9 @@ public class EntVersionModulo extends AEntModelo{
 	@JoinColumn
 	@ManyToOne
 	private EntVersion version;
-
-	private String grupo;
-	private String artefacto;
-	private String paquete;
+	
+	@Embedded
+	private Artefacto artefacto;
 
 	public EntVersion getVersion() {
 		return version;
@@ -30,27 +32,12 @@ public class EntVersionModulo extends AEntModelo{
 		this.version = version;
 	}
 
-	public String getGrupo() {
-		return grupo;
-	}
-
-	public void setGrupo(String grupo) {
-		this.grupo = grupo;
-	}
-
-	public String getArtefacto() {
+	public Artefacto getArtefacto() {
 		return artefacto;
 	}
 
-	public void setArtefacto(String artefacto) {
+	public void setArtefacto(Artefacto artefacto) {
 		this.artefacto = artefacto;
 	}
-
-	public String getPaquete() {
-		return paquete;
-	}
-
-	public void setPaquete(String paquete) {
-		this.paquete = paquete;
-	}
+	
 }

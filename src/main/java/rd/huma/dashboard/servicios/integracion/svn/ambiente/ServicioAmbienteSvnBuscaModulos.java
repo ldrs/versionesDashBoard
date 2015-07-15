@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import rd.huma.dashboard.model.maven.Dependency;
 import rd.huma.dashboard.model.maven.Project;
+import rd.huma.dashboard.model.transaccional.Artefacto;
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVN;
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVNModulo;
 
@@ -31,9 +32,12 @@ public class ServicioAmbienteSvnBuscaModulos {
 
 				EntAmbienteSVNModulo ambienteSVNModulo = new EntAmbienteSVNModulo();
 				ambienteSVNModulo.setAmbienteSVN(ambienteSVN);
-				ambienteSVNModulo.setArtefacto(dependencia.getArtifactId());
-				ambienteSVNModulo.setGrupo(dependencia.getGroupId());
-				ambienteSVNModulo.setPaquete(dependencia.getType());
+				Artefacto artefacto = new Artefacto();
+				
+				artefacto.setArtefacto(dependencia.getArtifactId());
+				artefacto.setGrupo(dependencia.getGroupId());
+				artefacto.setPaquete(dependencia.getType());
+				ambienteSVNModulo.setArtefacto(artefacto);
 				modulos.add(ambienteSVNModulo);
 			}
 
