@@ -33,7 +33,10 @@ public class EntServidor extends AEntModelo {
 	private String usuario;
 	private String password;
 
-	private String baseDatos;
+
+	@JoinColumn
+	@ManyToOne
+	private EntRepositorioDatos baseDatos;
 
 	//Estados
 	@Enumerated(EnumType.STRING)
@@ -87,11 +90,10 @@ public class EntServidor extends AEntModelo {
 	public void setPassword(String password) {
 		this.password =  new String(Base64.getEncoder().encode((getId()+password).getBytes()));
 	}
-
-	public String getBaseDatos() {
+	public EntRepositorioDatos getBaseDatos() {
 		return baseDatos;
 	}
-	public void setBaseDatos(String baseDatos) {
+	public void setBaseDatos(EntRepositorioDatos baseDatos) {
 		this.baseDatos = baseDatos;
 	}
 	@Override

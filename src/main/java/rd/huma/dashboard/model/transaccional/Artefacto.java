@@ -61,4 +61,60 @@ public class Artefacto implements Comparable<Artefacto> {
 	public String toString() {
 		return new StringBuilder(350).append(grupo).append(':').append(artefacto).append(clasificador == null ? "": ':'+clasificador).append(paquete == null ? "" : ':'+paquete).toString();
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((artefacto == null) ? 0 : artefacto.hashCode());
+		result = prime * result
+				+ ((clasificador == null) ? 0 : clasificador.hashCode());
+		result = prime * result + ((grupo == null) ? 0 : grupo.hashCode());
+		result = prime * result + ((paquete == null) ? 0 : paquete.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Artefacto)) {
+			return false;
+		}
+		Artefacto other = (Artefacto) obj;
+		if (artefacto == null) {
+			if (other.artefacto != null) {
+				return false;
+			}
+		} else if (!artefacto.equals(other.artefacto)) {
+			return false;
+		}
+		if (clasificador == null) {
+			if (other.clasificador != null) {
+				return false;
+			}
+		} else if (!clasificador.equals(other.clasificador)) {
+			return false;
+		}
+		if (grupo == null) {
+			if (other.grupo != null) {
+				return false;
+			}
+		} else if (!grupo.equals(other.grupo)) {
+			return false;
+		}
+		if (paquete == null) {
+			if (other.paquete != null) {
+				return false;
+			}
+		} else if (!paquete.equals(other.paquete)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

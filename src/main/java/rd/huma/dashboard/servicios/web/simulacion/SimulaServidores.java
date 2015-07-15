@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
@@ -31,10 +32,14 @@ public class SimulaServidores {
 	}
 
 	private static EntServidor nuevoServidor(String nombre, EntAmbiente ambiente, String baseDatos,boolean conVersion){
+		EntRepositorioDatos datos = new EntRepositorioDatos();
+		datos.setSchema("SIGEF_PRD");
+		datos.setServicio(baseDatos);
+		
 		EntServidor servidor = new EntServidor();
 		servidor.setNombre(nombre);
 		servidor.setAmbiente(ambiente);
-		servidor.setBaseDatos(baseDatos);
+		servidor.setBaseDatos(datos);
 		servidor.setEstadoServidor(conVersion?EEstadoServidor.OCUPADO:EEstadoServidor.LIBRE);
 		if (conVersion){
 			servidor.setVersionActual(SimulaVersion.getVersionesServidores().stream().findFirst().get());
