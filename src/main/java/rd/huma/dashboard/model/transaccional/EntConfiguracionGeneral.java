@@ -37,6 +37,10 @@ public class EntConfiguracionGeneral extends AEntModelo {
 
 	private String nombreCampoSysAid = "customfield_10902";
 
+	private String nombreActiveDirectory = "sigefint.gov.do:389";
+
+	private String domainBaseActiveDirecty = "DC=sigefint,DC=gov,DC=do";
+
 	public String getRutaJira() {
 		return rutaJira;
 	}
@@ -245,7 +249,16 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	public void setNombreCampoSysAid(String nombreCampoSysAid) {
 		this.nombreCampoSysAid = nombreCampoSysAid;
 	}
-
-
-
+	public String getNombreActiveDirectory() {
+		return nombreActiveDirectory;
+	}
+	public void setNombreActiveDirectory(String nombreActiveDirectory) {
+		this.nombreActiveDirectory = nombreActiveDirectory;
+	}
+	public String getDomainBaseActiveDirecty() {
+		return domainBaseActiveDirecty;
+	}
+	public void setDomainBaseActiveDirecty(String domainBaseActiveDirecty) {
+		this.domainBaseActiveDirecty = domainBaseActiveDirecty;
+	}
 }
