@@ -9,7 +9,9 @@ import javax.persistence.Table;
 @Table(name="Persona")
 @NamedQueries({
 					@NamedQuery(name="buscaPersonaSVN", query="SELECT E from EntPersona E where E.usuarioSvn = :usrSVN"),
-					@NamedQuery(name="buscaPersonas", query="SELECT E from EntPersona E")
+					@NamedQuery(name="buscaPersonas", query="SELECT E from EntPersona E"),
+					@NamedQuery(name="buscaPersonaCorreo", query="SELECT E from EntPersona E where E.correo = :mail")
+
 				}
 			  )
 public class EntPersona  extends AEntModelo implements Comparable<EntPersona> {

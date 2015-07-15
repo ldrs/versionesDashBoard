@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -26,16 +27,25 @@ public class ServicioPersona {
 			.orElse(creaPersona(usuarioSVN));
 	}
 
+	public Optional<EntPersona> buscaPorCorreo(String correo){
+		return entityManager.createNamedQuery("buscaPersonaCorreo", EntPersona.class)
+			.setParameter("mail", correo).getResultList()
+			.stream().findFirst();
+	}
+
 	private EntPersona creaPersona(String usuarioSVN) {
 		String correo =	usuarioSVN.replace('_', '.');
 
 		EntPersona persona = new EntPersona();
 		persona.setUsuarioSvn(usuarioSVN);
 		persona.setCorreo(correo+"@sigef.gov.do");
-		persona.setNombre(usuarioSVN.replace('_', ' '));
 
 		entityManager.persist(persona);
 
 		return persona;
+	}
+
+	public EntPersona actualiza(EntPersona persona) {
+		return entityManager.merge(persona);
 	}
 }
