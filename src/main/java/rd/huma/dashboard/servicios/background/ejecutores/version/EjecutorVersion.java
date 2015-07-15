@@ -8,6 +8,7 @@ import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorVersion  extends Ejecutor{
@@ -40,9 +41,11 @@ public class EjecutorVersion  extends Ejecutor{
 		new BuscadorPropiedades(configuracionGeneral, aplicacion, version).procesar();
 
 		new BuscadorModulos(configuracionGeneral,aplicacion, version).procesar();
-		
+
 		new ComparadorModulos(version).procesar();
 
 		servicio.actualizarEstado(EEstadoVersion.ESPERANDO_FILA,version);
+
+		servicio.gestionarFila(version);
 	}
 }

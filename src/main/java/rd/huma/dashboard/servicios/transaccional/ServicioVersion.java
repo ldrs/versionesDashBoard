@@ -17,6 +17,8 @@ import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
+import rd.huma.dashboard.servicios.background.MonitorEjecutor;
+import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.EjecutorSeleccionFila;
 
 @Servicio
 @Stateless
@@ -30,6 +32,9 @@ public class ServicioVersion {
 
 	@Inject
 	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
+
+	@Inject
+	private MonitorEjecutor monitorEjecutor;
 
 	public List<EntVersion> buscaVersiones(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
@@ -144,7 +149,7 @@ public class ServicioVersion {
 
 	public List<EntVersionModulo> buscaModulos(EntVersion version) {
 		return entityManager.createNamedQuery("buscar.versionModulo",EntVersionModulo.class).setParameter("v", version).getResultList();
-		
+
 	}
 
 	public void crearAlerta(EntVersionAlerta alerta) {
@@ -152,6 +157,11 @@ public class ServicioVersion {
 			return;
 		}
 		entityManager.persist(alerta);
+	}
+
+	public void gestionarFila(EntVersion version) {
+		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(version));
+
 	}
 
 
