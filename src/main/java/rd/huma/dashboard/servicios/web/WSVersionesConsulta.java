@@ -67,7 +67,7 @@ public class WSVersionesConsulta {
 
 	private JsonArrayBuilder consultaDuenos(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaDuenos(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaParticipantes(version).stream().forEach(j -> {agrega(builder, j);});
 		return builder;
 	}
 

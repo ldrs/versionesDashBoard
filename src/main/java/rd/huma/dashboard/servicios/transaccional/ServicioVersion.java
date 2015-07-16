@@ -131,8 +131,8 @@ public class ServicioVersion {
 				.getResultList();
 	}
 
-	public List<EntVersionParticipante> buscaDuenos(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionDuenosPorVersion",EntVersionParticipante.class)
+	public List<EntVersionParticipante> buscaParticipantes(EntVersion version){
+		return entityManager.createNamedQuery("buscar.versionParticipantesPorVersion",EntVersionParticipante.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}

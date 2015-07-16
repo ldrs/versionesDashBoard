@@ -24,13 +24,9 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 	@ManyToOne
 	private EntAmbiente ambiente;
 
-	private boolean duenosJiras;
-
-	private boolean duenosTickets;
-
 	private boolean pideAutorizacion;
 
-//	private boolean
+	private String grupoDuenos;
 
 	private String estadosJiras;
 
@@ -41,18 +37,6 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 		this.ambiente = ambiente;
 	}
 
-	public boolean isDuenosJiras() {
-		return duenosJiras;
-	}
-	public void setDuenosJiras(boolean duenosJiras) {
-		this.duenosJiras = duenosJiras;
-	}
-	public boolean isDuenosTickets() {
-		return duenosTickets;
-	}
-	public void setDuenosTickets(boolean duenosTickets) {
-		this.duenosTickets = duenosTickets;
-	}
 	public boolean isPideAutorizacion() {
 		return pideAutorizacion;
 	}
@@ -67,6 +51,12 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 		this.estadosJiras = estadosJiras;
 	}
 
+	public String getGrupoDuenos() {
+		return grupoDuenos;
+	}
+	public void setGrupoDuenos(String grupoDuenos) {
+		this.grupoDuenos = grupoDuenos;
+	}
 	@Override
 	public int compareTo(EntFilaDeployement o) {
 		return ambiente.getNombre().compareTo(o.ambiente.getNombre());

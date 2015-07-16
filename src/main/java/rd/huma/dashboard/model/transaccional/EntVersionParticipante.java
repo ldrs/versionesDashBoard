@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name = "VERSION_PARTICIPANTES")
 @NamedQueries(
 		{
-			@NamedQuery(name="buscar.versionDuenosPorVersion", query="select E from EntVersionParticipante E where E.version = :ver"),
+			@NamedQuery(name="buscar.versionParticipantesPorVersion", query="select E from EntVersionParticipante E where E.version = :ver"),
 			@NamedQuery(name="buscar.versionDuenos", query="select E from EntVersionParticipante E order by E.version.momentoCreacion desc")
 
 		}
