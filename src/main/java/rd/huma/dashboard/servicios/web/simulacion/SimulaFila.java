@@ -8,37 +8,40 @@ import java.util.List;
 import java.util.Map;
 
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
+import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 
 public class SimulaFila {
-	
-	private static Map<String, List<EntFilaDeployementVersion>> filas = new HashMap<>(); 
+
+	private static Map<String, List<EntFilaDeployementVersion>> filas = new HashMap<>();
 	private static List<EntFilaDeployementVersion> tmp = new ArrayList<>();
 	static{
 		filas.put(SimulacionAmbientes.getAmbientes().get(SimulacionAplicacion.getSigef().getId()).stream().findFirst().get().getId() , tmp);
 		SimulaVersion.getVersiones().forEach(SimulaFila::nuevaFilaDeploymentVersion);
 	}
-	
+
 	public static List<EntFilaDeployementVersion> filas(String id){
 		return filas.getOrDefault(id, Collections.emptyList());
 	}
 
-	
+
 	private static EntFilaDeployementVersion nuevaFilaDeploymentVersion(EntVersion version){
 		EntAplicacion app = SimulacionAplicacion.getSigef();
-
 		EntAmbiente ambiente = new EntAmbiente();
-		ambiente.setAplicacion(app);
-		ambiente.setJobJenkinsDeployements("http://localhost:8080");
 		ambiente.setNombre("Desarrollo");
 		ambiente.setOrden(1);
 
+		EntAmbienteAplicacion ambienteAplicacion = new EntAmbienteAplicacion();
+		ambienteAplicacion.setAplicacion(app);
+		ambienteAplicacion.setJobJenkinsDeployements("http://localhost:8080");
+		ambienteAplicacion.setAmbiente(ambiente);
+
 		EntFilaDeployement fila = new EntFilaDeployement();
-		fila.setAmbiente(ambiente);
-		
+		fila.setAmbiente(ambienteAplicacion);
+
 		LocalDateTime fecha = LocalDateTime.now();
 
 		EntFilaDeployementVersion filaDeployementVersion = new EntFilaDeployementVersion();
@@ -59,11 +62,11 @@ public class SimulaFila {
 	public static void bajaPrioridad(String id) {
 		tmp.stream().filter(f -> f.getId().equals(id)).findFirst().ifPresent(version -> findOther(version,1));
 	}
-	
+
 	private static void findOther(EntFilaDeployementVersion version, int direccion){
 		tmp.stream().filter(f -> f.getPrioridad()==version.getPrioridad()+direccion).findFirst().ifPresent(vother -> intercambiaPrioridad(version,vother));
 	}
-	
+
 	private static void intercambiaPrioridad(EntFilaDeployementVersion v1, EntFilaDeployementVersion v2){
 		int prioridadTmp = v1.getPrioridad();
 		v1.setPrioridad(v2.getPrioridad());

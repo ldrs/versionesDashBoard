@@ -22,7 +22,7 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 
 	@JoinColumn
 	@ManyToOne
-	private EntAmbiente ambiente;
+	private EntAmbienteAplicacion ambiente;
 
 	private boolean pideAutorizacion;
 
@@ -30,10 +30,10 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 
 	private String estadosJiras;
 
-	public EntAmbiente getAmbiente() {
+	public EntAmbienteAplicacion getAmbiente() {
 		return ambiente;
 	}
-	public void setAmbiente(EntAmbiente ambiente) {
+	public void setAmbiente(EntAmbienteAplicacion ambiente) {
 		this.ambiente = ambiente;
 	}
 
@@ -59,6 +59,6 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 	}
 	@Override
 	public int compareTo(EntFilaDeployement o) {
-		return ambiente.getNombre().compareTo(o.ambiente.getNombre());
+		return ambiente.compareTo(o.ambiente);
 	}
 }

@@ -25,7 +25,7 @@ public class EntServidor extends AEntModelo {
 
 	@JoinColumn
 	@ManyToOne
-	private EntAmbiente ambiente;
+	private EntAmbienteAplicacion ambiente;
 
 	//Configuraciones
 	private String rutaEntrada;
@@ -53,10 +53,10 @@ public class EntServidor extends AEntModelo {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public EntAmbiente getAmbiente() {
+	public EntAmbienteAplicacion getAmbiente() {
 		return ambiente;
 	}
-	public void setAmbiente(EntAmbiente ambiente) {
+	public void setAmbiente(EntAmbienteAplicacion ambiente) {
 		this.ambiente = ambiente;
 	}
 	public String getRutaEntrada() {

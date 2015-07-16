@@ -11,7 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import rd.huma.dashboard.model.transaccional.EntAmbiente;
+import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.servicios.web.simulacion.SimulacionAmbientes;
 
 @Path("/ambientes/{aplicacion}")
@@ -21,17 +21,17 @@ public class WSAmbientes {
 	public String ambientes(@PathParam("aplicacion") String aplicacion){
 		JsonArrayBuilder builder = createArrayBuilder();
 		getAmbientes(aplicacion).stream().forEach(s -> builder.add(createObjectBuilder()
-																				.add("nombre", s.getNombre())
+																				.add("nombre", s.getAmbiente().getNombre())
 																				.add("css", "")
 																				.add("id",s.getId())
-																				.add("orden",s.getOrden())
+																				.add("orden",s.getAmbiente().getOrden())
 														 )
 										);
 
 		return builder.build().toString();
 	}
 
-	private List<EntAmbiente> getAmbientes(String id){
+	private List<EntAmbienteAplicacion> getAmbientes(String id){
 		return SimulacionAmbientes.getAmbientes().getOrDefault(id, Collections.emptyList());
 	}
 }

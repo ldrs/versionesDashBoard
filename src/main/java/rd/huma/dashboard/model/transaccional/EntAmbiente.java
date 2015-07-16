@@ -1,28 +1,19 @@
 package rd.huma.dashboard.model.transaccional;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="AMBIENTE")
-public class EntAmbiente extends AEntModelo{
+public class EntAmbiente extends AEntModelo implements Comparable<EntAmbiente>{
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 6521232680596057448L;
+	private static final long serialVersionUID = -1024459181922006312L;
 
 
 	private String nombre;
-
-
-	private String jobJenkinsDeployements;
-
-	@JoinColumn
-	@ManyToOne
-	private EntAplicacion aplicacion;
 
 	private int orden;
 
@@ -33,15 +24,6 @@ public class EntAmbiente extends AEntModelo{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public EntAplicacion getAplicacion() {
-		return aplicacion;
-	}
-
-	public void setAplicacion(EntAplicacion aplicacion) {
-		this.aplicacion = aplicacion;
-	}
-
 	public int getOrden() {
 		return orden;
 	}
@@ -50,24 +32,10 @@ public class EntAmbiente extends AEntModelo{
 		this.orden = orden;
 	}
 
-	public String getJobJenkinsDeployements() {
-		return jobJenkinsDeployements;
-	}
-
-	public void setJobJenkinsDeployements(String jobJenkinsDeployements) {
-		this.jobJenkinsDeployements = jobJenkinsDeployements;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((aplicacion == null) ? 0 : aplicacion.hashCode());
-		result = prime
-				* result
-				+ ((jobJenkinsDeployements == null) ? 0
-						: jobJenkinsDeployements.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + orden;
 		return result;
@@ -85,20 +53,6 @@ public class EntAmbiente extends AEntModelo{
 			return false;
 		}
 		EntAmbiente other = (EntAmbiente) obj;
-		if (aplicacion == null) {
-			if (other.aplicacion != null) {
-				return false;
-			}
-		} else if (!aplicacion.equals(other.aplicacion)) {
-			return false;
-		}
-		if (jobJenkinsDeployements == null) {
-			if (other.jobJenkinsDeployements != null) {
-				return false;
-			}
-		} else if (!jobJenkinsDeployements.equals(other.jobJenkinsDeployements)) {
-			return false;
-		}
 		if (nombre == null) {
 			if (other.nombre != null) {
 				return false;
@@ -112,6 +66,8 @@ public class EntAmbiente extends AEntModelo{
 		return true;
 	}
 
-
-
+	@Override
+	public int compareTo(EntAmbiente o2) {
+		return Integer.compare(orden, o2.orden) ;
+	}
 }

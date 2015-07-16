@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rd.huma.dashboard.model.transaccional.EntAmbiente;
+import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
@@ -23,7 +23,7 @@ public class SimulaServidores {
 		return servidores.getOrDefault(id, Collections.emptyList());
 	}
 
-	private static List<EntServidor> getServidoresSimulado(EntAmbiente entAmbiente) {
+	private static List<EntServidor> getServidoresSimulado(EntAmbienteAplicacion entAmbiente) {
 		List<EntServidor> lst = new ArrayList<>();
 		lst.add(nuevoServidor("172.16.7.30:7777",entAmbiente,"MHDDEV02",true));
 		lst.add(nuevoServidor("172.16.7.21:7777",entAmbiente,"MHDDEV03",true));
@@ -31,7 +31,7 @@ public class SimulaServidores {
 		return lst;
 	}
 
-	private static EntServidor nuevoServidor(String nombre, EntAmbiente ambiente, String baseDatos,boolean conVersion){
+	private static EntServidor nuevoServidor(String nombre, EntAmbienteAplicacion ambiente, String baseDatos,boolean conVersion){
 		EntRepositorioDatos datos = new EntRepositorioDatos();
 		datos.setSchema("SIGEF_PRD");
 		datos.setServicio(baseDatos);
