@@ -6,15 +6,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="GRUPO_DETALLE", uniqueConstraints = {@UniqueConstraint(columnNames = {"grupoPersona","persona"})})
+@Table(name="GRUPO_DETALLE")
 @NamedQueries({
 	@NamedQuery(name="busca.detalleGrupo", query="SELECT E FROM EntGrupoPersonaDetalle E where E.grupoPersona = :grupo and E.persona = :persona"),
-	@NamedQuery(name="buscaPorGrupo.detalleGrupo", query="SELECT E FROM EntGrupoPersonaDetalle E join E.grupo G where G.id = :idGrupo")
+	@NamedQuery(name="buscaPorGrupo.detalleGrupo", query="SELECT E FROM EntGrupoPersonaDetalle E join E.grupoPersona G where G.id = :idGrupo")
 				})
-public class EntGrupoPersonaDetalle implements Comparable<EntGrupoPersonaDetalle> {
+public class EntGrupoPersonaDetalle extends AEntModelo implements Comparable<EntGrupoPersonaDetalle> {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 7711271724945503166L;
+
 
 	@JoinColumn
 	@ManyToOne

@@ -12,9 +12,9 @@ import javax.persistence.Table;
 @Table(name = "AMBIENTE_SVN_MODULO")
 @NamedQueries({
 	@NamedQuery(name="ambienteSvnModulo.buscar", query = "SELECT E from EntAmbienteSVNModulo E where E.ambienteSVN = :amb and E.artefacto.grupo = :grp and E.artefacto.artefacto = :art and E.artefacto.paquete = :paq and E.artefacto.clasificador is null"),
-	@NamedQuery(name="ambienteSvnModulo.buscarConClaficador", query = "SELECT E from EntAmbienteSVNModulo E where E.ambienteSVN = :amb and E.artefacto.grupo = :grp and E.artefacto.artefacto = :art and E.artefacto.paquete = :paq and E.artefacto.clasificador = : claf"),
+	@NamedQuery(name="ambienteSvnModulo.buscarConClaficador", query = "SELECT E from EntAmbienteSVNModulo E where E.ambienteSVN = :amb and E.artefacto.grupo = :grp and E.artefacto.artefacto = :art and E.artefacto.paquete = :paq and E.artefacto.clasificador = :claf"),
 	@NamedQuery(name="ambienteSvnModulo.buscarRuta", query = "SELECT E from EntAmbienteSVNModulo E JOIN E.ambienteSVN A where A.rutaSvnAmbiente  = :rut")
-	
+
 				})
 public class EntAmbienteSVNModulo extends AEntModelo  {
 
@@ -46,7 +46,7 @@ public class EntAmbienteSVNModulo extends AEntModelo  {
 		this.artefacto = artefacto;
 	}
 
-	
+
 
 
 }

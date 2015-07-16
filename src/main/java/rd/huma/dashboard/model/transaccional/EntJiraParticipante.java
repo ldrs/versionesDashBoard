@@ -13,7 +13,7 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 
 @Entity
 @Table(name="JIRA_PARTICIPANTE")
-@NamedQueries({@NamedQuery(name="jiraParticipante.buscar", query="Select E from EntJiraParticipante E join E.participante P join E.jira J where P.usuarioSVN = :usr and J.numero = :numJira")})
+@NamedQueries({@NamedQuery(name="jiraParticipante.buscar", query="Select E from EntJiraParticipante E join E.participante P join E.jira J where P.usuarioSvn = :usr and J.numero = :numJira")})
 public class EntJiraParticipante extends AEntModelo implements Comparable<EntJiraParticipante>{
 
 	/**
