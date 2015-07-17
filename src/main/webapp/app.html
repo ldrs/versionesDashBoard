@@ -8,7 +8,7 @@
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/app.js"></script>
-		
+
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
@@ -52,7 +52,7 @@
 			<div id="footer-wrapper">
 				<div class="container">
 					<div class="row">
-			
+
 							<h2 style="margin-bottom: 0;">Fila de Espera</h2>
 							<div  style="width: 100%">
 								<div class="row rowFila rowHeaderFila">
@@ -62,7 +62,7 @@
 									<div class="aplicacion c2" style="color: black">Fecha</div>
 									<div class="aplicacion c4" style="color: black;float: right">Operaciones</div>
 								</div>
-								
+
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
 								<div class="versionRow">
 										<div class="row rowFila">

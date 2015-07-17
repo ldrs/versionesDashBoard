@@ -1697,13 +1697,13 @@ ul.link-list li:first-child {
 		height: 40px;
 }
 
-dialog {  
-    width: 500px;  
+dialog {
+    width: 500px;
     background:#e8e8e8;
     border: 1px solid #dadada;
     border-radius: 10px;
     padding: 15px 10px 20px 20px;
-}  
+}
 
 .eliminaFila{}
 .cierraVentana{
@@ -1720,5 +1720,40 @@ dialog {
 }
 .inicioSesion a{
     COLOR: #FFF;
-	
+
+}
+
+.gruposContainer{
+ border: 1px solid;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.gruposContainer h2{
+	text-align: center;
+}
+
+.grupoContainer{
+	display: inline-block;
+	padding: 20px;
+	border: 1px solid;
+	margin-right: 20px;
+}
+
+.grupoContainer p{
+	margin: 0px;
+	line-height: 0px;
+	font-weight: bolder;
+}
+
+.grupoContainer ul{
+	  margin-top: 10px;
+}
+.deleteUser{
+	float: right;
+  	width: 18px;
+  	height: 18px;
+  	cursor: pointer;
+  	background: #fff url(images/userDelete.png) no-repeat;
+  	margin-left: 5px;
 }

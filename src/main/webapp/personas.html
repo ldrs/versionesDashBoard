@@ -1,72 +1,108 @@
 <!DOCTYPE HTML>
 
-<html ng-app="versionesApp">
+<html ng-app="personasApp">
 <head>
-		<title>Grupo de Personas</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<script src="assets/js/angular.min.js"></script>
-		<script src="assets/js/angular-resource.js"></script>
-		<script src="assets/js/app.js"></script>
-		<script src="assets/js/persona.js"></script>
+<title>Grupo de Personas</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-resource.js"></script>
+<script src="assets/js/persona.js"></script>
 
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-	</head>
+<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+<link rel="stylesheet" href="assets/css/main.css" />
+<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+</head>
 
-    <body ng-controller="appController as app">
-		<div id="page-wrapper">
-		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
-			<div id="header-wrapper">
-				<div class="container">
-					<div class="row">
-						<div class="12u">
+<body ng-controller="personasController as app">
+	<div id="page-wrapper">
+		<div class="inicioSesion">
+			<a href="inicioSesion.html">Iniciar Sesion</a>
+		</div>
+		<div id="header-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="12u">
 
-							<header id="header">
-								<h1><a href="index.html" id="logo">Grupo de Personas</a></h1>
-								 <div >
+						<header id="header">
+							<h1>
+								<a href="index.html" id="logo">Grupo de Personas</a>
+							</h1>
+							<div>
 
-									<nav id="nav">
-										<a  href="app.html">Versiones</a>
-									</nav>
-								</div>
-							</header>
+								<nav id="nav">
+									<a href="app.html">Versiones</a>
+								</nav>
+							</div>
+						</header>
 
-						</div>
 					</div>
 				</div>
 			</div>
-			<div>
-				<div style="display: inline-block;padding: 20px; border: 1px solid;">
-				<p style="margin: 0px; line-height: 0px">Grupo Desarrollo</p>
+		</div>
+		<div id="main" style="padding-bottom: 1.2em;">
+			<div class="container">
 
-					<ul>
-						<li>Bla</li>
-					</ul>
+
+				<div class="gruposContainer">
+					<h2>Grupos</h2>
+					<div class="grupoContainer" ng-repeat="grupo in app.grupos">
+						<div>
+							<p style="margin: 0px; line-height: 0px">{{grupo.nombre}}</p>
+						</div>
+
+						<ul>
+							<li ng-repeat="persona in grupo.personas">{{persona.nombre}}  <div class="deleteUser"/></li>
+						</ul>
+					</div>
 				</div>
-			</div>
 
-			<div>
-				<div style="display: inline-block;padding: 20px; border: 1px solid;">
-				<p style="margin: 0px; line-height: 0px">Grupo</p>
-				<input name="grupo"></input>
-				<button id="agregarGrupo">Agregar</button>
+
+				<div class="gruposContainer" style="margin-top: 100px">
+					<h2>Control Grupos</h2>
+					<div
+						style="display: inline-block; padding: 20px; border: 1px solid;">
+						<div>
+							<Label style="margin: 0px; line-height: 0px">Personas</Label> <select
+								style="margin-left: 8px;">
+								<option>Persona Bla</option>
+								<option>Persona Bla2</option>
+							</select>
+						</div>
+						<div style="margin-top: 20px;">
+							<Label style="margin: 0px; line-height: 0px; width: 100px;">Grupos</Label>
+							<select style="margin-left: 20px">
+								<option>grupo Bla</option>
+								<option>grupo Bla2</option>
+							</select>
+						</div>
+						</br>
+						<button id="agregarPersona">Agregar</button>
+					</div>
+					<div
+						style="display: inline-block; padding: 20px; border: 1px solid;vertical-align: top;float: right;">
+
+						<label style="margin: 0px; line-height: 0px">Grupo</label> <input
+							name="grupo"></input>
+						<button id="agregarGrupo">Agregar</button>
+					</div>
 				</div>
-			</div>
 
+			</div>
 		</div>
 
+	</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/skel-viewport.min.js"></script>
-			<script src="assets/js/util.js"></script>
 
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/skel-viewport.min.js"></script>
+	<script src="assets/js/util.js"></script>
 
-	</body>
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="assets/js/main.js"></script>
+
+</body>
 
 </html>
