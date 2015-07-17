@@ -45,15 +45,8 @@ public class ServicioGrupo {
 		return detalle;
 	}
 
-	public void borrarDetalle(String idGrupo, String idPersona){
-
-		EntGrupoPersona grupoPersona = entityManager.find(EntGrupoPersona.class, idGrupo);
-		EntPersona persona = entityManager.find(EntPersona.class, idPersona);
-		entityManager.createNamedQuery("busca.detalleGrupo",EntGrupoPersonaDetalle.class)
-					 .setParameter("grupo", grupoPersona)
-					 .setParameter("persona", persona)
-					 .getResultList().stream().findFirst().ifPresent(entityManager::remove);
-
+	public void borrarDetalle(String idDetalle){
+		 entityManager.remove(entityManager.find(EntGrupoPersonaDetalle.class, idDetalle));
 	}
 
 	public List<EntGrupoPersonaDetalle> buscarDetallePorGrupo(String idGrupo){

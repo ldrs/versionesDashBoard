@@ -20,9 +20,10 @@ public class WSPersonasConsulta {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
 
 		servicioPersona.buscarPersonas().forEach(p -> builder.add(	Json.createObjectBuilder()
-																	.add("nombre", p.getNombre() == null  ? p.getUsuarioSvn().replace('.', ' '):p.getNombre())
+																	.add("nombre", p.getNombreNullSafe())
 																	.add("svn", p.getUsuarioSvn())
 																	.add("correo", p.getCorreo())
+																	.add("id", p.getId())
 																));
 		return builder.build().toString();
 	}

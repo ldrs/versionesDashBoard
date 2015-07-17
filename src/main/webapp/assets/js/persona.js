@@ -7,7 +7,7 @@ personasApp.factory("PersonasApi", function($resource) {
         'agregaGrupo': { 'method':'GET','url':'/dashboard/api/grupos/agregaGrupo/:nombre'},
         'eliminaGrupo': { 'method':'GET','url':'/dashboard/api/grupos/eliminaGrupo/:idGrupo'},
         'agregaPersona': { 'method':'GET','url':'/dashboard/api/grupos/agregaPersona/:idGrupo/:idPersona'},
-        'eliminaPersona': { 'method':'GET','url':'/dashboard/api/grupos/eliminaPersona/:idGrupo/:idPersona'}
+        'eliminaPersona': { 'method':'GET','url':'/dashboard/api/grupos/eliminaPersona/:idPersonaDetalle'}
     });
 });
 
@@ -26,26 +26,26 @@ personasApp.controller('personasController', function($scope,PersonasApi) {
 		});
 	};
 
-	$scope.eliminaPersona = function(idGrupo,idPersona){
-		PersonasApi.eliminaGrupo(idGrupo,idPersona).$promise.then(function(data){
+	$scope.eliminaPersona = function(personaDetalle){
+		PersonasApi.eliminaPersona({"idPersonaDetalle":personaDetalle.id}).$promise.then(function(data){
 			pControl.actualizar();
 		});
 	};
 
-	$scope.agregarPersona = function(idGrupo,idPersona){
-		PersonasApi.agregaPersona(idGrupo,idPersona).$promise.then(function(data){
+	$scope.agregarPersona = function(grupo,persona){
+		PersonasApi.agregaPersona({"idGrupo":grupo.id,"idPersona":persona.id}).$promise.then(function(data){
 			pControl.actualizar();
 		});
 	};
 
 	$scope.agregarGrupo = function(nombre){
-		PersonasApi.agregaGrupo(nombre).$promise.then(function(data){
+		PersonasApi.agregaGrupo({"nombre":nombre}).$promise.then(function(data){
 			pControl.actualizar();
 		});
 	};
 
-	$scope.eliminaGrupo = function(idgrupo){
-		PersonasApi.eliminaGrupo(idgrupo).$promise.then(function(data){
+	$scope.eliminaGrupo = function(grupo){
+		PersonasApi.eliminaGrupo({"idgrupo":grupo.id}).$promise.then(function(data){
 			pControl.actualizar();
 		});
 	};

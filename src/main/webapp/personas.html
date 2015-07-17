@@ -52,7 +52,7 @@
 						</div>
 
 						<ul>
-							<li ng-repeat="persona in grupo.personas">{{persona.nombre}}  <div class="deleteUser"/></li>
+							<li ng-repeat="persona in grupo.personas">{{persona.nombre}}  <div class="deleteUser" ng-click="eliminaPersona(persona)"/></li>
 						</ul>
 					</div>
 				</div>

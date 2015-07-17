@@ -35,6 +35,10 @@ public class EntPersona  extends AEntModelo implements Comparable<EntPersona> {
 		return nombre;
 	}
 
+	public String getNombreNullSafe(){
+		return nombre == null ? usuarioSvn.replace('_', ' ') : nombre;
+	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}

@@ -35,7 +35,7 @@ public class WSGrupos {
 	@Path("agregaGrupo/{nombre}")
 	@GET
 	public String agregarGrupo(@PathParam("nombre") String nombre){
-		return new StringBuilder(150).append("{ 'id' : '").append(servicioGrupo.nuevoGrupo(nombre)).append("'}").toString();
+		return new StringBuilder(150).append("{ \"id\" : \"").append(servicioGrupo.nuevoGrupo(nombre).getId()).append("\"}").toString();
 	}
 
 	@Path("eliminaGrupo/{idGrupo}")
@@ -43,21 +43,21 @@ public class WSGrupos {
 	public String eliminaGrupo(@PathParam("idGrupo") String idGrupo){
 		servicioGrupo.borrarGrupo(idGrupo);
 
-		return "{ 'borrado' : 'true'}";
+		return "{ \"borrado\" : true}";
 	}
 
 	@Path("agregaPersona/{idGrupo}/{idPersona}")
 	@GET
 	public String agregaPersona(@PathParam("idGrupo") String idGrupo, @PathParam("idPersona") String idPersona){
-		return new StringBuilder(150).append("{ 'id' : '").append(servicioGrupo.agregarDetalle(idGrupo, idPersona).getId()).append("'}").toString();
+		return new StringBuilder(150).append("{ \"id\" : \"").append(servicioGrupo.agregarDetalle(idGrupo, idPersona).getId()).append("\"}").toString();
 	}
 
 
-	@Path("eliminaPersona/{idGrupo}/{idPersona}")
+	@Path("eliminaPersona/{idPersonaDetalle}")
 	@GET
-	public String eliminaPersona(@PathParam("idGrupo") String idGrupo, @PathParam("idPersona") String idPersona){
-		servicioGrupo.borrarDetalle(idGrupo, idPersona);
-		return "{ 'borrado' : 'true'}";
+	public String eliminaPersona(@PathParam("idPersonaDetalle") String idPersonaDetalle){
+		servicioGrupo.borrarDetalle(idPersonaDetalle);
+		return "{ \"borrado\" : true}";
 	}
 
 	private JsonObjectBuilder grupoJson(EntGrupoPersona grupo){
@@ -74,7 +74,7 @@ public class WSGrupos {
 		servicioGrupo.buscarDetallePorGrupo(grupo.getId()).forEach(p ->
 
 			jsonPersonas.add(createObjectBuilder()
-					.add("nombre"		, p.getPersona().getNombre())
+					.add("nombre"		,  p.getPersona().getNombreNullSafe())
 					.add("correo"		, p.getPersona().getCorreo())
 					.add("usuarioSvn"	, p.getPersona().getUsuarioSvn())
 					.add("id", p.getId())
