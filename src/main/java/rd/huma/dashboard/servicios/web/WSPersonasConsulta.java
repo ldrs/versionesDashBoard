@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 
-@Path("/personaConsulta")
-public class WSPersonas {
+@Path("personaConsulta")
+public class WSPersonasConsulta {
 
 	@Inject
 	private @Servicio ServicioPersona  servicioPersona;
@@ -20,7 +20,7 @@ public class WSPersonas {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
 
 		servicioPersona.buscarPersonas().forEach(p -> builder.add(	Json.createObjectBuilder()
-																	.add("Nombre", p.getNombre())
+																	.add("nombre", p.getNombre() == null  ? p.getUsuarioSvn().replace('.', ' '):p.getNombre())
 																	.add("svn", p.getUsuarioSvn())
 																	.add("correo", p.getCorreo())
 																));

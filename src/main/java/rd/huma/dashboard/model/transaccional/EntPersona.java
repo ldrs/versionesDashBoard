@@ -1,5 +1,6 @@
 package rd.huma.dashboard.model.transaccional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,6 +26,7 @@ public class EntPersona  extends AEntModelo implements Comparable<EntPersona> {
 
 	private String nombre;
 
+	@Column(unique=true)
 	private String usuarioSvn;
 
 	private String correo;

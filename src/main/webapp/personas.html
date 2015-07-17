@@ -63,28 +63,24 @@
 					<div
 						style="display: inline-block; padding: 20px; border: 1px solid;">
 						<div>
-							<Label style="margin: 0px; line-height: 0px">Personas</Label> <select
-								style="margin-left: 8px;">
-								<option>Persona Bla</option>
-								<option>Persona Bla2</option>
+							<Label style="margin: 0px; line-height: 0px">Personas</Label>
+							<select	style="margin-left: 8px;" ng-options="persona.nombre for persona in app.personas" ng-model="personaSeleccionado">
 							</select>
 						</div>
 						<div style="margin-top: 20px;">
 							<Label style="margin: 0px; line-height: 0px; width: 100px;">Grupos</Label>
-							<select style="margin-left: 20px">
-								<option>grupo Bla</option>
-								<option>grupo Bla2</option>
+							<select style="margin-left: 20px"  ng-options="grupo.nombre for grupo in app.grupos" ng-model="grupoSeleccionado">
 							</select>
 						</div>
 						</br>
-						<button id="agregarPersona">Agregar</button>
+						<button id="agregarPersona" ng-click="agregarPersona(grupoSeleccionado,personaSeleccionado)">Agregar</button>
 					</div>
 					<div
 						style="display: inline-block; padding: 20px; border: 1px solid;vertical-align: top;float: right;">
 
-						<label style="margin: 0px; line-height: 0px">Grupo</label> <input
-							name="grupo"></input>
-						<button id="agregarGrupo">Agregar</button>
+						<label style="margin: 0px; line-height: 0px">Grupo</label>
+						<input name="grupo" ng-Model="nombreGrupoAgregar"></input>
+						<button id="agregarGrupo" ng-click="agregarGrupo(nombreGrupoAgregar)">Agregar</button>
 					</div>
 				</div>
 

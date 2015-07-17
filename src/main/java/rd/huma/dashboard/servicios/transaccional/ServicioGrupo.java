@@ -60,4 +60,8 @@ public class ServicioGrupo {
 		return entityManager.createNamedQuery("buscaPorGrupo.detalleGrupo",EntGrupoPersonaDetalle.class).setParameter("idGrupo", idGrupo).getResultList();
 	}
 
+	public void borrarGrupo(String idGrupo) {
+		entityManager.remove(entityManager.find(EntGrupoPersona.class, idGrupo));
+	}
+
 }
