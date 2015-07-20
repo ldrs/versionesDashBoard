@@ -14,17 +14,17 @@ import javax.persistence.Table;
 public class EntRepositorioDatos extends AEntModelo {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2845525405887083013L;
 
 	private String schema;
-	
+
 	private String servicio;
-	
-	private LocalDate fechaRegistro;
-	
-	private LocalDate ultimaActualizacion;
+
+	private LocalDate fechaRegistro = LocalDate.now();
+
+	private LocalDate ultimaActualizacion = LocalDate.now();
 
 	public String getSchema() {
 		return schema;
@@ -57,8 +57,8 @@ public class EntRepositorioDatos extends AEntModelo {
 	public void setUltimaActualizacion(LocalDate ultimaActualizacion) {
 		this.ultimaActualizacion = ultimaActualizacion;
 	}
-	
-	
-	
-	
+
+
+
+
 }

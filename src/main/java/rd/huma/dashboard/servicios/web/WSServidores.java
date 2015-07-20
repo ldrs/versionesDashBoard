@@ -23,7 +23,7 @@ public class WSServidores {
 	@GET
 	public String servidores(@PathParam("ambiente") String ambiente){
 		JsonArrayBuilder builder = createArrayBuilder();
-		getServidores(ambiente).stream().forEach(s -> builder.add(createObjectBuilder()
+		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(createObjectBuilder()
 																				.add("nombre", s.getNombre())
 																				.add("css", "")
 																				.add("id",s.getId())
@@ -36,7 +36,6 @@ public class WSServidores {
 																										.add("actualizacion", s.getBaseDatos().getUltimaActualizacion().toString())
 																										)
 																				.add("jiras", jiras(s.getVersionActual()))
-																				.add("deploy", s.getVersionActual() == null ? "none":"blocked")
 														 )
 										);
 
@@ -46,7 +45,7 @@ public class WSServidores {
 	private List<EntServidor> getServidores(String id){
 		return SimulaServidores.getServidores(id);
 	}
-	
+
 	private JsonArrayBuilder tickets(EntVersion version){
 		JsonArrayBuilder arreglo = Json.createArrayBuilder();
 		if (version == null){
@@ -55,7 +54,7 @@ public class WSServidores {
 		SimulaVersion.getTickets().getOrDefault(version, Collections.emptyList()).forEach(j -> arreglo.add(j.getTicketSysAid().getNumero()));
 		return arreglo;
 	}
-	
+
 	private JsonArrayBuilder jiras(EntVersion version){
 		JsonArrayBuilder arreglo = Json.createArrayBuilder();
 		if (version == null){

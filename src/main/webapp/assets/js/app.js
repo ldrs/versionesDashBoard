@@ -40,7 +40,7 @@ versionesApp.factory("Ambientes", function($resource) {
 
 
 
-seguridadApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
+versionesApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
 	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente",null,{
 		'filas':{ 'method':'GET','isArray':true},
         'sube': { 'method':'GET','url':'/dashboard/api/filasPrioridad/sube/:idFila'},
@@ -59,34 +59,41 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.ambiente = queryString.ambiente;
 	app.modificado = {aplicaciones : false};
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
+	app.cssControlesPrioridad = "none";
+	app.cssControlesUndeploy = "none";
 
-	
-	app.actualizarAparienciaPorPermisos(){
+	app.actualizarAparienciaPorPermisos=function(){
 		if (app.logeado){
-			
+			app.cssControlesPrioridad = "block";
+			app.cssControlesUndeploy = "block";
 		}else{
-			$(".controlesPrioridad").css(display, 'none');
-			$(".controlesUndeploy").css(display, 'none')
+			app.cssControlesPrioridad = "none";
+			app.cssControlesUndeploy = "none";
 		}
 	}
-	
-	persistanceService.getUsuario().then(function(usuario){
-		if (usuario){
-			app.logeado = true;
-			app.usuario = usuario;
-			$(".inicioSesion").find("a").text(usuario.nombre).attr('href','#').click(function(){
-				persistanceService.logout().then(function(){
-					app.logeado = false;
-					$(".inicioSesion").find("a").text("Iniciar Sesion").attr('href','inicioSesion.html').click(function(){});
+
+	persistanceService.init().then(function(){
+
+		persistanceService.getUsuario().then(function(usuario){
+			if (usuario){
+				app.logeado = true;
+				app.usuario = usuario;
+				$(".inicioSesion").find("a").text(usuario.nombre).attr('href','#').click(function(){
+					persistanceService.logout().then(function(){
+						app.logeado = false;
+						$(".inicioSesion").find("a").text("Iniciar Sesion").attr('href','inicioSesion.html').click(function(){});
+					});
 				});
-			});
-		}else{
-			app.logeado = false;
-		}
-		app.actualizarAparienciaPorPermisos();
+			}else{
+				app.logeado = false;
+			}
+			app.actualizarAparienciaPorPermisos();
+		});
 	});
-	
-	
+
+
+
+
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
 			return;
