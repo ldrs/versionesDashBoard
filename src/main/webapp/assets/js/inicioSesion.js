@@ -48,7 +48,7 @@ $(document).ready(function(){
 	cargaDb();
 	$("#olvidoContrasena").click(function(e){
 		e.preventDefault();
-		msgValidacion("Olvido de contraseña","Esta es la contraseña del dominio interno, favor informar a infraestructura por una nueva.");
+		msgValidacion("Olvidó de contraseña","Esta es la contraseña del dominio interno, favor informar a infraestructura por una nueva.");
 	});
 
 	$("#login").click(function(e){
@@ -64,7 +64,7 @@ $(document).ready(function(){
 			if (data.inicioSesion==="true"){
 
 			}else{
-				msgValidacion("Validacion Credencial","Favor revisar su usuario/contraseña");
+				msgValidacion("Validación Credencial","Favor revisar su usuario/contraseña");
 			}
 		});
 	});

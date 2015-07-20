@@ -41,20 +41,44 @@ public class WSSeguridad {
 				Optional<EntPersona> personaOpcional;
 				try {
 					personaOpcional = servicioPersona.buscaPorCorreo(atributos.get("mail").get().toString());
+					EntPersona persona;
 					if (personaOpcional.isPresent()){
-						EntPersona persona = personaOpcional.get();
-						if (persona.getNombre() == null){
-							persona.setNombre(atributos.get("givenname").toString());
-							servicioPersona.actualiza(persona);
-							return  new StringBuilder(150).append("{\"inicioSesion\":true , ").append("\"id':\"").append(persona.getId()).append("\"}").toString() ;
-						}
+						persona = personaOpcional.get();
+					}else{
+						persona = servicioPersona.crearPersona(getValor(atributos,"cn"), getValor(atributos,"mail"), getValor(atributos,"samaccountname").replace('.', '_'));
 					}
+					return  new StringBuilder(150)	.append("{\"inicioSesion\":true , ")
+													.append("\"id\":\"").append(persona.getId())
+													.append("\"nombre\":\"").append(persona.getNombre())
+													.append("\"usuarioSVN\":\"").append(persona.getUsuarioSvn())
+													.append("\"prioridadAmbientes\":\"").append(prioridadesAmbientes(persona.getId()))
+													.append("\"undeployAmbientes\":\"").append(undeployAmbientes(persona.getId()))
+													.append("\"scriptAmbientes\":\"").append(scriptAmbientes(persona.getId()))
+													.append("\"}").toString();
+
 				} catch (NamingException e) {}
 
 			}
 		}
 		return mensajeInvalidoSesion();
 
+	}
+
+	private String scriptAmbientes(String id) {
+		return "[]";
+	}
+
+	private String undeployAmbientes(String id) {
+		return "[]";
+	}
+
+	private String prioridadesAmbientes(String idPersona){
+		return "[]";
+	}
+
+	private String getValor(Attributes atributos, String atributo){
+		String tmp = atributos.get(atributo).toString();
+		return tmp.substring(tmp.indexOf(':')+2).trim();
 	}
 
 	private String mensajeInvalidoSesion(){

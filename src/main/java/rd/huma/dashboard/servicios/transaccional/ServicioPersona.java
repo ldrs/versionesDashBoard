@@ -48,4 +48,15 @@ public class ServicioPersona {
 	public EntPersona actualiza(EntPersona persona) {
 		return entityManager.merge(persona);
 	}
+
+	public EntPersona crearPersona(String nombre, String correo, String usuarioSVN) {
+		EntPersona persona = new EntPersona();
+		persona.setCorreo(nombre);
+		persona.setNombre(nombre);
+		persona.setUsuarioSvn(usuarioSVN);
+
+		entityManager.persist(persona);
+
+		return persona;
+	}
 }
