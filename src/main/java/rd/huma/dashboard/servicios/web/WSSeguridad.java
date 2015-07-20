@@ -1,11 +1,13 @@
 package rd.huma.dashboard.servicios.web;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchResult;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -23,7 +25,12 @@ public class WSSeguridad {
 
 
 	@Path("iniciasesion/{usuario}/{credenciales}")
+	@GET
 	public String iniciaSesion(@PathParam("usuario") String usuario,@PathParam("credenciales") String crendenciales){
+
+		usuario = new String(Base64.getDecoder().decode(usuario));
+		crendenciales = new String( Base64.getDecoder().decode(crendenciales));
+
 		Optional<EntConfiguracionGeneral> configOptional = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral();
 		if (configOptional.isPresent()){
 			ServicioActiveDirectory servicioActiveDirectory = new ServicioActiveDirectory(configOptional.get(), usuario, crendenciales);
@@ -39,7 +46,7 @@ public class WSSeguridad {
 						if (persona.getNombre() == null){
 							persona.setNombre(atributos.get("givenname").toString());
 							servicioPersona.actualiza(persona);
-							return  new StringBuilder(150).append("{'inicioSesion':true , ").append("'id':'").append(persona.getId()).append("'}").toString() ;
+							return  new StringBuilder(150).append("{\"inicioSesion\":true , ").append("\"id':\"").append(persona.getId()).append("\"}").toString() ;
 						}
 					}
 				} catch (NamingException e) {}
@@ -51,6 +58,6 @@ public class WSSeguridad {
 	}
 
 	private String mensajeInvalidoSesion(){
-		return "{inicioSesion:false}";
+		return "{\"inicioSesion\":\"false\"}";
 	}
 }
