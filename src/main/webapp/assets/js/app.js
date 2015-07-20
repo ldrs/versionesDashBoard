@@ -60,15 +60,32 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.modificado = {aplicaciones : false};
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 
+	
+	app.actualizarAparienciaPorPermisos(){
+		if (app.logeado){
+			
+		}else{
+			$(".controlesPrioridad").css(display, 'none');
+			$(".controlesUndeploy").css(display, 'none')
+		}
+	}
+	
 	persistanceService.getUsuario().then(function(usuario){
 		if (usuario){
 			app.logeado = true;
 			app.usuario = usuario;
+			$(".inicioSesion").find("a").text(usuario.nombre).attr('href','#').click(function(){
+				persistanceService.logout().then(function(){
+					app.logeado = false;
+					$(".inicioSesion").find("a").text("Iniciar Sesion").attr('href','inicioSesion.html').click(function(){});
+				});
+			});
 		}else{
 			app.logeado = false;
-			
 		}
+		app.actualizarAparienciaPorPermisos();
 	});
+	
 	
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
