@@ -126,7 +126,7 @@ public class ServicioVersion {
 	}
 
 	public List<EntVersionPropiedad> buscaPropiedades(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionPropiedadesPorVersion",EntVersionPropiedad.class)
+		return entityManager.createNamedQuery("buscar.propiedadesPorVersion",EntVersionPropiedad.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}
@@ -139,7 +139,7 @@ public class ServicioVersion {
 
 
 	public List<EntVersionParticipante> buscaDuenos(){
-		return entityManager.createNamedQuery("buscar.versionDuenos",EntVersionParticipante.class).getResultList();
+		return entityManager.createNamedQuery("buscar.versionParticipantes",EntVersionParticipante.class).getResultList();
 	}
 
 	public static ServicioVersion getInstanciaTransaccional(){

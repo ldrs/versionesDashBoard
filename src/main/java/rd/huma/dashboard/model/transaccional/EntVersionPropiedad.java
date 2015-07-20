@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VERSION_PROPIEDADES")
-@NamedQueries({@NamedQuery(name="buscar.versionPropiedadesPorVersion", query="select E from EntVersionPropiedad E where E.version = :ver")})
+@NamedQueries({@NamedQuery(name="buscar.propiedadesPorVersion", query="select E from EntVersionPropiedad E where E.version = :ver")})
 public class EntVersionPropiedad extends AEntModelo {
 
 	/**

@@ -11,7 +11,7 @@ function toQueryString(page){
 }
 
 
-var versionesApp = angular.module('versionesApp',['ngResource']);
+var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
 
 
 versionesApp.factory("Aplicaciones", function($resource) {
@@ -38,7 +38,20 @@ versionesApp.factory("Ambientes", function($resource) {
 	return $resource("/dashboard/api/ambientes/:idAplicacion");
 });
 
-versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,VersionesFilas,Servidores) {
+
+
+seguridadApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
+	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente",null,{
+		'filas':{ 'method':'GET','isArray':true},
+        'sube': { 'method':'GET','url':'/dashboard/api/filasPrioridad/sube/:idFila'},
+        'baja': { 'method':'GET','url':'/dashboard/api/filasPrioridad/baja/:idFila'},
+        'elimina': { 'method':'GET','url':'/dashboard/api/filasPrioridad/elimina/:idFila'}
+    });
+});
+
+
+
+versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,VersionesFilas,Servidores,SeguridadApi,persistanceService) {
 	var tituloAplicacion = "Configuracion Aplicaciones",tituloAmbiente = "Configuracion Aplicaciones";
 	var app = this;
 
@@ -47,6 +60,16 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.modificado = {aplicaciones : false};
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 
+	persistanceService.getUsuario().then(function(usuario){
+		if (usuario){
+			app.logeado = true;
+			app.usuario = usuario;
+		}else{
+			app.logeado = false;
+			
+		}
+	});
+	
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
 			return;
