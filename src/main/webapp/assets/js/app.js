@@ -63,13 +63,11 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.cssControlesUndeploy = "none";
 
 	app.actualizarAparienciaPorPermisos=function(){
-		if (app.logeado){
-			app.cssControlesPrioridad = "block";
-			app.cssControlesUndeploy = "block";
-		}else{
-			app.cssControlesPrioridad = "none";
-			app.cssControlesUndeploy = "none";
+		controles = function(estilo){
+			app.cssControlesPrioridad = estilo;
+			app.cssControlesUndeploy = estilo;
 		}
+		controles(app.logeado?"block":"none");
 	}
 
 	persistanceService.init().then(function(){
@@ -90,9 +88,6 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.actualizarAparienciaPorPermisos();
 		});
 	});
-
-
-
 
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
