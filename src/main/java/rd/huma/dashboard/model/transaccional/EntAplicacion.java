@@ -8,7 +8,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="APLICACION")
-@NamedQueries({@NamedQuery(name="aplicacion.buscar",query="SELECT E from EntAplicacion E where E.nombre = :nomApp")})
+@NamedQueries(
+				{
+				@NamedQuery(name="aplicacion.buscar",query="SELECT E from EntAplicacion E where E.nombre = :nomApp"),
+				@NamedQuery(name="aplicacion.todos",query="SELECT E from EntAplicacion E order by E.orden")
+				}
+			)
 public class EntAplicacion extends AEntModelo {
 
 	/**
@@ -29,6 +34,8 @@ public class EntAplicacion extends AEntModelo {
 
 	private String rutaSvnAmbiente;
 
+	private String jobJenkinsDeployements;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -36,7 +43,6 @@ public class EntAplicacion extends AEntModelo {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 
 	public String getJiraKey() {
 		return jiraKey;
@@ -76,6 +82,14 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setRutaSvnAmbiente(String rutaSvnAmbiente) {
 		this.rutaSvnAmbiente = rutaSvnAmbiente;
+	}
+
+	public String getJobJenkinsDeployements() {
+		return jobJenkinsDeployements;
+	}
+
+	public void setJobJenkinsDeployements(String jobJenkinsDeployements) {
+		this.jobJenkinsDeployements = jobJenkinsDeployements;
 	}
 
 	@Override
@@ -127,7 +141,4 @@ public class EntAplicacion extends AEntModelo {
 		}
 		return true;
 	}
-
-
-
 }

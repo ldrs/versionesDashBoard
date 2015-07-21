@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.cache.Cache;
@@ -53,6 +54,10 @@ public class ServicioAplicacion {
 	}
 
 	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom){
+		return configurarCrearAplicacion(nombre, jiraKey, svnPath, orden, nombrePropiedadesPom, null);
+	}
+
+	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom, String jenkinsJob){
 		Optional<EntAplicacion> optional = getAplicacion(nombre);
 		EntAplicacion aplicacion;
 		if (optional.isPresent()){
@@ -65,6 +70,7 @@ public class ServicioAplicacion {
 		aplicacion.setSvnPath(svnPath);
 		aplicacion.setOrden(orden);
 		aplicacion.setNombrePropiedadesPom(nombrePropiedadesPom);
+		aplicacion.setJobJenkinsDeployements(jenkinsJob);
 
 		entityManager.persist(aplicacion);
 		Cache<String, EntAplicacion> cache = getCache();
@@ -73,5 +79,15 @@ public class ServicioAplicacion {
 		}
 
 		return aplicacion;
+	}
+
+
+	public static ServicioAplicacion getInstanciaTransaccional(){
+		Servicio servicio = ServicioAplicacion.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioAplicacion.class, servicio).get();
+	}
+
+	public List<EntAplicacion> getAplicaciones() {
+		return entityManager.createNamedQuery("aplicacion.todos",EntAplicacion.class).getResultList();
 	}
 }

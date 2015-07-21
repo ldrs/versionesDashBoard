@@ -3,19 +3,22 @@ package rd.huma.dashboard.servicios.web;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
-import rd.huma.dashboard.servicios.web.simulacion.SimulacionAmbientes;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 
 @Path("/ambientes/{aplicacion}")
 public class WSAmbientes {
+
+	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
 
 	@GET
 	public String ambientes(@PathParam("aplicacion") String aplicacion){
@@ -32,6 +35,6 @@ public class WSAmbientes {
 	}
 
 	private List<EntAmbienteAplicacion> getAmbientes(String id){
-		return SimulacionAmbientes.getAmbientes().getOrDefault(id, Collections.emptyList());
+		return servicioAmbiente.getAmbientesAplicacion(id);
 	}
 }

@@ -63,9 +63,7 @@ public class ServicioVersion {
 		version.setEstado(esperandoFila);
 		entityManager.persist(version);
 		return version;
-
 	}
-
 
 	public EntVersion actualizarVersion(String idVersion, String comentario){
 		EntVersion version = entityManager.find(EntVersion.class, idVersion);
@@ -163,10 +161,4 @@ public class ServicioVersion {
 		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(version));
 
 	}
-
-
-
-
-
-
 }

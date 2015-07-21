@@ -3,10 +3,18 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="AMBIENTE_APLICACION")
+@NamedQueries(
+		{
+			@NamedQuery(name ="buscar.ambienteAplicacion", query = "SELECT E FROM EntAmbienteAplicacion E join E.aplicacion A where A.id = :app")
+		}
+		)
+
 public class EntAmbienteAplicacion extends AEntModelo implements Comparable<EntAmbienteAplicacion>{
 
 	/**
@@ -15,14 +23,11 @@ public class EntAmbienteAplicacion extends AEntModelo implements Comparable<EntA
 	private static final long serialVersionUID = 6521232680596057448L;
 
 
-	private String jobJenkinsDeployements;
-
 	private boolean habilitado;
 
 	@JoinColumn
 	@ManyToOne
 	private EntAplicacion aplicacion;
-
 
 	@JoinColumn
 	@ManyToOne
@@ -52,13 +57,7 @@ public class EntAmbienteAplicacion extends AEntModelo implements Comparable<EntA
 		this.aplicacion = aplicacion;
 	}
 
-	public String getJobJenkinsDeployements() {
-		return jobJenkinsDeployements;
-	}
 
-	public void setJobJenkinsDeployements(String jobJenkinsDeployements) {
-		this.jobJenkinsDeployements = jobJenkinsDeployements;
-	}
 
 	@Override
 	public int hashCode() {
@@ -69,10 +68,7 @@ public class EntAmbienteAplicacion extends AEntModelo implements Comparable<EntA
 		result = prime * result
 				+ ((aplicacion == null) ? 0 : aplicacion.hashCode());
 		result = prime * result + (habilitado ? 1231 : 1237);
-		result = prime
-				* result
-				+ ((jobJenkinsDeployements == null) ? 0
-						: jobJenkinsDeployements.hashCode());
+
 		return result;
 	}
 
@@ -103,13 +99,6 @@ public class EntAmbienteAplicacion extends AEntModelo implements Comparable<EntA
 			return false;
 		}
 		if (habilitado != other.habilitado) {
-			return false;
-		}
-		if (jobJenkinsDeployements == null) {
-			if (other.jobJenkinsDeployements != null) {
-				return false;
-			}
-		} else if (!jobJenkinsDeployements.equals(other.jobJenkinsDeployements)) {
 			return false;
 		}
 		return true;

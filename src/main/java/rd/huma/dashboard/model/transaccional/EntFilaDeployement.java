@@ -9,9 +9,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="FILA_DEPLOYEMENT")
-@NamedQueries(
-		@NamedQuery(name="todos.filaDeploment",query = "Select E from EntFilaDeployement E")
-
+@NamedQueries({
+		@NamedQuery(name="todos.filaDeploment",query = "Select E from EntFilaDeployement E"),
+		@NamedQuery(name="buscar.filaDeploment",query = "Select E from EntFilaDeployement E join E.ambiente A where A.id = :amb")
+		}
 		)
 
 public class EntFilaDeployement extends AEntModelo implements Comparable<EntFilaDeployement> {

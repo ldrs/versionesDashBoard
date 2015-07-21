@@ -22,6 +22,11 @@ public class ServicioConfiguracionGeneral {
 	@Inject
 	private EntityManager entityManager;
 
+	public static ServicioConfiguracionGeneral getInstanciaTransaccional(){
+		Servicio servicio = ServicioConfiguracionGeneral.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioConfiguracionGeneral.class, servicio).get();
+	}
+
 	public static Optional<EntConfiguracionGeneral> getCacheConfiguracionGeneral(){
 		Cache<Integer, EntConfiguracionGeneral> cache = getCache();
 		EntConfiguracionGeneral entConfiguracionGeneral = cache.get(CACHE);
@@ -52,6 +57,12 @@ public class ServicioConfiguracionGeneral {
 
 	public Optional<EntConfiguracionGeneral> getConfiguracionGeneral(){
 		return entityManager.createNamedQuery("configuracionGeneral",EntConfiguracionGeneral.class).getResultList().stream().findFirst();
+	}
+
+	public EntConfiguracionGeneral nuevaConfiguracionDefecto(){
+		 EntConfiguracionGeneral configuracionGeneral = new EntConfiguracionGeneral();
+		 entityManager.persist(configuracionGeneral);
+		 return configuracionGeneral;
 	}
 
 	public EntConfiguracionGeneral configurar(String rutaSvn, String usrSvn, String pwdSvn, String rutaJira, String usrJira, String pwdJira, String rutaJenkins, String usrJenkins, String pwdJenkins,String rutaSysAid, String usrSysaid, String pwdSysAid){

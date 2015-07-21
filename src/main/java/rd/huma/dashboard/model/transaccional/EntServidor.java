@@ -7,12 +7,19 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
 @Entity
 @Table(name="SERVIDOR")
+@NamedQueries(
+		{
+			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb")
+		}
+		)
 public class EntServidor extends AEntModelo {
 
 	/**

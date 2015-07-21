@@ -3,7 +3,6 @@ package rd.huma.dashboard.servicios.web;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,19 +13,21 @@ import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
-import rd.huma.dashboard.servicios.web.simulacion.SimulaFila;
-import rd.huma.dashboard.servicios.web.simulacion.SimulaVersion;
 
 @Path("filaDeploymentVersion")
 public class WSFilaDeployementVersionFilas {
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
+
+	@Inject
+	private @Servicio ServicioFila servicioFila;
 
 	@GET
 	@Path("{idAmbiente}")
@@ -47,34 +48,32 @@ public class WSFilaDeployementVersionFilas {
 													);
 		return builder.build().toString();
 	}
-	
+
 
 
 	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
-		return SimulaFila.filas(id);
+		return  servicioFila.getFilasPorAmbienteAplicacion(id);
 	}
-	
+
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		SimulaVersion.getJiras().getOrDefault(version, Collections.emptyList()).stream().forEach(j -> {agrega(builder, j);});
-		//servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
 		return builder;
 	}
 
 	private JsonArrayBuilder consultaTickets(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		SimulaVersion.getTickets().getOrDefault(version, Collections.emptyList()).stream().forEach(j -> {agrega(builder, j);});
-		//servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
+
+		servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
 		return builder;
 	}
 
 	private JsonArrayBuilder consultaDuenos(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		SimulaVersion.getDuenos().getOrDefault(version, Collections.emptyList())  .stream().forEach(j -> {agrega(builder, j);});
-		//servicioVersion.buscaDuenos(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaParticipantes(version).stream().forEach(j -> {agrega(builder, j);});
 		return builder;
 	}
-	
+
 	private JsonArrayBuilder consultaPropiedades(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
 
@@ -97,6 +96,4 @@ public class WSFilaDeployementVersionFilas {
 	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
 		builder.add(jira.getParticipante().getUsuarioSvn());
 	}
-
-	
 }

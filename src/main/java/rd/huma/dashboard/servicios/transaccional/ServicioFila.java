@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.fila.FilaBranch;
+import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersionDueno;
@@ -49,12 +50,20 @@ public class ServicioFila {
 						.getResultList();
 	}
 
+	public EntFilaDeployement getFila(String id){
+		return entityManager.createNamedQuery("buscar.filaDeploment",EntFilaDeployement.class).setParameter("amb", id).getSingleResult();
+	}
+
 	public List<EntFilaDeployementVersion> getFilasPorEstadoVersion(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorVersionEstado.fila",EntFilaDeployementVersion.class).setParameter("est", estados).getResultList();
 	}
 
 	public List<EntFilaDeployement> getFilasDeploment(){
 		return entityManager.createNamedQuery("todos.filaDeploment",EntFilaDeployement.class).getResultList();
+	}
+
+	public List<EntFilaDeployementVersion> getFilasPorAmbienteAplicacion(String id){
+		return entityManager.createNamedQuery("buscarPorAmbiente.fila",EntFilaDeployementVersion.class).setParameter("amb", id).getResultList();
 	}
 
 	public static ServicioFila getInstanciaTransaccional(){
@@ -108,10 +117,45 @@ public class ServicioFila {
 
 	}
 
+	public void eliminarFilaVersion(String id){
+		entityManager.remove(entityManager.find(EntFilaDeployementVersion.class, id));
+	}
+
+	public EntFilaDeployement nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
+		EntFilaDeployement fila = new EntFilaDeployement();
+		fila.setAmbiente(ambiente);
+		fila.setEstadosJiras(estadosJiras);
+		entityManager.persist(fila);
+		return fila;
+	}
+
 	private void nuevaPersonaFilaDueno(EntFilaDeployementVersion version, EntPersona persona){
 		EntFilaDeployementVersionDueno dueno = new EntFilaDeployementVersionDueno();
 		dueno.setDueno(persona);
 		dueno.setVersion(version);
 		entityManager.persist(dueno);
+	}
+
+	public void subePrioridad(String id) {
+		EntFilaDeployementVersion versionFila = entityManager.find(EntFilaDeployementVersion.class, id);
+		entityManager.createNamedQuery("buscarPorFilaMenorPrioridad.fila", EntFilaDeployementVersion.class)
+		.setParameter("fil", versionFila.getFila())
+		.setParameter("prd", versionFila.getPrioridad()).getResultList().stream().findFirst().ifPresent( o -> cambiaPrioridades(versionFila, o));
+	}
+
+	public void bajaPrioridad(String id) {
+		EntFilaDeployementVersion versionFila = entityManager.find(EntFilaDeployementVersion.class, id);
+		entityManager.createNamedQuery("buscarPorFilaMayorPrioridad.fila", EntFilaDeployementVersion.class)
+		.setParameter("fil", versionFila.getFila())
+		.setParameter("prd", versionFila.getPrioridad()).getResultList().stream().findFirst().ifPresent( o -> cambiaPrioridades(versionFila, o));
+	}
+
+	private void cambiaPrioridades(EntFilaDeployementVersion versionFila,EntFilaDeployementVersion versionFilaOther){
+		int prioridad = versionFilaOther.getPrioridad();
+		versionFilaOther.setPrioridad(versionFila.getPrioridad());
+		versionFila.setPrioridad(prioridad);
+
+		entityManager.merge(versionFila);
+		entityManager.merge(versionFilaOther);
 	}
 }

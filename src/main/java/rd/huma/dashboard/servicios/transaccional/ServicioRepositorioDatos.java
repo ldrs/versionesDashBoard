@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -13,11 +14,20 @@ import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 @Servicio
 public class ServicioRepositorioDatos {
 
-	
+
 	@Inject
 	private EntityManager entityManager;
 
+	public static ServicioRepositorioDatos getInstanciaTransaccional(){
+		Servicio servicio = ServicioRepositorioDatos.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioRepositorioDatos.class, servicio).get();
+	}
+
 	public String actualizar(String nombreServicio, String schema) {
+		return actualizar(nombreServicio, schema, Optional.empty());
+	}
+
+	public String actualizar(String nombreServicio, String schema, Optional<String> host) {
 		Optional<EntRepositorioDatos> opcional = entityManager.createNamedQuery("buscar.repositorioDatos",EntRepositorioDatos.class)
 				.setParameter("sc", schema)
 				.setParameter("serv", nombreServicio)
@@ -25,14 +35,15 @@ public class ServicioRepositorioDatos {
 		if (opcional.isPresent()){
 			return actualizar(opcional.get()).getId();
 		}else{
-			return nuevoRepositorio(nombreServicio, schema).getId();
+			return nuevoRepositorio(nombreServicio, schema,host).getId();
 		}
 	}
-	
-	private EntRepositorioDatos nuevoRepositorio(String nombreServicio,String schema) {
+
+	public EntRepositorioDatos nuevoRepositorio(String nombreServicio,String schema,Optional<String> host) {
 		EntRepositorioDatos repositorioDatos = new EntRepositorioDatos();
 		repositorioDatos.setSchema(schema);
 		repositorioDatos.setServicio(nombreServicio);
+		host.ifPresent(h -> repositorioDatos.setHost(h));
 		entityManager.persist(repositorioDatos);
 		return repositorioDatos;
 	}

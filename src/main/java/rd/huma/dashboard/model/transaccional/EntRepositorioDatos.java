@@ -22,6 +22,8 @@ public class EntRepositorioDatos extends AEntModelo {
 
 	private String servicio;
 
+	private String host;
+
 	private LocalDate fechaRegistro = LocalDate.now();
 
 	private LocalDate ultimaActualizacion = LocalDate.now();
@@ -58,7 +60,11 @@ public class EntRepositorioDatos extends AEntModelo {
 		this.ultimaActualizacion = ultimaActualizacion;
 	}
 
+	public String getHost() {
+		return host;
+	}
 
-
-
+	public void setHost(String host) {
+		this.host = host;
+	}
 }

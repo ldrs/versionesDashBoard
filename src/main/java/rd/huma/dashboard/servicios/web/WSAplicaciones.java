@@ -5,15 +5,19 @@ import static javax.json.Json.createObjectBuilder;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
-import rd.huma.dashboard.servicios.web.simulacion.SimulacionAplicacion;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioAplicacion;
 
 @Path("/aplicaciones")
 public class WSAplicaciones {
+
+	private @Servicio @Inject ServicioAplicacion servicioAplicacion;
 
 	@GET
 	public String aplicaciones(){
@@ -27,11 +31,11 @@ public class WSAplicaciones {
 																				.add("orden",s.getOrden())
 														 )
 										);
-		
+
 		return builder.build().toString();
 	}
-	
+
 	private List<EntAplicacion> getAplicaciones(){
-		return SimulacionAplicacion.getAplicaciones();
+		return servicioAplicacion.getAplicaciones();
 	}
 }

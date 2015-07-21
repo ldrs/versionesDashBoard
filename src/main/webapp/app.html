@@ -107,7 +107,7 @@
 				<div class="container" style="padding-top: 50px;padding-bottom: 50px">
 					<h2>Servidores</h2>
 					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores">
-						<div><a href="http://{{servidor.nombre}}/{{app.aplicacion}}" target="aplicacion">{{servidor.nombre}}</a></div>
+						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
 						<div>{{servidor.basedatos}}</div>
 						<div class="servidorVersion">{{servidor.version}}</div>
 						<div class="tickets servidorTick">

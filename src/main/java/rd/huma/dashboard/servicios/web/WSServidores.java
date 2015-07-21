@@ -3,9 +3,9 @@ package rd.huma.dashboard.servicios.web;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.GET;
@@ -14,10 +14,14 @@ import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.servicios.web.simulacion.SimulaServidores;
-import rd.huma.dashboard.servicios.web.simulacion.SimulaVersion;
+import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 @Path("/servidores/{ambiente}")
 public class WSServidores {
+
+	private @Servicio @Inject ServicioServidor servicioServidor;
+	private @Servicio @Inject ServicioVersion servicioVersion;
 
 
 	@GET
@@ -26,6 +30,7 @@ public class WSServidores {
 		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(createObjectBuilder()
 																				.add("nombre", s.getNombre())
 																				.add("css", "")
+																				.add("ruta", s.getRutaEntrada())
 																				.add("id",s.getId())
 																				.add("version", s.getVersionActual() == null ? "NONE" : s.getVersionActual().getNumero())
 																				.add("estado", s.getEstadoServidor().name())
@@ -43,7 +48,7 @@ public class WSServidores {
 	}
 
 	private List<EntServidor> getServidores(String id){
-		return SimulaServidores.getServidores(id);
+		return servicioServidor.getServidoresAmbiente(id);
 	}
 
 	private JsonArrayBuilder tickets(EntVersion version){
@@ -51,7 +56,7 @@ public class WSServidores {
 		if (version == null){
 		 return arreglo;
 		}
-		SimulaVersion.getTickets().getOrDefault(version, Collections.emptyList()).forEach(j -> arreglo.add(j.getTicketSysAid().getNumero()));
+		servicioVersion.buscaTickets(version).forEach(j -> arreglo.add(j.getTicketSysAid().getNumero()));
 		return arreglo;
 	}
 
@@ -60,7 +65,7 @@ public class WSServidores {
 		if (version == null){
 		 return arreglo;
 		}
-		SimulaVersion.getJiras().getOrDefault(version, Collections.emptyList()).forEach(j -> arreglo.add(j.getJira().getNumero()));
+		servicioVersion.buscaJiras(version).forEach(j -> arreglo.add(j.getJira().getNumero()));
 		return arreglo;
 	}
 }
