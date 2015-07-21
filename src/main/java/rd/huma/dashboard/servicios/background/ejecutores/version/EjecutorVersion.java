@@ -7,10 +7,10 @@ import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
-import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
-public class EjecutorVersion  extends Ejecutor{
+public class EjecutorVersion  extends AEjecutor{
 
 	private EntVersion version;
 	private EntConfiguracionGeneral configuracionGeneral;

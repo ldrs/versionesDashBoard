@@ -30,7 +30,7 @@ public class MonitorEjecutor {
 	   scheduler.shutdown();
 	 }
 
-	public void ejecutarAsync(Ejecutor ejecutor){
+	public void ejecutarAsync(AEjecutor ejecutor){
 		scheduler.schedule(ejecutor, 500, TimeUnit.MILLISECONDS);
 	}
 }

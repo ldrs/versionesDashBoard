@@ -4,14 +4,14 @@ import java.util.Optional;
 
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
-import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 
-public class EjecutorJiraCambio extends Ejecutor {
+public class EjecutorJiraCambio extends AEjecutor {
 	
 	private String numeroJira;
 

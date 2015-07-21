@@ -4,10 +4,10 @@ import java.util.List;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 
-public class EjecutorSeleccionFila extends Ejecutor {
+public class EjecutorSeleccionFila extends AEjecutor {
 
 	private EntVersion version;
 

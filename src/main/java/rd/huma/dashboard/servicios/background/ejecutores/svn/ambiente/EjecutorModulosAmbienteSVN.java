@@ -1,11 +1,11 @@
 package rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVN;
-import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.integracion.svn.ambiente.ServicioAmbienteSvnBuscaModulos;
 import rd.huma.dashboard.servicios.transaccional.ServicioModuloAmbienteSVN;
 
-public class EjecutorModulosAmbienteSVN extends Ejecutor {
+public class EjecutorModulosAmbienteSVN extends AEjecutor {
 
 	private String ruta;
 	private ServicioModuloAmbienteSVN servicio =  ServicioModuloAmbienteSVN.getInstanciaTransaccional();

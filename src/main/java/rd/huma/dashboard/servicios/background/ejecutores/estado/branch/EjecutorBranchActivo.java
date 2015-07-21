@@ -14,10 +14,10 @@ import javax.ws.rs.core.Response;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
-import rd.huma.dashboard.servicios.background.Ejecutor;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
-public class EjecutorBranchActivo extends Ejecutor {
+public class EjecutorBranchActivo extends AEjecutor {
 
 	private EntConfiguracionGeneral configuracionGeneral;
 	private ServicioVersion servicioVersion;
