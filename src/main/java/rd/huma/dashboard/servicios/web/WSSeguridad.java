@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchResult;
@@ -47,14 +48,16 @@ public class WSSeguridad {
 					}else{
 						persona = servicioPersona.crearPersona(getValor(atributos,"cn"), getValor(atributos,"mail"), getValor(atributos,"samaccountname").replace('.', '_'));
 					}
-					return  new StringBuilder(150)	.append("{\"inicioSesion\":true , ")
-													.append("\"id\":\"").append(persona.getId())
-													.append("\"nombre\":\"").append(persona.getNombre())
-													.append("\"usuarioSVN\":\"").append(persona.getUsuarioSvn())
-													.append("\"prioridadAmbientes\":\"").append(prioridadesAmbientes(persona.getId()))
-													.append("\"undeployAmbientes\":\"").append(undeployAmbientes(persona.getId()))
-													.append("\"scriptAmbientes\":\"").append(scriptAmbientes(persona.getId()))
-													.append("\"}").toString();
+					return Json.createObjectBuilder().add("inicioSesion", "true")
+											  .add("usuario", Json.createObjectBuilder()
+													  						.add("id", persona.getId())
+													  						.add("nombre", persona.getNombre())
+													  						.add("usuarioSVN", persona.getUsuarioSvn())
+													  						.add("prioridadAmbientes", prioridadesAmbientes(persona.getId()))
+													  						.add("undeployAmbientes", undeployAmbientes(persona.getId()))
+													  						.add("scriptAmbientes", scriptAmbientes(persona.getId()))
+													  ).build().toString();
+				
 
 				} catch (NamingException e) {}
 

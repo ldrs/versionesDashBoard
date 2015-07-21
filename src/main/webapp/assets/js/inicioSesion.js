@@ -1,4 +1,4 @@
-
+var db;
 
 cargaDb=function(){
 	var openRequest = window.indexedDB.open("app",1);
@@ -20,8 +20,6 @@ cargaDb=function(){
 			objectStore.createIndex("nombre", "nombre", { unique: false });
 			objectStore.createIndex("correo", "correo", { unique: false });
 			objectStore.createIndex("usuarioSVN", "usuarioSVN", { unique: false });
-			objectStore.createIndex("prioridadAmbientes","prioridadAmbientes", {unique:false,multiEntry:true});
-			objectStore.createIndex("undeployAmbientes", "undeployAmbientes", { unique: false,multiEntry:true });
 		}
 
 	};
@@ -62,7 +60,8 @@ $(document).ready(function(){
 
 		$.getJSON("/dashboard/api/seguridad/iniciasesion/"+user+"/"+pass,function(data){
 			if (data.inicioSesion==="true"){
-
+				var transaction = db.transaction(["usuario"],"readwrite"),store = transaction.objectStore("usuario");
+				store.add(data.usuario,1);
 			}else{
 				msgValidacion("Validación Credencial","Favor revisar su usuario/contraseña");
 			}
