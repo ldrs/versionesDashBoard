@@ -4,7 +4,7 @@ var db;
 navegarApp=function(){
 	window.location.assign("app.html");
 }
-
+//Permitiendo el uso de usuario de svn, nombre, correo y usuario dominio.
 toUser = function(user){
 	var indexCorreo = user.indexOf("@");
 	if (indexCorreo==-1){
@@ -12,6 +12,13 @@ toUser = function(user){
 	}else{
 		var indexSvn = user.indexOf("_");
 		if (indexSvn == -1){
+			var indexEspacio = user.indexOf(" ");
+			if (indexEspacio==-1){
+				return user;
+			}else{
+				return user.toLocaleLowerCase().replace(" ",".");
+			}
+
 			return user;
 		}else{
 			return user.replace("_",".");
