@@ -5,6 +5,20 @@ navegarApp=function(){
 	window.location.assign("app.html");
 }
 
+toUser = function(user){
+	var indexCorreo = user.indexOf("@");
+	if (indexCorreo==-1){
+		return user.substr(0,indexCorreo);
+	}else{
+		var indexSvn = user.indexOf("_");
+		if (indexSvn == -1){
+			return user;
+		}else{
+			return user.replace("_",".");
+		}
+	}
+}
+
 configurarBotones = function(){
 	$("#olvidoContrasena").click(function(e){
 		e.preventDefault();
@@ -14,12 +28,11 @@ configurarBotones = function(){
 	$("#login").on( "click",function(evento){
 		var yo = $(this);
 		evento.preventDefault();
-		var tmpPass=$("#pass").val(), pass = window.btoa(tmpPass) , tmUser = $("#user").val(),   user = window.btoa(tmUser);
+		var tmpPass=$("#pass").val(), pass = window.btoa(tmpPass) , tmUser = toUser($("#user").val()),   user = window.btoa(tmUser);
 		if (tmpPass.trim().length===0 || user.trim().length===0){
 			msgValidacion("Datos Requeridos","Debe llenar el usuario y la contraseña");
 			return;
 		}
-
 
 		$.getJSON("/dashboard/api/seguridad/iniciasesion/"+user+"/"+pass,function(data){
 			if (data.inicioSesion==="true"){
