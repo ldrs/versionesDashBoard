@@ -51,7 +51,7 @@ public class ServicioPersona {
 
 	public EntPersona crearPersona(String nombre, String correo, String usuarioSVN) {
 		EntPersona persona = new EntPersona();
-		persona.setCorreo(nombre);
+		persona.setCorreo(correo);
 		persona.setNombre(nombre);
 		persona.setUsuarioSvn(usuarioSVN);
 

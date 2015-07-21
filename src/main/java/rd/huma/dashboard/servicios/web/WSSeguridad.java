@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchResult;
 import javax.ws.rs.GET;
@@ -40,26 +39,25 @@ public class WSSeguridad {
 				Attributes atributos = resultado.getAttributes();
 
 				Optional<EntPersona> personaOpcional;
-				try {
-					personaOpcional = servicioPersona.buscaPorCorreo(atributos.get("mail").get().toString());
-					EntPersona persona;
-					if (personaOpcional.isPresent()){
-						persona = personaOpcional.get();
-					}else{
-						persona = servicioPersona.crearPersona(getValor(atributos,"cn"), getValor(atributos,"mail"), getValor(atributos,"samaccountname").replace('.', '_'));
-					}
-					return Json.createObjectBuilder().add("inicioSesion", "true")
-											  .add("usuario", Json.createObjectBuilder()
-													  						.add("id", persona.getId())
-													  						.add("nombre", persona.getNombre())
-													  						.add("usuarioSVN", persona.getUsuarioSvn())
-													  						.add("prioridadAmbientes", prioridadesAmbientes(persona.getId()))
-													  						.add("undeployAmbientes", undeployAmbientes(persona.getId()))
-													  						.add("scriptAmbientes", scriptAmbientes(persona.getId()))
-													  ).build().toString();
-				
+				String email = getValor(atributos,"mail");
 
-				} catch (NamingException e) {}
+				personaOpcional = servicioPersona.buscaPorCorreo(email);
+				EntPersona persona;
+				if (personaOpcional.isPresent()){
+					persona = personaOpcional.get();
+				}else{
+					persona = servicioPersona.crearPersona(getValor(atributos,"cn"), email, getValor(atributos,"samaccountname").replace('.', '_'));
+				}
+				return Json.createObjectBuilder().add("inicioSesion", "true")
+										  .add("usuario", Json.createObjectBuilder()
+												  						.add("id", persona.getId())
+												  						.add("nombre", persona.getNombre())
+												  						.add("email", persona.getCorreo())
+												  						.add("usuarioSVN", persona.getUsuarioSvn())
+												  						.add("prioridadAmbientes", prioridadesAmbientes(persona.getId()))
+												  						.add("undeployAmbientes", undeployAmbientes(persona.getId()))
+												  						.add("scriptAmbientes", scriptAmbientes(persona.getId()))
+												  ).build().toString();
 
 			}
 		}
