@@ -8,8 +8,6 @@ navegarApp=function(){
 toUser = function(user){
 	var indexCorreo = user.indexOf("@");
 	if (indexCorreo==-1){
-		return user.substr(0,indexCorreo);
-	}else{
 		var indexSvn = user.indexOf("_");
 		if (indexSvn == -1){
 			var indexEspacio = user.indexOf(" ");
@@ -23,6 +21,8 @@ toUser = function(user){
 		}else{
 			return user.replace("_",".");
 		}
+	}else{
+		return user.substr(0,indexCorreo);
 	}
 }
 
@@ -32,11 +32,11 @@ configurarBotones = function(){
 		msgValidacion("Olvidó de contraseña","Esta es la contraseña del dominio interno, favor informar a infraestructura por una nueva.");
 	});
 
-	$("#login").on( "click",function(evento){
+	$("#login").click(function(evento){
 		var yo = $(this);
 		evento.preventDefault();
 		var tmpPass=$("#pass").val(), pass = window.btoa(tmpPass) , tmUser = toUser($("#user").val()),   user = window.btoa(tmUser);
-		if (tmpPass.trim().length===0 || user.trim().length===0){
+		if (tmpPass.trim().length===0 || tmUser.trim().length===0){
 			msgValidacion("Datos Requeridos","Debe llenar el usuario y la contraseña");
 			return;
 		}
@@ -49,8 +49,6 @@ configurarBotones = function(){
 			}else{
 				msgValidacion("Validación Credencial","Favor revisar su usuario/contraseña");
 			}
-
-			yo.off( evento );
 		});
 	});
 }
@@ -66,18 +64,11 @@ cargaDb=function(){
 
 	openRequest.onupgradeneeded = function(e) {
 
-		var thisDb = e.target.result;
-		var objectStore;
-
+		var thisDb = e.target.result ;
 
 		if(!thisDb.objectStoreNames.contains("usuario")) {
-			objectStore = thisDb.createObjectStore("usuario", { keyPath: "id", autoIncrement:true });
-//			objectStore.createIndex("id", "id", { unique: false });
-//			objectStore.createIndex("nombre", "nombre", { unique: false });
-//			objectStore.createIndex("correo", "correo", { unique: false });
-//			objectStore.createIndex("usuarioSVN", "usuarioSVN", { unique: false });
+			thisDb.createObjectStore("usuario", { keyPath: "id", autoIncrement:true });
 		}
-
 	};
 
 	openRequest.onsuccess = function(e) {

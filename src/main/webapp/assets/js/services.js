@@ -14,7 +14,7 @@ appDbServices.factory('persistanceService', ['$q', function($q) {
 			return deferred.promise;
 		}
 
-		var openRequest = window.indexedDB.open("app",1);
+		var openRequest = window.indexedDB.open("dashboard",1);
 
 		openRequest.onerror = function(e) {
 			console.log("Error opening db");
@@ -27,17 +27,9 @@ appDbServices.factory('persistanceService', ['$q', function($q) {
 			var thisDb = e.target.result;
 			var objectStore;
 
-
 			if(!thisDb.objectStoreNames.contains("usuario")) {
-				objectStore = thisDb.createObjectStore("usuario", { keyPath: "logeado", autoIncrement:false });
-				objectStore.createIndex("id", "id", { unique: false });
-				objectStore.createIndex("nombre", "nombre", { unique: false });
-				objectStore.createIndex("correo", "correo", { unique: false });
-				objectStore.createIndex("usuarioSVN", "usuarioSVN", { unique: false });
-				objectStore.createIndex("prioridadAmbientes","prioridadAmbientes", {unique:false,multiEntry:true});
-				objectStore.createIndex("undeployAmbientes", "undeployAmbientes", { unique: false,multiEntry:true });
+				objectStore = thisDb.createObjectStore("usuario", { keyPath: "id", autoIncrement:true });
 			}
-
 		};
 
 		openRequest.onsuccess = function(e) {
@@ -63,10 +55,19 @@ appDbServices.factory('persistanceService', ['$q', function($q) {
 
 	function logout() {
 		var deferred = $q.defer(), t = db.transaction(["usuario"], "readwrite");
-		t.objectStore("usuario").delete(1);
-		t.oncomplete = function(event) {
-			deferred.resolve();
-		};
+		var cursor = t.objectStore("usuario").openCursor();
+		cursor.onsuccess = function(e) {
+			 var res = e.target.result;
+			    if(res) {
+			    	 var request = res.delete();
+			    	   request.onsuccess = function() {
+			    		   deferred.resolve();
+			    	   };
+			    }else{
+			    	   deferred.resolve();
+			    }
+		}
+
 		return deferred.promise;
 	}
 
@@ -79,11 +80,13 @@ appDbServices.factory('persistanceService', ['$q', function($q) {
 
 		var transaction = db.transaction(["usuario"]);
 		var objectStore = transaction.objectStore("usuario");
-		var request = objectStore.get(1);
-
-		request.onsuccess = function(event) {
-			deferred.resolve(request.result);
-		};
+		var cursor = objectStore.openCursor();
+		cursor.onsuccess = function(e) {
+			 var res = e.target.result;
+			    if(res) {
+			    	deferred.resolve(res.value);
+			    }
+		}
 
 		return deferred.promise;
 	}
