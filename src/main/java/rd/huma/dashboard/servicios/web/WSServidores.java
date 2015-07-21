@@ -32,7 +32,7 @@ public class WSServidores {
 																				.add("css", "")
 																				.add("ruta", s.getRutaEntrada())
 																				.add("id",s.getId())
-																				.add("version", s.getVersionActual() == null ? "NONE" : s.getVersionActual().getNumero())
+																				.add("version", s.getVersionActual() == null ? "Sin Version" : s.getVersionActual().getNumero())
 																				.add("estado", s.getEstadoServidor().name())
 																				.add("tickets", tickets(s.getVersionActual()))
 																				.add("repositorioDatos", Json.createObjectBuilder()
