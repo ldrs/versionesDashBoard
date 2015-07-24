@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -15,6 +16,7 @@ import javax.ws.rs.PathParam;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 @Path("/servidores/{ambiente}")
@@ -22,6 +24,7 @@ public class WSServidores {
 
 	private @Servicio @Inject ServicioServidor servicioServidor;
 	private @Servicio @Inject ServicioVersion servicioVersion;
+	private @Servicio @Inject ServicioFila servicioFila;
 
 
 	@GET
@@ -32,7 +35,7 @@ public class WSServidores {
 																				.add("css", "")
 																				.add("ruta", s.getRutaEntrada())
 																				.add("id",s.getId())
-																				.add("version", s.getVersionActual() == null ? "Sin Version" : s.getVersionActual().getNumero())
+																				.add("version",  version(s) )
 																				.add("estado", s.getEstadoServidor().name())
 																				.add("tickets", tickets(s.getVersionActual()))
 																				.add("repositorioDatos", Json.createObjectBuilder()
@@ -45,6 +48,22 @@ public class WSServidores {
 										);
 
 		return builder.build().toString();
+	}
+	
+	private JsonObjectBuilder version(EntServidor servidor){
+		JsonObjectBuilder rt = Json.createObjectBuilder();
+		EntVersion version = servidor.getVersionActual();
+		if (version == null){
+			rt.add("numero", "Sin Versión");
+		}else{
+			JsonArrayBuilder duenos = createArrayBuilder();
+			servicioFila.getDuenosVersion(version).forEach(d -> duenos.add(d.getId()));
+			
+			rt.add("numero", version.getNumero());
+			rt.add("id", version.getId());
+			rt.add("duenos", duenos );
+		}
+		return rt;
 	}
 
 	private List<EntServidor> getServidores(String id){

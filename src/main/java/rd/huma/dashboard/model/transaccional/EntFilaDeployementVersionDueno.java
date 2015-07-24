@@ -3,10 +3,17 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="FILA_DEPLOYEMENT_VERSION_DUENO")
+@NamedQueries({
+	@NamedQuery(name="buscarPorVersion.duenoFilaVersion", query="SELECT E FROM EntFilaDeployementVersionDueno E where E.version = :ver")
+}
+)
+
 public class EntFilaDeployementVersionDueno extends AEntModelo {
 
 	/**

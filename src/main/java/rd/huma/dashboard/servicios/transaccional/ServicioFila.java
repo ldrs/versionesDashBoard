@@ -158,4 +158,9 @@ public class ServicioFila {
 		entityManager.merge(versionFila);
 		entityManager.merge(versionFilaOther);
 	}
+
+	public List<EntFilaDeployementVersionDueno> getDuenosVersion(EntVersion version) {
+		return  entityManager.createNamedQuery("buscarPorVersion.duenoFilaVersion",EntFilaDeployementVersionDueno.class)
+				.setParameter("ver", version).getResultList();
+	}
 }

@@ -109,12 +109,12 @@
 					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores">
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
 						<div>{{servidor.basedatos}}</div>
-						<div class="servidorVersion">{{servidor.version}}</div>
+						<div class="servidorVersion">{{servidor.version.numero}}</div>
 						<div class="tickets servidorTick">
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 						</div>
-						<div class="button" style="display: {{app.cssControlesUndeploy}}" ng-click="undeploy">Undeploy</div>
+						<div class="button" style="display: {{servidor.css}}" ng-click="undeploy">Undeploy</div>
 					</div>
 				</div>
 			</div>
