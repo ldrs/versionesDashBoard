@@ -15,7 +15,7 @@ import javax.ws.rs.QueryParam;
 import rd.huma.dashboard.model.transaccional.EntHistoricoDeployement;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.dominio.EEstadoDeployement;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoFilaDeployement;
 
 @Path("/historicoDeployment")
 public class WSHistoricosDeployment {
@@ -24,7 +24,7 @@ public class WSHistoricosDeployment {
 		JsonArrayBuilder builder = createArrayBuilder();
 		getHistoricos().stream().forEach(s -> builder
 								.add(createObjectBuilder()
-										.add("estado", EEstadoDeployement.ESPERA.toString())
+										.add("estado", EEstadoFilaDeployement.ESPERA.toString())
 										.add("fecha", LocalDateTime.now().toString())
 										.add("servidor", "PRUEBA")
 										.add("version", s.getVersion().getNumero())
@@ -47,7 +47,7 @@ public class WSHistoricosDeployment {
 		version.setNumero("50154");
 
 		EntHistoricoDeployement fila = new EntHistoricoDeployement();
-		fila.setEstado(EEstadoDeployement.ESPERA);
+		fila.setEstado(EEstadoFilaDeployement.ESPERA);
 		fila.setFecha(LocalDateTime.now());
 		fila.setServidor(servidor);
 		fila.setVersion(version);

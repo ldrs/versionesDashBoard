@@ -1,6 +1,6 @@
 package rd.huma.dashboard.model.transaccional.dominio;
 
-public enum EEstadoDeployement {
+public enum EEstadoFilaDeployement {
 
 	ESPERA,
 	DEPLOY,

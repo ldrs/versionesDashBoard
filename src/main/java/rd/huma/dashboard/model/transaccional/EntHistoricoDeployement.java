@@ -6,12 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import rd.huma.dashboard.model.transaccional.dominio.EEstadoDeployement;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoFilaDeployement;
 
 @Entity
 @Table(name="HISTORICO_DEPLOYEMENT")
+@NamedQueries({
+	@NamedQuery(name ="buscarPorAmbiente.historico", query = "SELECT E from EntHistoricoDeployement E join E.fila F join F.ambiente A where A.id = :idAmbiente ")
+}
+		
+		)
 public class EntHistoricoDeployement extends AEntModelo{
 
 	/**
@@ -27,11 +34,16 @@ public class EntHistoricoDeployement extends AEntModelo{
 	@ManyToOne
 	@JoinColumn
 	private EntVersion version;
+	
+
+	@ManyToOne
+	@JoinColumn
+	private EntFilaDeployement fila;
 
 	private LocalDateTime fecha;
 
 	@Enumerated
-	private EEstadoDeployement estado;
+	private EEstadoFilaDeployement estado;
 
 	public EntServidor getServidor() {
 		return servidor;
@@ -51,11 +63,21 @@ public class EntHistoricoDeployement extends AEntModelo{
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
-	public EEstadoDeployement getEstado() {
+	public EEstadoFilaDeployement getEstado() {
 		return estado;
 	}
-	public void setEstado(EEstadoDeployement estado) {
+	public void setEstado(EEstadoFilaDeployement estado) {
 		this.estado = estado;
+	}
+	
+	
+	
+	
+	public EntFilaDeployement getFila() {
+		return fila;
+	}
+	public void setFila(EntFilaDeployement fila) {
+		this.fila = fila;
 	}
 	@Override
 	public int hashCode() {

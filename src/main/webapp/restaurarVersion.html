@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+
+<html ng-app="versionesApp">
+<head>
+		<title>Versiones</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="assets/js/angular.min.js"></script>
+		<script src="assets/js/angular-resource.js"></script>
+		<script src="assets/js/services.js"></script>
+		<script src="assets/js/appRestaurarVersion.js"></script>
+
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+
+    <body ng-controller="appController as app">
+		<div id="page-wrapper">
+		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
+			<div id="header-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="12u">
+
+							<header id="header">
+								<h1><a href="app.html" id="logo">Restaurar Versioens</a></h1>
+								 <div >
+
+									<nav id="nav">
+										<a ng-repeat="aplicacion in app.aplicaciones" href="app.html?aplicacion={{aplicacion.nombre}}" class="{{aplicacion.css}}">{{aplicacion.nombre}}</a>
+									</nav>
+								</div>
+							</header>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="main" style="padding-bottom: 1.2em;">
+				<div class="container">
+					<div class="row main-row">
+						<div class="12u"  style="padding: 0 0 0 50px">
+							<header id="headerAmbientes">
+								<nav id="ambientes">
+									<a ng-repeat="ambiente in app.ambientes" href="{{ambiente.href}}" class="{{ambiente.css}}" style="text-transform: capitalize">{{ambiente.nombre}}</a>
+								</nav>
+							</header>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="footer-wrapper">
+				<div class="container">
+					<div class="row">
+
+							<h2 style="margin-bottom: 0;">Versiones</h2>
+							<div  style="width: 100%">
+								<div class="row rowFila rowHeaderFila">
+									<div class="aplicacion c1" style="color: black">Numero</div>
+									<div class="aplicacion c3" style="color: black">Autor</div>
+									<div class="aplicacion c3" style="color: black">Branch</div>
+									<div class="aplicacion c2" style="color: black">Fecha</div>
+									<div class="aplicacion c4" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+								</div>
+
+								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
+								<div class="versionRow">
+										<div class="row rowFila">
+										<div class="aplicacion v versionNumber c1">{{version.numero}}</div>
+										<div class="aplicacion v c3">{{version.autor}}</div>
+										<div class="aplicacion v c3">{{version.branch}}</div>
+										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
+										<div class="aplicacion v c4" style="float: right">
+											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
+													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
+													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
+													<dialog id="dig{{version.id}}">
+											</div>
+										</div>
+									</div>
+
+									<div class="tickets">
+										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+
+									</div>
+									<div class="tickets">
+										<div  style="float: left; padding-right: 15px" ng-repeat="participante in version.participantes">{{participante}}</div>
+									</div>
+								</div>
+
+								</div>
+							</div>
+
+
+					</div>
+
+				</div>
+			
+			</div>
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+
+</html>
