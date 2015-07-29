@@ -20,8 +20,8 @@ public class EjecutorSeleccionFila extends AEjecutor {
 		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
 		List<EntFilaDeployement> filasPorFiltrar = new FiltradorJiraVersionFila(version, servicio.getFilasDeploment()).filtra();
 
-		if (filasPorFiltrar.size() == 1){ //Fila encontrada procesar informacion.
-			servicio.crearVersionFila(version,filasPorFiltrar.get(0));
-		}
+		filasPorFiltrar = new  FiltradorTicketVersionFila(version, filasPorFiltrar).filtra();
+		filasPorFiltrar.stream().sorted().forEach(fila -> servicio.crearVersionFila(version, fila));
+		
 	}
 }

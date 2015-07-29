@@ -15,8 +15,9 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 	 */
 	private static final long serialVersionUID = -1463431661829014017L;
 
-
 	private String numero;
+	
+	private String estado;
 
 	public String getNumero() {
 		return numero;
@@ -26,8 +27,13 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 		this.numero = numero;
 	}
 
+	public String getEstado() {
+		return estado;
+	}
 
-
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 
 	@Override
 	public int hashCode() {

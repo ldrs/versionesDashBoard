@@ -3,7 +3,7 @@ package rd.huma.dashboard.model.transaccional.dominio;
 public enum EEstadoVersion {
 
 	ESPERANDO_DATOS_INTEGRACION,
-	ESPERANDO_FILA,
+	DATOS_INTEGRADO,
 	BRANCH_ELIMINADO{
 		@Override
 		public boolean activo() {

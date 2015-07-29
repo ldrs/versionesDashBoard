@@ -36,7 +36,7 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	@ManyToOne
 	private EntFilaDeployement fila;
 
-	private LocalDateTime fecha;
+	private LocalDateTime fechaRegistro;
 	private int prioridad;
 
 	public int getPrioridad() {
@@ -45,13 +45,14 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
 	}
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
+	
 
+	public LocalDateTime getFechaRegistro() {
+		return fechaRegistro;
+	}
+	public void setFechaRegistro(LocalDateTime fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
 	public EntVersion getVersion() {
 		return version;
 	}

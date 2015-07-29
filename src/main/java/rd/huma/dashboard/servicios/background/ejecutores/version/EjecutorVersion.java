@@ -43,7 +43,7 @@ public class EjecutorVersion  extends AEjecutor{
 
 		new ComparadorModulos(version).procesar();
 
-		servicio.actualizarEstado(EEstadoVersion.ESPERANDO_FILA,version);
+		servicio.actualizarEstado(EEstadoVersion.DATOS_INTEGRADO,version);
 
 		servicio.gestionarFila(version);
 	}

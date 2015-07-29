@@ -9,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
 import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
+import rd.huma.dashboard.servicios.background.ejecutores.fila.deploy.EjecutorDeployVersionAutomatico;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.EjecutorEliminadorFilas;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 
@@ -23,6 +24,8 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
+		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 60, 1, TimeUnit.MINUTES);
+		
 	}
 
 	@PreDestroy

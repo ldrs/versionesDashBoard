@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -95,26 +96,27 @@ public class ServicioFila {
 		entityManager.persist(f);
 	}
 
-	public synchronized void crearVersionFila(EntVersion version,EntFilaDeployement fila) {
-		int prioridad = entityManager.createNamedQuery("maxVersion.fila", Integer.class).setParameter("fil", fila).getSingleResult();
+	public void crearVersionFila(EntVersion version,EntFilaDeployement fila) {
+		synchronized (fila.getId()) {
+			int prioridad = entityManager.createNamedQuery("maxVersion.fila", Integer.class).setParameter("fil", fila).getSingleResult();
 
-		EntFilaDeployementVersion deployementVersion = new EntFilaDeployementVersion();
-		deployementVersion.setVersion(version);
-		deployementVersion.setFila(fila);
-		deployementVersion.setPrioridad(prioridad);
+			EntFilaDeployementVersion deployementVersion = new EntFilaDeployementVersion();
+			deployementVersion.setVersion(version);
+			deployementVersion.setFila(fila);
+			deployementVersion.setPrioridad(prioridad);
+			deployementVersion.setFechaRegistro(LocalDateTime.now());
 
-		entityManager.persist(deployementVersion);
+			entityManager.persist(deployementVersion);
 
-		if (fila.getGrupoDuenos()!=null){
-			Set<String> grupos = new HashSet<>(Arrays.asList(fila.getGrupoDuenos().split(",")));
-			Set<String> grupoFiltrados =  servicioGrupo.grupos().stream().filter(g -> grupos.contains(g.getGrupo())).map(EntGrupoPersona::getId).collect(Collectors.toSet());
-			Set<EntPersona> personasPosibleAUsuar = new HashSet<>();
-			grupoFiltrados.forEach(g -> personasPosibleAUsuar.addAll(servicioGrupo.buscarDetallePorGrupo(g).stream().map(EntGrupoPersonaDetalle::getPersona).collect(Collectors.toSet()) ));
+			if (fila.getGrupoDuenos()!=null){
+				Set<String> grupos = new HashSet<>(Arrays.asList(fila.getGrupoDuenos().split(",")));
+				Set<String> grupoFiltrados =  servicioGrupo.grupos().stream().filter(g -> grupos.contains(g.getGrupo())).map(EntGrupoPersona::getId).collect(Collectors.toSet());
+				Set<EntPersona> personasPosibleAUsuar = new HashSet<>();
+				grupoFiltrados.forEach(g -> personasPosibleAUsuar.addAll(servicioGrupo.buscarDetallePorGrupo(g).stream().map(EntGrupoPersonaDetalle::getPersona).collect(Collectors.toSet()) ));
 
-			servicioVersion.buscaParticipantes(version).stream().map(EntVersionParticipante::getParticipante).filter(p -> personasPosibleAUsuar.contains(p)).forEach(p -> nuevaPersonaFilaDueno(deployementVersion, p));
+				servicioVersion.buscaParticipantes(version).stream().map(EntVersionParticipante::getParticipante).filter(p -> personasPosibleAUsuar.contains(p)).forEach(p -> nuevaPersonaFilaDueno(deployementVersion, p));
+			}
 		}
-
-
 	}
 
 	public void eliminarFilaVersion(String id){
