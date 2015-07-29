@@ -9,6 +9,7 @@ public enum EEstadoServidor {
 		}
 	},
 	OCUPADO,
+	OCUPADO_DESPLIEGE_EN_PROCESO,
 	NO_DISPONIBLE;
 
 

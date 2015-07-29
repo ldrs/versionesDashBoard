@@ -20,12 +20,12 @@ public class MonitorEjecutor {
 
 	@PostConstruct
 	public void inicializar(){
-		scheduler = Executors.newScheduledThreadPool(50);
+		scheduler = Executors.newScheduledThreadPool(80);
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 60, 1, TimeUnit.MINUTES);
-		
+
 	}
 
 	@PreDestroy

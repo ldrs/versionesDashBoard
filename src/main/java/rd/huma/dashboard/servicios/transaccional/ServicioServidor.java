@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntServidor;
+import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
 
 @Stateless
@@ -24,12 +26,13 @@ public class ServicioServidor {
 		return CDI.current().select(ServicioServidor.class, servicio).get();
 	}
 
-	public EntServidor nuevoServidor(EntAmbienteAplicacion ambiente, EntRepositorioDatos baseDatos, String nombre, String rutaEntrada){
+	public EntServidor nuevoServidor(EntAmbienteAplicacion ambiente, EntRepositorioDatos baseDatos, String nombre, String rutaEntrada, String nombreJenkins){
 		EntServidor servidor = new EntServidor();
 		servidor.setAmbiente(ambiente);
 		servidor.setBaseDatos(baseDatos);
 		servidor.setNombre(nombre);
 		servidor.setRutaEntrada(rutaEntrada);
+		servidor.setNombreServidorJenkins(nombreJenkins);
 		entityManager.persist(servidor);
 		return servidor;
 	}
@@ -38,4 +41,10 @@ public class ServicioServidor {
 		return entityManager.createNamedQuery("buscar.servidor",EntServidor.class).setParameter("amb", id).getResultList();
 	}
 
+	public void cambiaVersionServidor(EntServidor servidor, EntVersion version) {
+		EntServidor servidorDatos = entityManager.find(EntServidor.class, servidor.getId());
+		servidorDatos.setVersionActual(version);
+		servidorDatos.setEstadoServidor(EEstadoServidor.OCUPADO_DESPLIEGE_EN_PROCESO);
+		entityManager.persist(servidorDatos);
+	}
 }

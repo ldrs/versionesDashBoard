@@ -23,6 +23,7 @@ import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersionDueno;
 import rd.huma.dashboard.model.transaccional.EntGrupoPersona;
 import rd.huma.dashboard.model.transaccional.EntGrupoPersonaDetalle;
 import rd.huma.dashboard.model.transaccional.EntPersona;
+import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -34,6 +35,8 @@ public class ServicioFila {
 	private @Servicio @Inject ServicioGrupo servicioGrupo;
 
 	private @Servicio @Inject ServicioVersion servicioVersion;
+
+	private @Servicio @Inject ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
 	Function<Object[], FilaBranch> toFilaBranch = new Function<Object[], FilaBranch>() {
 	    public FilaBranch apply(Object[] t) {
@@ -164,5 +167,9 @@ public class ServicioFila {
 	public List<EntFilaDeployementVersionDueno> getDuenosVersion(EntVersion version) {
 		return  entityManager.createNamedQuery("buscarPorVersion.duenoFilaVersion",EntFilaDeployementVersionDueno.class)
 				.setParameter("ver", version).getResultList();
+	}
+
+	public void deploy(EntServidor servidor,EntFilaDeployementVersion versionFila) {
+		servicioJobDespliegueVersion.nuevoDeploy(servidor, versionFila);
 	}
 }

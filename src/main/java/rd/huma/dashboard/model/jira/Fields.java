@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"customfield_10600", "customfield_10800", "customfield_10801",
 		"aggregatetimeestimate", "customfield_10802", "customfield_10806",
 		"customfield_10807", "customfield_10400", "environment", "progress",
-		"votes" })
+		"votes","parent" })
 public class Fields {
 	private String summary;
 

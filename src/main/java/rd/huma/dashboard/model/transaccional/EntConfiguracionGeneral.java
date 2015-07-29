@@ -29,8 +29,8 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	private String pwdSvn;
 
 	private String rutaJenkins = "http://172.16.7.39:8080/";
-	private String usrJenkins;
-	private String pwdJenkins;
+	private String usrJenkins = "jenkins";
+	private String pwdJenkins = "c48186a382ae4829b9392222b65e233f";
 
 
 	private String nombreCampoJiraLineaDesarrollo = "cf[10810]";

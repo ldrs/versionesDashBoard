@@ -1,11 +1,13 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import rd.huma.dashboard.model.maven.Project;
 import rd.huma.dashboard.model.transaccional.Artefacto;
@@ -35,7 +37,11 @@ public class BuscadorModulos {
 
 	private List<EntVersionModulo> encuentraModulos(boolean root, String ruta , List<EntVersionModulo> modulos){
 		Builder tmp = ClientBuilder.newClient().target(ruta+"/pom.xml").request().accept(MediaType.MEDIA_TYPE_WILDCARD);
-		Project project = tmp.get(Project.class);
+		Response get = tmp.get();
+		if (get.getStatus()!=200){
+			return Collections.emptyList();
+		}
+		Project project = get.readEntity(Project.class);
 		if (project.getModules() != null){
 			for (String modulo : project.getModules().getModule()){
 				encuentraModulos(false,ruta+"/"+modulo, modulos);

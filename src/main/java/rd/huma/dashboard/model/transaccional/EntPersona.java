@@ -1,15 +1,15 @@
 package rd.huma.dashboard.model.transaccional;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="Persona")
+@Table(name="Persona", uniqueConstraints = @UniqueConstraint(name="SVN_PERSONA_UK", columnNames = "usuarioSvn"))
 @NamedQueries({
-					@NamedQuery(name="buscaPersonaSVN", query="SELECT E from EntPersona E where E.usuarioSvn = :usrSVN"),
+					@NamedQuery(name="buscaPersonaSVN", query="SELECT E from EntPersona E where LOWER(E.usuarioSvn) = :usrSVN"),
 					@NamedQuery(name="buscaPersonas", query="SELECT E from EntPersona E"),
 					@NamedQuery(name="buscaPersonaCorreo", query="SELECT E from EntPersona E where E.correo = :mail")
 
@@ -26,7 +26,6 @@ public class EntPersona  extends AEntModelo implements Comparable<EntPersona> {
 
 	private String nombre;
 
-	@Column(unique=true)
 	private String usuarioSvn;
 
 	private String correo;

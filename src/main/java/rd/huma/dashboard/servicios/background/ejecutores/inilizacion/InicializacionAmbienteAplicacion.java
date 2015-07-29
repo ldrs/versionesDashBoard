@@ -45,9 +45,10 @@ class InicializacionAmbienteAplicacion {
 	}
 
 	private void creaServidoresAplicacionSigefDesarrollo(EntAmbienteAplicacion ambienteAplicacion) {
-		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST01", "SIGEF_PRD", Optional.empty()), "172.16.7.30:7101", "http://172.16.7.30:7101/sigef/principal.jsp");
-		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD", Optional.empty()), "172.16.7.30:8888", "http://172.16.7.30:8888/sigef/principal.jsp");
-		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD6", Optional.empty()), "172.16.7.21:7777", "http://172.16.7.30:8888/sigef/principal.jsp");
-		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD4", Optional.empty()), "172.16.7.21:8888", "http://172.16.7.21:8888/sigef/principal.jsp");
+//		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST01", "SIGEF_PRD", Optional.empty()), "172.16.7.30:7101", "http://172.16.7.30:7101/sigef/principal.jsp","730-7101");
+//		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD", Optional.empty()), "172.16.7.30:8888", "http://172.16.7.30:8888/sigef/principal.jsp","730-8888");
+//		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD6", Optional.empty()), "172.16.7.21:7777", "http://172.16.7.21:7777/sigef/principal.jsp","721-7777");
+//		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD4", Optional.empty()), "172.16.7.21:8888", "http://172.16.7.21:8888/sigef/principal.jsp","721-8888");
+		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST04", "SIGEF_PRD6", Optional.empty()), "172.16.7.53:8080", "http://172.16.7.21:8888/sigef/principal.jsp","753-8080");
 	}
 }

@@ -36,6 +36,8 @@ public class EntAplicacion extends AEntModelo {
 
 	private String jobJenkinsDeployements;
 
+	private String ambienteParaHacerDeployPorDefecto;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -90,6 +92,15 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setJobJenkinsDeployements(String jobJenkinsDeployements) {
 		this.jobJenkinsDeployements = jobJenkinsDeployements;
+	}
+
+	public String getAmbienteParaHacerDeployPorDefecto() {
+		return ambienteParaHacerDeployPorDefecto;
+	}
+
+	public void setAmbienteParaHacerDeployPorDefecto(
+			String ambienteParaHacerDeployPorDefecto) {
+		this.ambienteParaHacerDeployPorDefecto = ambienteParaHacerDeployPorDefecto;
 	}
 
 	@Override

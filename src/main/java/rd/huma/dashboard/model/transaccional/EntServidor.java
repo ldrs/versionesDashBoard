@@ -40,6 +40,8 @@ public class EntServidor extends AEntModelo {
 	private String usuario;
 	private String password;
 
+	private String nombreServidorJenkins;
+
 
 	@JoinColumn
 	@ManyToOne
@@ -102,6 +104,13 @@ public class EntServidor extends AEntModelo {
 	}
 	public void setBaseDatos(EntRepositorioDatos baseDatos) {
 		this.baseDatos = baseDatos;
+	}
+
+	public String getNombreServidorJenkins() {
+		return nombreServidorJenkins;
+	}
+	public void setNombreServidorJenkins(String nombreServidorJenkins) {
+		this.nombreServidorJenkins = nombreServidorJenkins;
 	}
 	@Override
 	public int hashCode() {
@@ -189,4 +198,5 @@ public class EntServidor extends AEntModelo {
 		}
 		return true;
 	}
+
 }

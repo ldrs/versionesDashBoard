@@ -14,10 +14,10 @@ import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
@@ -76,7 +76,7 @@ public class ProcesadorTickets {
 
 	private void collectInformationTicket(EntJira jira,Issues issues){
 		Fields fields = issues.getFields();
-		ticketSysAid.add(nuevoTicketSysAid(fields.getSysAidTicket()));
+		nuevoTicketSysAid(fields.getSysAidTicket());
 		Assignee asignado = fields.getAssignee();
 		if (asignado!=null){
 			duenos.add(asignado.getName());
@@ -86,6 +86,7 @@ public class ProcesadorTickets {
 			persona.setCorreo(asignado.getEmailAddress());
 			persona.setUsuarioSvn(asignado.getName());
 			participante.setTipo(ETipoParticipante.ASIGNADO);
+			participante.setParticipante(persona);
 			participantes.add(participante);
 		}
 
@@ -101,16 +102,21 @@ public class ProcesadorTickets {
 			persona.setCorreo(creator.getEmailAddress());
 			persona.setUsuarioSvn(creator.getName());
 			participante.setTipo(ETipoParticipante.REPORTADOR);
+			participante.setParticipante(persona);
 			participantes.add(participante);
 		}
 
 		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
 	}
 
-	private EntTicketSysAid nuevoTicketSysAid(String numero){
+	private void nuevoTicketSysAid(String numero){
+		if (numero == null){
+			return;
+		}
+
 		EntTicketSysAid ticketSysAid = new EntTicketSysAid();
 		ticketSysAid.setNumero(numero);
-		return ticketSysAid;
+		this.ticketSysAid.add(ticketSysAid);
 	}
 
 	public static ProcesadorTickets of(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion){

@@ -1,11 +1,8 @@
 package rd.huma.dashboard.model.maven;
 
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties({ "profiles", "xmlns","properties","build","pluggins" })
-@XmlType
+@XmlRootElement(name="project")
 public class Project {
 	private Dependencies dependencies;
 

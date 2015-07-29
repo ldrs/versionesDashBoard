@@ -22,7 +22,7 @@ public class ServicioPersona {
 
 	public EntPersona buscaOCreaPersona(String usuarioSVN){
 		return entityManager.createNamedQuery("buscaPersonaSVN", EntPersona.class)
-			.setParameter("usrSVN", usuarioSVN).getResultList()
+			.setParameter("usrSVN", usuarioSVN.toLowerCase()).getResultList()
 			.stream().findFirst()
 			.orElse(creaPersona(usuarioSVN));
 	}
@@ -34,11 +34,17 @@ public class ServicioPersona {
 	}
 
 	private EntPersona creaPersona(String usuarioSVN) {
-		String correo =	usuarioSVN.replace('_', '.');
+		String correo =	usuarioSVN.replace('_', '.')+"@sigef.gov.do";
+		synchronized(usuarioSVN){
+			Optional<EntPersona> optionalPersona = buscaPorCorreo(correo);
+			if (optionalPersona.isPresent()){
+				return optionalPersona.get();
+			}
+		}
 
 		EntPersona persona = new EntPersona();
 		persona.setUsuarioSvn(usuarioSVN);
-		persona.setCorreo(correo+"@sigef.gov.do");
+		persona.setCorreo(correo);
 
 		entityManager.persist(persona);
 
