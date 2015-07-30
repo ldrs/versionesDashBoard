@@ -17,7 +17,7 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	private String numero;
 
-	private String estado;
+	private String estado="En Desarrollo";
 
 	public String getNumero() {
 		return numero;

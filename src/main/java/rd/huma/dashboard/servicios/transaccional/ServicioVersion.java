@@ -146,7 +146,7 @@ public class ServicioVersion {
 	}
 
 	public List<EntVersionModulo> buscaModulos(EntVersion version) {
-		return entityManager.createNamedQuery("buscar.versionModulo",EntVersionModulo.class).setParameter("v", version).getResultList();
+		return entityManager.createNamedQuery("buscar.versionModulo",EntVersionModulo.class).setParameter("ver", version).getResultList();
 
 	}
 

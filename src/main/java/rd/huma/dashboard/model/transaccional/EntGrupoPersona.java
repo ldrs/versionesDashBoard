@@ -8,7 +8,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="GRUPO_PERSONA")
-@NamedQueries({@NamedQuery(name="todos.grupoPersona" ,query = "SELECT E from EntGrupoPersona E")})
+@NamedQueries(
+		{@NamedQuery(name="todos.grupoPersona" ,query = "SELECT E from EntGrupoPersona E"),
+		@NamedQuery(name="porGrupo.grupoPersona" ,query = "SELECT E from EntGrupoPersona E where E.grupo = :grp")
+		}
+
+		)
 public class EntGrupoPersona extends AEntModelo implements Comparable<EntGrupoPersona> {
 
 	/**

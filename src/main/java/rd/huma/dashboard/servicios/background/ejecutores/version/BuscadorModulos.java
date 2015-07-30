@@ -9,7 +9,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import rd.huma.dashboard.model.maven.Project;
+import rd.huma.dashboard.model.maven.Model;
 import rd.huma.dashboard.model.transaccional.Artefacto;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
@@ -22,7 +22,7 @@ public class BuscadorModulos {
 	private EntConfiguracionGeneral configuracionGeneral;
 	private EntVersion version;
 	private EntAplicacion aplicacion;
-	private ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
+
 
 	public BuscadorModulos(EntConfiguracionGeneral configuracionGeneral, EntAplicacion aplicacion, EntVersion version) {
 		this.configuracionGeneral = configuracionGeneral;
@@ -41,7 +41,7 @@ public class BuscadorModulos {
 		if (get.getStatus()!=200){
 			return Collections.emptyList();
 		}
-		Project project = get.readEntity(Project.class);
+		Model project = get.readEntity(Model.class);
 		if (project.getModules() != null){
 			for (String modulo : project.getModules().getModule()){
 				encuentraModulos(false,ruta+"/"+modulo, modulos);
@@ -75,6 +75,7 @@ public class BuscadorModulos {
 
 
 	public void procesar() {
+		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		for (EntVersionModulo versionModulo : buscar()){
 			servicioVersion.crearVersionModulo(versionModulo);
 		}

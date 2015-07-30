@@ -1,8 +1,6 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -54,11 +52,8 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 
 		Form form = new Form();
 		propiedades.forEach(propiedad -> form.param(propiedad.getPropiedad(), propiedad.getValor()));
-		Set<String> setPropiedades = propiedades.stream().map(EntVersionPropiedad::getPropiedad).collect(Collectors.toSet());
-		if (!setPropiedades.contains("AMBIENTE")){
-			form.param("AMBIENTE", aplicacion.getAmbienteParaHacerDeployPorDefecto());
-		}
 
+		form.param("AMBIENTE", version.getRutaSvnAmbiente());
 		form.param("Servidor", servidor.getNombreServidorJenkins());
 
 		return Entity.form(form);

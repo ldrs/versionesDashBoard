@@ -17,19 +17,19 @@ import javax.xml.bind.annotation.XmlType;
 /**
  *  4.0.0
  * 
- * <p>Java class for Parent complex type.
+ * <p>Java class for Scm complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Parent">
+ * &lt;complexType name="Scm">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
- *         &lt;element name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="groupId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="relativePath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="connection" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="developerConnection" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="tag" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="url" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -39,111 +39,111 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Parent", propOrder = {
+@XmlType(name = "Scm", propOrder = {
 
 })
-public class Parent {
+public class Scm {
 
-    protected String artifactId;
-    protected String groupId;
-    protected String version;
-    @XmlElement(defaultValue = "../pom.xml")
-    protected String relativePath;
+    protected String connection;
+    protected String developerConnection;
+    @XmlElement(defaultValue = "HEAD")
+    protected String tag;
+    protected String url;
 
     /**
-     * Gets the value of the artifactId property.
+     * Gets the value of the connection property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArtifactId() {
-        return artifactId;
+    public String getConnection() {
+        return connection;
     }
 
     /**
-     * Sets the value of the artifactId property.
+     * Sets the value of the connection property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArtifactId(String value) {
-        this.artifactId = value;
+    public void setConnection(String value) {
+        this.connection = value;
     }
 
     /**
-     * Gets the value of the groupId property.
+     * Gets the value of the developerConnection property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getGroupId() {
-        return groupId;
+    public String getDeveloperConnection() {
+        return developerConnection;
     }
 
     /**
-     * Sets the value of the groupId property.
+     * Sets the value of the developerConnection property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setGroupId(String value) {
-        this.groupId = value;
+    public void setDeveloperConnection(String value) {
+        this.developerConnection = value;
     }
 
     /**
-     * Gets the value of the version property.
+     * Gets the value of the tag property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getVersion() {
-        return version;
+    public String getTag() {
+        return tag;
     }
 
     /**
-     * Sets the value of the version property.
+     * Sets the value of the tag property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setVersion(String value) {
-        this.version = value;
+    public void setTag(String value) {
+        this.tag = value;
     }
 
     /**
-     * Gets the value of the relativePath property.
+     * Gets the value of the url property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getRelativePath() {
-        return relativePath;
+    public String getUrl() {
+        return url;
     }
 
     /**
-     * Sets the value of the relativePath property.
+     * Sets the value of the url property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setRelativePath(String value) {
-        this.relativePath = value;
+    public void setUrl(String value) {
+        this.url = value;
     }
 
 }

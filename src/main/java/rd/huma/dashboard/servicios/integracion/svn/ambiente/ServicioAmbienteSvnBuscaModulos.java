@@ -8,7 +8,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 
 import rd.huma.dashboard.model.maven.Dependency;
-import rd.huma.dashboard.model.maven.Project;
+import rd.huma.dashboard.model.maven.Model;
 import rd.huma.dashboard.model.transaccional.Artefacto;
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVN;
 import rd.huma.dashboard.model.transaccional.EntAmbienteSVNModulo;
@@ -25,7 +25,7 @@ public class ServicioAmbienteSvnBuscaModulos {
 	public List<EntAmbienteSVNModulo> procesar(){
 		List<EntAmbienteSVNModulo> modulos = new ArrayList<>();
 		Builder tmp = ClientBuilder.newClient().target(ambienteSVN.getRutaSvnAmbiente() +"/pom.xml").request().accept(MediaType.MEDIA_TYPE_WILDCARD);
-		Project project = tmp.get(Project.class);
+		Model project = tmp.get(Model.class);
 
 		for (Dependency dependencia : project.getDependencies().getDependency()){
 			if (dependencia.getGroupId().startsWith("dr.gov")){
@@ -33,7 +33,7 @@ public class ServicioAmbienteSvnBuscaModulos {
 				EntAmbienteSVNModulo ambienteSVNModulo = new EntAmbienteSVNModulo();
 				ambienteSVNModulo.setAmbienteSVN(ambienteSVN);
 				Artefacto artefacto = new Artefacto();
-				
+
 				artefacto.setArtefacto(dependencia.getArtifactId());
 				artefacto.setGrupo(dependencia.getGroupId());
 				artefacto.setPaquete(dependencia.getType());

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VERSION_MODULO")
-@NamedQuery(name="buscar.versionModulo",query="SELECT E from EntVersionModulo E where E.version in :e")
+@NamedQuery(name="buscar.versionModulo",query="SELECT E from EntVersionModulo E where E.version in :ver")
 public class EntVersionModulo extends AEntModelo{
 
 	/**
@@ -20,7 +20,7 @@ public class EntVersionModulo extends AEntModelo{
 	@JoinColumn
 	@ManyToOne
 	private EntVersion version;
-	
+
 	@Embedded
 	private Artefacto artefacto;
 
@@ -39,5 +39,5 @@ public class EntVersionModulo extends AEntModelo{
 	public void setArtefacto(Artefacto artefacto) {
 		this.artefacto = artefacto;
 	}
-	
+
 }

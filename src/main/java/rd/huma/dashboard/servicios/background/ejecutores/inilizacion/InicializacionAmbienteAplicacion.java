@@ -8,6 +8,7 @@ import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioAplicacion;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
+import rd.huma.dashboard.servicios.transaccional.ServicioGrupo;
 import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 
@@ -18,8 +19,11 @@ class InicializacionAmbienteAplicacion {
 	private ServicioServidor servicioServidor = ServicioServidor.getInstanciaTransaccional();
 	private ServicioRepositorioDatos servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 	private ServicioFila servicioFila = ServicioFila.getInstanciaTransaccional();
+	private ServicioGrupo servicioGrupo =  ServicioGrupo.getInstanciaTransaccional();
 
 	public void inicializar() {
+		servicioGrupo.nuevoGrupo("Desarrollo");
+
 		EntAplicacion sigef = servicioAplicacion.configurarCrearAplicacion("sigef", "SGF", "sigef", 1, "versionPDS , ensambladores.version");
 
 
@@ -37,9 +41,9 @@ class InicializacionAmbienteAplicacion {
 			EntAmbienteAplicacion ambienteAplicacion = servicioAmbiente.nuevoAmbienteAplicacion(ambiente, aplicacion);
 			if (ambiente.getOrden()==1 && aplicacion.getOrden()==1){ //Pruebas Desarrollo
 				creaServidoresAplicacionSigefDesarrollo(ambienteAplicacion);
-				servicioFila.nuevaFila(ambienteAplicacion, "Abierto, Creado");
+				servicioFila.nuevaFila(ambienteAplicacion, "Abierto,Creado,En curso,Nuevo","En Desarrollo,Abierto");
 			}else{
-				servicioFila.nuevaFila(ambienteAplicacion, "Verificado");
+				servicioFila.nuevaFila(ambienteAplicacion, "Verificado","En Testing");
 			}
 		}
 	}

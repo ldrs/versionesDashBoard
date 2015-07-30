@@ -47,6 +47,10 @@ public class ServicioFila {
 	@Inject
 	private EntityManager entityManager;
 
+	public List<EntFilaDeployementVersion> getFilas(EntFilaDeployement fila){
+		return entityManager.createNamedQuery("buscarPorFila.fila",EntFilaDeployementVersion.class).setParameter("fil", fila) .getResultList();
+	}
+
 	public List<EntFilaDeployementVersion> getFilas(FilaBranch filaBranch){
 		return entityManager.createNamedQuery("buscarPorFilaBranch.fila",EntFilaDeployementVersion.class)
 						.setParameter("fil", filaBranch.getFila())
@@ -89,8 +93,7 @@ public class ServicioFila {
 
 	public void ordenarFila(EntFilaDeployement filaHeader){
 		AtomicInteger entero = new AtomicInteger(1);
-		entityManager.createNamedQuery("buscarPorFila.fila",EntFilaDeployementVersion.class).setParameter("fil", filaHeader)
-		.getResultList().forEach(f -> procesarOrden(f, entero.getAndIncrement()));
+		getFilas(filaHeader).forEach(f -> procesarOrden(f, entero.getAndIncrement()));
 	}
 
 	private void procesarOrden(EntFilaDeployementVersion fila, int prioridad){
@@ -101,7 +104,10 @@ public class ServicioFila {
 
 	public void crearVersionFila(EntVersion version,EntFilaDeployement fila) {
 		synchronized (fila.getId()) {
-			int prioridad = entityManager.createNamedQuery("maxVersion.fila", Integer.class).setParameter("fil", fila).getSingleResult();
+			Integer prioridad = entityManager.createNamedQuery("maxVersion.fila", Integer.class).setParameter("fil", fila).getSingleResult();
+			if (prioridad == null){
+				prioridad = 1;
+			}
 
 			EntFilaDeployementVersion deployementVersion = new EntFilaDeployementVersion();
 			deployementVersion.setVersion(version);
@@ -126,10 +132,11 @@ public class ServicioFila {
 		entityManager.remove(entityManager.find(EntFilaDeployementVersion.class, id));
 	}
 
-	public EntFilaDeployement nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
+	public EntFilaDeployement nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras, String estadosSysAid){
 		EntFilaDeployement fila = new EntFilaDeployement();
 		fila.setAmbiente(ambiente);
 		fila.setEstadosJiras(estadosJiras);
+		fila.setEstadosSysAid(estadosSysAid);
 		entityManager.persist(fila);
 		return fila;
 	}

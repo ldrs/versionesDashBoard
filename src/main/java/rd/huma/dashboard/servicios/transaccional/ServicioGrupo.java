@@ -3,6 +3,7 @@ package rd.huma.dashboard.servicios.transaccional;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -16,6 +17,11 @@ public class ServicioGrupo {
 
 	@Inject
 	private EntityManager entityManager;
+
+	public static ServicioGrupo getInstanciaTransaccional(){
+		Servicio servicio = ServicioGrupo.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioGrupo.class, servicio).get();
+	}
 
 	public EntGrupoPersona nuevoGrupo(String grupo){
 		EntGrupoPersona grupoPersona = new EntGrupoPersona();

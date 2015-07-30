@@ -10,26 +10,28 @@ package rd.huma.dashboard.model.maven;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- *  4.0.0
  * 
- * <p>Java class for Parent complex type.
+ *         This is an activator which will detect an operating system's attributes in order to activate
+ *         its profile.
+ *       
+ * 
+ * <p>Java class for ActivationOS complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Parent">
+ * &lt;complexType name="ActivationOS">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
- *         &lt;element name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="groupId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="family" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="arch" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="relativePath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -39,63 +41,86 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Parent", propOrder = {
+@XmlType(name = "ActivationOS", propOrder = {
 
 })
-public class Parent {
+public class ActivationOS {
 
-    protected String artifactId;
-    protected String groupId;
+    protected String name;
+    protected String family;
+    protected String arch;
     protected String version;
-    @XmlElement(defaultValue = "../pom.xml")
-    protected String relativePath;
 
     /**
-     * Gets the value of the artifactId property.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArtifactId() {
-        return artifactId;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Sets the value of the artifactId property.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArtifactId(String value) {
-        this.artifactId = value;
+    public void setName(String value) {
+        this.name = value;
     }
 
     /**
-     * Gets the value of the groupId property.
+     * Gets the value of the family property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getGroupId() {
-        return groupId;
+    public String getFamily() {
+        return family;
     }
 
     /**
-     * Sets the value of the groupId property.
+     * Sets the value of the family property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setGroupId(String value) {
-        this.groupId = value;
+    public void setFamily(String value) {
+        this.family = value;
+    }
+
+    /**
+     * Gets the value of the arch property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getArch() {
+        return arch;
+    }
+
+    /**
+     * Sets the value of the arch property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setArch(String value) {
+        this.arch = value;
     }
 
     /**
@@ -120,30 +145,6 @@ public class Parent {
      */
     public void setVersion(String value) {
         this.version = value;
-    }
-
-    /**
-     * Gets the value of the relativePath property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getRelativePath() {
-        return relativePath;
-    }
-
-    /**
-     * Sets the value of the relativePath property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setRelativePath(String value) {
-        this.relativePath = value;
     }
 
 }

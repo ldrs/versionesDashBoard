@@ -10,26 +10,26 @@ package rd.huma.dashboard.model.maven;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- *  4.0.0
+ * Describes where an artifact has moved to. If any of the values are omitted, it is assumed to be the
+ *         same as it was before.
  * 
- * <p>Java class for Parent complex type.
+ * <p>Java class for Relocation complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Parent">
+ * &lt;complexType name="Relocation">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
- *         &lt;element name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="groupId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="relativePath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -39,40 +39,15 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Parent", propOrder = {
+@XmlType(name = "Relocation", propOrder = {
 
 })
-public class Parent {
+public class Relocation {
 
-    protected String artifactId;
     protected String groupId;
+    protected String artifactId;
     protected String version;
-    @XmlElement(defaultValue = "../pom.xml")
-    protected String relativePath;
-
-    /**
-     * Gets the value of the artifactId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getArtifactId() {
-        return artifactId;
-    }
-
-    /**
-     * Sets the value of the artifactId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setArtifactId(String value) {
-        this.artifactId = value;
-    }
+    protected String message;
 
     /**
      * Gets the value of the groupId property.
@@ -96,6 +71,30 @@ public class Parent {
      */
     public void setGroupId(String value) {
         this.groupId = value;
+    }
+
+    /**
+     * Gets the value of the artifactId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getArtifactId() {
+        return artifactId;
+    }
+
+    /**
+     * Sets the value of the artifactId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setArtifactId(String value) {
+        this.artifactId = value;
     }
 
     /**
@@ -123,27 +122,27 @@ public class Parent {
     }
 
     /**
-     * Gets the value of the relativePath property.
+     * Gets the value of the message property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getRelativePath() {
-        return relativePath;
+    public String getMessage() {
+        return message;
     }
 
     /**
-     * Sets the value of the relativePath property.
+     * Sets the value of the message property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setRelativePath(String value) {
-        this.relativePath = value;
+    public void setMessage(String value) {
+        this.message = value;
     }
 
 }

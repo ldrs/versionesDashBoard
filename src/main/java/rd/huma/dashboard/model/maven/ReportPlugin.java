@@ -12,41 +12,50 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.w3c.dom.Element;
 
 
 /**
- *  3.0.0+
+ *  4.0.0
  * 
- * <p>Java class for Dependency complex type.
+ * <p>Java class for ReportPlugin complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Dependency">
+ * &lt;complexType name="ReportPlugin">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
  *         &lt;element name="groupId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="classifier" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="scope" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="systemPath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="exclusions" minOccurs="0">
+ *         &lt;element name="inherited" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="configuration" minOccurs="0">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="exclusion" type="{http://maven.apache.org/POM/4.0.0}Exclusion" maxOccurs="unbounded" minOccurs="0"/>
+ *                   &lt;any processContents='skip' maxOccurs="unbounded" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
- *         &lt;element name="optional" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="reportSets" minOccurs="0">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="reportSet" type="{http://maven.apache.org/POM/4.0.0}ReportSet" maxOccurs="unbounded" minOccurs="0"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -56,22 +65,18 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Dependency", propOrder = {
+@XmlType(name = "ReportPlugin", propOrder = {
 
 })
-public class Dependency {
+public class ReportPlugin {
 
+    @XmlElement(defaultValue = "org.apache.maven.plugins")
     protected String groupId;
     protected String artifactId;
     protected String version;
-    @XmlElement(defaultValue = "jar")
-    protected String type;
-    protected String classifier;
-    protected String scope;
-    protected String systemPath;
-    protected Dependency.Exclusions exclusions;
-    @XmlElement(defaultValue = "false")
-    protected Boolean optional;
+    protected String inherited;
+    protected ReportPlugin.Configuration configuration;
+    protected ReportPlugin.ReportSets reportSets;
 
     /**
      * Gets the value of the groupId property.
@@ -146,147 +151,75 @@ public class Dependency {
     }
 
     /**
-     * Gets the value of the type property.
+     * Gets the value of the inherited property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getType() {
-        return type;
+    public String getInherited() {
+        return inherited;
     }
 
     /**
-     * Sets the value of the type property.
+     * Sets the value of the inherited property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setType(String value) {
-        this.type = value;
+    public void setInherited(String value) {
+        this.inherited = value;
     }
 
     /**
-     * Gets the value of the classifier property.
+     * Gets the value of the configuration property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link ReportPlugin.Configuration }
      *     
      */
-    public String getClassifier() {
-        return classifier;
+    public ReportPlugin.Configuration getConfiguration() {
+        return configuration;
     }
 
     /**
-     * Sets the value of the classifier property.
+     * Sets the value of the configuration property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link ReportPlugin.Configuration }
      *     
      */
-    public void setClassifier(String value) {
-        this.classifier = value;
+    public void setConfiguration(ReportPlugin.Configuration value) {
+        this.configuration = value;
     }
 
     /**
-     * Gets the value of the scope property.
+     * Gets the value of the reportSets property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link ReportPlugin.ReportSets }
      *     
      */
-    public String getScope() {
-        return scope;
+    public ReportPlugin.ReportSets getReportSets() {
+        return reportSets;
     }
 
     /**
-     * Sets the value of the scope property.
+     * Sets the value of the reportSets property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link ReportPlugin.ReportSets }
      *     
      */
-    public void setScope(String value) {
-        this.scope = value;
-    }
-
-    /**
-     * Gets the value of the systemPath property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSystemPath() {
-        return systemPath;
-    }
-
-    /**
-     * Sets the value of the systemPath property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSystemPath(String value) {
-        this.systemPath = value;
-    }
-
-    /**
-     * Gets the value of the exclusions property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Dependency.Exclusions }
-     *     
-     */
-    public Dependency.Exclusions getExclusions() {
-        return exclusions;
-    }
-
-    /**
-     * Sets the value of the exclusions property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Dependency.Exclusions }
-     *     
-     */
-    public void setExclusions(Dependency.Exclusions value) {
-        this.exclusions = value;
-    }
-
-    /**
-     * Gets the value of the optional property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isOptional() {
-        return optional;
-    }
-
-    /**
-     * Sets the value of the optional property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setOptional(Boolean value) {
-        this.optional = value;
+    public void setReportSets(ReportPlugin.ReportSets value) {
+        this.reportSets = value;
     }
 
 
@@ -300,7 +233,7 @@ public class Dependency {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="exclusion" type="{http://maven.apache.org/POM/4.0.0}Exclusion" maxOccurs="unbounded" minOccurs="0"/>
+     *         &lt;any processContents='skip' maxOccurs="unbounded" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -311,39 +244,99 @@ public class Dependency {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "exclusion"
+        "any"
     })
-    public static class Exclusions {
+    public static class Configuration {
 
-        protected List<Exclusion> exclusion;
+        @XmlAnyElement
+        protected List<Element> any;
 
         /**
-         * Gets the value of the exclusion property.
+         * Gets the value of the any property.
          * 
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the exclusion property.
+         * This is why there is not a <CODE>set</CODE> method for the any property.
          * 
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
-         *    getExclusion().add(newItem);
+         *    getAny().add(newItem);
          * </pre>
          * 
          * 
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link Exclusion }
+         * {@link Element }
          * 
          * 
          */
-        public List<Exclusion> getExclusion() {
-            if (exclusion == null) {
-                exclusion = new ArrayList<Exclusion>();
+        public List<Element> getAny() {
+            if (any == null) {
+                any = new ArrayList<Element>();
             }
-            return this.exclusion;
+            return this.any;
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="reportSet" type="{http://maven.apache.org/POM/4.0.0}ReportSet" maxOccurs="unbounded" minOccurs="0"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "reportSet"
+    })
+    public static class ReportSets {
+
+        protected List<ReportSet> reportSet;
+
+        /**
+         * Gets the value of the reportSet property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the reportSet property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getReportSet().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ReportSet }
+         * 
+         * 
+         */
+        public List<ReportSet> getReportSet() {
+            if (reportSet == null) {
+                reportSet = new ArrayList<ReportSet>();
+            }
+            return this.reportSet;
         }
 
     }
