@@ -177,6 +177,9 @@ public class ServicioFila {
 	}
 
 	public void deploy(EntServidor servidor,EntFilaDeployementVersion versionFila) {
+		versionFila.setProcesandoDeploy(true);
+		versionFila = entityManager.merge(versionFila);
+
 		servicioJobDespliegueVersion.nuevoDeploy(servidor, versionFila);
 	}
 }

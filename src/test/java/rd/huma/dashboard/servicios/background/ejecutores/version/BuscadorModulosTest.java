@@ -3,6 +3,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -14,6 +15,7 @@ public class BuscadorModulosTest {
 
 
 	@Test
+	@Ignore
 	public void probar(){
 		EntConfiguracionGeneral configuracionGeneral = new EntConfiguracionGeneral();
 		EntAplicacion aplicacion = new EntAplicacion();

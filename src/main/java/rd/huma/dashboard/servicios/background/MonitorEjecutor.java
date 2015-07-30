@@ -24,7 +24,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
-		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 60, 1, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
 	}
 

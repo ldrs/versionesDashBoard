@@ -39,13 +39,16 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	private LocalDateTime fechaRegistro;
 	private int prioridad;
 
+	private boolean procesandoDeploy;
+
+
 	public int getPrioridad() {
 		return prioridad;
 	}
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
 	}
-	
+
 
 	public LocalDateTime getFechaRegistro() {
 		return fechaRegistro;
@@ -64,6 +67,13 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	}
 	public void setFila(EntFilaDeployement fila) {
 		this.fila = fila;
+	}
+
+	public boolean isProcesandoDeploy() {
+		return procesandoDeploy;
+	}
+	public void setProcesandoDeploy(boolean procesandoDeploy) {
+		this.procesandoDeploy = procesandoDeploy;
 	}
 	@Override
 	public int hashCode() {

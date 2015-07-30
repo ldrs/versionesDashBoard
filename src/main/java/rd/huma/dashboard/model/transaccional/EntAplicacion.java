@@ -94,15 +94,6 @@ public class EntAplicacion extends AEntModelo {
 		this.jobJenkinsDeployements = jobJenkinsDeployements;
 	}
 
-	public String getAmbienteParaHacerDeployPorDefecto() {
-		return ambienteParaHacerDeployPorDefecto;
-	}
-
-	public void setAmbienteParaHacerDeployPorDefecto(
-			String ambienteParaHacerDeployPorDefecto) {
-		this.ambienteParaHacerDeployPorDefecto = ambienteParaHacerDeployPorDefecto;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

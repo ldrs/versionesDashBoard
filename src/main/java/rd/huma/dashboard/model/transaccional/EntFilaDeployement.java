@@ -30,7 +30,7 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 	private String grupoDuenos;
 
 	private String estadosJiras;
-	
+
 	private String estadosSysAid;
 
 	public EntAmbienteAplicacion getAmbiente() {
@@ -60,7 +60,7 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 	public void setGrupoDuenos(String grupoDuenos) {
 		this.grupoDuenos = grupoDuenos;
 	}
-	
+
 	public String getEstadosSysAid() {
 		return estadosSysAid;
 	}

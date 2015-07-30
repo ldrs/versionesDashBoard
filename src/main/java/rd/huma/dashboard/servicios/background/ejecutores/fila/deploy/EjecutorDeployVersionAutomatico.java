@@ -13,8 +13,8 @@ public class EjecutorDeployVersionAutomatico extends AEjecutor{
 	public void ejecutar() {
 		ServicioFila servicioFila = ServicioFila.getInstanciaTransaccional();
 		ServicioServidor servicioServidor = ServicioServidor.getInstanciaTransaccional();
-		
+
 		List<EntFilaDeployement> filas = servicioFila.getFilasDeploment();
-		filas.forEach( fila -> new ProcesaFilaDeployAutomatico(servicioFila, servicioServidor, fila));
+		filas.forEach( fila -> new ProcesaFilaDeployAutomatico(servicioFila, servicioServidor, fila).procesar());
 	}
 }

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="FILA_DEPLOYEMENT_VERSION_DUENO")
 @NamedQueries({
-	@NamedQuery(name="buscarPorVersion.duenoFilaVersion", query="SELECT E FROM EntFilaDeployementVersionDueno E where E.version = :ver")
+	@NamedQuery(name="buscarPorVersion.duenoFilaVersion", query="SELECT E FROM EntFilaDeployementVersionDueno E Join E.version V where V.version = :ver")
 }
 )
 

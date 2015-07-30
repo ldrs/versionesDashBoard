@@ -23,7 +23,7 @@ public class ProcesaFilaDeployAutomatico {
 
 	public void procesar(){
 		List<EntFilaDeployementVersion> filas = servicioFila.getFilasPorAmbienteAplicacion(fila.getAmbiente().getId());
-		filas.stream().findFirst().ifPresent(this::intentaDeploy);
+		filas.stream().filter(v -> !v.isProcesandoDeploy()).findFirst().ifPresent(this::intentaDeploy);
 	}
 
 	private void intentaDeploy(EntFilaDeployementVersion versionFila){

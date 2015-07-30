@@ -27,7 +27,7 @@ public class ServicioModuloAmbienteSVN {
 	public List<EntAmbienteSVN> getAmbientes() {
 		return entityManager.createNamedQuery("ambienteSVN.todos",EntAmbienteSVN.class).getResultList();
 	}
-	
+
 	public List<EntAmbienteSVNModulo> getModulos(String ruta) {
 		return entityManager.createNamedQuery("ambienteSvnModulo.buscarRuta",EntAmbienteSVNModulo.class).setParameter("rut", ruta).getResultList();
 	}
@@ -42,27 +42,29 @@ public class ServicioModuloAmbienteSVN {
 		entityManager.persist(ambienteSVN);
 		return ambienteSVN;
 	}
-	
+
 	public void buscarCrear(EntAmbienteSVNModulo modulo){
-		Artefacto artefacto = modulo.getArtefacto(); 
-		
+		Artefacto artefacto = modulo.getArtefacto();
+
 		if (artefacto.getClasificador() == null){
 			entityManager.createNamedQuery("ambienteSvnModulo.buscar",EntAmbienteSVNModulo.class)
 						.setParameter("amb", modulo.getAmbienteSVN())
+						.setParameter("art", artefacto.getArtefacto())
 						.setParameter("grp",artefacto. getGrupo())
 						.setParameter("paq", artefacto.getPaquete())
 						.getResultList().stream().findFirst().orElse(crearAmbiente(modulo));
-		
+
 		}else{
-			entityManager.createNamedQuery("ambienteSvnModulo.buscar",EntAmbienteSVNModulo.class)
+			entityManager.createNamedQuery("ambienteSvnModulo.buscarConClaficador",EntAmbienteSVNModulo.class)
 			.setParameter("amb", modulo.getAmbienteSVN())
+			.setParameter("art", artefacto.getArtefacto())
 			.setParameter("grp", artefacto.getGrupo())
 			.setParameter("paq", artefacto.getPaquete())
 			.setParameter("claf", artefacto.getClasificador())
 			.getResultList().stream().findFirst().orElse(crearAmbiente(modulo));
 		}
 	}
-	
+
 	private EntAmbienteSVNModulo crearAmbiente(EntAmbienteSVNModulo modulo){
 		entityManager.persist(modulo);
 		return modulo;
