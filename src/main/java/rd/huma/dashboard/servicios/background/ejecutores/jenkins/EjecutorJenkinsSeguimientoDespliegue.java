@@ -1,24 +1,57 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
-import java.util.logging.Logger;
+import javax.ws.rs.client.ClientBuilder;
 
+import rd.huma.dashboard.model.jenkins.Actions;
+import rd.huma.dashboard.model.jenkins.JenkinsJobStatus;
+import rd.huma.dashboard.model.jenkins.Parameters;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.servicios.background.AEjecutor;
+import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 
 public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
-	private static final Logger LOGGER = Logger.getLogger(EjecutorJenkinsSeguimientoDespliegue.class.getSimpleName());
-
 
 	private String url;
+	private String urlBase;
 	private EntJobDespliegueVersion job;
 
-	public EjecutorJenkinsSeguimientoDespliegue(String url,	EntJobDespliegueVersion job) {
-		this.url = url;
+
+
+	public EjecutorJenkinsSeguimientoDespliegue(String url,EntJobDespliegueVersion job) {
+		this(url,"lastBuild/api/json",job);
+	}
+
+	public EjecutorJenkinsSeguimientoDespliegue(String url, String sufijo,EntJobDespliegueVersion job) {
+		this.urlBase = url;
+		this.url = url+sufijo;
 		this.job = job;
 	}
 
 	@Override
 	public void ejecutar() {
+		ServicioJobDespliegueVersion servicio = ServicioJobDespliegueVersion.getInstanciaTransaccional();
+
+		JenkinsJobStatus jenkinsJob = ClientBuilder.newClient().target(url).request().get(JenkinsJobStatus.class);
+		Actions[] acciones = jenkinsJob.getActions();
+		if (acciones!=null && acciones.length>0){
+			Parameters[] parametros = acciones[0].getParameters();
+			if (parametros!=null && parametros.length>0){
+				for (Parameters parameters : parametros) {
+					if ( "version".equals(parameters.getName())){
+						if (job.getVersion().getNumero().equals(parameters.getValue())){
+							EEstadoJobDespliegue estado = "FAILURE".equals(jenkinsJob.getResult())?EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS:EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO;
+							job.setJobNumber(jenkinsJob.getNumber());
+							servicio.cambiarEstado(job, null, estado);
+						}else{
+							int numeroAnterior = Integer.valueOf(jenkinsJob.getNumber())-1;
+							servicio.seguimientoJenkinsSeguimientoDespliegue(job, urlBase+numeroAnterior+"/api/json");
+						}
+						break;
+					}
+				}
+			}
+		}
 
 	}
 }

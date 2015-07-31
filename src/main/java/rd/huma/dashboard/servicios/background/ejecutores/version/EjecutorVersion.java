@@ -43,8 +43,6 @@ public class EjecutorVersion  extends AEjecutor{
 
 		new ProcesadorDatos(procesadorTickets).grabarDatos();
 
-		new BuscadorPropiedades(configuracionGeneral, aplicacion, version).procesar();
-
 		new BuscadorModulos(configuracionGeneral,aplicacion, version).procesar();
 
 		new ComparadorModulos(version).procesar();

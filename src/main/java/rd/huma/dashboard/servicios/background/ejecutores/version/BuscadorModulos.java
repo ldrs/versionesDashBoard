@@ -1,13 +1,19 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.w3c.dom.Element;
 
 import rd.huma.dashboard.model.maven.Model;
 import rd.huma.dashboard.model.transaccional.Artefacto;
@@ -22,6 +28,7 @@ public class BuscadorModulos {
 	private EntConfiguracionGeneral configuracionGeneral;
 	private EntVersion version;
 	private EntAplicacion aplicacion;
+	private Set<Element> propiedadesAplicacion;
 
 
 	public BuscadorModulos(EntConfiguracionGeneral configuracionGeneral, EntAplicacion aplicacion, EntVersion version) {
@@ -42,6 +49,13 @@ public class BuscadorModulos {
 			return Collections.emptyList();
 		}
 		Model project = get.readEntity(Model.class);
+		if (root){
+
+			Set<String> propiedades = new HashSet<>();
+			Arrays.asList(aplicacion.getNombrePropiedadesPom().split(",")).stream().forEach(p-> propiedades.add(p.trim()));
+
+			this.propiedadesAplicacion = project.getProperties().getAny().stream().filter(e -> propiedades.contains(e.getTagName())).collect(Collectors.toSet());
+		}
 		if (project.getModules() != null){
 			for (String modulo : project.getModules().getModule()){
 				encuentraModulos(false,ruta+"/"+modulo, modulos);
@@ -69,6 +83,8 @@ public class BuscadorModulos {
 		return modulos;
 	}
 
+
+
 	private String getRutaSvn(){
 		return configuracionGeneral.getRutaSvn() + version.getSvnOrigen() + "/branches/" + version.getBranchOrigen();
 	}
@@ -80,6 +96,9 @@ public class BuscadorModulos {
 			servicioVersion.crearVersionModulo(versionModulo);
 		}
 		servicioVersion.merge(version);
+
+		propiedadesAplicacion.forEach(e -> servicioVersion.crearVersionPropiedad(e.getTagName(), e.getChildNodes().item(0).getTextContent() , version));
+
 	}
 
 }

@@ -1,19 +1,12 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
-import java.net.URI;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
 import java.util.logging.Logger;
-
-import javax.json.Json;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.client.InvocationCallback;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -21,7 +14,6 @@ import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
@@ -40,6 +32,7 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 	@Override
 	public void ejecutar() {
 		LOGGER.info(String.format("Intentando hacer el deploy de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
+		ServicioVersion servicio = ServicioVersion.getInstanciaTransaccional();
 
 		EntConfiguracionGeneral configuracionGeneral = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get();
 
@@ -47,72 +40,49 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 		EntVersion version =  job.getVersion();
 		EntAmbienteAplicacion ambienteAplicacion = servidor.getAmbiente();
 		EntAplicacion aplicacion = ambienteAplicacion.getAplicacion();
-		String urlJobJenkins = aplicacion.getJobJenkinsDeployements();
-
-
-
-		Builder request = ClientBuilder.newClient().target(urlJobJenkins).request();
+		String urlBaseEjecucionJob = new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobJenkins()).append("/").toString();
 
 		String usernameAndPassword = configuracionGeneral.getUsrJenkins() + ":" + configuracionGeneral.getPwdJenkins();
+		StringBuilder sbURL = new StringBuilder(300);
+		sbURL.append("SVN_AMBIENTE=").append(version.getRutaSvnAmbiente()).append("&").append("Servidor").append("=").append(servidor.getNombreServidorJenkins())
+		.append("&version=").append(version.getNumero())
+		;
 
-	    request.header("Authorization", "Basic " + Base64.getEncoder().encodeToString( usernameAndPassword.getBytes() ));
+		servicio.buscaPropiedades(version).forEach(propiedad -> sbURL.append('&').append(propiedad.getPropiedad()).append('=').append(propiedad.getValor()));
+		byte[] postData = sbURL.toString().getBytes(StandardCharsets.UTF_8);
+		ServicioJobDespliegueVersion servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 
-	    Response response = request.buildPost(parametrosVersion(version, aplicacion, servidor)).invoke();
+		try {
 
-		String respuesta = response.readEntity(String.class);
-		if (response.getStatus() == Status.CREATED.getStatusCode()){
-			URI pooling =  response.getLocation();
-		}else{
+			HttpURLConnection con = (HttpURLConnection) new URL(urlBaseEjecucionJob+"buildWithParameters").openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Authorization", "Basic " + Base64.getEncoder().encodeToString( usernameAndPassword.getBytes() ));
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			con.setRequestProperty("Content-Length", Integer.toString( postData.length ));
+			con.setInstanceFollowRedirects( false );
+			con.setUseCaches(false);
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.write(postData);
+			wr.flush();
+			wr.close();
 
+			int responseCode = con.getResponseCode();
+
+			if (responseCode==201){
+				LOGGER.info(String.format("Deploy ejecutando en jenkins de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
+
+
+
+				servicioJobDespliegueVersion.cambiarEstado(job, null, EEstadoJobDespliegue.EN_PROCESO_DEPLOY_JENKINS);
+				servicioJobDespliegueVersion.seguimientoJenkinsSeguimientoDespliegue(job,urlBaseEjecucionJob);
+			}else{
+				servicioJobDespliegueVersion.cambiarEstado(job, "El codigo de response para el deploy no fue el esperad(201) y fue " + responseCode, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			servicioJobDespliegueVersion.cambiarEstado(job, null, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
 		}
-
-		//request.async().post( parametrosVersion(version, aplicacion, servidor) , new RespuestaJob(job));
-	}
-
-	private Entity<Form> parametrosVersion(EntVersion version, EntAplicacion aplicacion, EntServidor servidor){
-		ServicioVersion servicio = ServicioVersion.getInstanciaTransaccional();
-		List<EntVersionPropiedad> propiedades = servicio.buscaPropiedades(version);
-
-		Form form = new Form();
-		propiedades.forEach(propiedad -> form.param(propiedad.getPropiedad(), propiedad.getValor()));
-
-		form.param("AMBIENTE", version.getRutaSvnAmbiente());
-		form.param("Servidor", servidor.getNombreServidorJenkins());
-
-		form.param("json", Json.createObjectBuilder().add("parameter", Json.createArrayBuilder().
-				add(Json.createObjectBuilder().add("name", "AMBIENTE").add("value", version.getRutaSvnAmbiente())) ).build().toString());
-
-		return Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED_TYPE);
-	}
-
-
-
-}
-
-class RespuestaJob implements InvocationCallback<Response>{
-
-	private EntJobDespliegueVersion job;
-
-	public RespuestaJob(EntJobDespliegueVersion job) {
-		this.job = job;
-	}
-
-	@Override
-	public void completed(Response response) {
-		String respuesta = response.readEntity(String.class);
-		EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("El job deploy de la version %s en el servidor %s ha sido exitoso", job.getVersion().getNumero(),job.getServidor().getNombre()));
-
-	}
-
-	@Override
-	public void failed(Throwable throwable) {
-		EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("El job deploy de la version %s en el servidor %s fallo con el error %s", job.getVersion().getNumero(),job.getServidor().getNombre(),throwable.getMessage()));
-
-
-		ServicioJobDespliegueVersion.getInstanciaTransaccional().cambiarEstado(job, throwable.getMessage(), EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
-
-		// TODO Auto-generated method stub
-
 	}
 
 }

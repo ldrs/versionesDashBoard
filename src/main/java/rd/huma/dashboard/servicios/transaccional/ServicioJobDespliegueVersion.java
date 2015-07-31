@@ -11,6 +11,7 @@ import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorDespliegueVersionJenkins;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorJenkinsSeguimientoDespliegue;
 
 @Stateless
 @Servicio
@@ -49,4 +50,7 @@ public class ServicioJobDespliegueVersion {
 		jobActualizado.setMensajeFallido(message);
 		entityManager.merge(jobActualizado);
 	}
-}
+
+	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url) {
+		monitorEjecutor.ejecutarAsync(new EjecutorJenkinsSeguimientoDespliegue(url, job));
+	}}

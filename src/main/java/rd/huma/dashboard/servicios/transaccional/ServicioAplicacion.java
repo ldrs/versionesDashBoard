@@ -57,7 +57,7 @@ public class ServicioAplicacion {
 		return configurarCrearAplicacion(nombre, jiraKey, svnPath, orden, nombrePropiedadesPom, null,null);
 	}
 
-	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom, String jenkinsJob, String ambienteParaHacerDeployDefecto){
+	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom, String jenkinsNombreJob, String ambienteParaHacerDeployDefecto){
 		Optional<EntAplicacion> optional = getAplicacion(nombre);
 		EntAplicacion aplicacion;
 		if (optional.isPresent()){
@@ -70,7 +70,7 @@ public class ServicioAplicacion {
 		aplicacion.setSvnPath(svnPath);
 		aplicacion.setOrden(orden);
 		aplicacion.setNombrePropiedadesPom(nombrePropiedadesPom);
-		aplicacion.setJobJenkinsDeployements(jenkinsJob);
+		aplicacion.setNombreJobJenkins(jenkinsNombreJob);
 		aplicacion.setRutaSvnAmbiente(ambienteParaHacerDeployDefecto);
 		entityManager.persist(aplicacion);
 		Cache<String, EntAplicacion> cache = getCache();

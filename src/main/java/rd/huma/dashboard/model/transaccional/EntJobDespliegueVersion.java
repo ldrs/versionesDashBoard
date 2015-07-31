@@ -89,6 +89,4 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	public void setMensajeFallido(String mensajeFallido) {
 		this.mensajeFallido = mensajeFallido;
 	}
-
-
 }

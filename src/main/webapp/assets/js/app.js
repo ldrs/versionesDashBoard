@@ -62,7 +62,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.cssControlesPrioridad = "none";
 	app.cssControlesUndeploy = "none";
 
-	
+
 	app.containsElement = function(arr,value){
 		for (var i=0; i < arr.length; i++){
 			 if (arr[i] == value){
@@ -72,22 +72,24 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		return false;
 	}
 
-	
+
 	app.actualizarAparienciaPorPermisos=function(){
 		tienePermisoControlesPrioridad = function(){
 			return app.logeado &&  app.containsElement(app.usuario.prioridadAmbientes,app.ambienteId);
 		};
 		app.cssControlesPrioridad = tienePermisoControlesPrioridad()?"block":"none";
-		app.servidores.forEach=function(s){
-			s.css = app.logeado && s.estado==='OCUPADO' && app.containsElement(s.version.duenos,app.usuario.id) ? "block":"none" ;
+		if (app.servidores){
+			app.servidores.forEach=function(s){
+				s.css = app.logeado && s.estado==='OCUPADO' && app.containsElement(s.version.duenos,app.usuario.id) ? "block":"none" ;
+			}
 		}
-	
-			
+
+
 	//	app.cssControlesUndeploy = estilo;
-		
+
 	}
-	
-	
+
+
 
 	persistanceService.init().then(function(){
 
@@ -124,6 +126,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		}
 		Servidores.delAmbiente({idAmbiente:app.ambienteId}, function(data) {
 			app.servidores = data;
+			app.actualizarAparienciaPorPermisos();
 		});
 
 	}

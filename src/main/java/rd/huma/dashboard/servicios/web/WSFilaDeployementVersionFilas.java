@@ -90,6 +90,9 @@ public class WSFilaDeployementVersionFilas {
 	}
 
 	private void agrega(JsonArrayBuilder builder, EntVersionPropiedad jira){
+		if (jira.getValor()==null){
+			return;
+		}
 		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
 	}
 
