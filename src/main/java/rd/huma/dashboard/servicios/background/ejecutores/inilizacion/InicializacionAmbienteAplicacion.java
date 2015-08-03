@@ -53,6 +53,6 @@ class InicializacionAmbienteAplicacion {
 //		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD", Optional.empty()), "172.16.7.30:8888", "http://172.16.7.30:8888/sigef/principal.jsp","730-8888");
 //		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD6", Optional.empty()), "172.16.7.21:7777", "http://172.16.7.21:7777/sigef/principal.jsp","721-7777");
 //		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST02", "SIGEF_PRD4", Optional.empty()), "172.16.7.21:8888", "http://172.16.7.21:8888/sigef/principal.jsp","721-8888");
-		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST04", "SIGEF_PRD6", Optional.empty()), "172.16.7.53:8080", "http://172.16.7.21:8888/sigef/principal.jsp","753-8080");
+		servicioServidor.nuevoServidor(ambienteAplicacion, servicioRepositorioDatos.nuevoRepositorio("MHTST04", "SIGEF_PRD6", Optional.empty()), "172.16.7.53:8080", "http://172.16.7.53:8080/sigef/principal.jsp","753-8080");
 	}
 }

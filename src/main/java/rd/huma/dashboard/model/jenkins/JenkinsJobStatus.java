@@ -2,7 +2,7 @@ package rd.huma.dashboard.model.jenkins;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"keepLog", "executor","mavenArtifacts","mavenVersionUsed","builtOn","artifacts","timestamp","id","fullDisplayName","culprits","changeSet","description","causes"})
+@JsonIgnoreProperties({"keepLog", "executor","mavenArtifacts","mavenVersionUsed","builtOn","artifacts","timestamp","id","fullDisplayName","culprits","changeSet","description","causes","url"})
 public class JenkinsJobStatus {
 
 	private String result;

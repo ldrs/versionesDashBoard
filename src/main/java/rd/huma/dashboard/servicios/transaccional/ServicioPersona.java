@@ -46,6 +46,7 @@ public class ServicioPersona {
 		persona.setUsuarioSvn(usuarioSVN);
 		persona.setCorreo(correo);
 
+
 		entityManager.persist(persona);
 
 		return persona;

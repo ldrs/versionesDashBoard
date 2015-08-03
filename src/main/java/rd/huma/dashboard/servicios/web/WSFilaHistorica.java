@@ -10,7 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import rd.huma.dashboard.model.transaccional.EntHistoricoDeployement;
+import rd.huma.dashboard.model.transaccional.EntHistoricoDespliegue;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
@@ -24,7 +24,7 @@ public class WSFilaHistorica {
 
 	private @Servicio @Inject ServicioFilaHistorica servicioFilaHistorica;
 	private @Servicio @Inject ServicioVersion servicioVersion;
-	
+
 	@GET
 	@Path("versiones/{idAmbiente}")
 	public String getVersiones(@PathParam("idAmbiente") String idAmbiente){
@@ -32,14 +32,14 @@ public class WSFilaHistorica {
 		servicioFilaHistorica.getVersiones(idAmbiente).forEach(a -> arreglo.add(agregarVersion(a)));
 		return arreglo.build().toString();
 	}
-	
-	private JsonObjectBuilder agregarVersion(EntHistoricoDeployement versionFilaHistorica){
+
+	private JsonObjectBuilder agregarVersion(EntHistoricoDespliegue versionFilaHistorica){
 		EntVersion version = versionFilaHistorica.getVersion();
 		return Json.createObjectBuilder()
-				
+
 					.add("id", versionFilaHistorica.getId())
 					.add("estado", versionFilaHistorica.getEstado().name())
-					.add("fecha", versionFilaHistorica.getFecha().toString())
+					.add("fecha", versionFilaHistorica.getFechaRegistro().toString())
 					.add("numero", version.getNumero())
 					.add("branch", version.getBranchOrigen())
 					.add("autor", version.getAutor())
@@ -49,7 +49,7 @@ public class WSFilaHistorica {
 					.add("participantes", consultaParticipantes(version))
 					;
 	}
-	
+
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
 		servicioVersion.buscaJiras(version).stream().forEach(j -> agrega(builder, j));
@@ -68,7 +68,7 @@ public class WSFilaHistorica {
 		servicioVersion.buscaParticipantes(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
-	
+
 	private void agrega(JsonArrayBuilder builder, EntVersionJira jira){
 		builder.add(jira.getJira().getNumero());
 	}
@@ -78,6 +78,6 @@ public class WSFilaHistorica {
 	}
 
 	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
-		builder.add(jira.getParticipante().getNombre());
+		builder.add(jira.getParticipante().getNombreNullSafe());
 	}
 }

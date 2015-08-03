@@ -13,13 +13,13 @@ import javax.persistence.Table;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoFilaDeployement;
 
 @Entity
-@Table(name="HISTORICO_DEPLOYEMENT")
+@Table(name="HISTORICO_DESPLIEGUE")
 @NamedQueries({
-	@NamedQuery(name ="buscarPorAmbiente.historico", query = "SELECT E from EntHistoricoDeployement E join E.fila F join F.ambiente A where A.id = :idAmbiente ")
+	@NamedQuery(name ="buscarPorAmbiente.historico", query = "SELECT E from EntHistoricoDespliegue E join E.fila F join F.ambiente A where A.id = :idAmbiente ")
 }
-		
+
 		)
-public class EntHistoricoDeployement extends AEntModelo{
+public class EntHistoricoDespliegue extends AEntModelo{
 
 	/**
 	 *
@@ -29,50 +29,48 @@ public class EntHistoricoDeployement extends AEntModelo{
 
 	@ManyToOne
 	@JoinColumn
-	private EntServidor servidor;
+	private EntJobDespliegueVersion jobDespliegueVersion;
 
 	@ManyToOne
 	@JoinColumn
 	private EntVersion version;
-	
+
 
 	@ManyToOne
 	@JoinColumn
 	private EntFilaDeployement fila;
 
-	private LocalDateTime fecha;
+	private LocalDateTime fechaRegistro = LocalDateTime.now();
 
 	@Enumerated
 	private EEstadoFilaDeployement estado;
 
-	public EntServidor getServidor() {
-		return servidor;
-	}
-	public void setServidor(EntServidor servidor) {
-		this.servidor = servidor;
-	}
 	public EntVersion getVersion() {
 		return version;
 	}
 	public void setVersion(EntVersion version) {
 		this.version = version;
 	}
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
+
 	public EEstadoFilaDeployement getEstado() {
 		return estado;
 	}
 	public void setEstado(EEstadoFilaDeployement estado) {
 		this.estado = estado;
 	}
-	
-	
-	
-	
+
+	public EntJobDespliegueVersion getJobDespliegueVersion() {
+		return jobDespliegueVersion;
+	}
+	public void setJobDespliegueVersion(EntJobDespliegueVersion jobDespliegueVersion) {
+		this.jobDespliegueVersion = jobDespliegueVersion;
+	}
+	public LocalDateTime getFechaRegistro() {
+		return fechaRegistro;
+	}
+	public void setFechaRegistro(LocalDateTime fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
 	public EntFilaDeployement getFila() {
 		return fila;
 	}
@@ -84,9 +82,13 @@ public class EntHistoricoDeployement extends AEntModelo{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
-		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result
-				+ ((servidor == null) ? 0 : servidor.hashCode());
+				+ ((fechaRegistro == null) ? 0 : fechaRegistro.hashCode());
+		result = prime * result + ((fila == null) ? 0 : fila.hashCode());
+		result = prime
+				* result
+				+ ((jobDespliegueVersion == null) ? 0 : jobDespliegueVersion
+						.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
@@ -98,25 +100,32 @@ public class EntHistoricoDeployement extends AEntModelo{
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntHistoricoDeployement)) {
+		if (!(obj instanceof EntHistoricoDespliegue)) {
 			return false;
 		}
-		EntHistoricoDeployement other = (EntHistoricoDeployement) obj;
+		EntHistoricoDespliegue other = (EntHistoricoDespliegue) obj;
 		if (estado != other.estado) {
 			return false;
 		}
-		if (fecha == null) {
-			if (other.fecha != null) {
+		if (fechaRegistro == null) {
+			if (other.fechaRegistro != null) {
 				return false;
 			}
-		} else if (!fecha.equals(other.fecha)) {
+		} else if (!fechaRegistro.equals(other.fechaRegistro)) {
 			return false;
 		}
-		if (servidor == null) {
-			if (other.servidor != null) {
+		if (fila == null) {
+			if (other.fila != null) {
 				return false;
 			}
-		} else if (!servidor.equals(other.servidor)) {
+		} else if (!fila.equals(other.fila)) {
+			return false;
+		}
+		if (jobDespliegueVersion == null) {
+			if (other.jobDespliegueVersion != null) {
+				return false;
+			}
+		} else if (!jobDespliegueVersion.equals(other.jobDespliegueVersion)) {
 			return false;
 		}
 		if (version == null) {

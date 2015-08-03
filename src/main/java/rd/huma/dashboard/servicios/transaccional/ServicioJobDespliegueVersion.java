@@ -27,6 +27,9 @@ public class ServicioJobDespliegueVersion {
 	@Inject @Servicio
 	private ServicioServidor servicioServidor;
 
+	@Servicio @Inject
+	private  ServicioFilaHistorica servicioFilaHistorica;
+
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDeployementVersion versionFila){
 		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion());
 
@@ -36,6 +39,7 @@ public class ServicioJobDespliegueVersion {
 		entityManager.persist(job);
 
 		monitorEjecutor.ejecutarAsync(new EjecutorDespliegueVersionJenkins(job));
+		servicioFilaHistorica.moverAHistorico(versionFila,job);
 		return job;
 	}
 
