@@ -1,10 +1,15 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.Optional;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import rd.huma.dashboard.model.sysaid.ExceptionTicketNoEncontrado;
+import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
+import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
 
 @Stateless
 @Servicio
@@ -15,16 +20,23 @@ public class ServicioTicketSysaid {
 
 
 	public EntTicketSysAid encuentraOSalva(String numero) {
-		EntTicketSysAid jira = entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst().orElse(nuevoJira(numero));
-		jira = entityManager.find(EntTicketSysAid.class, jira.getId());
-
-		entityManager.persist(jira);
-		return jira;
+		synchronized(numero){
+			return entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst().orElse(nuevoSysAid(numero));
+		}
 	}
 
-	private EntTicketSysAid nuevoJira(String numero) {
+	private EntTicketSysAid nuevoSysAid(String numero) {
+		Optional<Ticket> opcionalTicket = ServicioIntegracionSYSAID.instancia().getTicket(Long.valueOf(numero));
+		if (opcionalTicket.isPresent()){
+			return persiste(opcionalTicket.get());
+		}
+		throw new ExceptionTicketNoEncontrado(Long.valueOf(numero));
+	}
+
+	private EntTicketSysAid persiste(Ticket ticket){
 		EntTicketSysAid jira = new EntTicketSysAid();
-		jira.setNumero(numero);
+		jira.setNumero(String.valueOf(ticket.getTicket()));
+		jira.setEstado(String.valueOf(ticket.getEstado()));
 		entityManager.persist(jira);
 		return jira;
 	}

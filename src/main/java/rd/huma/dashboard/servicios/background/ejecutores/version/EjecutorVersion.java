@@ -14,7 +14,7 @@ import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorVersion  extends AEjecutor{
-	private static  final Logger LOGGER = Logger.getLogger(EjecutorVersion.class.getSimpleName());
+	static  final Logger LOGGER = Logger.getLogger(EjecutorVersion.class.getSimpleName());
 
 	private EntVersion version;
 	private EntConfiguracionGeneral configuracionGeneral;
