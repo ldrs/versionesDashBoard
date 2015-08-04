@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.integracion.sysaid;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ilient.api.ApiServiceRequest;
@@ -14,7 +15,7 @@ public class ServicioIntegracionTest {
 	private static final String PASS_ID = "integrador";
 
 
-	@Test
+	@Test @Ignore
 	public void probar(){
 		SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 		long sessionId = service.login(ACCONT_ID,USER_ID,PASS_ID);

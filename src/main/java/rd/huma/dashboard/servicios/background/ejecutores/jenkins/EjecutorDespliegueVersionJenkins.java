@@ -74,14 +74,14 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 
 
 
-				servicioJobDespliegueVersion.cambiarEstado(job, null, EEstadoJobDespliegue.EN_PROCESO_DEPLOY_JENKINS);
+				servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.EN_PROCESO_DEPLOY_JENKINS);
 				servicioJobDespliegueVersion.seguimientoJenkinsSeguimientoDespliegue(job,urlBaseEjecucionJob);
 			}else{
-				servicioJobDespliegueVersion.cambiarEstado(job, "El codigo de response para el deploy no fue el esperad(201) y fue " + responseCode, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
+				servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			servicioJobDespliegueVersion.cambiarEstado(job, null, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
+			servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
 		}
 	}
 

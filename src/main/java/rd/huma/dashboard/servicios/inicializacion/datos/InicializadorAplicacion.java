@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebListener;
 
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.inilizacion.EjecutorInilizacionDatos;
+import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
 
 @WebListener
 public class InicializadorAplicacion implements ServletContextListener {
@@ -22,6 +23,6 @@ public class InicializadorAplicacion implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-
+		ServicioIntegracionSYSAID.instancia().expirar();
 	}
 }

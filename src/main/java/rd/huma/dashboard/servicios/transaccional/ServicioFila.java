@@ -141,6 +141,10 @@ public class ServicioFila {
 		return fila;
 	}
 
+	public EntFilaDeployement actualizarEntidad(EntFilaDeployement fila){
+		return entityManager.merge(fila);
+	}
+
 	private void nuevaPersonaFilaDueno(EntFilaDeployementVersion version, EntPersona persona){
 		EntFilaDeployementVersionDueno dueno = new EntFilaDeployementVersionDueno();
 		dueno.setDueno(persona);

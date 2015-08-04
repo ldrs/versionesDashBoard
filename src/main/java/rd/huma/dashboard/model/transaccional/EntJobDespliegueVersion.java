@@ -36,7 +36,7 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	@Enumerated
 	private EEstadoJobDespliegue estado = EEstadoJobDespliegue.ESPERANDO_DEPLOY;
 
-	private String mensajeFallido;
+	private String url;
 
 	public EntVersion getVersion() {
 		return version;
@@ -82,11 +82,11 @@ public class EntJobDespliegueVersion extends AEntModelo {
 		this.estado = estado;
 	}
 
-	public String getMensajeFallido() {
-		return mensajeFallido;
+	public String getURL() {
+		return url;
 	}
 
-	public void setMensajeFallido(String mensajeFallido) {
-		this.mensajeFallido = mensajeFallido;
+	public void setURL(String url) {
+		this.url = url;
 	}
 }

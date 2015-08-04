@@ -5,6 +5,7 @@ import java.util.Optional;
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioAplicacion;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
@@ -41,7 +42,9 @@ class InicializacionAmbienteAplicacion {
 			EntAmbienteAplicacion ambienteAplicacion = servicioAmbiente.nuevoAmbienteAplicacion(ambiente, aplicacion);
 			if (ambiente.getOrden()==1 && aplicacion.getOrden()==1){ //Pruebas Desarrollo
 				creaServidoresAplicacionSigefDesarrollo(ambienteAplicacion);
-				servicioFila.nuevaFila(ambienteAplicacion, "Abierto,Creado,En curso,Nuevo","En Desarrollo,Abierto");
+				EntFilaDeployement fila = servicioFila.nuevaFila(ambienteAplicacion, "Abierto,Creado,En curso,Nuevo","En Desarrollo,Abierto");
+				fila.setPermiteSinTicketSysAid(true);
+				servicioFila.actualizarEntidad(fila);
 			}else{
 				servicioFila.nuevaFila(ambienteAplicacion, "Verificado","En Testing");
 			}

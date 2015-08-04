@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
@@ -79,11 +80,17 @@ public class ServicioVersion {
 		entityManager.persist(versionJira);
 	}
 
-	public void crearVersionTicketSysAid(String numero, EntVersion version) {
+	public boolean crearVersionTicketSysAid(String numero, EntVersion version) {
+		EntTicketSysAid ticketSysAid = servicioTicketSysaid.encuentraOSalva(numero);
+		if (ticketSysAid == null){
+			return false;
+		}
+
 		EntVersionTicket versionTicket = new EntVersionTicket();
-		versionTicket.setTicketSysAid(servicioTicketSysaid.encuentraOSalva(numero));
+		versionTicket.setTicketSysAid(ticketSysAid);
 		versionTicket.setVersion(version);
 		entityManager.persist(versionTicket);
+		return true;
 	}
 
 	public void crearVersionPropiedad(String nombre, String valor, EntVersion version) {

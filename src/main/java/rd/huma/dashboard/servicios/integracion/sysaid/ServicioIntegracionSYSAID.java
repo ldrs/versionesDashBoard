@@ -16,7 +16,7 @@ public final class ServicioIntegracionSYSAID {
 	private static final ServicioIntegracionSYSAID INSTANCIA = new ServicioIntegracionSYSAID();
 
 	private LocalDateTime fechaUltimoUso = LocalDateTime.now();
-	private long sessionIdSysAid;
+	private long sessionIdSysAid = -1;
 	private SysaidApiService service;
 
 	private ServicioIntegracionSYSAID() {
@@ -46,6 +46,9 @@ public final class ServicioIntegracionSYSAID {
 	}
 
 	public void expirar(){
+		if (service!=null){
+			service.logout(sessionIdSysAid);
+		}
 		sessionIdSysAid = -1;
 	}
 

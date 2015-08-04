@@ -48,11 +48,13 @@ public class ServicioJobDespliegueVersion {
 		return CDI.current().select(ServicioJobDespliegueVersion.class, servicio).get();
 	}
 
-	public void cambiarEstado(EntJobDespliegueVersion job, String message,	EEstadoJobDespliegue estado) {
+	public void cambiarEstado(EntJobDespliegueVersion job, EEstadoJobDespliegue estado) {
 		EntJobDespliegueVersion jobActualizado = entityManager.find(EntJobDespliegueVersion.class, job.getId());
 		jobActualizado.setEstado(estado);
-		jobActualizado.setMensajeFallido(message);
 		entityManager.merge(jobActualizado);
+		if (estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
+			servicioServidor.cambiaVersionServidor(job.getServidor(), null);
+		}
 	}
 
 	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url) {

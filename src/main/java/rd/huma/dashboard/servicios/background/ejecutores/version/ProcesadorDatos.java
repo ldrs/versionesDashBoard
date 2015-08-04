@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import rd.huma.dashboard.model.sysaid.ExceptionTicketNoEncontrado;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
@@ -38,10 +37,7 @@ class ProcesadorDatos {
 	}
 
 	private void manejaTicketsSysAid(String numero){
-		try {
-
-			servicioVersion.crearVersionTicketSysAid(numero, version);
-		}catch(ExceptionTicketNoEncontrado e){//TODO ponerlo en notificacion?
+		if (!servicioVersion.crearVersionTicketSysAid(numero, version)){
 			EjecutorVersion.LOGGER.warning(String.format("el ticket %s no fue encontrado, y fue mencionado para la version %s",numero,version.getNumero()));
 		}
 	}

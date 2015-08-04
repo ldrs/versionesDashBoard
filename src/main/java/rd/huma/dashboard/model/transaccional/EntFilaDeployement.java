@@ -33,6 +33,8 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 
 	private String estadosSysAid;
 
+	private boolean permiteSinTicketSysAid;
+
 	public EntAmbienteAplicacion getAmbiente() {
 		return ambiente;
 	}
@@ -66,6 +68,13 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 	}
 	public void setEstadosSysAid(String estadosSysAid) {
 		this.estadosSysAid = estadosSysAid;
+	}
+
+	public boolean isPermiteSinTicketSysAid() {
+		return permiteSinTicketSysAid;
+	}
+	public void setPermiteSinTicketSysAid(boolean permiteSinTicketSysAid) {
+		this.permiteSinTicketSysAid = permiteSinTicketSysAid;
 	}
 	@Override
 	public int compareTo(EntFilaDeployement o) {

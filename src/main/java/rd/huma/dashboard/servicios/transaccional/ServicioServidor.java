@@ -44,7 +44,7 @@ public class ServicioServidor {
 	public void cambiaVersionServidor(EntServidor servidor, EntVersion version) {
 		EntServidor servidorDatos = entityManager.find(EntServidor.class, servidor.getId());
 		servidorDatos.setVersionActual(version);
-		servidorDatos.setEstadoServidor(EEstadoServidor.OCUPADO_DESPLIEGE_EN_PROCESO);
+		servidorDatos.setEstadoServidor(version == null ? EEstadoServidor.LIBRE : EEstadoServidor.OCUPADO_DESPLIEGE_EN_PROCESO);
 		entityManager.persist(servidorDatos);
 	}
 }

@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.sysaid.ExceptionTicketNoEncontrado;
 import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
@@ -30,7 +29,7 @@ public class ServicioTicketSysaid {
 		if (opcionalTicket.isPresent()){
 			return persiste(opcionalTicket.get());
 		}
-		throw new ExceptionTicketNoEncontrado(Long.valueOf(numero));
+		return null;
 	}
 
 	private EntTicketSysAid persiste(Ticket ticket){

@@ -42,7 +42,8 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 						if (job.getVersion().getNumero().equals(parameters.getValue())){
 							EEstadoJobDespliegue estado = "FAILURE".equals(jenkinsJob.getResult())?EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS:EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO;
 							job.setJobNumber(jenkinsJob.getNumber());
-							servicio.cambiarEstado(job, null, estado);
+							job.setURL(jenkinsJob.getUrl());
+							servicio.cambiarEstado(job, estado);
 						}else{
 							int numeroAnterior = Integer.valueOf(jenkinsJob.getNumber())-1;
 							servicio.seguimientoJenkinsSeguimientoDespliegue(job, urlBase+numeroAnterior+"/api/json");

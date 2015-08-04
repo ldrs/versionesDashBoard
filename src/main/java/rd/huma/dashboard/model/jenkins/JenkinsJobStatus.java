@@ -2,7 +2,7 @@ package rd.huma.dashboard.model.jenkins;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"keepLog", "executor","mavenArtifacts","mavenVersionUsed","builtOn","artifacts","timestamp","id","fullDisplayName","culprits","changeSet","description","causes","url"})
+@JsonIgnoreProperties({"keepLog", "executor","mavenArtifacts","mavenVersionUsed","builtOn","artifacts","timestamp","id","fullDisplayName","culprits","changeSet","description","causes"})
 public class JenkinsJobStatus {
 
 	private String result;
@@ -16,6 +16,8 @@ public class JenkinsJobStatus {
 	private String estimatedDuration;
 
 	private Actions[] actions;
+
+	private String url;
 
 	public String getResult() {
 		return result;
@@ -66,6 +68,13 @@ public class JenkinsJobStatus {
 	}
 
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 
 }
