@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -42,17 +43,25 @@ public class ServicioVersion {
 	}
 
 	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
-		EntVersion version = new EntVersion();
-		version.setNumero(numeroVersion);
-		version.setAutor(autor);
-		version.setBranchOrigen(branchOrigen);
-		version.setRevisionSVN(revisionSVN);
-		version.setSvnOrigen(svnOrigen);
-		entityManager.persist(version);
+		synchronized(svnOrigen+numeroVersion){
+			Optional<EntVersion> opcional = entityManager.createNamedQuery("buscarPorNumeroOrigen.version",EntVersion.class).setParameter("num", numeroVersion).setParameter("sOri", svnOrigen).getResultList().stream().findFirst();
+			if (opcional.isPresent()){
+				return null;
+			}
 
-		crearVersionDueno(autor, version);
+			EntVersion version = new EntVersion();
+			version.setNumero(numeroVersion);
+			version.setAutor(autor);
+			version.setBranchOrigen(branchOrigen);
+			version.setRevisionSVN(revisionSVN);
+			version.setSvnOrigen(svnOrigen);
+			entityManager.persist(version);
 
-		return version;
+			crearVersionDueno(autor, version);
+
+			return version;
+		}
+
 	}
 
 	public EntVersion merge(EntVersion versionTmp){
