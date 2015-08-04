@@ -20,8 +20,6 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	private String estado;
 
-	private String script;
-
 	public String getNumero() {
 		return numero;
 	}
@@ -38,13 +36,6 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 		this.estado = estado;
 	}
 
-	public String getScript() {
-		return script;
-	}
-
-	public void setScript(String script) {
-		this.script = script;
-	}
 
 	@Override
 	public int hashCode() {

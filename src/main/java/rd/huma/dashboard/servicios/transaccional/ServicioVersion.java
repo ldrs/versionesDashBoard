@@ -17,8 +17,10 @@ import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
+import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.EjecutorSeleccionFila;
 
@@ -57,7 +59,7 @@ public class ServicioVersion {
 			version.setSvnOrigen(svnOrigen);
 			entityManager.persist(version);
 
-			crearVersionDueno(autor, version);
+			crearVersionParticipante(autor, version);
 
 			return version;
 		}
@@ -114,12 +116,21 @@ public class ServicioVersion {
 		entityManager.persist(versionModulo);
 	}
 
-	public void crearVersionDueno(String persona, EntVersion version) {
+	public void crearVersionParticipante(String persona, EntVersion version) {
 		EntVersionParticipante versionDueno = new EntVersionParticipante();
 		versionDueno.setVersion(version);
 		versionDueno.setParticipante(servicioPersona.buscaOCreaPersona(persona));
 
 		entityManager.persist(versionDueno);
+	}
+
+	public void crearVersionScript(EntVersion version, EntJira jira, String script, ETipoScript tipoScript){
+		EntVersionScript versionScript = new EntVersionScript();
+		versionScript.setJira(jira);
+		versionScript.setTipoScript(tipoScript);
+		versionScript.setUrlScript(script);
+		versionScript.setVersion(version);
+		entityManager.persist(versionScript);
 	}
 
 
@@ -176,5 +187,9 @@ public class ServicioVersion {
 	public void gestionarFila(EntVersion version) {
 		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(version));
 
+	}
+
+	public long contarScriptVersion(EntVersion version){
+		return entityManager.createNamedQuery("contar.versionScripts",Long.class).setParameter("ver", version).getSingleResult();
 	}
 }

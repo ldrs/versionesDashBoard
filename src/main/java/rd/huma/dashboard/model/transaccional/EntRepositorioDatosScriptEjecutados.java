@@ -8,41 +8,44 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="REPOSITORIO_DATOS_ESCRIPT")
+@Table(name="REPOSITORIO_DATOS_SCRIPT_EJE")
 public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5531411340878896672L;
 
 	@JoinColumn
 	@ManyToOne
 	private EntRepositorioDatos repositorioDatos;
-	
+
 
 	@JoinColumn
 	@ManyToOne
 	private EntJira jira;
 
+	@JoinColumn
+	@ManyToOne
+	private EntVersion version;
+
 	private LocalDate fechaEjecucion;
-	
+
 	private boolean ocacionoError;
+
+	private String urlScript;
 
 	public EntRepositorioDatos getRepositorioDatos() {
 		return repositorioDatos;
 	}
 
-
 	public void setRepositorioDatos(EntRepositorioDatos repositorioDatos) {
 		this.repositorioDatos = repositorioDatos;
 	}
 
-
 	public EntJira getJira() {
 		return jira;
 	}
-
 
 	public void setJira(EntJira jira) {
 		this.jira = jira;
@@ -52,6 +55,15 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 		return fechaEjecucion;
 	}
 
+
+
+	public EntVersion getVersion() {
+		return version;
+	}
+
+	public void setVersion(EntVersion version) {
+		this.version = version;
+	}
 
 	public void setFechaEjecucion(LocalDate fechaEjecucion) {
 		this.fechaEjecucion = fechaEjecucion;
@@ -65,6 +77,13 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 		this.ocacionoError = ocacionoError;
 	}
 
+	public String getUrlScript() {
+		return urlScript;
+	}
+
+	public void setUrlScript(String urlScript) {
+		this.urlScript = urlScript;
+	}
 
 	@Override
 	public int hashCode() {
@@ -76,7 +95,6 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 				+ ((repositorioDatos == null) ? 0 : repositorioDatos.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -106,6 +124,4 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 		}
 		return true;
 	}
-	
-	
 }

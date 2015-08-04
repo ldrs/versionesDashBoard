@@ -6,6 +6,7 @@ import java.util.Set;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
@@ -26,14 +27,25 @@ class ProcesadorDatos {
 	public void grabarDatos(){
 
 		List<EntJira> jiraGrabados = new ArrayList<>();
-		procesadorTickets.getJiras().forEach(j->  {jiraGrabados.add(servicioJira.encuentraOSalva(j.getNumero(), j.getEstado()));});
+		procesadorTickets.getJiras().forEach(j->  jiraGrabados.add(procesarJira(j.getNumero(), j.getEstado())));
 		jiraGrabados.forEach(this::grabarVersionJira);
 		Set<String> duenos = procesadorTickets.getDuenos();
 		duenos.remove(version.getAutor());
-		duenos.stream().forEach(d -> { servicioVersion.crearVersionDueno(d, version);  }  );
+		duenos.stream().forEach(d ->  servicioVersion.crearVersionParticipante(d, version) );
 		procesadorTickets.getTicketSysAid().stream().forEach(t -> manejaTicketsSysAid(t.getNumero()));
 
 		procesadorTickets.getParticipantes().stream().forEach(servicioJira::salvarParticipante);
+	}
+
+	private EntJira procesarJira(String numeroJira, String estado){
+		EntJira jira = servicioJira.encuentraOSalva(numeroJira, estado);
+		procesadorTickets.getScripts().stream().filter(s -> s.getJira().getNumero().equals(numeroJira)).forEach(s -> procesaScript(s, jira));
+		return jira;
+	}
+
+	private void procesaScript(EntVersionScript script, EntJira jira){
+		servicioVersion.crearVersionScript(version, jira, script.getUrlScript(), script.getTipoScript());
+		procesadorTickets.getScripts().remove(script);
 	}
 
 	private void manejaTicketsSysAid(String numero){

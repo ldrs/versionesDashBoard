@@ -18,7 +18,9 @@ import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
@@ -33,7 +35,7 @@ public class ProcesadorTickets {
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
 	private Set<String> duenos = new TreeSet<>();
 	private Set<EntJiraParticipante> participantes = new TreeSet<>();
-
+	private Set<EntVersionScript> scripts = new  HashSet<>();
 
 	private ProcesadorTickets(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion) {
 		this.configuracionGeneral = configuracionGeneral;
@@ -105,7 +107,19 @@ public class ProcesadorTickets {
 			participante.setParticipante(persona);
 			participantes.add(participante);
 		}
+		if (fields.getScriptAntesSubida()!=null){
+			EntVersionScript script = new EntVersionScript();
+			script.setTipoScript(ETipoScript.ANTES_SUBIDA);
+			script.setUrlScript(fields.getScriptAntesSubida());
+			scripts.add(script);
+		}
 
+		if (fields.getScriptDespuesSubida()!=null){
+			EntVersionScript script = new EntVersionScript();
+			script.setTipoScript(ETipoScript.DESPUES_SUBIDA);
+			script.setUrlScript(fields.getScriptDespuesSubida());
+			scripts.add(script);
+		}
 		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
 	}
 
@@ -141,5 +155,9 @@ public class ProcesadorTickets {
 
 	Set<EntTicketSysAid> getTicketSysAid() {
 		return ticketSysAid;
+	}
+
+	public Set<EntVersionScript> getScripts() {
+		return scripts;
 	}
 }

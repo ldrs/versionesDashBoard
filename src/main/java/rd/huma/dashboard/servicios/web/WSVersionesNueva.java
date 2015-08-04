@@ -24,7 +24,7 @@ public class WSVersionesNueva {
 	public String versiones(@QueryParam("numero") String numeroVersion, @QueryParam("autor") String autor,@QueryParam("svnOrigen") String svnOrigen,@QueryParam("branch") String branchOrigen,@QueryParam("revision") String revisionSVN){
 		EntVersion version = servicioVersion.crearVersion(numeroVersion, autor , svnOrigen,branchOrigen, revisionSVN);
 		if (version == null){
-			return "estaVersionYaExiste";
+			return "Esta versión ya existe por tanto no se agrego a ninguna fila,  si aun la desea de nuevo navegue a <a href=\"/dashboard/restaurarVersion.html\"> restaurar la versión </a>";
 		}
 		monitorEjecutor.ejecutarAsync(new EjecutorVersion(version));
 		return version.getId();

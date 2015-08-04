@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({ "timespent", "project", "customfield_11000",
 		"fixVersions", "aggregatetimespent", "aggregateprogress", "resolution",
-		"customfield_10500", "customfield_10501", "customfield_10700",
+		"customfield_10700",
 		"customfield_10701", "customfield_10900", "resolutiondate",
 		"customfield_10903", "customfield_10904", "customfield_10905",
 		"customfield_10906", "customfield_10907", "workratio", "lastViewed",
 		"watches", "priority", "labels", "timeestimate",
 		"aggregatetimeoriginalestimate", "versions", "issuelinks", "updated",
 		"components", "timeoriginalestimate", "customfield_10401",
-		"customfield_10600", "customfield_10800", "customfield_10801",
+		 "customfield_10800", "customfield_10801",
 		"aggregatetimeestimate", "customfield_10802", "customfield_10806",
 		"customfield_10807", "customfield_10400", "environment", "progress",
 		"votes","parent" })
@@ -28,6 +28,12 @@ public class Fields {
 	private String customfield_10902;
 
 	private String customfield_10810;
+
+	private String customfield_10501;
+
+	private String customfield_10500;
+
+	private String customfield_10600;
 
 	private String created;
 
@@ -157,5 +163,39 @@ public class Fields {
 		this.duedate = duedate;
 	}
 
+	public String getCustomfield_10501() {
+		return customfield_10501;
+	}
+
+	public void setCustomfield_10501(String customfield_10501) {
+		this.customfield_10501 = customfield_10501;
+	}
+
+	public String getReportes(){
+		return customfield_10501;
+	}
+
+	public String getCustomfield_10500() {
+		return customfield_10500;
+	}
+
+	public void setCustomfield_10500(String customfield_10500) {
+		this.customfield_10500 = customfield_10500;
+	}
+
+	public String getScriptAntesSubida(){
+		return customfield_10500;
+	}
+
+	public String getCustomfield_10600() {
+		return customfield_10600;
+	}
+	public void setCustomfield_10600(String customfield_10600) {
+		this.customfield_10600 = customfield_10600;
+	}
+
+	public String getScriptDespuesSubida(){
+		return customfield_10600;
+	}
 
 }

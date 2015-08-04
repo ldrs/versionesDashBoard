@@ -44,12 +44,11 @@ public class WSFilaDeployementVersionFilas {
 																				.add("controles", "block")
 																				.add("tickets", consultaTickets(f.getVersion()))
 																				.add("propiedades", consultaPropiedades(f.getVersion()))
+																				.add("cantidadScripts", servicioVersion.contarScriptVersion(f.getVersion()))
 																				.add("jiras", consultaJiras(f.getVersion())))
 													);
 		return builder.build().toString();
 	}
-
-
 
 	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
 		return  servicioFila.getFilasPorAmbienteAplicacion(id);
