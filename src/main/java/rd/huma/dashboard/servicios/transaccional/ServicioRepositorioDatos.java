@@ -1,6 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
@@ -24,10 +24,10 @@ public class ServicioRepositorioDatos {
 	}
 
 	public String actualizar(String nombreServicio, String schema) {
-		return actualizar(nombreServicio, schema, Optional.empty());
+		return actualizar(nombreServicio, schema,null);
 	}
 
-	public String actualizar(String nombreServicio, String schema, Optional<String> host) {
+	public String actualizar(String nombreServicio, String schema, String  host) {
 		Optional<EntRepositorioDatos> opcional = entityManager.createNamedQuery("buscar.repositorioDatos",EntRepositorioDatos.class)
 				.setParameter("sc", schema)
 				.setParameter("serv", nombreServicio)
@@ -39,17 +39,17 @@ public class ServicioRepositorioDatos {
 		}
 	}
 
-	public EntRepositorioDatos nuevoRepositorio(String nombreServicio,String schema,Optional<String> host) {
+	public EntRepositorioDatos nuevoRepositorio(String nombreServicio,String schema,String  host) {
 		EntRepositorioDatos repositorioDatos = new EntRepositorioDatos();
 		repositorioDatos.setSchema(schema);
 		repositorioDatos.setServicio(nombreServicio);
-		host.ifPresent(h -> repositorioDatos.setHost(h));
+		repositorioDatos.setHost(host);
 		entityManager.persist(repositorioDatos);
 		return repositorioDatos;
 	}
 
 	private EntRepositorioDatos actualizar(EntRepositorioDatos repositorioDatos){
-		repositorioDatos.setUltimaActualizacion(LocalDate.now());
+		repositorioDatos.setUltimaActualizacion(LocalDateTime.now());
 		entityManager.merge(repositorioDatos);
 		return repositorioDatos;
 	}

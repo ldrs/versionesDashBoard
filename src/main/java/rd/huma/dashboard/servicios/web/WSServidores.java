@@ -19,6 +19,7 @@ import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.util.UtilFecha;
 @Path("/servidores/{ambiente}")
 public class WSServidores {
 
@@ -32,16 +33,19 @@ public class WSServidores {
 		JsonArrayBuilder builder = createArrayBuilder();
 		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(createObjectBuilder()
 																				.add("nombre", s.getNombre())
-																				.add("css", "")
+																				.add("css", "none")
 																				.add("ruta", s.getRutaEntrada())
 																				.add("id",s.getId())
 																				.add("version",  version(s) )
 																				.add("estado", s.getEstadoServidor().name())
 																				.add("tickets", tickets(s.getVersionActual()))
 																				.add("repositorioDatos", Json.createObjectBuilder()
+																										.add("id", s.getBaseDatos().getId())
 																										.add("schema", s.getBaseDatos().getSchema())
+																										.add("puerto", s.getBaseDatos().getPuerto())
+																										.add("host", s.getBaseDatos().getHost())
 																										.add("servicio", s.getBaseDatos().getServicio())
-																										.add("actualizacion", s.getBaseDatos().getUltimaActualizacion().toString())
+																										.add("actualizacion",  UtilFecha.getFechaFormateada(s.getBaseDatos().getUltimaActualizacion()))
 																										)
 																				.add("jiras", jiras(s.getVersionActual()))
 														 )
@@ -49,7 +53,7 @@ public class WSServidores {
 
 		return builder.build().toString();
 	}
-	
+
 	private JsonObjectBuilder version(EntServidor servidor){
 		JsonObjectBuilder rt = Json.createObjectBuilder();
 		EntVersion version = servidor.getVersionActual();
@@ -58,7 +62,7 @@ public class WSServidores {
 		}else{
 			JsonArrayBuilder duenos = createArrayBuilder();
 			servicioFila.getDuenosVersion(version).forEach(d -> duenos.add(d.getId()));
-			
+
 			rt.add("numero", version.getNumero());
 			rt.add("id", version.getId());
 			rt.add("duenos", duenos );

@@ -1,12 +1,10 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.configuration.MutableConfiguration;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -21,32 +19,24 @@ public class ServicioAplicacion {
 	@Inject
 	private EntityManager entityManager;
 
+	private static final Map<String, EntAplicacion> CACHE = new ConcurrentHashMap<>();
+
 	public static Optional<EntAplicacion> getCacheAplicacion(String nombre){
-		Cache<String, EntAplicacion> cache = getCache();
-		EntAplicacion aplicacion = cache.get(nombre);
+		EntAplicacion aplicacion = CACHE.get(nombre);
 		if (aplicacion == null){
-			synchronized(ServicioAplicacion.class){
+			synchronized(nombre){
+
+
 				Servicio anotacion = ServicioConfiguracionGeneral.class.getAnnotation(Servicio.class);
 				ServicioAplicacion instancia = CDI.current().select(ServicioAplicacion.class,anotacion).get();
 				Optional<EntAplicacion> opcionalConfig = instancia.getAplicacion(nombre);
 				if (opcionalConfig.isPresent()){
-					cache.put(nombre, opcionalConfig.get());
+					CACHE.putIfAbsent(nombre, opcionalConfig.get());
 				}
-				return opcionalConfig;
-
 			}
+			return Optional.ofNullable(CACHE.get(nombre));
 		}
-		return Optional.ofNullable(aplicacion);
-	}
-
-
-	private static Cache<String, EntAplicacion> getCache(){
-		CacheManager manager =  Caching.getCachingProvider().getCacheManager();
-		Cache<String, EntAplicacion> cache = manager.getCache("APLICACIONES", String.class, EntAplicacion.class);
-		if (cache == null){
-			cache = manager.createCache("APLICACIONES", new MutableConfiguration<String, EntAplicacion>().setStoreByValue(false).setManagementEnabled(true).setTypes(String.class, EntAplicacion.class));
-		}
-		return cache;
+		return Optional.of(aplicacion);
 	}
 
 	public Optional<EntAplicacion> getAplicacion(String nombre) {
@@ -73,10 +63,7 @@ public class ServicioAplicacion {
 		aplicacion.setNombreJobJenkins(jenkinsNombreJob);
 		aplicacion.setRutaSvnAmbiente(ambienteParaHacerDeployDefecto);
 		entityManager.persist(aplicacion);
-		Cache<String, EntAplicacion> cache = getCache();
-		if (cache.containsKey(nombre)){
-			cache.put(nombre, aplicacion);
-		}
+		CACHE.remove(nombre);
 
 		return aplicacion;
 	}

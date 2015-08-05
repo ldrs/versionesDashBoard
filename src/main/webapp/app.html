@@ -112,7 +112,7 @@
 					<h2>Servidores</h2>
 					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores">
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
-						<div>{{servidor.basedatos}}</div>
+						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.host}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
 						<div class="servidorVersion">{{servidor.version.numero}}</div>
 						<div class="tickets servidorTick">
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>

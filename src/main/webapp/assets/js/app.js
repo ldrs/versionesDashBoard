@@ -72,6 +72,12 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		return false;
 	}
 
+	app.cambiaCSSServidores =function(servidores){
+		servidores.forEach=function(s){
+			s.css = app.logeado && s.estado==='OCUPADO' && app.containsElement(s.version.duenos,app.usuario.id) ? "block":"none" ;
+		}
+	}
+
 
 	app.actualizarAparienciaPorPermisos=function(){
 		tienePermisoControlesPrioridad = function(){
@@ -79,9 +85,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		};
 		app.cssControlesPrioridad = tienePermisoControlesPrioridad()?"block":"none";
 		if (app.servidores){
-			app.servidores.forEach=function(s){
-				s.css = app.logeado && s.estado==='OCUPADO' && app.containsElement(s.version.duenos,app.usuario.id) ? "block":"none" ;
-			}
+			app.cambiaCSSServidores(app.servidores);
 		}
 
 
@@ -126,7 +130,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		}
 		Servidores.delAmbiente({idAmbiente:app.ambienteId}, function(data) {
 			app.servidores = data;
-			app.actualizarAparienciaPorPermisos();
+			app.cambiaCSSServidores(app.servidores);
 		});
 
 	}
