@@ -111,6 +111,7 @@ public class ProcesadorTickets {
 			EntVersionScript script = new EntVersionScript();
 			script.setTipoScript(ETipoScript.ANTES_SUBIDA);
 			script.setUrlScript(fields.getScriptAntesSubida());
+			script.setJira(jira);
 			scripts.add(script);
 		}
 
@@ -118,6 +119,7 @@ public class ProcesadorTickets {
 			EntVersionScript script = new EntVersionScript();
 			script.setTipoScript(ETipoScript.DESPUES_SUBIDA);
 			script.setUrlScript(fields.getScriptDespuesSubida());
+			script.setJira(jira);
 			scripts.add(script);
 		}
 		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());

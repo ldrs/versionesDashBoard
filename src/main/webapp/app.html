@@ -61,7 +61,9 @@
 									<div class="aplicacion c3" style="color: black">Autor</div>
 									<div class="aplicacion c3" style="color: black">Branch</div>
 									<div class="aplicacion c2" style="color: black">Fecha</div>
-									<div class="aplicacion c4" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+									<div class="aplicacion c3" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon"></div></div>
+									<div class="aplicacion c2" style="float: right" ><div class="reportIcon"></div></div>
 								</div>
 
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
@@ -71,7 +73,7 @@
 										<div class="aplicacion v c3">{{version.autor}}</div>
 										<div class="aplicacion v c3">{{version.branchOrigen}}</div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
-										<div class="aplicacion v c4" style="float: right">
+										<div class="aplicacion v c3" style="float: right">
 											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
 													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
 													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
@@ -85,6 +87,8 @@
 													<div class="operacion bottomCancelar" ng-click="cancelarVersionDialog(version)"></div>
 											</div>
 										</div>
+										<div class="aplicacion v c2" style="float: right"><a href="scriptVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadScripts}}</a> </div>
+										<div class="aplicacion v c2" style="float: right"><a href="reporteVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadReports}}</a> </div>
 									</div>
 
 									<div class="tickets">

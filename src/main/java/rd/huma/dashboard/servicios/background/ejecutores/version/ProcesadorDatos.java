@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,6 @@ class ProcesadorDatos {
 	}
 
 	public void grabarDatos(){
-
 		List<EntJira> jiraGrabados = new ArrayList<>();
 		procesadorTickets.getJiras().forEach(j->  jiraGrabados.add(procesarJira(j.getNumero(), j.getEstado())));
 		jiraGrabados.forEach(this::grabarVersionJira);
@@ -39,13 +39,15 @@ class ProcesadorDatos {
 
 	private EntJira procesarJira(String numeroJira, String estado){
 		EntJira jira = servicioJira.encuentraOSalva(numeroJira, estado);
-		procesadorTickets.getScripts().stream().filter(s -> s.getJira().getNumero().equals(numeroJira)).forEach(s -> procesaScript(s, jira));
+		Set<EntVersionScript> scriptsQuitar = new HashSet<>();
+		procesadorTickets.getScripts().stream().filter(s -> s.getJira().getNumero().equals(numeroJira)).forEach(s ->  scriptsQuitar.add(procesaScript(s, jira)));
+		procesadorTickets.getScripts().removeAll(scriptsQuitar);
 		return jira;
 	}
 
-	private void procesaScript(EntVersionScript script, EntJira jira){
+	private EntVersionScript procesaScript(EntVersionScript script, EntJira jira){
 		servicioVersion.crearVersionScript(version, jira, script.getUrlScript(), script.getTipoScript());
-		procesadorTickets.getScripts().remove(script);
+		return script;
 	}
 
 	private void manejaTicketsSysAid(String numero){

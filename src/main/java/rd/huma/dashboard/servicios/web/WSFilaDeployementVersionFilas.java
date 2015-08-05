@@ -20,6 +20,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.util.UtilFecha;
 
 @Path("filaDeploymentVersion")
 public class WSFilaDeployementVersionFilas {
@@ -40,11 +41,13 @@ public class WSFilaDeployementVersionFilas {
 																				.add("autor", f.getVersion().getAutor())
 																				.add("duenos", consultaDuenos(f.getVersion()))
 																				.add("branchOrigen", f.getVersion().getBranchOrigen())
-																				.add("fechaVersion", f.getVersion().getMomentoCreacion().toString())
+																				.add("fechaVersion", UtilFecha.getFechaFormateada(f.getVersion().getMomentoCreacion()))
+																				.add("fechaFila", UtilFecha.getFechaFormateada(f.getFechaRegistro()))
 																				.add("controles", "block")
 																				.add("tickets", consultaTickets(f.getVersion()))
 																				.add("propiedades", consultaPropiedades(f.getVersion()))
 																				.add("cantidadScripts", servicioVersion.contarScriptVersion(f.getVersion()))
+																				.add("cantidadReports", 0)
 																				.add("jiras", consultaJiras(f.getVersion())))
 													);
 		return builder.build().toString();

@@ -1759,3 +1759,23 @@ dialog {
 }
 .controlesPrioridad{}
 .controlesUndeploy{}
+
+.scriptIcon{
+	background: #fff url(images/iconScript.png) no-repeat;
+	height: 40px;
+    width: 40px;
+}
+
+.scriptNumber{
+	    border-radius: 5px;
+    border: 1px solid;
+    padding: 7px;
+    color: black;
+    margin-left: 7px;
+}
+
+.reportIcon{
+	background: #fff url(images/iconReport.png) no-repeat;
+	height: 40px;
+    width: 40px;
+}
