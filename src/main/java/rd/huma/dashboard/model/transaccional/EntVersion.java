@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -28,7 +30,9 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 
 	private String numero;
-	private String autor;
+	@JoinColumn
+	@ManyToOne
+	private EntPersona autor;
 	private String branchOrigen;
 	private String revisionSVN;
 
@@ -51,11 +55,11 @@ public class EntVersion extends AEntModelo implements Serializable{
 		this.numero = numero;
 	}
 
-	public String getAutor() {
+	public EntPersona getAutor() {
 		return autor;
 	}
 
-	public void setAutor(String autor) {
+	public void setAutor(EntPersona autor) {
 		this.autor = autor;
 	}
 

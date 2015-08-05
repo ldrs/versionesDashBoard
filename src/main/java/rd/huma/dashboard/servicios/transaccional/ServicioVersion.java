@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
@@ -44,12 +45,13 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
 	}
 
-	public EntVersion crearVersion(String numeroVersion, String autor, String svnOrigen, String branchOrigen, String revisionSVN) {
+	public EntVersion crearVersion(String numeroVersion, String autorSVN, String svnOrigen, String branchOrigen, String revisionSVN) {
 		synchronized(svnOrigen+numeroVersion){
 			Optional<EntVersion> opcional = entityManager.createNamedQuery("buscarPorNumeroOrigen.version",EntVersion.class).setParameter("num", numeroVersion).setParameter("sOri", svnOrigen).getResultList().stream().findFirst();
 			if (opcional.isPresent()){
 				return null;
 			}
+			EntPersona autor = servicioPersona.buscaOCreaPersona(autorSVN);
 
 			EntVersion version = new EntVersion();
 			version.setNumero(numeroVersion);
@@ -59,7 +61,7 @@ public class ServicioVersion {
 			version.setSvnOrigen(svnOrigen);
 			entityManager.persist(version);
 
-			crearVersionParticipante(autor, version);
+			crearVersionParticipante(autorSVN, version);
 
 			return version;
 		}
@@ -117,9 +119,13 @@ public class ServicioVersion {
 	}
 
 	public void crearVersionParticipante(String persona, EntVersion version) {
+		crearVersionParticipante(servicioPersona.buscaOCreaPersona(persona), version);
+	}
+
+	public void crearVersionParticipante(EntPersona persona, EntVersion version) {
 		EntVersionParticipante versionDueno = new EntVersionParticipante();
 		versionDueno.setVersion(version);
-		versionDueno.setParticipante(servicioPersona.buscaOCreaPersona(persona));
+		versionDueno.setParticipante(persona);
 
 		entityManager.persist(versionDueno);
 	}

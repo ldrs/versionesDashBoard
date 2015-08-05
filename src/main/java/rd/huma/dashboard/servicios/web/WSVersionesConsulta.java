@@ -36,7 +36,7 @@ public class WSVersionesConsulta {
 		builder.add(createObjectBuilder()
 						.add("version", version.getNumero())
 						.add("estado", version.getEstado().name())
-						.add("autor", version.getAutor())
+						.add("autor", version.getAutor().getNombreNullSafe())
 						.add("branchOrigen", version.getBranchOrigen())
 						.add("fecha", version.getMomentoCreacion().toString())
 						.add("jiras", consultaJiras(version))

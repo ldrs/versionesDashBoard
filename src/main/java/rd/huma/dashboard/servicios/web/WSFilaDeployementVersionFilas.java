@@ -7,11 +7,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
@@ -38,7 +40,7 @@ public class WSFilaDeployementVersionFilas {
 																				.add("id", f.getId())
 																				.add("prioridad", f.getPrioridad())
 																				.add("numero", f.getVersion().getNumero())
-																				.add("autor", f.getVersion().getAutor())
+																				.add("autor", getAutor(f.getVersion()))
 																				.add("duenos", consultaDuenos(f.getVersion()))
 																				.add("branchOrigen", f.getVersion().getBranchOrigen())
 																				.add("fechaVersion", UtilFecha.getFechaFormateada(f.getVersion().getMomentoCreacion()))
@@ -48,9 +50,19 @@ public class WSFilaDeployementVersionFilas {
 																				.add("propiedades", consultaPropiedades(f.getVersion()))
 																				.add("cantidadScripts", servicioVersion.contarScriptVersion(f.getVersion()))
 																				.add("cantidadReports", 0)
-																				.add("jiras", consultaJiras(f.getVersion())))
-													);
+																				.add("jiras", consultaJiras(f.getVersion()))
+																				)
+															 );
 		return builder.build().toString();
+	}
+
+	private JsonObjectBuilder getAutor(EntVersion version){
+		EntPersona autor = version.getAutor();
+		return toJsonObjectBuilder(autor);
+	}
+
+	private JsonObjectBuilder toJsonObjectBuilder(EntPersona persona){
+		return createObjectBuilder().add("id",persona.getId()).add("nombre", persona.getNombreNullSafe());
 	}
 
 	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
@@ -72,9 +84,11 @@ public class WSFilaDeployementVersionFilas {
 
 	private JsonArrayBuilder consultaDuenos(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaParticipantes(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaParticipantes(version).stream().forEach(j -> builder.add(toJsonObjectBuilder(j.getParticipante())));
 		return builder;
 	}
+
+
 
 	private JsonArrayBuilder consultaPropiedades(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
@@ -96,9 +110,5 @@ public class WSFilaDeployementVersionFilas {
 			return;
 		}
 		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
-	}
-
-	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
-		builder.add(jira.getParticipante().getUsuarioSvn());
 	}
 }

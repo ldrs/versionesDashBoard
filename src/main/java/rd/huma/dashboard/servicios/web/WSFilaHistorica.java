@@ -42,7 +42,7 @@ public class WSFilaHistorica {
 					.add("fecha", versionFilaHistorica.getFechaRegistro().toString())
 					.add("numero", version.getNumero())
 					.add("branch", version.getBranchOrigen())
-					.add("autor", version.getAutor())
+					.add("autor", Json.createObjectBuilder().add("id", version.getAutor().getId()).add("nomber", version.getAutor().getNombreNullSafe()) )
 					.add("fechaVersion", version.getMomentoCreacion().toString())
 					.add("jiras", consultaJiras(version))
 					.add("tickets", consultaTickets(version))

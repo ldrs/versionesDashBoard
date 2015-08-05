@@ -52,7 +52,8 @@
 			</div>
 			<div id="footer-wrapper">
 				<div class="container">
-					<div class="row">
+
+									<div class="row">
 
 							<h2 style="margin-bottom: 0;">Versiones</h2>
 							<div  style="width: 100%">
@@ -61,23 +62,32 @@
 									<div class="aplicacion c3" style="color: black">Autor</div>
 									<div class="aplicacion c3" style="color: black">Branch</div>
 									<div class="aplicacion c2" style="color: black">Fecha</div>
-									<div class="aplicacion c4" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+									<div class="aplicacion c3" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon"></div></div>
+									<div class="aplicacion c2" style="float: right" ><div class="reportIcon"></div></div>
 								</div>
 
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
 								<div class="versionRow">
 										<div class="row rowFila">
-										<div class="aplicacion v versionNumber c1">{{version.numero}}</div>
-										<div class="aplicacion v c3">{{version.autor}}</div>
-										<div class="aplicacion v c3">{{version.branch}}</div>
+										<div class="aplicacion v versionNumber c1"><a href="versionMetrica.html?id={{version.id}}">{{version.numero}}</a></div>
+										<div class="aplicacion v c3"><a href="personaMetrica.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
+										<div class="aplicacion v c3"><a href="branchMetrica.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
-										<div class="aplicacion v c4" style="float: right">
+										<div class="aplicacion v c3" style="float: right">
 											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
-													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
-													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
 													<dialog id="dig{{version.id}}">
+													<div class="bottomCancelar" style="float: left;margin-right: 20px;background-color: black;border: 1px solid black;border-radius: 30px;"></div>
+														<h3>Esta seguro que quiere eliminar de la fila la version {{version.numero}}</h3>
+														<p>Esta operacion puede ser reversada, recupuerandola de versiones historicas.</p>
+														<button class="eliminaFila" ng-click="eliminaVersion(version)">Eliminar</button>
+														<button class="cierraVentana" ng-click="cerrarVersionDialog(version)">Cerrar Ventana</button>
+													</dialog>
+													<div class="operacion bottomCancelar" ng-click="cancelarVersionDialog(version)"></div>
 											</div>
 										</div>
+										<div class="aplicacion v c2" style="float: right"><a href="scriptVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadScripts}}</a> </div>
+										<div class="aplicacion v c2" style="float: right"><a href="reporteVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadReports}}</a> </div>
 									</div>
 
 									<div class="tickets">
@@ -86,7 +96,7 @@
 
 									</div>
 									<div class="tickets">
-										<div  style="float: left; padding-right: 15px" ng-repeat="participante in version.participantes">{{participante}}</div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos"><a href="personaMetrica.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
 									</div>
 								</div>
 
@@ -96,8 +106,9 @@
 
 					</div>
 
+
 				</div>
-			
+
 			</div>
 		</div>
 
