@@ -26,6 +26,9 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 		this.urlBase = url;
 		this.url = url+sufijo;
 		this.job = job;
+		if (job.getURL()!=null){
+			this.url = job.getURL()+"/api/json";
+		}
 	}
 
 	@Override
@@ -40,6 +43,14 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 				for (Parameters parameters : parametros) {
 					if ( "version".equals(parameters.getName())){
 						if (job.getVersion().getNumero().equals(parameters.getValue())){
+							if (jenkinsJob.getResult() == null){
+								job.setURL(jenkinsJob.getUrl());
+
+								servicio.seguimientoJenkinsSeguimientoDespliegue(job, jenkinsJob.getUrl());
+
+								return;
+							}
+
 							EEstadoJobDespliegue estado = "FAILURE".equals(jenkinsJob.getResult())?EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS:EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO;
 							job.setJobNumber(jenkinsJob.getNumber());
 							job.setURL(jenkinsJob.getUrl());

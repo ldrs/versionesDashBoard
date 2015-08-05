@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
+import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -197,5 +198,13 @@ public class ServicioVersion {
 
 	public long contarScriptVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionScripts",Long.class).setParameter("ver", version).getSingleResult();
+	}
+
+	public void crearVersionReporte(EntVersionReporte versionReporte) {
+		entityManager.persist(versionReporte);
+	}
+
+	public long contarReporteVersion(EntVersion version){
+		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
 }

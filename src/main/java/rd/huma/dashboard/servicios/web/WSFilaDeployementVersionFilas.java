@@ -16,7 +16,6 @@ import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
-import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
@@ -49,7 +48,7 @@ public class WSFilaDeployementVersionFilas {
 																				.add("tickets", consultaTickets(f.getVersion()))
 																				.add("propiedades", consultaPropiedades(f.getVersion()))
 																				.add("cantidadScripts", servicioVersion.contarScriptVersion(f.getVersion()))
-																				.add("cantidadReports", 0)
+																				.add("cantidadReports", servicioVersion.contarReporteVersion(f.getVersion()))
 																				.add("jiras", consultaJiras(f.getVersion()))
 																				)
 															 );

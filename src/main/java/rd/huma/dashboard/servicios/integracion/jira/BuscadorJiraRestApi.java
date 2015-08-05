@@ -16,12 +16,14 @@ public class BuscadorJiraRestApi {
 
 	private List<Issues> issues = Collections.emptyList();
 	private JiraQuery jiraQuery;
+	private boolean ejecuto = false;
 
 	public BuscadorJiraRestApi(	JiraQuery jiraQuery){
 		this.jiraQuery = jiraQuery;
 	}
 
 	public List<EntJira> encuentra(){
+		ejecuto = true;
 		List<EntJira> jiraRetorno = new ArrayList<EntJira>();
 		Jiras jiras = ClientBuilder	.newClient()
 						.target(jiraQuery.getUrl())
@@ -42,5 +44,9 @@ public class BuscadorJiraRestApi {
 	}
 
 	public List<Issues> getIssues() {
+		if (ejecuto == false){
+			encuentra();
+		}
+
 		return issues;
 	}}

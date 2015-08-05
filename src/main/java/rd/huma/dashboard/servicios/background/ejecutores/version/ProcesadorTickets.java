@@ -1,26 +1,24 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-import rd.huma.dashboard.model.jira.Assignee;
-import rd.huma.dashboard.model.jira.Creator;
 import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
+import rd.huma.dashboard.model.jira.Subtasks;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
-import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
-import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
-import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
@@ -35,7 +33,14 @@ public class ProcesadorTickets {
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
 	private Set<String> duenos = new TreeSet<>();
 	private Set<EntJiraParticipante> participantes = new TreeSet<>();
-	private Set<EntVersionScript> scripts = new  HashSet<>();
+	private Set<String> reportes = new HashSet<>();
+	private Set<EntVersionScript> scripts = new  TreeSet<>( new Comparator<EntVersionScript>() {
+
+		@Override
+		public int compare(EntVersionScript o1, EntVersionScript o2) {
+			return o1.getUrlScript().compareTo(o2.getUrlScript());
+		}
+	});
 
 	private ProcesadorTickets(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion) {
 		this.configuracionGeneral = configuracionGeneral;
@@ -58,81 +63,40 @@ public class ProcesadorTickets {
 	}
 
 	private void procesarJira(EntJira jira){
-		collectInformationTicket(jira);
-	}
-
-	private void buscarInformacionJira(EntJira jira){
-		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())).getIssues().stream().forEach( i-> {collectInformationTicket(jira, i); });
-	}
-
-	private void collectInformationTicket(EntJira jira){
-
 		Optional<Issues> issueFound = buscadorJiraQuery.getIssues().stream().filter(j -> j.getKey().equals(jira.getNumero())).findFirst();
 		if (issueFound.isPresent()){
 			collectInformationTicket(jira,issueFound.get());
 		}else{
 			paraEncontrarInformacionJira.add(jira);
 		}
-		jiras.add(jira);
 	}
 
-	private void collectInformationTicket(EntJira jira,Issues issues){
-		Fields fields = issues.getFields();
-		nuevoTicketSysAid(fields.getSysAidTicket());
-		Assignee asignado = fields.getAssignee();
-		if (asignado!=null){
-			duenos.add(asignado.getName());
-			EntJiraParticipante participante = new EntJiraParticipante();
-			participante.setJira(jira);
-			EntPersona persona =  new EntPersona();
-			persona.setCorreo(asignado.getEmailAddress());
-			persona.setUsuarioSvn(asignado.getName());
-			participante.setTipo(ETipoParticipante.ASIGNADO);
-			participante.setParticipante(persona);
-			participantes.add(participante);
-		}
-
-		duenos.add(fields.getReporter().getName());
-		Creator creator = fields.getCreator();
-		if (creator!=null && !"pds".equals(creator.getName())){
-			duenos.add(creator.getName());
-
-
-			EntJiraParticipante participante = new EntJiraParticipante();
-			participante.setJira(jira);
-			EntPersona persona =  new EntPersona();
-			persona.setCorreo(creator.getEmailAddress());
-			persona.setUsuarioSvn(creator.getName());
-			participante.setTipo(ETipoParticipante.REPORTADOR);
-			participante.setParticipante(persona);
-			participantes.add(participante);
-		}
-		if (fields.getScriptAntesSubida()!=null){
-			EntVersionScript script = new EntVersionScript();
-			script.setTipoScript(ETipoScript.ANTES_SUBIDA);
-			script.setUrlScript(fields.getScriptAntesSubida());
-			script.setJira(jira);
-			scripts.add(script);
-		}
-
-		if (fields.getScriptDespuesSubida()!=null){
-			EntVersionScript script = new EntVersionScript();
-			script.setTipoScript(ETipoScript.DESPUES_SUBIDA);
-			script.setUrlScript(fields.getScriptDespuesSubida());
-			script.setJira(jira);
-			scripts.add(script);
-		}
-		jira.setEstado(issues.getFields().getStatus().getStatusCategory().getName());
+	private void buscarInformacionJira(EntJira jira){
+		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())) .getIssues().stream().forEach( i-> collectInformationTicket(jira, i));
 	}
 
-	private void nuevoTicketSysAid(String numero){
-		if (numero == null){
+	private void collectInformationTicket(EntJira jira,Issues issue){
+		if (jiras.stream().filter(j -> jira.getNumero().equals(j.getNumero())).collect(Collectors.counting())==0){
+			jiras.add(jira);
+		}
+
+		Fields fields = issue.getFields();
+		new ColectorInformacionFieldsJira(fields, duenos, participantes, scripts, jira, ticketSysAid,reportes).procesar();
+
+		if (fields.getSubtasks()==null){
 			return;
 		}
 
-		EntTicketSysAid ticketSysAid = new EntTicketSysAid();
-		ticketSysAid.setNumero(numero);
-		this.ticketSysAid.add(ticketSysAid);
+		for(Subtasks subTask : issue.getFields().getSubtasks()){
+
+			EntJira jiraSubTask =  jiras.stream().filter(j -> j.getNumero().equals(subTask.getKey())).findFirst().orElse(new EntJira());
+			if (jiraSubTask.getNumero() == null){
+				jiraSubTask.setNumero(subTask.getKey());
+				jiras.add(jiraSubTask);
+			}
+
+			buscarInformacionJira(jiraSubTask);
+		}
 	}
 
 	public static ProcesadorTickets of(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion){
@@ -161,5 +125,9 @@ public class ProcesadorTickets {
 
 	public Set<EntVersionScript> getScripts() {
 		return scripts;
+	}
+
+	Set<String> getReportes() {
+		return reportes;
 	}
 }

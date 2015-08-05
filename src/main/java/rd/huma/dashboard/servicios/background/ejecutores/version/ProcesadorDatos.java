@@ -7,6 +7,7 @@ import java.util.Set;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -35,6 +36,15 @@ class ProcesadorDatos {
 		procesadorTickets.getTicketSysAid().stream().forEach(t -> manejaTicketsSysAid(t.getNumero()));
 
 		procesadorTickets.getParticipantes().stream().forEach(servicioJira::salvarParticipante);
+
+		procesadorTickets.getReportes().forEach(this::adicionarReporte);
+	}
+
+	private void adicionarReporte(String reporte){
+		EntVersionReporte versionReporte = new EntVersionReporte();
+		versionReporte.setReporte(reporte);
+		versionReporte.setVersion(version);
+		servicioVersion.crearVersionReporte(versionReporte);
 	}
 
 	private EntJira procesarJira(String numeroJira, String estado){
