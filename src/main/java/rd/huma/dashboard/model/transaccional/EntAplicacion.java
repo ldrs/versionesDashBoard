@@ -34,7 +34,11 @@ public class EntAplicacion extends AEntModelo {
 
 	private String rutaSvnAmbiente;
 
-	private String nombreJobJenkins;
+	private String nombreJobDeployJenkins;
+
+	private String nombreJobSQLJenkins;
+
+	private String nombreJobOracleReportJenkins;
 
 	public String getNombre() {
 		return nombre;
@@ -85,11 +89,31 @@ public class EntAplicacion extends AEntModelo {
 	}
 
 	public String getNombreJobJenkins() {
-		return nombreJobJenkins;
+		return nombreJobDeployJenkins;
 	}
 
-	public void setNombreJobJenkins(String jobJenkinsDeployements) {
-		this.nombreJobJenkins = jobJenkinsDeployements;
+	public void setNombreJobDeployJenkins(String jobJenkinsDeployements) {
+		this.nombreJobDeployJenkins = jobJenkinsDeployements;
+	}
+
+	public String getNombreJobDeployJenkins() {
+		return nombreJobDeployJenkins;
+	}
+
+	public void setNombreJobSQLJenkins(String nombreJobSQLJenkins) {
+		this.nombreJobSQLJenkins = nombreJobSQLJenkins;
+	}
+
+	public String getNombreJobSQLJenkins() {
+		return nombreJobSQLJenkins;
+	}
+
+	public String getNombreJobOracleReportJenkins() {
+		return nombreJobOracleReportJenkins;
+	}
+
+	public void setNombreJobOracleReportJenkins(String nombreJobOracleReportJenkins) {
+		this.nombreJobOracleReportJenkins = nombreJobOracleReportJenkins;
 	}
 
 	@Override

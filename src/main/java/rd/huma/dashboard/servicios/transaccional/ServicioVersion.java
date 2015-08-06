@@ -207,4 +207,16 @@ public class ServicioVersion {
 	public long contarReporteVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
+
+	public List<EntVersionScript> getScriptAntesEjecucion(EntVersion version) {
+		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", ETipoScript.ANTES_SUBIDA).getResultList();
+	}
+
+	public List<EntVersionScript> getScriptDespuesEjecucion(EntVersion version) {
+		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", ETipoScript.DESPUES_SUBIDA).getResultList();
+	}
+
+	public List<EntVersionReporte> getReportesVersion(EntVersion version) {
+		return entityManager.createNamedQuery("buscar.versionReportes",EntVersionReporte.class).setParameter("ver", version).getResultList();
+	}
 }

@@ -9,7 +9,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VERSION_REPORTE")
-@NamedQueries(@NamedQuery(name="contar.versionReportes", query="select count(e) from EntVersionReporte E where E.version = :ver"))
+@NamedQueries({
+		@NamedQuery(name="contar.versionReportes", query="select count(e) from EntVersionReporte E where E.version = :ver"),
+		@NamedQuery(name="buscar.versionReportes", query="select E from EntVersionReporte E where E.version = :ver")
+		}
+		)
 public class EntVersionReporte extends AEntModelo {
 
 	/**

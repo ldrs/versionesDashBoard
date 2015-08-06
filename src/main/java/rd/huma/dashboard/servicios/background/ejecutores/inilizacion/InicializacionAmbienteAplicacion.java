@@ -23,7 +23,7 @@ class InicializacionAmbienteAplicacion {
 	public void inicializar() {
 		servicioGrupo.nuevoGrupo("Desarrollo");
 
-		EntAplicacion sigef = servicioAplicacion.configurarCrearAplicacion("sigef", "SGF", "sigef", 1, "versionPDS,ensambladores.version","DespliegueAutomaticoSigef","http://172.16.7.35:9880/svn/ambientes/sigef/");
+		EntAplicacion sigef = servicioAplicacion.configurarCrearAplicacion("sigef", "SGF", "sigef", 1, "versionPDS,ensambladores.version","DespliegueAutomaticoSigef","DeployReportesAutomaticoSigef","ScriptAutomaticoSigef","http://172.16.7.35:9880/svn/ambientes/sigef/");
 
 
 		EntAmbiente desarrollo = servicioAmbiente.nuevoAmbiente("Desarrollo", 1);

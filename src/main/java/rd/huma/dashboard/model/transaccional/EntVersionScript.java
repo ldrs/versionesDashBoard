@@ -13,8 +13,10 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 
 @Entity
 @Table(name="VERSION_SCRIPT")
-@NamedQueries(
-		 @NamedQuery(name = "contar.versionScripts", query="select count(e) from EntVersionScript E where E.version = :ver")
+@NamedQueries({
+		 @NamedQuery(name = "contar.versionScripts", query="select count(e) from EntVersionScript E where E.version = :ver"),
+		 @NamedQuery(name = "buscarAntesDespues.versionScripts", query="select E from EntVersionScript E where E.version = :ver and tipoScript= :tipo")
+			}
 		)
 public class EntVersionScript extends AEntModelo {
 
@@ -119,7 +121,4 @@ public class EntVersionScript extends AEntModelo {
 		}
 		return true;
 	}
-
-
-
 }

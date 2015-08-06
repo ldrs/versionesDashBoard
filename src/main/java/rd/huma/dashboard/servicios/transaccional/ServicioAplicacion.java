@@ -44,10 +44,10 @@ public class ServicioAplicacion {
 	}
 
 	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom){
-		return configurarCrearAplicacion(nombre, jiraKey, svnPath, orden, nombrePropiedadesPom, null,null);
+		return configurarCrearAplicacion(nombre, jiraKey, svnPath, orden, nombrePropiedadesPom,null,null, null,null);
 	}
 
-	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom, String jenkinsNombreJob, String ambienteParaHacerDeployDefecto){
+	public EntAplicacion configurarCrearAplicacion(String nombre, String jiraKey, String svnPath, int orden, String nombrePropiedadesPom, String jenkinsDeployNombreJob, String jenkinsOracleNombreJob, String jenkinsSQLNombreJob, String ambienteParaHacerDeployDefecto){
 		Optional<EntAplicacion> optional = getAplicacion(nombre);
 		EntAplicacion aplicacion;
 		if (optional.isPresent()){
@@ -60,7 +60,9 @@ public class ServicioAplicacion {
 		aplicacion.setSvnPath(svnPath);
 		aplicacion.setOrden(orden);
 		aplicacion.setNombrePropiedadesPom(nombrePropiedadesPom);
-		aplicacion.setNombreJobJenkins(jenkinsNombreJob);
+		aplicacion.setNombreJobDeployJenkins(jenkinsDeployNombreJob);
+		aplicacion.setNombreJobOracleReportJenkins(jenkinsOracleNombreJob);
+		aplicacion.setNombreJobSQLJenkins(jenkinsSQLNombreJob);
 		aplicacion.setRutaSvnAmbiente(ambienteParaHacerDeployDefecto);
 		entityManager.persist(aplicacion);
 		CACHE.remove(nombre);
