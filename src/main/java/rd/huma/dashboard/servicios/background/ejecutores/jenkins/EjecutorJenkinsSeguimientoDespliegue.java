@@ -33,6 +33,13 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
+		if (job.getURL()!=null){
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+			}
+		}
+
 		ServicioJobDespliegueVersion servicio = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 
 		JenkinsJobStatus jenkinsJob = ClientBuilder.newClient().target(url).request().get(JenkinsJobStatus.class);
