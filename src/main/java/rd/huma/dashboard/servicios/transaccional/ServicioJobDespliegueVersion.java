@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.function.Consumer;
+
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -57,6 +59,10 @@ public class ServicioJobDespliegueVersion {
 		}
 	}
 
-	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url) {
-		monitorEjecutor.ejecutarAsync(new EjecutorJenkinsSeguimientoDespliegue(url, job));
+	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url, Consumer<Boolean> handlerResult) {
+		monitorEjecutor.ejecutarAsync(new EjecutorJenkinsSeguimientoDespliegue(url, job, handlerResult));
+	}
+
+	public void nuevoJob(EntJobDespliegueVersion jobScript) {
+		entityManager.persist(jobScript);
 	}}

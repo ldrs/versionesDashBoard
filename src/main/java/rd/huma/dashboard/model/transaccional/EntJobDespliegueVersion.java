@@ -3,12 +3,14 @@ package rd.huma.dashboard.model.transaccional;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 
 @Entity
 @Table(name="JOB_DESPLIEGUE")
@@ -31,10 +33,11 @@ public class EntJobDespliegueVersion extends AEntModelo {
 
 	private LocalDateTime fechaRegistro = LocalDateTime.now();
 
-	private long tiempoDeTimeOut;
-
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private EEstadoJobDespliegue estado = EEstadoJobDespliegue.ESPERANDO_DEPLOY;
+
+	@Enumerated(EnumType.STRING)
+	private ETipoDespliegueJob tipoDespliegue;
 
 	private String url;
 
@@ -66,13 +69,6 @@ public class EntJobDespliegueVersion extends AEntModelo {
 		return fechaRegistro;
 	}
 
-	public long getTiempoDeTimeOut() {
-		return tiempoDeTimeOut;
-	}
-
-	public void setTiempoDeTimeOut(long tiempoDeTimeOut) {
-		this.tiempoDeTimeOut = tiempoDeTimeOut;
-	}
 
 	public EEstadoJobDespliegue getEstado() {
 		return estado;
@@ -88,5 +84,12 @@ public class EntJobDespliegueVersion extends AEntModelo {
 
 	public void setURL(String url) {
 		this.url = url;
+	}
+
+	public ETipoDespliegueJob getTipoDespliegue() {
+		return tipoDespliegue;
+	}
+	public void setTipoDespliegue(ETipoDespliegueJob tipoDespliegue) {
+		this.tipoDespliegue = tipoDespliegue;
 	}
 }

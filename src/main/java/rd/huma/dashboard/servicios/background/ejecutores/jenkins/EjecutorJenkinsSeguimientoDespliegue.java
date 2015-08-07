@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
+import java.util.function.Consumer;
+
 import javax.ws.rs.client.ClientBuilder;
 
 import rd.huma.dashboard.model.jenkins.Actions;
@@ -15,20 +17,20 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 	private String url;
 	private String urlBase;
 	private EntJobDespliegueVersion job;
+	private Consumer<Boolean> handlerResult;
 
-
-
-	public EjecutorJenkinsSeguimientoDespliegue(String url,EntJobDespliegueVersion job) {
-		this(url,"lastBuild/api/json",job);
+	public EjecutorJenkinsSeguimientoDespliegue(String url,EntJobDespliegueVersion job,  Consumer<Boolean> handlerResult) {
+		this(url,"lastBuild/api/json",job,handlerResult);
 	}
 
-	public EjecutorJenkinsSeguimientoDespliegue(String url, String sufijo,EntJobDespliegueVersion job) {
+	public EjecutorJenkinsSeguimientoDespliegue(String url, String sufijo,EntJobDespliegueVersion job,  Consumer<Boolean> handlerResult) {
 		this.urlBase = url;
 		this.url = url+sufijo;
 		this.job = job;
 		if (job.getURL()!=null){
 			this.url = job.getURL()+"/api/json";
 		}
+		this.handlerResult = handlerResult;
 	}
 
 	@Override
@@ -53,18 +55,19 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 							if (jenkinsJob.getResult() == null){
 								job.setURL(jenkinsJob.getUrl());
 
-								servicio.seguimientoJenkinsSeguimientoDespliegue(job, jenkinsJob.getUrl());
+								servicio.seguimientoJenkinsSeguimientoDespliegue(job, jenkinsJob.getUrl(),handlerResult);
 
 								return;
 							}
-
-							EEstadoJobDespliegue estado = "FAILURE".equals(jenkinsJob.getResult())?EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS:EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO;
+							boolean fallo = "FAILURE".equals(jenkinsJob.getResult());
+							EEstadoJobDespliegue estado = fallo?EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS:EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO;
 							job.setJobNumber(jenkinsJob.getNumber());
 							job.setURL(jenkinsJob.getUrl());
 							servicio.cambiarEstado(job, estado);
+							handlerResult.accept(fallo);
 						}else{
 							int numeroAnterior = Integer.valueOf(jenkinsJob.getNumber())-1;
-							servicio.seguimientoJenkinsSeguimientoDespliegue(job, urlBase+numeroAnterior+"/api/json");
+							servicio.seguimientoJenkinsSeguimientoDespliegue(job, urlBase+numeroAnterior+"/api/json",handlerResult);
 						}
 						break;
 					}

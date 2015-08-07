@@ -1,12 +1,9 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
 import java.util.Base64;
 import java.util.List;
+import java.util.function.Consumer;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -17,6 +14,7 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -56,78 +54,40 @@ class JobDeployVersion {
 		return job;
 	}
 
+	private InvocadorJenkins nuevoInvocador(){
+		InvocadorJenkins invocadorJenkins = new InvocadorJenkins(credenciales);
+		invocadorJenkins.adicionarParametro("SVN_AMBIENTE", version.getRutaSvnAmbiente())
+		.adicionarParametro("Servidor", servidor.getNombreServidorJenkins())
+		.adicionarParametro("version", version.getNumero());
+
+		return invocadorJenkins;
+	}
+
 	private void deployVersion(){
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
+		InvocadorJenkins invocadorJenkins = nuevoInvocador();
+		invocadorJenkins.setURL(urlBaseEjecucionJob+"buildWithParameters");
 
-		byte[] postData = getPostData();
+		servicioVersion.buscaPropiedades(version).forEach(propiedad -> invocadorJenkins.adicionarParametro(propiedad.getPropiedad(), propiedad.getValor()));
 
-		try {
-
-			HttpURLConnection con = (HttpURLConnection) new URL(urlBaseEjecucionJob+"buildWithParameters").openConnection();
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Authorization", credenciales);
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			con.setRequestProperty("Content-Length", Integer.toString( postData.length ));
-			con.setInstanceFollowRedirects( false );
-			con.setUseCaches(false);
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.write(postData);
-			wr.flush();
-			wr.close();
-
-			manejaResponse(urlBaseEjecucionJob,con.getResponseCode());
-
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
-		}
-	}
-
-
-	private void despuesSubida(){
-		List<EntVersionScript> scriptDespuesEjecucion = servicioVersion.getScriptDespuesEjecucion(version);
-		if (scriptDespuesEjecucion.isEmpty()){
-			deployReporte();
-		}else{
-
-		}
+		invocadorJenkins.responseHanlder(new ResponseHandler( new SeguimientoJobVersion(), falloJobDespliegue()));
+		invocadorJenkins.invocar();
 
 	}
 
-	private void deployReporte(){
-		List<EntVersionReporte> reportesVersion = servicioVersion.getReportesVersion(version);
-		if (!reportesVersion.isEmpty()){}
+	private Consumer<Void> falloJobDespliegue(){
+		return e -> servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
 	}
 
 
 
-	private void manejaResponse(String urlBaseEjecucionJob, int responseCode){
-		if (responseCode==201){
-			EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("Deploy ejecutando en jenkins de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
-
-
-
-			servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.EN_PROCESO_DEPLOY_JENKINS);
-			servicioJobDespliegueVersion.seguimientoJenkinsSeguimientoDespliegue(job,urlBaseEjecucionJob);
-		}else{
-			servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
-		}
-	}
-
-	private byte[] getPostData(){
-		StringBuilder sbURL = new StringBuilder(300);
-		sbURL.append("SVN_AMBIENTE=").append(version.getRutaSvnAmbiente()).append("&").append("Servidor").append("=").append(servidor.getNombreServidorJenkins())
-		.append("&version=").append(version.getNumero())
-		;
-
-		servicioVersion.buscaPropiedades(version).forEach(propiedad -> sbURL.append('&').append(propiedad.getPropiedad()).append('=').append(propiedad.getValor()));
-		return sbURL.toString().getBytes(StandardCharsets.UTF_8);
-	}
 
 	private String getURLDeployEjecucionJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobDeployJenkins()).append("/").toString();
+	}
+
+	private String getURLDeployScriptEjecucionJob(){
+		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobSQLJenkins()).append("/").toString();
 	}
 
 	public void ejecutar() {
@@ -135,9 +95,49 @@ class JobDeployVersion {
 		if (scriptAntesEjecucion.isEmpty()){
 			deployVersion();
 		}else{
-
+			deployScriptAntesEjecucion(scriptAntesEjecucion);
 		}
+	}
+
+	private void desployDespuesVersion(){
+		List<EntVersionReporte> reportesVersion = servicioVersion.getReportesVersion(version);
+		if (!reportesVersion.isEmpty()){}
+	}
+
+
+	private void deployScriptAntesEjecucion(List<EntVersionScript> scriptAntesEjecucion){
+		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
+		jobScript.setServidor(job.getServidor());
+		jobScript.setVersion(version);
+		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
+		servicioJobDespliegueVersion.nuevoJob(jobScript);
+
+		InvocadorJenkins invocadorJenkins = nuevoInvocador();
+		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
+//TODO gerararArchivo
+		invocadorJenkins.invocar();
+
+	}
+
+	private File generarFileFromUrls(List<String> urls){
+
+	}
+
+	class SeguimientoJobVersion extends SeguimientoJob{
+
+		{
+			setHandlerResult(r -> r? desployDespuesVersion() : falloJobDespliegue().accept(null));
+		}
+
+		@Override
+		public void ejecutar() {
+			EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("Deploy ejecutando en jenkins de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
+			super.ejecutar();
+		}
+
 	}
 
 
 }
+
+
