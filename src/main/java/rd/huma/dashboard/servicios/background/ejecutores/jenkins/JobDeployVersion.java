@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Base64;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -18,6 +19,7 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.servicios.utilitarios.ServicioGeneracionZipFileFromUrls;
 
 class JobDeployVersion {
 
@@ -106,20 +108,20 @@ class JobDeployVersion {
 
 
 	private void deployScriptAntesEjecucion(List<EntVersionScript> scriptAntesEjecucion){
-		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
-		jobScript.setServidor(job.getServidor());
-		jobScript.setVersion(version);
-		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
-		servicioJobDespliegueVersion.nuevoJob(jobScript);
 
-		InvocadorJenkins invocadorJenkins = nuevoInvocador();
-		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
+		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(version.getNumero(), scriptAntesEjecucion.stream().map(EntVersionScript::getUrlScript).collect(Collectors.toList()))){
+			File fileSQL = servicio.generar();
+			EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
+			jobScript.setServidor(job.getServidor());
+			jobScript.setVersion(version);
+			jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
+			servicioJobDespliegueVersion.nuevoJob(jobScript);
+
+			InvocadorJenkins invocadorJenkins = nuevoInvocador();
+			invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
 //TODO gerararArchivo
-		invocadorJenkins.invocar();
-
-	}
-
-	private File generarFileFromUrls(List<String> urls){
+			invocadorJenkins.invocar();
+		}
 
 	}
 

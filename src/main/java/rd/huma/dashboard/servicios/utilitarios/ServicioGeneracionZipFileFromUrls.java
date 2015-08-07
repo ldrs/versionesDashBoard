@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
@@ -25,7 +26,11 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 	private Consumer<String> handlerFalloUrl;
 	private Path carpetaTemporal;
 
-	public ServicioGeneracionZipFileFromUrls(List<String> urls, String nombre) {
+	public ServicioGeneracionZipFileFromUrls(String nombre, String... urls) {
+		this(nombre, Arrays.asList(urls));
+	}
+
+	public ServicioGeneracionZipFileFromUrls(String nombre, List<String> urls) {
 		this.urls = urls;
 		this.nombre = nombre;
 	}
@@ -36,8 +41,12 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 	}
 
 
-	public File generar() throws IOException{
-		return creaArchivoZip(deArchivos(creaDirectorioTemporal()));
+	public File generar(){
+		try {
+			return creaArchivoZip(deArchivos(creaDirectorioTemporal()));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
 	}
 
 	private Path creaDirectorioTemporal() throws IOException{
