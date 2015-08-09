@@ -65,4 +65,9 @@ public class ServicioJobDespliegueVersion {
 
 	public void nuevoJob(EntJobDespliegueVersion jobScript) {
 		entityManager.persist(jobScript);
-	}}
+	}
+	
+	public EntJobDespliegueVersion getJob(String id){
+		return entityManager.find(EntJobDespliegueVersion.class, id);
+	}
+}

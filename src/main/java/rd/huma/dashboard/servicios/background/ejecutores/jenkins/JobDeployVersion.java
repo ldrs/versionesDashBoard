@@ -1,10 +1,8 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
-import java.io.File;
 import java.util.Base64;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -12,14 +10,13 @@ import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
-import rd.huma.dashboard.servicios.utilitarios.ServicioGeneracionZipFileFromUrls;
 
 class JobDeployVersion {
 
@@ -56,14 +53,7 @@ class JobDeployVersion {
 		return job;
 	}
 
-	private InvocadorJenkins nuevoInvocador(){
-		InvocadorJenkins invocadorJenkins = new InvocadorJenkins(credenciales);
-		invocadorJenkins.adicionarParametro("SVN_AMBIENTE", version.getRutaSvnAmbiente())
-		.adicionarParametro("Servidor", servidor.getNombreServidorJenkins())
-		.adicionarParametro("version", version.getNumero());
 
-		return invocadorJenkins;
-	}
 
 	private void deployVersion(){
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
@@ -91,6 +81,10 @@ class JobDeployVersion {
 	private String getURLDeployScriptEjecucionJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobSQLJenkins()).append("/").toString();
 	}
+	
+	private String getURLDeployScriptReporteJob(){
+		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobOracleReportJenkins()).append("/").toString();
+	}
 
 	public void ejecutar() {
 		List<EntVersionScript> scriptAntesEjecucion = servicioVersion.getScriptAntesEjecucion(job.getVersion());
@@ -102,34 +96,86 @@ class JobDeployVersion {
 	}
 
 	private void desployDespuesVersion(){
-		List<EntVersionReporte> reportesVersion = servicioVersion.getReportesVersion(version);
-		if (!reportesVersion.isEmpty()){}
+		if (!servicioVersion.getReportesVersion(version).isEmpty()){
+			deployReporte();
+		}
+		
+		if (!servicioVersion.getScriptAntesEjecucion(version).isEmpty()){
+			deployScriptDespuesEjecucion();
+		}
+		
 	}
 
+
+	private void deployReporte() {
+		EntJobDespliegueVersion job = new EntJobDespliegueVersion();
+		job.setVersion(version);
+		job.setTipoDespliegue(ETipoDespliegueJob.REPORTE);
+		job.setServidor(servidor);
+		servicioJobDespliegueVersion.nuevoJob(job);
+		
+		InvocadorJenkins invocadorJenkins = nuevoInvocador();
+		invocadorJenkins.setURL(getURLDeployScriptReporteJob()+"buildWithParameters");
+		invocadorJenkins.adicionarParametro("REPORTE", job.getId());
+		invocadorJenkins.invocar();
+	}
 
 	private void deployScriptAntesEjecucion(List<EntVersionScript> scriptAntesEjecucion){
 
-		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(version.getNumero(), scriptAntesEjecucion.stream().map(EntVersionScript::getUrlScript).collect(Collectors.toList()))){
-			File fileSQL = servicio.generar();
-			EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
-			jobScript.setServidor(job.getServidor());
-			jobScript.setVersion(version);
-			jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
-			servicioJobDespliegueVersion.nuevoJob(jobScript);
 
-			InvocadorJenkins invocadorJenkins = nuevoInvocador();
-			invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
-//TODO gerararArchivo
-			invocadorJenkins.invocar();
-		}
+		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
+		jobScript.setServidor(job.getServidor());
+		jobScript.setVersion(version);
+		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
+		jobScript.setTipoScript(ETipoScript.ANTES_SUBIDA);
+		servicioJobDespliegueVersion.nuevoJob(jobScript);
+
+		InvocadorJenkins invocadorJenkins = nuevoInvocador();
+		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
+		invocadorJenkins.adicionarParametro("SQL", jobScript.getId());
+		invocadorJenkins.invocar();
+	}
+	
+	private void deployScriptDespuesEjecucion(){
+
+
+		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
+		jobScript.setServidor(job.getServidor());
+		jobScript.setVersion(version);
+		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
+		jobScript.setTipoScript(ETipoScript.DESPUES_SUBIDA);
+		servicioJobDespliegueVersion.nuevoJob(jobScript);
+
+		InvocadorJenkins invocadorJenkins = nuevoInvocador();
+		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
+		invocadorJenkins.adicionarParametro("SQL", jobScript.getId());
+		invocadorJenkins.invocar();
+	}
+
+
+	private InvocadorJenkins nuevoInvocador(){
+		return  new InvocadorJenkins(credenciales)
+		.adicionarParametro("SVN_AMBIENTE", version.getRutaSvnAmbiente())
+		.adicionarParametro("Servidor", servidor.getNombreServidorJenkins())
+		.adicionarParametro("version", version.getNumero());
 
 	}
+
 
 	class SeguimientoJobVersion extends SeguimientoJob{
 
 		{
-			setHandlerResult(r -> r? desployDespuesVersion() : falloJobDespliegue().accept(null));
+			setHandlerResult(this::manejaResultado);
 		}
+
+		void manejaResultado(boolean r){
+			if (r){
+				desployDespuesVersion();
+			}else{
+				falloJobDespliegue().accept(null);
+			}
+		}
+
 
 		@Override
 		public void ejecutar() {
