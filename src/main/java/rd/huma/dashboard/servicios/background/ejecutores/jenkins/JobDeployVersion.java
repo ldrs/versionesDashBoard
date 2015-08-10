@@ -81,7 +81,7 @@ class JobDeployVersion {
 	private String getURLDeployScriptEjecucionJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobSQLJenkins()).append("/").toString();
 	}
-	
+
 	private String getURLDeployScriptReporteJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobOracleReportJenkins()).append("/").toString();
 	}
@@ -99,11 +99,11 @@ class JobDeployVersion {
 		if (!servicioVersion.getReportesVersion(version).isEmpty()){
 			deployReporte();
 		}
-		
+
 		if (!servicioVersion.getScriptAntesEjecucion(version).isEmpty()){
 			deployScriptDespuesEjecucion();
 		}
-		
+
 	}
 
 
@@ -113,7 +113,7 @@ class JobDeployVersion {
 		job.setTipoDespliegue(ETipoDespliegueJob.REPORTE);
 		job.setServidor(servidor);
 		servicioJobDespliegueVersion.nuevoJob(job);
-		
+
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptReporteJob()+"buildWithParameters");
 		invocadorJenkins.adicionarParametro("REPORTE", job.getId());
@@ -135,7 +135,7 @@ class JobDeployVersion {
 		invocadorJenkins.adicionarParametro("SQL", jobScript.getId());
 		invocadorJenkins.invocar();
 	}
-	
+
 	private void deployScriptDespuesEjecucion(){
 
 
@@ -166,6 +166,8 @@ class JobDeployVersion {
 
 		{
 			setHandlerResult(this::manejaResultado);
+			setValor(job);
+			setUrlSeguimiento(getURLDeployEjecucionJob());
 		}
 
 		void manejaResultado(boolean r){
@@ -176,16 +178,12 @@ class JobDeployVersion {
 			}
 		}
 
-
 		@Override
 		public void ejecutar() {
+			setUrlSeguimiento(getURLDeployEjecucionJob());
 			EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("Deploy ejecutando en jenkins de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
 			super.ejecutar();
 		}
 
 	}
-
-
 }
-
-

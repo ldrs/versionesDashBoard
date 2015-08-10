@@ -108,4 +108,8 @@ class SeguimientoJob{
 	public void setHandlerResult(Consumer<Boolean> handlerResult) {
 		this.handlerResult = handlerResult;
 	}
+
+	public void setValor(EntJobDespliegueVersion valor) {
+		this.valor = valor;
+	}
 }
