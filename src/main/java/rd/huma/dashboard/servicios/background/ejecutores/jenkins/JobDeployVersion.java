@@ -59,6 +59,7 @@ class JobDeployVersion {
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(urlBaseEjecucionJob+"buildWithParameters");
+		invocadorJenkins.adicionarParametro("URL_CALLBACK_DASHBOARD", configuracionGeneral.getRutaDashBoard()+"api/versionConfirma/"+ job.getId());
 
 		servicioVersion.buscaPropiedades(version).forEach(propiedad -> invocadorJenkins.adicionarParametro(propiedad.getPropiedad(), propiedad.getValor()));
 
@@ -112,6 +113,7 @@ class JobDeployVersion {
 		job.setVersion(version);
 		job.setTipoDespliegue(ETipoDespliegueJob.REPORTE);
 		job.setServidor(servidor);
+		job.setFilaDespliegue(this.job.getFilaDespliegue());
 		servicioJobDespliegueVersion.nuevoJob(job);
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
@@ -126,6 +128,7 @@ class JobDeployVersion {
 		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
 		jobScript.setServidor(job.getServidor());
 		jobScript.setVersion(version);
+		job.setFilaDespliegue(this.job.getFilaDespliegue());
 		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
 		jobScript.setTipoScript(ETipoScript.ANTES_SUBIDA);
 		servicioJobDespliegueVersion.nuevoJob(jobScript);
@@ -144,6 +147,7 @@ class JobDeployVersion {
 		jobScript.setVersion(version);
 		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
 		jobScript.setTipoScript(ETipoScript.DESPUES_SUBIDA);
+		job.setFilaDespliegue(this.job.getFilaDespliegue());
 		servicioJobDespliegueVersion.nuevoJob(jobScript);
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();

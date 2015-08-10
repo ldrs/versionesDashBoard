@@ -10,18 +10,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="FILA_DEPLOYEMENT_VERSION")
+@Table(name="FILA_DESPLIEGE_VERSION")
 @NamedQueries({
-	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDeployementVersion F join F.version V where V.estado in :est" ),
-	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDeployementVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
-	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDeployementVersion F join F.version V where F = :fil and V.branchOrigen = :bra order by V.momentoCreacion"),
-	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDeployementVersion F where F.fila = :fil  order by prioridad"),
-	@NamedQuery(name = "buscarPorAmbiente.fila", query = "Select E from EntFilaDeployementVersion E Join E.fila F Join F.ambiente A where A.id = :amb order by E.prioridad"),
-	@NamedQuery(name = "buscarPorFilaMenorPrioridad.fila", query = "Select E from EntFilaDeployementVersion E where E.fila = :fil and E.prioridad<prd order by E.prioridad"),
-	@NamedQuery(name = "buscarPorFilaMayorPrioridad.fila", query = "Select E from EntFilaDeployementVersion E where E.fila = :fil and E.prioridad>prd order by E.prioridad desc"),
-	@NamedQuery(name = "maxVersion.fila",query = "Select Max(F.prioridad) +1 from EntFilaDeployementVersion F where F.fila = :fil")
+	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDespliegueVersion F join F.version V where V.estado in :est" ),
+	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDespliegueVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
+	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.branchOrigen = :bra order by V.momentoCreacion"),
+	@NamedQuery(name = "buscarPorFilaVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.id = :ver order by V.momentoCreacion"),
+	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDespliegueVersion F where F.fila = :fil  order by prioridad"),
+	@NamedQuery(name = "buscarPorAmbiente.fila", query = "Select E from EntFilaDespliegueVersion E Join E.fila F Join F.ambiente A where A.id = :amb order by E.prioridad"),
+	@NamedQuery(name = "buscarPorFilaMenorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad<prd order by E.prioridad"),
+	@NamedQuery(name = "buscarPorFilaMayorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad>prd order by E.prioridad desc"),
+	@NamedQuery(name = "maxVersion.fila",query = "Select Max(F.prioridad) +1 from EntFilaDespliegueVersion F where F.fila = :fil")
 })
-public class EntFilaDeployementVersion extends AEntModelo {
+public class EntFilaDespliegueVersion extends AEntModelo {
 
 	/**
 	 *
@@ -34,7 +35,7 @@ public class EntFilaDeployementVersion extends AEntModelo {
 
 	@JoinColumn
 	@ManyToOne
-	private EntFilaDeployement fila;
+	private EntFilaDespliegue fila;
 
 	private LocalDateTime fechaRegistro;
 	private int prioridad;
@@ -62,10 +63,10 @@ public class EntFilaDeployementVersion extends AEntModelo {
 	public void setVersion(EntVersion version) {
 		this.version = version;
 	}
-	public EntFilaDeployement getFila() {
+	public EntFilaDespliegue getFila() {
 		return fila;
 	}
-	public void setFila(EntFilaDeployement fila) {
+	public void setFila(EntFilaDespliegue fila) {
 		this.fila = fila;
 	}
 
@@ -92,10 +93,10 @@ public class EntFilaDeployementVersion extends AEntModelo {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntFilaDeployementVersion)) {
+		if (!(obj instanceof EntFilaDespliegueVersion)) {
 			return false;
 		}
-		EntFilaDeployementVersion other = (EntFilaDeployementVersion) obj;
+		EntFilaDespliegueVersion other = (EntFilaDespliegueVersion) obj;
 		if (fila == null) {
 			if (other.fila != null) {
 				return false;

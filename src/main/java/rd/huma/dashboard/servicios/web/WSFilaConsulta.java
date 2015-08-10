@@ -7,8 +7,8 @@ import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
-import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 
@@ -26,7 +26,7 @@ public class WSFilaConsulta {
 		return arreglo.build().toString();
 	}
 
-	private JsonObjectBuilder filaToJson(EntFilaDeployement fila){
+	private JsonObjectBuilder filaToJson(EntFilaDespliegue fila){
 		JsonObjectBuilder retorno = Json.createObjectBuilder();
 		retorno.add("id", fila.getId());
 		retorno.add("nombreAmbiente", fila.getAmbiente().getAmbiente().getNombre());
@@ -36,7 +36,7 @@ public class WSFilaConsulta {
 		return retorno;
 	}
 
-	private JsonObjectBuilder filaVersionToJson(EntFilaDeployementVersion v) {
+	private JsonObjectBuilder filaVersionToJson(EntFilaDespliegueVersion v) {
 		return  Json.createObjectBuilder()
 				.add("id", v.getId())
 				.add("prioridad", v.getPrioridad())

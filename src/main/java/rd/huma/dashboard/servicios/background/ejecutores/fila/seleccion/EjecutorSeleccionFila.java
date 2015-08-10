@@ -3,7 +3,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion;
 import java.util.List;
 import java.util.logging.Logger;
 
-import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
@@ -22,7 +22,7 @@ public class EjecutorSeleccionFila extends AEjecutor {
 		LOGGER.info(String.format("Procesando la fila de la version %s", version.getNumero()));
 
 		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
-		List<EntFilaDeployement> filasPorFiltrar = new FiltradorJiraVersionFila(version, servicio.getFilasDeploment()).filtra();
+		List<EntFilaDespliegue> filasPorFiltrar = new FiltradorJiraVersionFila(version, servicio.getFilasDeploment()).filtra();
 
 		filasPorFiltrar = new  FiltradorTicketVersionFila(version, filasPorFiltrar).filtra();
 

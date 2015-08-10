@@ -103,6 +103,6 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 		job.setJobNumber(jenkinsJob.getNumber());
 		job.setURL(jenkinsJob.getUrl());
 		servicio.cambiarEstado(job, estado);
-		handlerResult.accept(fallo);
+		handlerResult.accept(!fallo);
 	}
 }

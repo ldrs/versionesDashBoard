@@ -73,11 +73,11 @@ public class ServicioVersion {
 		return entityManager.merge(versionTmp);
 	}
 
-	public EntVersion actualizarEstado(EEstadoVersion esperandoFila,		EntVersion versionTmp) {
-		EntVersion version = entityManager.find(EntVersion.class, versionTmp.getId());
-		version.setEstado(esperandoFila);
-		entityManager.persist(version);
-		return version;
+	public EntVersion actualizarEstado(EEstadoVersion estado, EntVersion version) {
+		EntVersion versionInt = entityManager.find(EntVersion.class, version.getId());
+		versionInt.setEstado(estado);
+		entityManager.persist(versionInt);
+		return versionInt;
 	}
 
 	public EntVersion actualizarVersion(String idVersion, String comentario){
@@ -207,7 +207,7 @@ public class ServicioVersion {
 	public long contarReporteVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
-	
+
 	public List<EntVersionScript> getScriptAntesDespuesEjecucion(EntVersion version, ETipoScript tipo) {
 		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", tipo).getResultList();
 	}

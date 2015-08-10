@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
@@ -14,14 +14,14 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 public class FiltradorTicketVersionFila {
 
 	private EntVersion version;
-	private List<EntFilaDeployement> filas;
+	private List<EntFilaDespliegue> filas;
 
-	public FiltradorTicketVersionFila(EntVersion version,List<EntFilaDeployement> filas) {
+	public FiltradorTicketVersionFila(EntVersion version,List<EntFilaDespliegue> filas) {
 		this.version = version;
 		this.filas = filas;
 	}
 
-	public List<EntFilaDeployement> filtra() {
+	public List<EntFilaDespliegue> filtra() {
 		Set<String> estados = ServicioVersion.getInstanciaTransaccional().buscaTickets(version)
 				.stream().map(EntVersionTicket::getTicketSysAid).map(EntTicketSysAid::getEstado).collect(Collectors.toSet());
 

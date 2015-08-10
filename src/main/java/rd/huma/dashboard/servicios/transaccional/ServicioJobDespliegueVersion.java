@@ -7,7 +7,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
@@ -18,7 +18,6 @@ import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorJenkins
 @Stateless
 @Servicio
 public class ServicioJobDespliegueVersion {
-
 
 	@Inject
 	private EntityManager entityManager;
@@ -32,12 +31,13 @@ public class ServicioJobDespliegueVersion {
 	@Servicio @Inject
 	private  ServicioFilaHistorica servicioFilaHistorica;
 
-	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDeployementVersion versionFila){
+	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
 		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion());
 
 		EntJobDespliegueVersion job = new EntJobDespliegueVersion();
 		job.setServidor(servidor);
 		job.setVersion(versionFila.getVersion());
+		job.setFilaDespliegue(versionFila.getFila());
 		entityManager.persist(job);
 
 		monitorEjecutor.ejecutarAsync(new EjecutorDespliegueVersionJenkins(job));
@@ -66,7 +66,7 @@ public class ServicioJobDespliegueVersion {
 	public void nuevoJob(EntJobDespliegueVersion jobScript) {
 		entityManager.persist(jobScript);
 	}
-	
+
 	public EntJobDespliegueVersion getJob(String id){
 		return entityManager.find(EntJobDespliegueVersion.class, id);
 	}
