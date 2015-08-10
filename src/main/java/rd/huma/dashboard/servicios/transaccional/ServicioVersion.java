@@ -1,8 +1,10 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -146,10 +148,19 @@ public class ServicioVersion {
 	}
 
 	public List<EntVersionJira> buscaJiras(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionJiraPorVersion",EntVersionJira.class)
+		return entityManager.createNamedQuery("buscarPorVersion.versionJira",EntVersionJira.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}
+
+
+	public List<EntVersionJira> buscaJiras(EntJira jira){
+		return entityManager.createNamedQuery("buscarPorVersion.versionJira",EntVersionJira.class)
+				.setParameter("jira", jira)
+				.setParameter("est" , Arrays.stream(EEstadoVersion.values()).filter(e -> e.activo()).collect(Collectors.toSet()))
+				.getResultList();
+	}
+
 
 	public List<EntVersionTicket> buscaTickets(EntVersion version){
 		return entityManager.createNamedQuery("buscar.versionTicketPorVersion",EntVersionTicket.class)
@@ -193,6 +204,11 @@ public class ServicioVersion {
 
 	public void gestionarFila(EntVersion version) {
 		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(version));
+
+	}
+
+	public void gestionarFila(EjecutorSeleccionFila  ejecutorSeleccionFila) {
+		monitorEjecutor.ejecutarAsync(ejecutorSeleccionFila);
 
 	}
 

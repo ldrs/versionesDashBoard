@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
-import rd.huma.dashboard.model.transaccional.EntJiraEstado;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 
 @Stateless
@@ -34,6 +33,10 @@ public class ServicioJira {
 		return entityManager.createNamedQuery("jiraParticipante.buscar",EntJiraParticipante.class).setParameter("usr", usuario).setParameter("numJira", numeroJira).getResultList().stream().findFirst();
 	}
 
+	public EntJira salva(EntJira jira){
+		return entityManager.merge(jira);
+	}
+
 	public EntJira encuentraOSalva(String numero, String estado) {
 		EntJira jira = encuentra(numero).orElse(nuevoJira(numero));
 		jira.setEstado(estado);
@@ -41,10 +44,6 @@ public class ServicioJira {
 
 		entityManager.persist(jira);
 
-		EntJiraEstado estadoJira = new EntJiraEstado();
-		estadoJira.setEstado(estado);
-		estadoJira.setJira(jira);
-		entityManager.persist(estadoJira);
 		return jira;
 	}
 

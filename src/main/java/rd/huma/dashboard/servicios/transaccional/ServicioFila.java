@@ -51,6 +51,11 @@ public class ServicioFila {
 		return entityManager.createNamedQuery("buscarPorFila.fila",EntFilaDespliegueVersion.class).setParameter("fil", fila) .getResultList();
 	}
 
+	public List<EntFilaDespliegueVersion> getFilas(EntVersion version){
+		return entityManager.createNamedQuery("buscarPorVersion.fila",EntFilaDespliegueVersion.class).setParameter("ver", version.getId()) .getResultList();
+	}
+
+
 	public List<EntFilaDespliegueVersion> getFilas(FilaBranch filaBranch){
 		return entityManager.createNamedQuery("buscarPorFilaBranch.fila",EntFilaDespliegueVersion.class)
 						.setParameter("fil", filaBranch.getFila())

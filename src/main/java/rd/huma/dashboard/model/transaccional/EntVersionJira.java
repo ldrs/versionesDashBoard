@@ -9,7 +9,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "VERSION_JIRA")
-@NamedQueries({@NamedQuery(name="buscar.versionJiraPorVersion", query="select E from EntVersionJira E where E.version = :ver")})
+@NamedQueries({
+				@NamedQuery(name="buscarPorVersion.versionJira", query="select E from EntVersionJira E where E.version = :ver"),
+				@NamedQuery(name="buscarPorJira.versionJira", query="select E from EntVersionJira E join E.version V where E.jira = :jira and V.estado in :est order by V.momentoCreacion desc")
+
+			})
 public class EntVersionJira extends AEntModelo {
 
 	/**
