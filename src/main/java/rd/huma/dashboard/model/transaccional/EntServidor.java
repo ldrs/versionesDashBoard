@@ -15,11 +15,10 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
 @Entity
 @Table(name="SERVIDOR")
-@NamedQueries(
-		{
-			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb")
-		}
-		)
+@NamedQueries({
+			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb"),
+			@NamedQuery(name="buscarPorBranch.servidor",query = "SELECT E from EntServidor E join E.versionActual V  where V.branchOrigen = :branch")
+		})
 public class EntServidor extends AEntModelo {
 
 	/**

@@ -53,8 +53,6 @@ class JobDeployVersion {
 		return job;
 	}
 
-
-
 	private void deployVersion(){
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
@@ -72,9 +70,6 @@ class JobDeployVersion {
 		return e -> servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
 	}
 
-
-
-
 	private String getURLDeployEjecucionJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobDeployJenkins()).append("/").toString();
 	}
@@ -85,6 +80,14 @@ class JobDeployVersion {
 
 	private String getURLDeployScriptReporteJob(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobOracleReportJenkins()).append("/").toString();
+	}
+
+	private String getURLScriptFile(){
+		return new StringBuilder(150).append(configuracionGeneral.getRutaDashBoard()).append("api/versionArchivo/script/").toString();
+	}
+
+	private String getURLReporteFile(){
+		return new StringBuilder(150).append(configuracionGeneral.getRutaDashBoard()).append("api/versionArchivo/reporte/").toString();
 	}
 
 	public void ejecutar() {
@@ -104,7 +107,6 @@ class JobDeployVersion {
 		if (!servicioVersion.getScriptAntesEjecucion(version).isEmpty()){
 			deployScriptDespuesEjecucion();
 		}
-
 	}
 
 
@@ -119,6 +121,9 @@ class JobDeployVersion {
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptReporteJob()+"buildWithParameters");
 		invocadorJenkins.adicionarParametro("REPORTE", job.getId());
+		invocadorJenkins.adicionarParametro("Version", version.getNumero());
+		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLReporteFile()+job.getId());
+
 		invocadorJenkins.invocar();
 	}
 
@@ -135,7 +140,8 @@ class JobDeployVersion {
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
-		invocadorJenkins.adicionarParametro("SQL", jobScript.getId());
+		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLScriptFile() + jobScript.getId());
+		invocadorJenkins.adicionarParametro("Version", version.getNumero());
 		invocadorJenkins.invocar();
 	}
 
@@ -152,7 +158,9 @@ class JobDeployVersion {
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
-		invocadorJenkins.adicionarParametro("SQL", jobScript.getId());
+		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLScriptFile() + jobScript.getId());
+		invocadorJenkins.adicionarParametro("Version", version.getNumero());
+
 		invocadorJenkins.invocar();
 	}
 

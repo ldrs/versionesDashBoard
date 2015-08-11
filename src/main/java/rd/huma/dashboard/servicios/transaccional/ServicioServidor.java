@@ -41,6 +41,10 @@ public class ServicioServidor {
 		return entityManager.createNamedQuery("buscar.servidor",EntServidor.class).setParameter("amb", id).getResultList();
 	}
 
+	public List<EntServidor> getServidoresPorBranch(String  branch){
+		return entityManager.createNamedQuery("buscarPorBranch.servidor",EntServidor.class).setParameter("branch", branch).getResultList();
+	}
+
 	public void cambiaVersionServidor(EntServidor servidor, EntVersion version) {
 		EntServidor servidorDatos = entityManager.find(EntServidor.class, servidor.getId());
 		servidorDatos.setVersionActual(version);
