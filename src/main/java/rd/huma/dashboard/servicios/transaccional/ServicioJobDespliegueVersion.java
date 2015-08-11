@@ -31,6 +31,9 @@ public class ServicioJobDespliegueVersion {
 	@Servicio @Inject
 	private  ServicioFilaHistorica servicioFilaHistorica;
 
+	@Servicio @Inject
+	private  ServicioVersion servicioVersion;
+
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
 		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion());
 
@@ -56,6 +59,9 @@ public class ServicioJobDespliegueVersion {
 		entityManager.merge(jobActualizado);
 		if (estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
 			servicioServidor.cambiaVersionServidor(job.getServidor(), null);
+		}
+		if (estado.getEstadoVersionRelativo()!=null){
+			servicioVersion.actualizarEstado(estado.getEstadoVersionRelativo(), job.getVersion());
 		}
 	}
 
