@@ -39,9 +39,13 @@ public class EntJobDespliegueVersion extends AEntModelo {
 
 	@Enumerated(EnumType.STRING)
 	private ETipoDespliegueJob tipoDespliegue;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ETipoScript tipoScript;
+
+	@JoinColumn
+	@ManyToOne
+	private EntFilaDespliegue filaDespliegue;
 
 	private String url;
 
@@ -96,12 +100,21 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	public void setTipoDespliegue(ETipoDespliegueJob tipoDespliegue) {
 		this.tipoDespliegue = tipoDespliegue;
 	}
-	
+
 	public ETipoScript getTipoScript() {
 		return tipoScript;
 	}
-	
+
 	public void setTipoScript(ETipoScript tipoScript) {
 		this.tipoScript = tipoScript;
 	}
+
+	public EntFilaDespliegue getFilaDespliegue() {
+		return filaDespliegue;
+	}
+
+	public void setFilaDespliegue(EntFilaDespliegue filaDespliegue) {
+		this.filaDespliegue = filaDespliegue;
+	}
+
 }

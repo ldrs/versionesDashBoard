@@ -36,7 +36,6 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 		this.estado = estado;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -44,7 +43,6 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

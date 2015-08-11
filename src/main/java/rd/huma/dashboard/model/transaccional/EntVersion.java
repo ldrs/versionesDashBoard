@@ -69,7 +69,11 @@ public class EntVersion extends AEntModelo implements Serializable{
 	}
 
 	public void setComentario(String comentario) {
-		this.comentario = comentario;
+		if (comentario.length()>150){
+			this.comentario = comentario.substring(0,150);
+		}else{
+			this.comentario = comentario;
+		}
 	}
 
 	public String getBranchOrigen() {

@@ -15,9 +15,13 @@ public enum EEstadoVersion {
 		public boolean activo() {
 			return false;
 		}
-	}
+	},
+	ESPERANDO_FILA,
+	CANCELADA_POR_ERROR_DESPLIEGUE_JENKINS,
+	CANCELADA_POR_ERROR_DESPLIEGUE,
+	DESPLIEGE_EXITOSO
 	;
-	
+
 	public boolean activo(){
 		return true;
 	}

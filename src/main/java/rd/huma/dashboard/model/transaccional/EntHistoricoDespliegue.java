@@ -38,7 +38,7 @@ public class EntHistoricoDespliegue extends AEntModelo{
 
 	@ManyToOne
 	@JoinColumn
-	private EntFilaDeployement fila;
+	private EntFilaDespliegue fila;
 
 	private LocalDateTime fechaRegistro = LocalDateTime.now();
 
@@ -71,10 +71,10 @@ public class EntHistoricoDespliegue extends AEntModelo{
 	public void setFechaRegistro(LocalDateTime fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
-	public EntFilaDeployement getFila() {
+	public EntFilaDespliegue getFila() {
 		return fila;
 	}
-	public void setFila(EntFilaDeployement fila) {
+	public void setFila(EntFilaDespliegue fila) {
 		this.fila = fila;
 	}
 	@Override

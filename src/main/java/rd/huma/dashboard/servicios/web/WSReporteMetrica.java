@@ -13,7 +13,7 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("metrica")
 public class WSReporteMetrica {
-	
+
 	private @Servicio @Inject ServicioVersion servicioVersion;
 
 	@Path("aplicacion")
@@ -70,5 +70,4 @@ public class WSReporteMetrica {
 	private JsonObjectBuilder yAxis(){
 		return Json.createObjectBuilder().add("title", Json.createObjectBuilder().add("text", "Cantidad"));
 	}
-	
 }

@@ -12,7 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
@@ -64,7 +64,7 @@ public class WSFilaDeployementVersionFilas {
 		return createObjectBuilder().add("id",persona.getId()).add("nombre", persona.getNombreNullSafe());
 	}
 
-	private List<EntFilaDeployementVersion> getFilaDeploymentVersion(String id){
+	private List<EntFilaDespliegueVersion> getFilaDeploymentVersion(String id){
 		return  servicioFila.getFilasPorAmbienteAplicacion(id);
 	}
 

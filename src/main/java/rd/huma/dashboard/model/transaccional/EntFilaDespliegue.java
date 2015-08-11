@@ -8,14 +8,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="FILA_DEPLOYEMENT")
+@Table(name="FILA_DESPLIEGE")
 @NamedQueries({
-		@NamedQuery(name="todos.filaDeploment",query = "Select E from EntFilaDeployement E"),
-		@NamedQuery(name="buscar.filaDeploment",query = "Select E from EntFilaDeployement E join E.ambiente A where A.id = :amb")
+		@NamedQuery(name="todos.filaDeploment",query = "Select E from EntFilaDespliegue E"),
+		@NamedQuery(name="buscar.filaDeploment",query = "Select E from EntFilaDespliegue E join E.ambiente A where A.id = :amb")
 		}
 		)
 
-public class EntFilaDeployement extends AEntModelo implements Comparable<EntFilaDeployement> {
+public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaDespliegue> {
 	/**
 	 *
 	 */
@@ -77,7 +77,7 @@ public class EntFilaDeployement extends AEntModelo implements Comparable<EntFila
 		this.permiteSinTicketSysAid = permiteSinTicketSysAid;
 	}
 	@Override
-	public int compareTo(EntFilaDeployement o) {
+	public int compareTo(EntFilaDespliegue o) {
 		return ambiente.compareTo(o.ambiente);
 	}
 }

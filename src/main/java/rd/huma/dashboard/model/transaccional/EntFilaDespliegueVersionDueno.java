@@ -8,13 +8,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="FILA_DEPLOYEMENT_VERSION_DUENO")
+@Table(name="FILA_DESPLIEGE_VERSION_DUENO")
 @NamedQueries({
-	@NamedQuery(name="buscarPorVersion.duenoFilaVersion", query="SELECT E FROM EntFilaDeployementVersionDueno E Join E.version V where V.version = :ver")
+	@NamedQuery(name="buscarPorVersion.duenoFilaVersion", query="SELECT E FROM EntFilaDespliegueVersionDueno E Join E.despliegueVersion D where D.version = :ver")
 }
 )
 
-public class EntFilaDeployementVersionDueno extends AEntModelo {
+public class EntFilaDespliegueVersionDueno extends AEntModelo {
 
 	/**
 	 *
@@ -24,18 +24,18 @@ public class EntFilaDeployementVersionDueno extends AEntModelo {
 
 	@JoinColumn
 	@ManyToOne
-	private EntFilaDeployementVersion version;
+	private EntFilaDespliegueVersion despliegueVersion;
 
 	@JoinColumn
 	@ManyToOne
 	private EntPersona dueno;
 
-	public EntFilaDeployementVersion getVersion() {
-		return version;
+	public EntFilaDespliegueVersion getDespliegueVersion() {
+		return despliegueVersion;
 	}
 
-	public void setVersion(EntFilaDeployementVersion version) {
-		this.version = version;
+	public void setDespliegueVersion(EntFilaDespliegueVersion version) {
+		this.despliegueVersion = version;
 	}
 
 	public EntPersona getDueno() {
@@ -51,7 +51,7 @@ public class EntFilaDeployementVersionDueno extends AEntModelo {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((dueno == null) ? 0 : dueno.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		result = prime * result + ((despliegueVersion == null) ? 0 : despliegueVersion.hashCode());
 		return result;
 	}
 
@@ -63,10 +63,10 @@ public class EntFilaDeployementVersionDueno extends AEntModelo {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof EntFilaDeployementVersionDueno)) {
+		if (!(obj instanceof EntFilaDespliegueVersionDueno)) {
 			return false;
 		}
-		EntFilaDeployementVersionDueno other = (EntFilaDeployementVersionDueno) obj;
+		EntFilaDespliegueVersionDueno other = (EntFilaDespliegueVersionDueno) obj;
 		if (dueno == null) {
 			if (other.dueno != null) {
 				return false;
@@ -74,11 +74,11 @@ public class EntFilaDeployementVersionDueno extends AEntModelo {
 		} else if (!dueno.equals(other.dueno)) {
 			return false;
 		}
-		if (version == null) {
-			if (other.version != null) {
+		if (despliegueVersion == null) {
+			if (other.despliegueVersion != null) {
 				return false;
 			}
-		} else if (!version.equals(other.version)) {
+		} else if (!despliegueVersion.equals(other.despliegueVersion)) {
 			return false;
 		}
 		return true;

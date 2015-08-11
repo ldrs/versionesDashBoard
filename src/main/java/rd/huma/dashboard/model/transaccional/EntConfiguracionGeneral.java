@@ -41,6 +41,9 @@ public class EntConfiguracionGeneral extends AEntModelo {
 
 	private String domainBaseActiveDirecty = "DC=sigefint,DC=gov,DC=do";
 
+
+	private String rutaDashBoard = "localhost:8080/dashboard/";
+
 	public String getRutaJira() {
 		return rutaJira;
 	}
@@ -113,6 +116,15 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	public void setPwdJenkins(String pwdJenkins) {
 		this.pwdJenkins = pwdJenkins;
 	}
+
+	public String getRutaDashBoard() {
+		return rutaDashBoard;
+	}
+
+	public void setRutaDashBoard(String rutaDashBoard) {
+		this.rutaDashBoard = rutaDashBoard;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

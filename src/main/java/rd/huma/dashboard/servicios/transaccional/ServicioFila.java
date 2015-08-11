@@ -17,9 +17,9 @@ import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.fila.FilaBranch;
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
-import rd.huma.dashboard.model.transaccional.EntFilaDeployement;
-import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersion;
-import rd.huma.dashboard.model.transaccional.EntFilaDeployementVersionDueno;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersionDueno;
 import rd.huma.dashboard.model.transaccional.EntGrupoPersona;
 import rd.huma.dashboard.model.transaccional.EntGrupoPersonaDetalle;
 import rd.huma.dashboard.model.transaccional.EntPersona;
@@ -40,38 +40,43 @@ public class ServicioFila {
 
 	Function<Object[], FilaBranch> toFilaBranch = new Function<Object[], FilaBranch>() {
 	    public FilaBranch apply(Object[] t) {
-	        return new FilaBranch((EntFilaDeployement) t[0], (String)t[1]);
+	        return new FilaBranch((EntFilaDespliegue) t[0], (String)t[1]);
 	    }
 	};
 
 	@Inject
 	private EntityManager entityManager;
 
-	public List<EntFilaDeployementVersion> getFilas(EntFilaDeployement fila){
-		return entityManager.createNamedQuery("buscarPorFila.fila",EntFilaDeployementVersion.class).setParameter("fil", fila) .getResultList();
+	public List<EntFilaDespliegueVersion> getFilas(EntFilaDespliegue fila){
+		return entityManager.createNamedQuery("buscarPorFila.fila",EntFilaDespliegueVersion.class).setParameter("fil", fila) .getResultList();
 	}
 
-	public List<EntFilaDeployementVersion> getFilas(FilaBranch filaBranch){
-		return entityManager.createNamedQuery("buscarPorFilaBranch.fila",EntFilaDeployementVersion.class)
+	public List<EntFilaDespliegueVersion> getFilas(EntVersion version){
+		return entityManager.createNamedQuery("buscarPorVersion.fila",EntFilaDespliegueVersion.class).setParameter("ver", version.getId()) .getResultList();
+	}
+
+
+	public List<EntFilaDespliegueVersion> getFilas(FilaBranch filaBranch){
+		return entityManager.createNamedQuery("buscarPorFilaBranch.fila",EntFilaDespliegueVersion.class)
 						.setParameter("fil", filaBranch.getFila())
 						.setParameter("bra", filaBranch.getBranch())
 						.getResultList();
 	}
 
-	public EntFilaDeployement getFila(String id){
-		return entityManager.createNamedQuery("buscar.filaDeploment",EntFilaDeployement.class).setParameter("amb", id).getSingleResult();
+	public EntFilaDespliegue getFila(String id){
+		return entityManager.createNamedQuery("buscar.filaDeploment",EntFilaDespliegue.class).setParameter("amb", id).getSingleResult();
 	}
 
-	public List<EntFilaDeployementVersion> getFilasPorEstadoVersion(Set<EEstadoVersion> estados){
-		return entityManager.createNamedQuery("buscarPorVersionEstado.fila",EntFilaDeployementVersion.class).setParameter("est", estados).getResultList();
+	public List<EntFilaDespliegueVersion> getFilasPorEstadoVersion(Set<EEstadoVersion> estados){
+		return entityManager.createNamedQuery("buscarPorVersionEstado.fila",EntFilaDespliegueVersion.class).setParameter("est", estados).getResultList();
 	}
 
-	public List<EntFilaDeployement> getFilasDeploment(){
-		return entityManager.createNamedQuery("todos.filaDeploment",EntFilaDeployement.class).getResultList();
+	public List<EntFilaDespliegue> getFilasDeploment(){
+		return entityManager.createNamedQuery("todos.filaDeploment",EntFilaDespliegue.class).getResultList();
 	}
 
-	public List<EntFilaDeployementVersion> getFilasPorAmbienteAplicacion(String id){
-		return entityManager.createNamedQuery("buscarPorAmbiente.fila",EntFilaDeployementVersion.class).setParameter("amb", id).getResultList();
+	public List<EntFilaDespliegueVersion> getFilasPorAmbienteAplicacion(String id){
+		return entityManager.createNamedQuery("buscarPorAmbiente.fila",EntFilaDespliegueVersion.class).setParameter("amb", id).getResultList();
 	}
 
 	public static ServicioFila getInstanciaTransaccional(){
@@ -79,7 +84,7 @@ public class ServicioFila {
 		return CDI.current().select(ServicioFila.class, servicio).get();
 	}
 
-	public void salirFila(EntFilaDeployementVersion filaVersion) {
+	public void salirFila(EntFilaDespliegueVersion filaVersion) {
 		entityManager.remove(filaVersion);
 	}
 
@@ -91,31 +96,33 @@ public class ServicioFila {
 		return filas;
 	}
 
-	public void ordenarFila(EntFilaDeployement filaHeader){
+	public void ordenarFila(EntFilaDespliegue filaHeader){
 		AtomicInteger entero = new AtomicInteger(1);
 		getFilas(filaHeader).forEach(f -> procesarOrden(f, entero.getAndIncrement()));
 	}
 
-	private void procesarOrden(EntFilaDeployementVersion fila, int prioridad){
-		EntFilaDeployementVersion f = entityManager.getReference(EntFilaDeployementVersion.class, fila.getId());
+	private void procesarOrden(EntFilaDespliegueVersion fila, int prioridad){
+		EntFilaDespliegueVersion f = entityManager.getReference(EntFilaDespliegueVersion.class, fila.getId());
 		f.setPrioridad(prioridad);
 		entityManager.persist(f);
 	}
 
-	public void crearVersionFila(EntVersion version,EntFilaDeployement fila) {
+	public void crearVersionFila(EntVersion version,EntFilaDespliegue fila) {
 		synchronized (fila.getId()) {
 			Integer prioridad = entityManager.createNamedQuery("maxVersion.fila", Integer.class).setParameter("fil", fila).getSingleResult();
 			if (prioridad == null){
 				prioridad = 1;
 			}
 
-			EntFilaDeployementVersion deployementVersion = new EntFilaDeployementVersion();
+			EntFilaDespliegueVersion deployementVersion = new EntFilaDespliegueVersion();
 			deployementVersion.setVersion(version);
 			deployementVersion.setFila(fila);
 			deployementVersion.setPrioridad(prioridad);
 			deployementVersion.setFechaRegistro(LocalDateTime.now());
 
 			entityManager.persist(deployementVersion);
+
+			servicioVersion.actualizarEstado(EEstadoVersion.ESPERANDO_FILA, version);
 
 			if (fila.getGrupoDuenos()!=null){
 				Set<String> grupos = new HashSet<>(Arrays.asList(fila.getGrupoDuenos().split(",")));
@@ -129,11 +136,11 @@ public class ServicioFila {
 	}
 
 	public void eliminarFilaVersion(String id){
-		entityManager.remove(entityManager.find(EntFilaDeployementVersion.class, id));
+		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, id));
 	}
 
-	public EntFilaDeployement nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras, String estadosSysAid){
-		EntFilaDeployement fila = new EntFilaDeployement();
+	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras, String estadosSysAid){
+		EntFilaDespliegue fila = new EntFilaDespliegue();
 		fila.setAmbiente(ambiente);
 		fila.setEstadosJiras(estadosJiras);
 		fila.setEstadosSysAid(estadosSysAid);
@@ -141,32 +148,32 @@ public class ServicioFila {
 		return fila;
 	}
 
-	public EntFilaDeployement actualizarEntidad(EntFilaDeployement fila){
+	public EntFilaDespliegue actualizarEntidad(EntFilaDespliegue fila){
 		return entityManager.merge(fila);
 	}
 
-	private void nuevaPersonaFilaDueno(EntFilaDeployementVersion version, EntPersona persona){
-		EntFilaDeployementVersionDueno dueno = new EntFilaDeployementVersionDueno();
+	private void nuevaPersonaFilaDueno(EntFilaDespliegueVersion version, EntPersona persona){
+		EntFilaDespliegueVersionDueno dueno = new EntFilaDespliegueVersionDueno();
 		dueno.setDueno(persona);
-		dueno.setVersion(version);
+		dueno.setDespliegueVersion(version);
 		entityManager.persist(dueno);
 	}
 
 	public void subePrioridad(String id) {
-		EntFilaDeployementVersion versionFila = entityManager.find(EntFilaDeployementVersion.class, id);
-		entityManager.createNamedQuery("buscarPorFilaMenorPrioridad.fila", EntFilaDeployementVersion.class)
+		EntFilaDespliegueVersion versionFila = entityManager.find(EntFilaDespliegueVersion.class, id);
+		entityManager.createNamedQuery("buscarPorFilaMenorPrioridad.fila", EntFilaDespliegueVersion.class)
 		.setParameter("fil", versionFila.getFila())
 		.setParameter("prd", versionFila.getPrioridad()).getResultList().stream().findFirst().ifPresent( o -> cambiaPrioridades(versionFila, o));
 	}
 
 	public void bajaPrioridad(String id) {
-		EntFilaDeployementVersion versionFila = entityManager.find(EntFilaDeployementVersion.class, id);
-		entityManager.createNamedQuery("buscarPorFilaMayorPrioridad.fila", EntFilaDeployementVersion.class)
+		EntFilaDespliegueVersion versionFila = entityManager.find(EntFilaDespliegueVersion.class, id);
+		entityManager.createNamedQuery("buscarPorFilaMayorPrioridad.fila", EntFilaDespliegueVersion.class)
 		.setParameter("fil", versionFila.getFila())
 		.setParameter("prd", versionFila.getPrioridad()).getResultList().stream().findFirst().ifPresent( o -> cambiaPrioridades(versionFila, o));
 	}
 
-	private void cambiaPrioridades(EntFilaDeployementVersion versionFila,EntFilaDeployementVersion versionFilaOther){
+	private void cambiaPrioridades(EntFilaDespliegueVersion versionFila,EntFilaDespliegueVersion versionFilaOther){
 		int prioridad = versionFilaOther.getPrioridad();
 		versionFilaOther.setPrioridad(versionFila.getPrioridad());
 		versionFila.setPrioridad(prioridad);
@@ -175,15 +182,19 @@ public class ServicioFila {
 		entityManager.merge(versionFilaOther);
 	}
 
-	public List<EntFilaDeployementVersionDueno> getDuenosVersion(EntVersion version) {
-		return  entityManager.createNamedQuery("buscarPorVersion.duenoFilaVersion",EntFilaDeployementVersionDueno.class)
+	public List<EntFilaDespliegueVersionDueno> getDuenosVersion(EntVersion version) {
+		return  entityManager.createNamedQuery("buscarPorVersion.duenoFilaVersion",EntFilaDespliegueVersionDueno.class)
 				.setParameter("ver", version).getResultList();
 	}
 
-	public void deploy(EntServidor servidor,EntFilaDeployementVersion versionFila) {
+	public void deploy(EntServidor servidor,EntFilaDespliegueVersion versionFila) {
 		versionFila.setProcesandoDeploy(true);
 		versionFila = entityManager.merge(versionFila);
 
 		servicioJobDespliegueVersion.nuevoDeploy(servidor, versionFila);
+	}
+
+	public List<EntFilaDespliegueVersion> getFilas(EntFilaDespliegue filaDespliegue, EntVersion version) {
+		return entityManager.createNamedQuery("buscarPorFilaVersion.fila",EntFilaDespliegueVersion.class).setParameter("ver", version.getId()).setParameter("fer", filaDespliegue).getResultList();
 	}
 }

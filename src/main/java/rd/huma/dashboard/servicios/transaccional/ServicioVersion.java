@@ -1,8 +1,10 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -73,11 +75,11 @@ public class ServicioVersion {
 		return entityManager.merge(versionTmp);
 	}
 
-	public EntVersion actualizarEstado(EEstadoVersion esperandoFila,		EntVersion versionTmp) {
-		EntVersion version = entityManager.find(EntVersion.class, versionTmp.getId());
-		version.setEstado(esperandoFila);
-		entityManager.persist(version);
-		return version;
+	public EntVersion actualizarEstado(EEstadoVersion estado, EntVersion version) {
+		EntVersion versionInt = entityManager.find(EntVersion.class, version.getId());
+		versionInt.setEstado(estado);
+		entityManager.persist(versionInt);
+		return versionInt;
 	}
 
 	public EntVersion actualizarVersion(String idVersion, String comentario){
@@ -146,10 +148,19 @@ public class ServicioVersion {
 	}
 
 	public List<EntVersionJira> buscaJiras(EntVersion version){
-		return entityManager.createNamedQuery("buscar.versionJiraPorVersion",EntVersionJira.class)
+		return entityManager.createNamedQuery("buscarPorVersion.versionJira",EntVersionJira.class)
 				.setParameter("ver", version)
 				.getResultList();
 	}
+
+
+	public List<EntVersionJira> buscaJiras(EntJira jira){
+		return entityManager.createNamedQuery("buscarPorVersion.versionJira",EntVersionJira.class)
+				.setParameter("jira", jira)
+				.setParameter("est" , Arrays.stream(EEstadoVersion.values()).filter(e -> e.activo()).collect(Collectors.toSet()))
+				.getResultList();
+	}
+
 
 	public List<EntVersionTicket> buscaTickets(EntVersion version){
 		return entityManager.createNamedQuery("buscar.versionTicketPorVersion",EntVersionTicket.class)
@@ -196,6 +207,11 @@ public class ServicioVersion {
 
 	}
 
+	public void gestionarFila(EjecutorSeleccionFila  ejecutorSeleccionFila) {
+		monitorEjecutor.ejecutarAsync(ejecutorSeleccionFila);
+
+	}
+
 	public long contarScriptVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionScripts",Long.class).setParameter("ver", version).getSingleResult();
 	}
@@ -207,7 +223,7 @@ public class ServicioVersion {
 	public long contarReporteVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
-	
+
 	public List<EntVersionScript> getScriptAntesDespuesEjecucion(EntVersion version, ETipoScript tipo) {
 		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", tipo).getResultList();
 	}
