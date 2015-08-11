@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -15,7 +16,9 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 @Table(name="VERSION_SCRIPT")
 @NamedQueries({
 		 @NamedQuery(name = "contar.versionScripts", query="select count(e) from EntVersionScript E where E.version = :ver"),
-		 @NamedQuery(name = "buscarAntesDespues.versionScripts", query="select E from EntVersionScript E where E.version = :ver and tipoScript= :tipo")
+		 @NamedQuery(name = "buscarAntesDespues.versionScripts", query="select E from EntVersionScript E where E.version = :ver and tipoScript= :tipo"),
+		 @NamedQuery(name = "buscar.versionScripts", query="select E from EntVersionScript E where E.version = :ver")
+
 			}
 		)
 public class EntVersionScript extends AEntModelo {
@@ -34,6 +37,9 @@ public class EntVersionScript extends AEntModelo {
 	private EntJira jira;
 
 	private String urlScript;
+
+	@Lob
+	private String resultado;
 
 	@Enumerated(EnumType.STRING)
 	private ETipoScript tipoScript;
@@ -68,6 +74,14 @@ public class EntVersionScript extends AEntModelo {
 
 	public void setTipoScript(ETipoScript tipoScript) {
 		this.tipoScript = tipoScript;
+	}
+
+	public String getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(String resultado) {
+		this.resultado = resultado;
 	}
 
 	@Override

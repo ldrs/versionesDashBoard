@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,7 +91,7 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 		for (String url : urls) {
 			Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
 			if (resultado.getStatus()==200){
-				Path path = Files.createTempFile(carpetaTemporal, nombre, url.substring(url.lastIndexOf('/')));
+				Path path = Files.createFile(Paths.get(carpetaTemporal.toString(), nombre));
 				try (OutputStream out = Files.newOutputStream(path)){
 					out.write(resultado.readEntity(String.class).getBytes()) ;
 					out.flush();

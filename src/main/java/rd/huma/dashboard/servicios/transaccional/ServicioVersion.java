@@ -25,6 +25,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
+import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.EjecutorSeleccionFila;
 
@@ -142,6 +143,14 @@ public class ServicioVersion {
 		entityManager.persist(versionScript);
 	}
 
+	public EntVersionScript actualizarVersionScript(EntVersionScript versionScript){
+		return entityManager.merge(versionScript);
+	}
+
+	public List<EntVersion> buscaPorNumero(String numero){
+		return entityManager.createNamedQuery("buscarPorNumero.version",EntVersion.class).setParameter("num", numero).getResultList();
+	}
+
 
 	public List<EntVersion> buscaUltimaVersiones() {
 		return entityManager.createNamedQuery("buscar.versionTodas",EntVersion.class).setMaxResults(50).getResultList();
@@ -209,7 +218,10 @@ public class ServicioVersion {
 
 	public void gestionarFila(EjecutorSeleccionFila  ejecutorSeleccionFila) {
 		monitorEjecutor.ejecutarAsync(ejecutorSeleccionFila);
+	}
 
+	public void ejecutarJob(AEjecutor ejecutor){
+		monitorEjecutor.ejecutarAsync(ejecutor);
 	}
 
 	public long contarScriptVersion(EntVersion version){
@@ -223,6 +235,11 @@ public class ServicioVersion {
 	public long contarReporteVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
+
+	public List<EntVersionScript> getScript(EntVersion version) {
+		return entityManager.createNamedQuery("buscar.versionScripts",EntVersionScript.class).setParameter("ver", version).getResultList();
+	}
+
 
 	public List<EntVersionScript> getScriptAntesDespuesEjecucion(EntVersion version, ETipoScript tipo) {
 		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", tipo).getResultList();

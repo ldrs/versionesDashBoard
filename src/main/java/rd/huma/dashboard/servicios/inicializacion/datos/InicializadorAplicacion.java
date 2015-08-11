@@ -19,6 +19,7 @@ public class InicializadorAplicacion implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		monitorEjecutor.ejecutarAsync(new EjecutorInilizacionDatos());
+		new InicializacionDeWatchersDirectorio().ejecutar();
 	}
 
 	@Override

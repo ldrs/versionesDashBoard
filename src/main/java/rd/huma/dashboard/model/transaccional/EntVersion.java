@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 @Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
 @NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E"),
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
+				  @NamedQuery(name="buscarPorNumero.version",query="SELECT E from EntVersion E where E.numero in :num"),
 				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri")
 				 }
 				)
