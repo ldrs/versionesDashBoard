@@ -1,48 +1,20 @@
-$(document).ready(function(){
-	$.ajax({url:"http://localhost:8080/dashboard/api/metrica/aplicacion"}).done(function(data){
-		data = JSON.parse(data);
-		  var goodDeploy = new Array();   
-		  var badDeploy = new Array();
-		
-		  for (i = 0; i < data.deploys.length; i++){
-			  goodDeploy.push(i+1, data.deploys[i]);
-          }
-
-		  for (i = 0; i < data.falloDeploys.length; i++){
-			  badDeploy.push(i+1, data.falloDeploys[i]);
-          }
+var reporte = function(url,contenedor){
+	$.ajax({url:url}).done(function(data){
+		datosReporte = JSON.parse(data);
+	
 		  
 		  
-		$('#container').highcharts({
+		$('#'+contenedor).highcharts({
 
 	        title: {
-	            text: 'Reporte'
+	            text: datosReporte.titulo
 	        },
 
 	        subtitle: {
-	            text: 'Deploys por mes'
+	            text: datosReporte.subtitulo
 	        },
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ]
-            },
-            yAxis: {
-                title: {
-                    text: "Cantidad"
-                }
-            },
+            xAxis: datosReporte.xAxis ,
+            yAxis: datosReporte.yAxis,
 	       
 
 	        plotOptions: {
@@ -53,17 +25,7 @@ $(document).ready(function(){
 	            }
 	        },
 
-	        series: [{
-	            name: 'Deploys',
-	            lineWidth: 1,
-	            data : goodDeploy
-	        }, {
-	        	 name: 'Fallos',
-	        	 lineWidth: 1,
-	            color: '#c4392d',
-	            data : badDeploy
-	        }]
+	        series: datosReporte.series
 	    });
 	});	
-})
-
+}
