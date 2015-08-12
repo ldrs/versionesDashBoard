@@ -1,27 +1,28 @@
 package rd.huma.dashboard.servicios.inicializacion.datos;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.WatchService;
 import java.util.logging.Logger;
+
+import rd.huma.dashboard.servicios.background.watchers.aplicacion.ProcesadorWatcherScript;
 
 public class InicializacionDeWatchersDirectorio {
 
 	private static final Logger LOGGER = Logger.getLogger("Inicilizacion");
 
 	public void ejecutar() {
-		Path script = Paths.get("/log/script");
-		if (!script.toFile().exists()){
-			LOGGER.warning("No existe la ruta de log (/log/script) de script");
+		Path script = Paths.get("/logs/scripts");
+		if (script.toFile().exists()){
+			LOGGER.info("Inicializando Notificador de log de scripts");
+			new ProcesadorWatcherScript(script).start();
+		}else{
+			LOGGER.warning("No existe la ruta de log (/logs/scripts) de script");
 		}
-		WatchService watchService =  FileSystems.getDefault().newWatchService();
-		script.register(watcher, events)
 
 
-		Path aplicacion = Paths.get("/log/aplicacion");
+		Path aplicacion = Paths.get("/logs/application");
 		if (!aplicacion.toFile().exists()){
-			LOGGER.warning("No existe la ruta de log (/log/aplicacion) de aplicacion");
+			LOGGER.warning("No existe la ruta de log (/logs/application) de aplicacion");
 		}
 
 	}

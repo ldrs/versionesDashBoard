@@ -50,17 +50,19 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 				throw new UncheckedIOException(e);
 			}
 
+			EntVersionAlerta alerta = new EntVersionAlerta();
+			alerta.setVersion(version);
+			alerta.setPathFile(file.getPath());
 			if (script == null){
-				EntVersionAlerta alerta = new EntVersionAlerta();
 				alerta.setAlerta(ETipoAlertaVersion.SCRIPT_NO_ENCONTRADO_EN_VERSION);
-				alerta.setMensaje(new StringBuilder().append("El archivo ").append(file.getName()).append(" no es parte de la version, y fue ejecutado.. el resultado fue \n").append(resultado).toString());
-				alerta.setVersion(version);
-				servicioVersion.crearAlerta(alerta);
-
+				alerta.setMensaje(new StringBuilder().append("El archivo ").append(file.getName()).append(" no aparenta ser parte de la version fue ejecutado").toString());
 			}else{
+				alerta.setAlerta(ETipoAlertaVersion.SCRIPT_RESULTADO);
+
 				script.setResultado(resultado);
 				servicioVersion.actualizarVersionScript(script);
 			}
+			servicioVersion.crearAlerta(alerta);
 		}
 
 	}

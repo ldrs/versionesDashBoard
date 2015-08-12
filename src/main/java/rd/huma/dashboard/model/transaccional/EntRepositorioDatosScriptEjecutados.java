@@ -1,11 +1,18 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoScript;
 
 @Entity
 @Table(name="REPOSITORIO_DATOS_SCRIPT_EJE")
@@ -23,17 +30,18 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 
 	@JoinColumn
 	@ManyToOne
-	private EntJira jira;
+	private EntVersionScript script;
 
-	@JoinColumn
-	@ManyToOne
-	private EntVersion version;
+	private LocalDateTime fechaRegistro = LocalDateTime.now();
 
-	private LocalDate fechaEjecucion;
+	private LocalDateTime fechaEjecucion;
 
-	private boolean ocacionoError;
+	@Enumerated(EnumType.STRING)
+	private EEstadoScript estadoScript = EEstadoScript.PENDIENTE_EJECUCION;
 
-	private String urlScript;
+	@Lob
+	@Basic(fetch = FetchType.EAGER)
+	private String resultado;
 
 	public EntRepositorioDatos getRepositorioDatos() {
 		return repositorioDatos;
@@ -43,85 +51,43 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 		this.repositorioDatos = repositorioDatos;
 	}
 
-	public EntJira getJira() {
-		return jira;
+	public EntVersionScript getScript() {
+		return script;
 	}
 
-	public void setJira(EntJira jira) {
-		this.jira = jira;
+	public void setScript(EntVersionScript script) {
+		this.script = script;
 	}
 
-	public LocalDate getFechaEjecucion() {
+	public LocalDateTime getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(LocalDateTime fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public LocalDateTime getFechaEjecucion() {
 		return fechaEjecucion;
 	}
 
-
-
-	public EntVersion getVersion() {
-		return version;
-	}
-
-	public void setVersion(EntVersion version) {
-		this.version = version;
-	}
-
-	public void setFechaEjecucion(LocalDate fechaEjecucion) {
+	public void setFechaEjecucion(LocalDateTime fechaEjecucion) {
 		this.fechaEjecucion = fechaEjecucion;
 	}
 
-	public boolean isOcacionoError() {
-		return ocacionoError;
+	public EEstadoScript getEstadoScript() {
+		return estadoScript;
 	}
 
-	public void setOcacionoError(boolean ocacionoError) {
-		this.ocacionoError = ocacionoError;
+	public void setEstadoScript(EEstadoScript estadoScript) {
+		this.estadoScript = estadoScript;
 	}
 
-	public String getUrlScript() {
-		return urlScript;
+	public String getResultado() {
+		return resultado;
 	}
 
-	public void setUrlScript(String urlScript) {
-		this.urlScript = urlScript;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((jira == null) ? 0 : jira.hashCode());
-		result = prime
-				* result
-				+ ((repositorioDatos == null) ? 0 : repositorioDatos.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (!(obj instanceof EntRepositorioDatosScriptEjecutados)) {
-			return false;
-		}
-		EntRepositorioDatosScriptEjecutados other = (EntRepositorioDatosScriptEjecutados) obj;
-		if (jira == null) {
-			if (other.jira != null) {
-				return false;
-			}
-		} else if (!jira.equals(other.jira)) {
-			return false;
-		}
-		if (repositorioDatos == null) {
-			if (other.repositorioDatos != null) {
-				return false;
-			}
-		} else if (!repositorioDatos.equals(other.repositorioDatos)) {
-			return false;
-		}
-		return true;
+	public void setResultado(String resultado) {
+		this.resultado = resultado;
 	}
 }

@@ -8,6 +8,7 @@ import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
@@ -137,6 +138,12 @@ class JobDeployVersion {
 		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
 		jobScript.setTipoScript(ETipoScript.ANTES_SUBIDA);
 		servicioJobDespliegueVersion.nuevoJob(jobScript);
+
+
+
+		EntRepositorioDatosScriptEjecutados repositorioDatosScriptEjecutados = new EntRepositorioDatosScriptEjecutados();
+		repositorioDatosScriptEjecutados.setRepositorioDatos(job.getServidor().getBaseDatos());
+		repositorioDatosScriptEjecutados.setScript(script);
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");

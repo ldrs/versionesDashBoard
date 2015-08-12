@@ -17,18 +17,20 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 public class EntVersionAlerta extends AEntModelo {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4918362759521074590L;
-	
-	
+
+
 	@Lob
 	@Basic(fetch = FetchType.EAGER)
 	private String mensaje;
-	
+
+	private String pathFile;
+
 	@Enumerated(EnumType.STRING)
 	private ETipoAlertaVersion alerta;
-	
+
 	@JoinColumn
 	@ManyToOne
 	private EntVersion version;
@@ -55,5 +57,13 @@ public class EntVersionAlerta extends AEntModelo {
 
 	public void setVersion(EntVersion version) {
 		this.version = version;
+	}
+
+	public String getPathFile() {
+		return pathFile;
+	}
+
+	public void setPathFile(String pathFile) {
+		this.pathFile = pathFile;
 	}
 }
