@@ -5,21 +5,25 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
-import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoScript;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 	private Path rutaResultadoScripts;
 	private ServicioVersion servicioVersion;
+	private ServicioRepositorioDatos servicioRepositorioDatos;
 
 	public EjecutorProcesaResultadoScripts(Path rutaResultadoScripts) {
 		this.rutaResultadoScripts = rutaResultadoScripts;
@@ -28,21 +32,21 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 	@Override
 	public void ejecutar() {
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
+		this.servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 		Path directorio = rutaResultadoScripts.getFileName();
 
 
-		servicioVersion.buscaPorNumero(directorio.toString())
-				.stream().findFirst().ifPresent(this::procesar);
-
-
+		servicioVersion.buscaPorNumero(directorio.toString()).stream().findFirst().ifPresent(this::procesar);
 	}
 
 	private void procesar(EntVersion version) {
-		List<EntVersionScript> scripts = servicioVersion.getScript(version);
-		Map<String,EntVersionScript> mapeo = getNombres(scripts);
+		List<EntRepositorioDatosScriptEjecutados> scripts =  servicioRepositorioDatos.getScriptEjecutadosPorVersion(version.getNumero());
+
+		Map<String,EntRepositorioDatosScriptEjecutados> mapeo = getNombres(scripts);
 		File[] archivos = rutaResultadoScripts.toFile().listFiles();
 		for (File file : archivos) {
-			EntVersionScript script = mapeo.get(file.getName());
+			String key =  file.getName().substring(0, file.getName().lastIndexOf('.'));
+			EntRepositorioDatosScriptEjecutados script = mapeo.get(key);
 			String resultado;
 			try {
 			 resultado = new String(Files.readAllBytes(file.toPath()));
@@ -60,17 +64,32 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 				alerta.setAlerta(ETipoAlertaVersion.SCRIPT_RESULTADO);
 
 				script.setResultado(resultado);
-				servicioVersion.actualizarVersionScript(script);
+				script.setEstadoScript(resultado.contains("ORA-")? EEstadoScript.EJECUCION_FALLIDO :EEstadoScript.EJECUCION_FALLIDO);
+				script.setFechaEjecucion(LocalDateTime.now());
+				servicioRepositorioDatos.actualizarScript(script);
+				mapeo.remove(key);
 			}
 			servicioVersion.crearAlerta(alerta);
 		}
+		mapeo.values().forEach(this::marcarComoResultadoDesconocido);
 
 	}
 
-	private Map<String,EntVersionScript>  getNombres(List<EntVersionScript> scripts){
-		Map<String, EntVersionScript> mapeo = new HashMap<>();
-		scripts.stream().forEach(e -> mapeo.put(e.getUrlScript().substring(e.getUrlScript().lastIndexOf('/')), e));
+	private void marcarComoResultadoDesconocido(EntRepositorioDatosScriptEjecutados repositorioDatosScriptEjecutados){
+		repositorioDatosScriptEjecutados.setEstadoScript(EEstadoScript.RESULTADO_EJECUCION_DESCONOCIDO);
+		repositorioDatosScriptEjecutados.setFechaEjecucion(LocalDateTime.now());
+		servicioRepositorioDatos.actualizarScript(repositorioDatosScriptEjecutados);
+	}
+
+	private Map<String,EntRepositorioDatosScriptEjecutados>  getNombres(List<EntRepositorioDatosScriptEjecutados> scripts){
+		Map<String, EntRepositorioDatosScriptEjecutados> mapeo = new HashMap<>();
+		scripts.stream().forEach(e -> mapeo.put(nombreFromUrl(e.getScript().getUrlScript()), e));
 
 		return mapeo;
+	}
+
+	private String nombreFromUrl(String valor){
+		String tmp = valor.substring(valor.lastIndexOf('/'));
+		return tmp.substring(0, tmp.lastIndexOf('.'));
 	}
 }

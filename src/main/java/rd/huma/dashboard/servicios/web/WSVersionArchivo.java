@@ -13,10 +13,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.servicios.utilitarios.ServicioGeneracionZipFileFromUrls;
 
@@ -26,26 +28,28 @@ public class WSVersionArchivo {
 	@Inject
 	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
-
-
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
 
 
+	@Inject
+	private @Servicio ServicioRepositorioDatos servicioRepositorioDatos;
+
 	@GET
 	@Produces("application/zip")
 	@Path("script/{id}")
-	public Response retornaScript(@PathParam("id") String scriptId){
-		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(scriptId);
+	public Response retornaScript(@PathParam("id") String idJob){
+		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(idJob);
 
 
-		List<EntVersionScript> scripts = servicioVersion.getScriptAntesDespuesEjecucion(jobDespliegueVersion.getVersion(), jobDespliegueVersion.getTipoScript());
+		List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(idJob);
 		ResponseBuilder response;
-		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntVersionScript::getUrlScript).collect(Collectors.toList()))){
+		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntRepositorioDatosScriptEjecutados::getScript)
+																																								.map(EntVersionScript::getUrlScript)
+																																								.collect(Collectors.toList()))){
 			File fileSQL = servicio.generar();
 			response = Response.ok((Object) fileSQL);
-			response.header("Content-Disposition",
-					"attachment; filename=\"script.zip\"");
+			response.header("Content-Disposition","attachment; filename=\"script.zip\"");
 
 		}
 		return response.build();
@@ -63,8 +67,7 @@ public class WSVersionArchivo {
 		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), reportes.stream().map(EntVersionReporte::getReporte).collect(Collectors.toList()))){
 			File fileSQL = servicio.generar();
 			response = Response.ok((Object) fileSQL);
-			response.header("Content-Disposition",
-					"attachment; filename=\"reporte.zip\"");
+			response.header("Content-Disposition",	"attachment; filename=\"reporte.zip\"");
 
 		}
 		return response.build();

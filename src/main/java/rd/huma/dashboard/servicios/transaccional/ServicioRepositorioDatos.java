@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
-import rd.huma.dashboard.model.transaccional.EntVersionScript;
 
 @Stateless
 @Servicio
@@ -51,18 +50,26 @@ public class ServicioRepositorioDatos {
 		return repositorioDatos;
 	}
 
-	public void creaNuevoEjecucionScripts(List<EntVersionScript> scripts, EntRepositorioDatos datos){
-		for (EntVersionScript entVersionScript : scripts) {
+	public List<EntRepositorioDatosScriptEjecutados> getScriptEjecutados(EntRepositorioDatos repositorioDatos, String url){
+		return entityManager.createNamedQuery("buscarPorUrl.scriptEjecutados",EntRepositorioDatosScriptEjecutados.class).setParameter("rep", repositorioDatos).setParameter("scr", url).getResultList();
+	}
 
-		}
+	public List<EntRepositorioDatosScriptEjecutados> getScriptEjecutadosPorJob(String idJob){
+		return entityManager.createNamedQuery("buscarPorJob.scriptEjecutados",EntRepositorioDatosScriptEjecutados.class).setParameter("id", idJob).getResultList();
+	}
 
-		EntRepositorioDatosScriptEjecutados scriptEjecutados = new EntRepositorioDatosScriptEjecutados();
+	public List<EntRepositorioDatosScriptEjecutados> getScriptEjecutadosPorVersion(String version){
+		return entityManager.createNamedQuery("buscarPorVersion.scriptEjecutados",EntRepositorioDatosScriptEjecutados.class).setParameter("ver", version).getResultList();
 	}
 
 	private EntRepositorioDatos actualizar(EntRepositorioDatos repositorioDatos){
 		repositorioDatos.setUltimaActualizacion(LocalDateTime.now());
 		entityManager.merge(repositorioDatos);
 		return repositorioDatos;
+	}
+
+	public EntRepositorioDatosScriptEjecutados actualizarScript(EntRepositorioDatosScriptEjecutados script) {
+		return entityManager.merge(script);
 	}
 
 }

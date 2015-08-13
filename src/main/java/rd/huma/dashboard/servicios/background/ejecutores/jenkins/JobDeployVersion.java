@@ -15,8 +15,12 @@ import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
+import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
+import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 class JobDeployVersion {
@@ -32,6 +36,8 @@ class JobDeployVersion {
 	private String credenciales;
 
 	private ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+	private ServicioPersona servicioPersona;
+	private ServicioRepositorioDatos servicioRepositorioDatos;
 
 	public JobDeployVersion(EntJobDespliegueVersion job) {
 		this.job = job;
@@ -48,6 +54,8 @@ class JobDeployVersion {
 		this.aplicacion = ambienteAplicacion.getAplicacion();
 		this.servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 		this.credenciales = "Basic " + Base64.getEncoder().encodeToString( (configuracionGeneral.getUsrJenkins() + ":" + configuracionGeneral.getPwdJenkins()).getBytes() );
+		servicioPersona = ServicioPersona.getInstanciaTransaccional();
+		servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 	}
 
 	public EntJobDespliegueVersion getJob() {
@@ -104,9 +112,10 @@ class JobDeployVersion {
 		if (!servicioVersion.getReportesVersion(version).isEmpty()){
 			deployReporte();
 		}
+		List<EntVersionScript> scriptsDespues = servicioVersion.getScriptDespuesEjecucion(version);
 
-		if (!servicioVersion.getScriptAntesEjecucion(version).isEmpty()){
-			deployScriptDespuesEjecucion();
+		if (!scriptsDespues.isEmpty()){
+			deployScriptEjecucion(scriptsDespues, ETipoScript.DESPUES_SUBIDA);
 		}
 	}
 
@@ -129,21 +138,39 @@ class JobDeployVersion {
 	}
 
 	private void deployScriptAntesEjecucion(List<EntVersionScript> scriptAntesEjecucion){
+		deployScriptEjecucion(scriptAntesEjecucion, ETipoScript.ANTES_SUBIDA);
+	}
+
+	private void deployScriptEjecucion(List<EntVersionScript> scripts, ETipoScript tipoScript){
 
 
 		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
 		jobScript.setServidor(job.getServidor());
 		jobScript.setVersion(version);
-		job.setFilaDespliegue(this.job.getFilaDespliegue());
+		jobScript.setFilaDespliegue(this.job.getFilaDespliegue());
 		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
-		jobScript.setTipoScript(ETipoScript.ANTES_SUBIDA);
+		jobScript.setTipoScript(tipoScript);
 		servicioJobDespliegueVersion.nuevoJob(jobScript);
 
+		for (EntVersionScript versionScript: scripts){
+			UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(versionScript.getUrlScript()).revision();
+			if (ultimaRevision!=null){
+				List<EntRepositorioDatosScriptEjecutados> scriptEjecutados = servicioRepositorioDatos.getScriptEjecutados(job.getServidor().getBaseDatos(), versionScript.getUrlScript());
 
+				if (scriptEjecutados.stream().filter(s -> s.getEstadoScript().puedeEjecutarDeNuevo())
+								.filter(s -> s.getRevisionScript()<=ultimaRevision.getNumeroRevision())
+								.count()==0){
 
-		EntRepositorioDatosScriptEjecutados repositorioDatosScriptEjecutados = new EntRepositorioDatosScriptEjecutados();
-		repositorioDatosScriptEjecutados.setRepositorioDatos(job.getServidor().getBaseDatos());
-		repositorioDatosScriptEjecutados.setScript(script);
+					EntRepositorioDatosScriptEjecutados repositorioDatosScriptEjecutados = new EntRepositorioDatosScriptEjecutados();
+					repositorioDatosScriptEjecutados.setRepositorioDatos(job.getServidor().getBaseDatos());
+					repositorioDatosScriptEjecutados.setScript(versionScript);
+					repositorioDatosScriptEjecutados.setAutorScript(servicioPersona.buscaOCreaPersona(ultimaRevision.getUsuarioSVN()));
+					repositorioDatosScriptEjecutados.setRevisionScript(ultimaRevision.getNumeroRevision());
+					repositorioDatosScriptEjecutados.setJob(jobScript);
+				}
+			}
+		}
+
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
@@ -151,26 +178,6 @@ class JobDeployVersion {
 		invocadorJenkins.adicionarParametro("Version", version.getNumero());
 		invocadorJenkins.invocar();
 	}
-
-	private void deployScriptDespuesEjecucion(){
-
-
-		EntJobDespliegueVersion jobScript = new EntJobDespliegueVersion();
-		jobScript.setServidor(job.getServidor());
-		jobScript.setVersion(version);
-		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
-		jobScript.setTipoScript(ETipoScript.DESPUES_SUBIDA);
-		job.setFilaDespliegue(this.job.getFilaDespliegue());
-		servicioJobDespliegueVersion.nuevoJob(jobScript);
-
-		InvocadorJenkins invocadorJenkins = nuevoInvocador();
-		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
-		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLScriptFile() + jobScript.getId());
-		invocadorJenkins.adicionarParametro("Version", version.getNumero());
-
-		invocadorJenkins.invocar();
-	}
-
 
 	private InvocadorJenkins nuevoInvocador(){
 		return  new InvocadorJenkins(credenciales)

@@ -11,12 +11,8 @@ class BuscadorComentario {
 
 	private EntVersion version;
 	private EntConfiguracionGeneral configuracionGeneral;
-	
-	
-	
-	public BuscadorComentario(EntVersion version,
-			EntConfiguracionGeneral configuracionGeneral) {
-		super();
+
+	public BuscadorComentario(EntVersion version,EntConfiguracionGeneral configuracionGeneral) {
 		this.version = version;
 		this.configuracionGeneral = configuracionGeneral;
 	}
@@ -31,7 +27,7 @@ class BuscadorComentario {
 		try {
 			Process proceso = Runtime.getRuntime().exec("svn log -r"+version.getRevisionSVN()+" "+getRutaSvn());
 			proceso.waitFor(3, TimeUnit.SECONDS);
-			
+
 			return IOUtil.toString(proceso.getInputStream());
 		} catch (IOException | InterruptedException e) {
 			throw new IllegalStateException("No pudo ser encontrado el log.");

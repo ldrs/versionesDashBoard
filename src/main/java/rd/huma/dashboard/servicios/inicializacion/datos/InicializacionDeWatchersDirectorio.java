@@ -24,7 +24,5 @@ public class InicializacionDeWatchersDirectorio {
 		if (!aplicacion.toFile().exists()){
 			LOGGER.warning("No existe la ruta de log (/logs/application) de aplicacion");
 		}
-
 	}
-
 }

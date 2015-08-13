@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -15,6 +16,12 @@ public class ServicioPersona {
 
 	@Inject
 	private EntityManager entityManager;
+
+
+	public static ServicioPersona getInstanciaTransaccional(){
+		Servicio servicio = ServicioPersona.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioPersona.class, servicio).get();
+	}
 
 	public List<EntPersona> buscarPersonas(){
 		return entityManager.createNamedQuery("buscaPersonas",EntPersona.class).getResultList();

@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios;
+package rd.huma.dashboard.servicios.integracion.svn.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,14 +20,14 @@ public class ServicioUltimaRevisionSVN {
 		return interpetacion(buscaComentarioSVN());
 	}
 
-
 	private UltimaRevision interpetacion(String comentario) {
 		BufferedReader bufReader = new BufferedReader(new StringReader(comentario));
 		String fistLineFound = null;
 		String line;
 		try {
 			while( (line=bufReader.readLine()) != null ){
-				if (line!=null && line.indexOf('|')!=-1 && line.split("|").length==3){
+
+				if (line!=null && line.indexOf('|')!=-1 && line.split("[r]*[|]").length==4){
 					fistLineFound = line;
 					break;
 				}
@@ -36,9 +36,9 @@ public class ServicioUltimaRevisionSVN {
 			throw new UncheckedIOException(e);
 		}
 		if (fistLineFound!=null){
-			String[] data = fistLineFound.split("|");
+			String[] data = fistLineFound.split("[r]*[|]");
 			long  revision =  Long.valueOf(data[0].substring(1).trim());
-			return new UltimaRevision(revision, data[1].trim(), data[2]);
+			return new UltimaRevision(revision, data[1].trim(), data[2].trim());
 		}
 
 		return null;

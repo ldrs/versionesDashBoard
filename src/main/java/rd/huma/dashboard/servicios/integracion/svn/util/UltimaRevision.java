@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios;
+package rd.huma.dashboard.servicios.integracion.svn.util;
 
 public class UltimaRevision {
 
