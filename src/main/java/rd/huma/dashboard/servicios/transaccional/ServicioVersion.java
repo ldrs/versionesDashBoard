@@ -256,4 +256,12 @@ public class ServicioVersion {
 	public List<EntVersionReporte> getReportesVersion(EntVersion version) {
 		return entityManager.createNamedQuery("buscar.versionReportes",EntVersionReporte.class).setParameter("ver", version).getResultList();
 	}
+
+	public List<EntVersion> getVersionesQueContienenAlertas() {
+		return entityManager.createNamedQuery("versiones.alerta",EntVersion.class).getResultList();
+	}
+
+	public List<EntVersionAlerta> buscaAlerta(EntVersion version) {
+		return entityManager.createNamedQuery("buscaPorVersion.alerta",EntVersionAlerta.class).setParameter("ver", version).getResultList();
+	}
 }

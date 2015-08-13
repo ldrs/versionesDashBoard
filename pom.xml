@@ -27,6 +27,15 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<scope>provided</scope>
+			<version>1.5.2</version>
+		</dependency>
+
+
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${version.junit}</version>

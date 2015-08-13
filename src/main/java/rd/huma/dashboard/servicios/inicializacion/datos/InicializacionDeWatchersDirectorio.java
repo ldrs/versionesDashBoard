@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-import rd.huma.dashboard.servicios.background.watchers.aplicacion.ProcesadorWatcherScript;
+import rd.huma.dashboard.servicios.background.watchers.script.ProcesadorWatcherScript;
 
 public class InicializacionDeWatchersDirectorio {
 

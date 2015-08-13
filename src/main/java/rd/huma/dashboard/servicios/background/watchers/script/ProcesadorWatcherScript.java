@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios.background.watchers.aplicacion;
+package rd.huma.dashboard.servicios.background.watchers.script;
 
 import java.nio.file.Path;
 

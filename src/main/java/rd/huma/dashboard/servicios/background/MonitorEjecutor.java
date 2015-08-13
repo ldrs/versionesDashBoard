@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import rd.huma.dashboard.servicios.background.ejecutores.alertas.EjecutorEnvioAlertasCorreo;
 import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.deploy.EjecutorDeployVersionAutomatico;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.EjecutorEliminadorFilas;
@@ -26,6 +27,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
+		scheduler.scheduleAtFixedRate(new EjecutorEnvioAlertasCorreo(), 5, 2, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy
