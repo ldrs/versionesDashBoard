@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
+import rd.huma.dashboard.model.transaccional.EntVersionAlertaHistorica;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
@@ -263,5 +265,20 @@ public class ServicioVersion {
 
 	public List<EntVersionAlerta> buscaAlerta(EntVersion version) {
 		return entityManager.createNamedQuery("buscaPorVersion.alerta",EntVersionAlerta.class).setParameter("ver", version).getResultList();
+	}
+
+	public List<EntVersionAlertaHistorica> moverHistorico(List<EntVersionAlerta> alertas){
+		List<EntVersionAlertaHistorica> historia = new ArrayList<>();
+		for (EntVersionAlerta alerta : alertas) {
+			EntVersionAlertaHistorica h = new EntVersionAlertaHistorica();
+			h.setAlerta(alerta.getAlerta());
+			h.setMensaje(alerta.getMensaje());
+			h.setPathFile(alerta.getPathFile());
+			h.setVersion(alerta.getVersion());
+			entityManager.persist(h);
+			entityManager.remove(alerta);
+			historia.add(h);
+		}
+		return historia;
 	}
 }

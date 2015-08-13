@@ -39,6 +39,7 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 		}
 
 		servicioEmail.enviar(getCorreos(servicioVersion, version), "Notificaciones de la version :" + version.getNumero(), sbMensaje.toString(), archivos);
+		servicioVersion.moverHistorico(alertas);
 	}
 
 	private String getCorreos(ServicioVersion servicioVersion, EntVersion version){
