@@ -1571,6 +1571,7 @@ ul.link-list li:first-child {
 	margin-right : 20px;
 	padding: 5px;
 	float: left;
+	margin-bottom: 20px;
 }
 .sdisponible{
 	background-color: blue;

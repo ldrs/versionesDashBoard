@@ -27,12 +27,18 @@ public final class ServicioIntegracionSYSAID {
 	}
 
 	public Optional<Ticket> getTicket(long ticket){
-		garantizaInicioSesion();
-		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionIdSysAid,new ApiServiceRequest(),ticket);
-		if (sr == null){
-			return Optional.empty();
+		try{
+
+			garantizaInicioSesion();
+			ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionIdSysAid,new ApiServiceRequest(),ticket);
+			if (sr == null){
+				return Optional.empty();
+			}
+			return Optional.of(new Ticket(ticket, sr.getStatus()));
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		return Optional.of(new Ticket(ticket, sr.getStatus()));
+		return Optional.empty();
 	}
 
 	private void garantizaInicioSesion() {
