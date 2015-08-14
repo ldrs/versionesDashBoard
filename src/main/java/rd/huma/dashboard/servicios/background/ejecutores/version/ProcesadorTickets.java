@@ -49,8 +49,10 @@ public class ProcesadorTickets {
 	}
 
 	public ProcesadorTickets procesaJiras(){
+		EjecutorVersion.LOGGER.info("Buscando los jiras el jira en el comentario de la version :" + version.getNumero());
 		List<EntJira> jirasEncontradoComentarios = BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira();
 		this.buscadorJiraQuery =  new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.BRANCH, version.getBranchOrigen()));
+
 
 		List<EntJira> jirasEncontradosBranches = buscadorJiraQuery.encuentra();
 		List<EntJira> todos = new ArrayList<>();

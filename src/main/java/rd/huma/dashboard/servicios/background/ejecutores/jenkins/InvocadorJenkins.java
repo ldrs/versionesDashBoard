@@ -66,8 +66,11 @@ public class InvocadorJenkins {
 
 	private void manejaResponse( int responseCode){
 		if (responseCode==201){
-			this.responseHanlder.sucess().setUrlSeguimiento(urlBase);
+			if (responseHanlder!=null && this.responseHanlder.sucess()!=null){
+				this.responseHanlder.sucess().setUrlSeguimiento(urlBase);
 				this.responseHanlder.sucess().ejecutar();
+			}
+
 		}else{
 			this.responseHanlder.getFailure().accept(null);
 		}

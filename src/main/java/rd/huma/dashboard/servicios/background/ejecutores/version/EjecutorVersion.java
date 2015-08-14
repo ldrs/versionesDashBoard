@@ -39,9 +39,16 @@ public class EjecutorVersion  extends AEjecutor{
 																	);
 		EntAplicacion aplicacion = getCacheAplicacion(version.getSvnOrigen()).orElseThrow(() -> new IllegalStateException("aplicacion  No esta"));
 
+
+		LOGGER.info(String.format("Recaudando todas las informaciones de  la version %s del branch %s", version.getNumero(), version.getBranchOrigen()));
+
 		procesadorTickets = ProcesadorTickets.of(configuracionGeneral, version, aplicacion).procesaJiras();
 
+		LOGGER.info(String.format("Grabando las informaciones recaudadas de la version %s del branch %s", version.getNumero(), version.getBranchOrigen()));
+
 		new ProcesadorDatos(procesadorTickets).grabarDatos();
+
+		LOGGER.info(String.format("Buscando los modulos de la version %s del branch %s", version.getNumero(), version.getBranchOrigen()));
 
 		new BuscadorModulos(configuracionGeneral,aplicacion, version).procesar();
 

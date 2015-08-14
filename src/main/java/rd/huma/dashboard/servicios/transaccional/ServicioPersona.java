@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntPersona;
-
+import static rd.huma.dashboard.util.UtilString.*;
 @Stateless
 @Servicio
 public class ServicioPersona {
@@ -29,7 +29,7 @@ public class ServicioPersona {
 
 	public EntPersona buscaOCreaPersona(String usuarioSVN){
 		return entityManager.createNamedQuery("buscaPersonaSVN", EntPersona.class)
-			.setParameter("usrSVN", usuarioSVN.toLowerCase()).getResultList()
+			.setParameter("usrSVN", miniscula(usuarioSVN)).getResultList()
 			.stream().findFirst()
 			.orElse(creaPersona(usuarioSVN));
 	}

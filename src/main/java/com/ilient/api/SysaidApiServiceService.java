@@ -23,8 +23,8 @@ import javax.xml.ws.WebServiceFeature;
 					)
 public class SysaidApiServiceService  extends Service{
 
-	//public static final String SERVICIOLOCATION = "http://serviciossiafe.hacienda.gov.do:8080/services/SysaidApiService?wsdl";
-	public static final String SERVICIOLOCATION = "http://172.16.9.36:8080/services/SysaidApiService?wsdl";
+	public static final String SERVICIOLOCATION = "http://serviciossiafe.hacienda.gov.do:8080/services/SysaidApiService?wsdl";
+	//public static final String SERVICIOLOCATION = "http://172.16.9.36:8080/services/SysaidApiService?wsdl";
 
     private final static URL SYSAIDAPISERVICESERVICE_WSDL_LOCATION;
     private final static WebServiceException SYSAIDAPISERVICESERVICE_EXCEPTION;
