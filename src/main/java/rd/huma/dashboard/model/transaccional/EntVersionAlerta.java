@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="VERSION_ALERTA")
 @NamedQueries({ @NamedQuery(name="versiones.alerta", query = "SELECT E.version FROM EntVersionAlerta E group by E.version"),
-				@NamedQuery(name="buscaPorVersion.alerta", query = "SELECT E FROM EntVersionAlerta E where E.version where E.ver = :ver order by E.fechaRegistro")
+				@NamedQuery(name="buscaPorVersion.alerta", query = "SELECT E FROM EntVersionAlerta E where E.version = :ver order by E.fechaRegistro")
 				})
 public class EntVersionAlerta extends AEntVersionAlerta {
 

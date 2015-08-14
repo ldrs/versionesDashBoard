@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
+import rd.huma.dashboard.servicios.background.watchers.aplicacion.ProcesadorWatcherLogAplicacion;
 import rd.huma.dashboard.servicios.background.watchers.script.ProcesadorWatcherScript;
 
 public class InicializacionDeWatchersDirectorio {
@@ -21,8 +22,11 @@ public class InicializacionDeWatchersDirectorio {
 
 
 		Path aplicacion = Paths.get("/logs/application");
-		if (!aplicacion.toFile().exists()){
+		if (aplicacion.toFile().exists()){
+			new ProcesadorWatcherLogAplicacion(aplicacion).start();
+		}else{
 			LOGGER.warning("No existe la ruta de log (/logs/application) de aplicacion");
+
 		}
 	}
 }

@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionAlertaHistorica;
+import rd.huma.dashboard.model.transaccional.EntVersionLog;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
@@ -143,6 +144,10 @@ public class ServicioVersion {
 		versionScript.setUrlScript(script);
 		versionScript.setVersion(version);
 		entityManager.persist(versionScript);
+	}
+
+	public void crearVersionLog(EntVersionLog versionLog){
+		entityManager.persist(versionLog);
 	}
 
 	public EntVersionScript actualizarVersionScript(EntVersionScript versionScript){
