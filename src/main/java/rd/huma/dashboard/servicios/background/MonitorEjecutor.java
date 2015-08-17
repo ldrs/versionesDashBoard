@@ -27,7 +27,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
-		scheduler.scheduleAtFixedRate(new EjecutorEnvioAlertasCorreo(), 5, 2, TimeUnit.MINUTES);
+	//	scheduler.scheduleAtFixedRate(new EjecutorEnvioAlertasCorreo(), 5, 2, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy

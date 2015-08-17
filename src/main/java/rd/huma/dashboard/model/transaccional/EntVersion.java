@@ -48,6 +48,9 @@ public class EntVersion extends AEntModelo implements Serializable{
 	@Enumerated
 	private EEstadoVersion estado = EEstadoVersion.ESPERANDO_DATOS_INTEGRACION;
 
+
+	private String inicioJob;
+
 	public String getNumero() {
 		return numero;
 	}
@@ -208,5 +211,13 @@ public class EntVersion extends AEntModelo implements Serializable{
 			return false;
 		}
 		return true;
+	}
+
+	public void setInicioJob(String inicioJob) {
+		this.inicioJob= inicioJob;
+	}
+
+	public String getInicioJob() {
+		return inicioJob;
 	}
 }

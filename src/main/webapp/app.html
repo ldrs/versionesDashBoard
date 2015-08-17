@@ -5,6 +5,16 @@
 		<title>Versiones</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+				<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/services.js"></script>
@@ -13,11 +23,17 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
+
 	</head>
 
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
 		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
+		<div class="info">
+			<a title="Versiones Procesando aun sin fila" href="versionProcesando.html" class="number">{{app.versionesProcesando}}</a>
+			<a title="Versiones Recientemente fallaron" href="restaurarVersion.html" class="number">{{app.versionesFallidas}}</a>
+		</div>
 			<div id="header-wrapper">
 				<div class="container">
 					<div class="row">
@@ -54,8 +70,8 @@
 				<div class="container">
 					<div class="row">
 
-							<h2 style="margin-bottom: 0;">Fila de Espera</h2>
-							<div  style="width: 100%">
+							<h2 style="margin-bottom: 0;">Fila de Espera <div style="float: right;" class="{{app.cssActualizando}}"></div> </h2>
+							<div  style="width: 100%; padding-top: 0px;">
 								<div class="row rowFila rowHeaderFila">
 									<div class="aplicacion c1" style="color: black">Numero</div>
 									<div class="aplicacion c3" style="color: black">Autor</div>
@@ -126,13 +142,6 @@
 
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/skel-viewport.min.js"></script>
-			<script src="assets/js/util.js"></script>
-
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
 
 	</body>
 

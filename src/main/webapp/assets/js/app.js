@@ -10,6 +10,11 @@ function toQueryString(page){
 	return page+"?"+ $.param(queryString);
 }
 
+$(document).ready(function(){
+	var isq = $(".inicioSesion>a").offset().left;
+	$(".info").offset({top:130, left : isq});
+});
+
 
 var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
 
@@ -23,7 +28,8 @@ versionesApp.factory("VersionesFilas", function($resource) {
 		'filas':{ 'method':'GET','isArray':true},
         'sube': { 'method':'GET','url':'/dashboard/api/filasPrioridad/sube/:idFila'},
         'baja': { 'method':'GET','url':'/dashboard/api/filasPrioridad/baja/:idFila'},
-        'elimina': { 'method':'GET','url':'/dashboard/api/filasPrioridad/elimina/:idFila'}
+        'elimina': { 'method':'GET','url':'/dashboard/api/filasPrioridad/elimina/:idFila'},
+        'versionesInfo' : { 'method':'GET','url':'/dashboard/api/versionesInfo'}
     });
 });
 
@@ -61,6 +67,10 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.configuraciones = {"tituloAplicaciones":tituloAplicacion,"tituloAmbientes":tituloAmbiente};
 	app.cssControlesPrioridad = "none";
 	app.cssControlesUndeploy = "none";
+	app.cssActualizando = "vacio";
+	app.versionesProcesando = 0;
+	app.versionesFallidas = 0;
+
 
 
 	app.containsElement = function(arr,value){
@@ -87,13 +97,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		if (app.servidores){
 			app.cambiaCSSServidores(app.servidores);
 		}
-
-
-	//	app.cssControlesUndeploy = estilo;
-
 	}
-
-
 
 	persistanceService.init().then(function(){
 
@@ -114,12 +118,25 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		});
 	});
 
+	app.actualizaInfoVersiones=function(){
+		if (!app.ambienteId){
+			return;
+		}
+
+		VersionesFilas.versionesInfo({},function(data){
+			app.versionesProcesando = data.procesandoDato;
+			app.versionesFallidas = data.conError;
+		});
+	}
+
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
 			return;
 		}
 		VersionesFilas.filas({idAmbiente:app.ambienteId}, function(data) {
 			app.versionesFila = data;
+			app.cssActualizando = "vacio";
+			app.actualizaInfoVersiones();
 		});
 
 	}
@@ -238,6 +255,19 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.actualizaServidores();
 		});
 	}
+
+	app.actualizar = function(){
+		app.actualizaFila();
+		app.actualizaServidores();
+	}
+
+
+	window.setTimeout(function(){
+		app.cssActualizando = "waitIcon";
+		app.actualizar();
+	}, 30000);
+
+
 
 	$scope.adicionarAplicacion = function(){
 		var o = {nombre:'?', css : "", "jira":"?", "svn":"?","id":"?"};

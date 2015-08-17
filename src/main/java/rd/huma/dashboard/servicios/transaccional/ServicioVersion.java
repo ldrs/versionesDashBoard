@@ -52,7 +52,7 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
 	}
 
-	public EntVersion crearVersion(String numeroVersion, String autorSVN, String svnOrigen, String branchOrigen, String revisionSVN) {
+	public EntVersion crearVersion(String numeroVersion, String autorSVN, String svnOrigen, String branchOrigen, String revisionSVN, String inicioJob) {
 		synchronized(svnOrigen+numeroVersion){
 			Optional<EntVersion> opcional = entityManager.createNamedQuery("buscarPorNumeroOrigen.version",EntVersion.class).setParameter("num", numeroVersion).setParameter("sOri", svnOrigen).getResultList().stream().findFirst();
 			if (opcional.isPresent()){
@@ -66,6 +66,7 @@ public class ServicioVersion {
 			version.setBranchOrigen(branchOrigen);
 			version.setRevisionSVN(revisionSVN);
 			version.setSvnOrigen(svnOrigen);
+			version.setInicioJob(inicioJob);
 			entityManager.persist(version);
 
 			crearVersionParticipante(autorSVN, version);

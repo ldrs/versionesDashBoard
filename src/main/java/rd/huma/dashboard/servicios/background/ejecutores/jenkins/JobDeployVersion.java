@@ -131,7 +131,6 @@ class JobDeployVersion {
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptReporteJob()+"buildWithParameters");
 		invocadorJenkins.adicionarParametro("REPORTE", job.getId());
-		invocadorJenkins.adicionarParametro("Version", version.getNumero());
 		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLReporteFile()+job.getId());
 
 		invocadorJenkins.invocar();
@@ -174,8 +173,8 @@ class JobDeployVersion {
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(getURLDeployScriptEjecucionJob()+"buildWithParameters");
+		invocadorJenkins.responseHanlder((new ResponseHandler( new SeguimientoJobScript(tipoScript), falloJobDespliegue())));
 		invocadorJenkins.adicionarParametro("URL_SCRIPT_FILE", getURLScriptFile() + jobScript.getId());
-		invocadorJenkins.adicionarParametro("Version", version.getNumero());
 		invocadorJenkins.invocar();
 	}
 
@@ -208,6 +207,38 @@ class JobDeployVersion {
 		public void ejecutar() {
 			setUrlSeguimiento(getURLDeployEjecucionJob());
 			EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("Deploy ejecutando en jenkins de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
+			super.ejecutar();
+		}
+
+	}
+
+
+	class SeguimientoJobScript extends SeguimientoJob{
+
+		private ETipoScript tipoScript;
+
+		public SeguimientoJobScript(ETipoScript tipoScript) {
+			this.tipoScript = tipoScript;
+			setHandlerResult(this::manejaResultado);
+			setValor(job);
+			setUrlSeguimiento(getURLDeployScriptEjecucionJob());
+		}
+
+
+		void manejaResultado(boolean r){
+			if (r){
+				if (tipoScript == ETipoScript.ANTES_SUBIDA){
+					deployVersion();
+				}
+			}else{
+				falloJobDespliegue().accept(null);
+			}
+		}
+
+		@Override
+		public void ejecutar() {
+			setUrlSeguimiento(getURLDeployScriptEjecucionJob());
+			EjecutorDespliegueVersionJenkins.LOGGER.info(String.format("Ejecutando los scripts % de la version %s en el servidor %s", tipoScript.name(), job.getVersion().getNumero(),job.getServidor().getNombre()));
 			super.ejecutar();
 		}
 
