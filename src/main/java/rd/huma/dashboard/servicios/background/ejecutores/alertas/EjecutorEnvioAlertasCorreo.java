@@ -18,8 +18,13 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		ServicioEmail servicioEmail =  ServicioEmail.getInstanciaTransaccional();
 		List<EntVersion> versiones = servicioVersion.getVersionesQueContienenAlertas();
-		for (EntVersion version : versiones){
-			mandarCorreo(servicioVersion, servicioEmail, version);
+		try{
+
+			for (EntVersion version : versiones){
+				mandarCorreo(servicioVersion, servicioEmail, version);
+			}
+		}catch(Exception e){
+			ServicioEmail.LOGGER.warning("No se pudo mandar el correo por "+ e.getMessage());
 		}
 	}
 

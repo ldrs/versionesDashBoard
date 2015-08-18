@@ -62,7 +62,7 @@ public class WSVersionArchivo {
 		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(scriptId);
 
 
-		List<EntVersionReporte> reportes = servicioVersion.getReportesVersion(jobDespliegueVersion.getVersion());
+		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDespliegueVersion.getVersion());
 		ResponseBuilder response;
 		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), reportes.stream().map(EntVersionReporte::getReporte).collect(Collectors.toList()))){
 			File fileSQL = servicio.generar();

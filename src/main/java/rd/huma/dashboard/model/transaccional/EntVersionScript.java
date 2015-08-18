@@ -76,9 +76,6 @@ public class EntVersionScript extends AEntModelo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((jira == null) ? 0 : jira.hashCode());
-		result = prime * result
-				+ ((tipoScript == null) ? 0 : tipoScript.hashCode());
 		result = prime * result
 				+ ((urlScript == null) ? 0 : urlScript.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
@@ -97,16 +94,6 @@ public class EntVersionScript extends AEntModelo {
 			return false;
 		}
 		EntVersionScript other = (EntVersionScript) obj;
-		if (jira == null) {
-			if (other.jira != null) {
-				return false;
-			}
-		} else if (!jira.equals(other.jira)) {
-			return false;
-		}
-		if (tipoScript != other.tipoScript) {
-			return false;
-		}
 		if (urlScript == null) {
 			if (other.urlScript != null) {
 				return false;
@@ -123,4 +110,6 @@ public class EntVersionScript extends AEntModelo {
 		}
 		return true;
 	}
+
+
 }

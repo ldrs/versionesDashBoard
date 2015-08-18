@@ -23,7 +23,7 @@ import rd.huma.dashboard.servicios.transaccional.Servicio;
 @Stateless
 @Servicio
 public class ServicioEmail {
-	private static final Logger LOGGER = Logger.getLogger(ServicioEmail.class.getSimpleName());
+	static final Logger LOGGER = Logger.getLogger(ServicioEmail.class.getSimpleName());
 
 	@Resource(name = "java:jboss/mail/Default")
 	private Session session;
@@ -34,6 +34,8 @@ public class ServicioEmail {
 
             Message message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correos));
+
+            message.setFrom(new InternetAddress("dashboard.version@sigef.gov.do"));
             message.setSubject(subjecto);
             message.setText(mensaje);
             if (!archivos.isEmpty()){

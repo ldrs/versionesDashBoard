@@ -131,11 +131,18 @@ public class ServicioVersion {
 	}
 
 	public void crearVersionParticipante(EntPersona persona, EntVersion version) {
-		EntVersionParticipante versionDueno = new EntVersionParticipante();
-		versionDueno.setVersion(version);
-		versionDueno.setParticipante(persona);
+		if (entityManager.createNamedQuery("buscarVersionParticipante.versionParticipantes",EntVersionParticipante.class)
+		.setParameter("ver", version)
+		.setParameter("par", persona).getResultList().isEmpty()){
 
-		entityManager.persist(versionDueno);
+			EntVersionParticipante versionDueno = new EntVersionParticipante();
+			versionDueno.setVersion(version);
+			versionDueno.setParticipante(persona);
+
+			entityManager.persist(versionDueno);
+		}
+
+
 	}
 
 	public void crearVersionScript(EntVersion version, EntJira jira, String script, ETipoScript tipoScript){
@@ -197,6 +204,11 @@ public class ServicioVersion {
 				.getResultList();
 	}
 
+	public List<EntVersionReporte> buscaReportesVersion(EntVersion version) {
+		return entityManager.createNamedQuery("buscar.versionReportes",EntVersionReporte.class).setParameter("ver", version).getResultList();
+	}
+
+
 
 	public List<EntVersionParticipante> buscaDuenos(){
 		return entityManager.createNamedQuery("buscar.versionParticipantes",EntVersionParticipante.class).getResultList();
@@ -236,6 +248,13 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("contar.versionScripts",Long.class).setParameter("ver", version).getSingleResult();
 	}
 
+	public void crearVersionReporte(String reporte, EntVersion version) {
+		EntVersionReporte versionReporte = new EntVersionReporte();
+		versionReporte.setReporte(reporte);
+		versionReporte.setVersion(version);
+		crearVersionReporte(versionReporte);
+	}
+
 	public void crearVersionReporte(EntVersionReporte versionReporte) {
 		entityManager.persist(versionReporte);
 	}
@@ -244,7 +263,7 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("contar.versionReportes",Long.class).setParameter("ver", version).getSingleResult();
 	}
 
-	public List<EntVersionScript> getScript(EntVersion version) {
+	public List<EntVersionScript> buscaScript(EntVersion version) {
 		return entityManager.createNamedQuery("buscar.versionScripts",EntVersionScript.class).setParameter("ver", version).getResultList();
 	}
 
@@ -261,9 +280,6 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscarAntesDespues.versionScripts",EntVersionScript.class).setParameter("ver", version).setParameter("tipo", ETipoScript.DESPUES_SUBIDA).getResultList();
 	}
 
-	public List<EntVersionReporte> getReportesVersion(EntVersion version) {
-		return entityManager.createNamedQuery("buscar.versionReportes",EntVersionReporte.class).setParameter("ver", version).getResultList();
-	}
 
 	public List<EntVersion> getVersionesQueContienenAlertas() {
 		return entityManager.createNamedQuery("versiones.alerta",EntVersion.class).getResultList();
@@ -286,5 +302,13 @@ public class ServicioVersion {
 			historia.add(h);
 		}
 		return historia;
+	}
+
+	public void eliminarVersion(EntVersionReporte versionReporte) {
+		entityManager.remove(versionReporte);
+	}
+
+	public void eliminarScript(EntVersionScript versionReporte) {
+		entityManager.remove(versionReporte);
 	}
 }

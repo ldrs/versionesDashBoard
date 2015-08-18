@@ -109,7 +109,7 @@ class JobDeployVersion {
 	}
 
 	private void desployDespuesVersion(){
-		if (!servicioVersion.getReportesVersion(version).isEmpty()){
+		if (!servicioVersion.buscaReportesVersion(version).isEmpty()){
 			deployReporte();
 		}
 		List<EntVersionScript> scriptsDespues = servicioVersion.getScriptDespuesEjecucion(version);
