@@ -40,7 +40,9 @@ public class WSVersionArchivo {
 	@Path("script/{id}")
 	public Response retornaScript(@PathParam("id") String idJob){
 		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(idJob);
-
+		if (jobDespliegueVersion == null){
+			throw new IllegalArgumentException("No existe ese id" + idJob + " para ejecutar el script");
+		}
 
 		List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(idJob);
 		ResponseBuilder response;

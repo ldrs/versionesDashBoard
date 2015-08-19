@@ -42,7 +42,7 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	private String domainBaseActiveDirecty = "DC=sigefint,DC=gov,DC=do";
 
 
-	private String rutaDashBoard = "localhost:8080/dashboard/";
+	private String rutaDashBoard = "http://172.16.7.52:8080/dashboard/";
 
 	public String getRutaJira() {
 		return rutaJira;

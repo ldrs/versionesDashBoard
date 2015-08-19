@@ -51,7 +51,7 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 	}
 
 	private Path creaDirectorioTemporal() throws IOException{
-		this.carpetaTemporal = Files.createTempDirectory(nombre+"h");
+		this.carpetaTemporal = Files.createDirectories(Paths.get("/home/appadmin/tmp", nombre));
 		return carpetaTemporal;
 	}
 

@@ -11,6 +11,7 @@ import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
+import rd.huma.dashboard.servicios.background.ejecutores.version.script.EjecutorInterpretacionScriptsVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorVersion  extends AEjecutor{
@@ -57,5 +58,7 @@ public class EjecutorVersion  extends AEjecutor{
 		servicio.actualizarEstado(EEstadoVersion.DATOS_INTEGRADO,version);
 
 		servicio.gestionarFila(version);
+
+		servicio.ejecutarJob(new EjecutorInterpretacionScriptsVersion(version));
 	}
 }

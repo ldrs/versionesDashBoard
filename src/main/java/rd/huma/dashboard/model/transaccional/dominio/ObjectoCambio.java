@@ -25,6 +25,18 @@ public class ObjectoCambio {
 		return columnas;
 	}
 
+	public String getColumnastoString(){
+		if (columnas == null || columnas.isEmpty()){
+			return "";
+		}
+		StringBuilder texto = new StringBuilder(150);
+		for (String columna : columnas) {
+			texto.append(columna).append(',');
+		}
+		texto.deleteCharAt(texto.length()-1);
+		return texto.toString();
+	}
+
 	public ETipoCambioTabla getCambioTabla() {
 		return cambioTabla;
 	}

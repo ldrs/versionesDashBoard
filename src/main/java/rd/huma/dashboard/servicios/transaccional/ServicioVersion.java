@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionAlertaHistorica;
+import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
 import rd.huma.dashboard.model.transaccional.EntVersionLog;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
@@ -310,5 +311,13 @@ public class ServicioVersion {
 
 	public void eliminarScript(EntVersionScript versionReporte) {
 		entityManager.remove(versionReporte);
+	}
+
+	public void crearCambioObjectoSQL(	EntVersionCambioObjectoSql cambioObjectoSql) {
+		entityManager.persist(cambioObjectoSql);
+	}
+
+	public int eliminarCambiosObjectoCambio(EntVersion version) {
+		return entityManager.createNamedQuery("DELETE FROM EntVersionCambioObjectoSql E where E.version = :ver").setParameter("ver", version).executeUpdate();
 	}
 }
