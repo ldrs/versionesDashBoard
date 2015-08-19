@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.ejb.Stateless;
-import javax.enterprise.inject.spi.CDI;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -18,19 +16,23 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import rd.huma.dashboard.servicios.transaccional.Servicio;
-
-@Stateless
-@Servicio
 public class ServicioEmail {
 	static final Logger LOGGER = Logger.getLogger(ServicioEmail.class.getSimpleName());
 
-	@Resource(name = "java:jboss/mail/Default")
-	private Session session;
+	public Properties propiedadesCorreo(){
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", "172.16.1.27");
+		properties.put("mail.smtp.auth",  Boolean.TRUE.toString());
+		properties.put("mail.transport.protocol","smtp");
+		return properties;
+	}
+
 
     public void enviar(String correos, String subjecto, String mensaje, List<String> archivos) {
 
         try {
+
+        	final Session session = Session.getInstance(propiedadesCorreo(), null);
 
             Message message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correos));
@@ -56,8 +58,5 @@ public class ServicioEmail {
     }
 
 
-	public static ServicioEmail getInstanciaTransaccional(){
-		Servicio servicio = ServicioEmail.class.getAnnotation(Servicio.class);
-		return CDI.current().select(ServicioEmail.class, servicio).get();
-	}
+
 }

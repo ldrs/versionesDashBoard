@@ -16,7 +16,7 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 	@Override
 	public void ejecutar() {
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
-		ServicioEmail servicioEmail =  ServicioEmail.getInstanciaTransaccional();
+		ServicioEmail servicioEmail =  new ServicioEmail();
 		List<EntVersion> versiones = servicioVersion.getVersionesQueContienenAlertas();
 		try{
 
