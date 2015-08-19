@@ -1,6 +1,8 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,15 +10,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="FILA_DESPLIEGE_VERSION")
 @NamedQueries({
 	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDespliegueVersion F join F.version V where V.estado in :est" ),
 	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDespliegueVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
-	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.branchOrigen = :bra order by V.momentoCreacion"),
-	@NamedQuery(name = "buscarPorFilaVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.id = :ver order by V.momentoCreacion"),
-	@NamedQuery(name = "buscarPorVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where V.id = :ver order by V.momentoCreacion"),
+	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.branchOrigen = :bra order by V.fechaRegistro"),
+	@NamedQuery(name = "buscarPorFilaVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.id = :ver order by V.fechaRegistro"),
+	@NamedQuery(name = "buscarPorVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where V.id = :ver order by V.fechaRegistro"),
 	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDespliegueVersion F where F.fila = :fil  order by prioridad"),
 	@NamedQuery(name = "buscarPorAmbiente.fila", query = "Select E from EntFilaDespliegueVersion E Join E.fila F Join F.ambiente A where A.id = :amb order by E.prioridad"),
 	@NamedQuery(name = "buscarPorFilaMenorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad<prd order by E.prioridad"),
@@ -38,7 +42,10 @@ public class EntFilaDespliegueVersion extends AEntModelo {
 	@ManyToOne
 	private EntFilaDespliegue fila;
 
-	private LocalDateTime fechaRegistro;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
+
 	private int prioridad;
 
 	private boolean procesandoDeploy;
@@ -51,13 +58,10 @@ public class EntFilaDespliegueVersion extends AEntModelo {
 		this.prioridad = prioridad;
 	}
 
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
+	}
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
-	}
-	public void setFechaRegistro(LocalDateTime fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
 	public EntVersion getVersion() {
 		return version;
 	}

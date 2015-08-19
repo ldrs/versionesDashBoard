@@ -1,11 +1,16 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AMBIENTE_SVN")
@@ -23,9 +28,11 @@ public class EntAmbienteSVN extends AEntModelo {
 
 	private String rutaSvnAmbiente;
 
-	private LocalDate fechaCreacion = LocalDate.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
 
-	private LocalDate fechaModificacion = LocalDate.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ultimaActualizacion = Timestamp.from(Instant.now());
 
 	public String getRutaSvnAmbiente() {
 		return rutaSvnAmbiente;
@@ -35,21 +42,16 @@ public class EntAmbienteSVN extends AEntModelo {
 		this.rutaSvnAmbiente = rutaSvnAmbiente;
 	}
 
-	public LocalDate getFechaCreacion() {
-		return fechaCreacion;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public Instant getUltimaActualizacion() {
+		return ultimaActualizacion.toInstant();
 	}
 
-	public LocalDate getFechaModificacion() {
-		return fechaModificacion;
+	public void setUltimaActualizacion(LocalDateTime ultimaActualizacion) {
+		this.ultimaActualizacion = Timestamp.valueOf(ultimaActualizacion);
 	}
-
-	public void setFechaModificacion(LocalDate fechaModificacion) {
-		this.fechaModificacion = fechaModificacion;
-	}
-
 
 }

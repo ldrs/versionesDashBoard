@@ -38,7 +38,7 @@ public class WSVersionesConsulta {
 						.add("estado", version.getEstado().name())
 						.add("autor", version.getAutor().getNombreNullSafe())
 						.add("branchOrigen", version.getBranchOrigen())
-						.add("fecha", version.getMomentoCreacion().toString())
+						.add("fecha", version.getFechaRegistro().toString())
 						.add("jiras", consultaJiras(version))
 						.add("tickets", consultaTickets(version))
 						.add("propiedades", consultaPropiedades(version))

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="Persona", uniqueConstraints = @UniqueConstraint(name="SVN_PERSONA_UK", columnNames = "usuarioSvn"))
+@Table(name="PERSONA", uniqueConstraints = @UniqueConstraint(name="SVN_PERSONA_UK", columnNames = "usuarioSvn"))
 @NamedQueries({
 					@NamedQuery(name="buscaPersonaSVN", query="SELECT E from EntPersona E where LOWER(E.usuarioSvn) = :usrSVN"),
 					@NamedQuery(name="buscaPersonas", query="SELECT E from EntPersona E"),

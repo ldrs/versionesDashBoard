@@ -43,7 +43,7 @@ public class WSFilaHistorica {
 					.add("numero", version.getNumero())
 					.add("branch", version.getBranchOrigen())
 					.add("autor", Json.createObjectBuilder().add("id", version.getAutor().getId()).add("nomber", version.getAutor().getNombreNullSafe()) )
-					.add("fechaVersion", version.getMomentoCreacion().toString())
+					.add("fechaVersion", version.getFechaRegistro().toString())
 					.add("jiras", consultaJiras(version))
 					.add("tickets", consultaTickets(version))
 					.add("participantes", consultaParticipantes(version))

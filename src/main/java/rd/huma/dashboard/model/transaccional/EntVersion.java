@@ -1,15 +1,20 @@
 package rd.huma.dashboard.model.transaccional;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -43,9 +48,11 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	private String rutaSvnAmbiente;
 
-	private LocalDateTime momentoCreacion = LocalDateTime.now();
 
-	@Enumerated
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
+
+	@Enumerated(EnumType.STRING)
 	private EEstadoVersion estado = EEstadoVersion.ESPERANDO_DATOS_INTEGRACION;
 
 
@@ -104,9 +111,10 @@ public class EntVersion extends AEntModelo implements Serializable{
 		this.svnOrigen = svnOrigen;
 	}
 
-	public LocalDateTime getMomentoCreacion() {
-		return momentoCreacion;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
+
 
 	public EEstadoVersion getEstado() {
 		return estado;
@@ -116,8 +124,6 @@ public class EntVersion extends AEntModelo implements Serializable{
 		this.estado = estado;
 	}
 
-
-
 	public String getRutaSvnAmbiente() {
 		return rutaSvnAmbiente;
 	}
@@ -126,24 +132,21 @@ public class EntVersion extends AEntModelo implements Serializable{
 		this.rutaSvnAmbiente = rutaSvnAmbiente;
 	}
 
-	public void setMomentoCreacion(LocalDateTime momentoCreacion) {
-		this.momentoCreacion = momentoCreacion;
+	public void setInicioJob(String inicioJob) {
+		this.inicioJob= inicioJob;
+	}
+
+	public String getInicioJob() {
+		return inicioJob;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((autor == null) ? 0 : autor.hashCode());
 		result = prime * result
 				+ ((branchOrigen == null) ? 0 : branchOrigen.hashCode());
-		result = prime * result
-				+ ((comentario == null) ? 0 : comentario.hashCode());
-		result = prime * result
-				+ ((momentoCreacion == null) ? 0 : momentoCreacion.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		result = prime * result
-				+ ((revisionSVN == null) ? 0 : revisionSVN.hashCode());
 		result = prime * result
 				+ ((svnOrigen == null) ? 0 : svnOrigen.hashCode());
 		return result;
@@ -161,13 +164,6 @@ public class EntVersion extends AEntModelo implements Serializable{
 			return false;
 		}
 		EntVersion other = (EntVersion) obj;
-		if (autor == null) {
-			if (other.autor != null) {
-				return false;
-			}
-		} else if (!autor.equals(other.autor)) {
-			return false;
-		}
 		if (branchOrigen == null) {
 			if (other.branchOrigen != null) {
 				return false;
@@ -175,32 +171,11 @@ public class EntVersion extends AEntModelo implements Serializable{
 		} else if (!branchOrigen.equals(other.branchOrigen)) {
 			return false;
 		}
-		if (comentario == null) {
-			if (other.comentario != null) {
-				return false;
-			}
-		} else if (!comentario.equals(other.comentario)) {
-			return false;
-		}
-		if (momentoCreacion == null) {
-			if (other.momentoCreacion != null) {
-				return false;
-			}
-		} else if (!momentoCreacion.equals(other.momentoCreacion)) {
-			return false;
-		}
 		if (numero == null) {
 			if (other.numero != null) {
 				return false;
 			}
 		} else if (!numero.equals(other.numero)) {
-			return false;
-		}
-		if (revisionSVN == null) {
-			if (other.revisionSVN != null) {
-				return false;
-			}
-		} else if (!revisionSVN.equals(other.revisionSVN)) {
 			return false;
 		}
 		if (svnOrigen == null) {
@@ -213,11 +188,5 @@ public class EntVersion extends AEntModelo implements Serializable{
 		return true;
 	}
 
-	public void setInicioJob(String inicioJob) {
-		this.inicioJob= inicioJob;
-	}
 
-	public String getInicioJob() {
-		return inicioJob;
-	}
 }

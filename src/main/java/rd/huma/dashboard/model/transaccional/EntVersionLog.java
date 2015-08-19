@@ -1,12 +1,16 @@
 package rd.huma.dashboard.model.transaccional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="VERSION_LOG")
@@ -17,11 +21,12 @@ public class EntVersionLog extends AEntModelo {
 	 */
 	private static final long serialVersionUID = 4466855170415843482L;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
 
 	private String path;
 
-	private LocalDate expiracion = LocalDate.now().plusDays(3);
+	private Date expiracion = java.sql.Date.valueOf(LocalDate.now().plusDays(3));
 
 	@JoinColumn
 	@ManyToOne
@@ -35,12 +40,12 @@ public class EntVersionLog extends AEntModelo {
 		this.version = version;
 	}
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
-	public LocalDate getExpiracion() {
-		return expiracion;
+	public Instant getExpiracion() {
+		return expiracion.toInstant();
 	}
 
 	public void setPath(String path) {

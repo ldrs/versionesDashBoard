@@ -1,6 +1,8 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -9,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoFilaDeployement;
 
@@ -40,7 +44,9 @@ public class EntHistoricoDespliegue extends AEntModelo{
 	@JoinColumn
 	private EntFilaDespliegue fila;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
+
 
 	@Enumerated
 	private EEstadoFilaDeployement estado;
@@ -65,11 +71,8 @@ public class EntHistoricoDespliegue extends AEntModelo{
 	public void setJobDespliegueVersion(EntJobDespliegueVersion jobDespliegueVersion) {
 		this.jobDespliegueVersion = jobDespliegueVersion;
 	}
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
-	}
-	public void setFechaRegistro(LocalDateTime fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 	public EntFilaDespliegue getFila() {
 		return fila;

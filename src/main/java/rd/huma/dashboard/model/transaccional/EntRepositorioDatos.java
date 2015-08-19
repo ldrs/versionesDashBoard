@@ -1,15 +1,20 @@
 package rd.huma.dashboard.model.transaccional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="REPOSITORIO_DATOS")
-@NamedQueries({@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.schema = :sc and E.servicio = :serv")})
+@NamedQueries({@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.esquema = :sc and E.servicio = :serv")})
 
 public class EntRepositorioDatos extends AEntModelo {
 
@@ -18,7 +23,7 @@ public class EntRepositorioDatos extends AEntModelo {
 	 */
 	private static final long serialVersionUID = -2845525405887083013L;
 
-	private String schema;
+	private String esquema;
 
 	private String servicio;
 
@@ -26,16 +31,18 @@ public class EntRepositorioDatos extends AEntModelo {
 
 	private int puerto = 1521;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
 
-	private LocalDateTime ultimaActualizacion = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ultimaActualizacion = Timestamp.from(Instant.now());
 
 	public String getSchema() {
-		return schema;
+		return esquema;
 	}
 
 	public void setSchema(String schema) {
-		this.schema = schema;
+		this.esquema = schema;
 	}
 
 	public String getServicio() {
@@ -46,20 +53,16 @@ public class EntRepositorioDatos extends AEntModelo {
 		this.servicio = servicio;
 	}
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
-	public void setFechaRegistro(LocalDateTime fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-	public LocalDateTime getUltimaActualizacion() {
-		return ultimaActualizacion;
+	public Instant getUltimaActualizacion() {
+		return ultimaActualizacion.toInstant();
 	}
 
 	public void setUltimaActualizacion(LocalDateTime ultimaActualizacion) {
-		this.ultimaActualizacion = ultimaActualizacion;
+		this.ultimaActualizacion = Timestamp.valueOf(ultimaActualizacion);
 	}
 
 	public String getHost() {

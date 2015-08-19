@@ -42,7 +42,7 @@ public class WSFilaDeployementVersionFilas {
 																				.add("autor", getAutor(f.getVersion()))
 																				.add("duenos", consultaDuenos(f.getVersion()))
 																				.add("branchOrigen", f.getVersion().getBranchOrigen())
-																				.add("fechaVersion", UtilFecha.getFechaFormateada(f.getVersion().getMomentoCreacion()))
+																				.add("fechaVersion", UtilFecha.getFechaFormateada(f.getVersion().getFechaRegistro()))
 																				.add("fechaFila", UtilFecha.getFechaFormateada(f.getFechaRegistro()))
 																				.add("controles", "block")
 																				.add("tickets", consultaTickets(f.getVersion()))

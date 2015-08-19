@@ -1,6 +1,8 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.EnumType;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 
@@ -35,10 +39,11 @@ public abstract class AEntVersionAlerta extends AEntModelo {
 	@ManyToOne
 	private EntVersion version;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
 	public String getMensaje() {

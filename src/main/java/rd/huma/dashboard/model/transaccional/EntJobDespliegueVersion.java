@@ -1,6 +1,8 @@
 package rd.huma.dashboard.model.transaccional;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
@@ -32,7 +36,9 @@ public class EntJobDespliegueVersion extends AEntModelo {
 
 	private String jobNumber;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
+
 
 	@Enumerated(EnumType.STRING)
 	private EEstadoJobDespliegue estado = EEstadoJobDespliegue.ESPERANDO_DEPLOY;
@@ -73,10 +79,9 @@ public class EntJobDespliegueVersion extends AEntModelo {
 		this.jobNumber = jobNumber;
 	}
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
-
 
 	public EEstadoJobDespliegue getEstado() {
 		return estado;

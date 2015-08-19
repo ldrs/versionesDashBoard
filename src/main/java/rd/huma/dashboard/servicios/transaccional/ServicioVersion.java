@@ -318,6 +318,6 @@ public class ServicioVersion {
 	}
 
 	public int eliminarCambiosObjectoCambio(EntVersion version) {
-		return entityManager.createNamedQuery("DELETE FROM EntVersionCambioObjectoSql E where E.version = :ver").setParameter("ver", version).executeUpdate();
+		return entityManager.createQuery("DELETE FROM EntVersionCambioObjectoSql E where E.version = :ver").setParameter("ver", version).executeUpdate();
 	}
 }

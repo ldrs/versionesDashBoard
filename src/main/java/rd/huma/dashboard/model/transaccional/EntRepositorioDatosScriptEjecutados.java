@@ -1,6 +1,9 @@
 package rd.huma.dashboard.model.transaccional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -13,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoScript;
 
@@ -43,9 +48,12 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 
 	private long revisionScript;
 
-	private LocalDateTime fechaRegistro = LocalDateTime.now();
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
 
-	private LocalDateTime fechaEjecucion;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaEjecucion = Timestamp.from(Instant.now());
+
 
 	@Enumerated(EnumType.STRING)
 	private EEstadoScript estadoScript = EEstadoScript.PENDIENTE_EJECUCION;
@@ -75,20 +83,17 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 		this.script = script;
 	}
 
-	public LocalDateTime getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
-	public void setFechaRegistro(LocalDateTime fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+
+	public Instant getFechaEjecucion() {
+		return fechaEjecucion.toInstant();
 	}
 
-	public LocalDateTime getFechaEjecucion() {
-		return fechaEjecucion;
-	}
-
-	public void setFechaEjecucion(LocalDateTime fechaEjecucion) {
-		this.fechaEjecucion = fechaEjecucion;
+	public void setFechaEjecucion(LocalDateTime fecha) {
+		this.fechaEjecucion = Timestamp.valueOf(fecha);
 	}
 
 	public EEstadoScript getEstadoScript() {
