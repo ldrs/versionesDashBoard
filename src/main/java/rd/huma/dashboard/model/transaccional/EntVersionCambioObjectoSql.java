@@ -1,11 +1,9 @@
 package rd.huma.dashboard.model.transaccional;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -33,8 +31,7 @@ public class EntVersionCambioObjectoSql extends AEntModelo {
 	@Enumerated
 	private ETipoCambioTabla tipo;
 
-	@Lob
-	@Basic(fetch = FetchType.EAGER)
+	@Column(name="columnas", length=4000)
 	private String columnas;
 
 	private int cantidad;

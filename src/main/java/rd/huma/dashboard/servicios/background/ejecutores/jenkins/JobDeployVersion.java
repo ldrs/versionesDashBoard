@@ -11,8 +11,10 @@ import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
@@ -185,7 +187,15 @@ class JobDeployVersion {
 		.adicionarParametro("version", version.getNumero());
 
 	}
-
+	private void enviarAlertaVersionSubiendo(){
+		EntVersionAlerta alerta = new EntVersionAlerta();
+		alerta.setAlerta(ETipoAlertaVersion.VERSION_SUBIENDO);
+		alerta.setVersion(version);
+		alerta.setMensaje(new StringBuilder(150).append("La aplicacion del branch ")
+												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente <a href=\"").append(servidor.getRutaEntrada())
+												.append("\">").append(servidor.getNombre()).append("</a>").toString());
+		servicioVersion.crearAlerta(alerta);
+	}
 
 	class SeguimientoJobVersion extends SeguimientoJob{
 
@@ -197,11 +207,14 @@ class JobDeployVersion {
 
 		void manejaResultado(boolean r){
 			if (r){
+				enviarAlertaVersionSubiendo();
 				desployDespuesVersion();
 			}else{
 				falloJobDespliegue().accept(null);
 			}
 		}
+
+
 
 		@Override
 		public void ejecutar() {

@@ -22,8 +22,8 @@ public class ServicioEmail {
 	public Properties propiedadesCorreo(){
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "172.16.1.27");
-		properties.put("mail.smtp.auth",  Boolean.TRUE.toString());
 		properties.put("mail.transport.protocol","smtp");
+		properties.put("mail.smtp.auth", Boolean.FALSE.toString());
 		return properties;
 	}
 
@@ -53,7 +53,7 @@ public class ServicioEmail {
             Transport.send(message);
 
         } catch (MessagingException | IOException e) {
-        	LOGGER.warning("No se pudo mandar el correo");
+        	LOGGER.warning("No se pudo mandar el correo por: "+ e.getMessage());
         }
     }
 

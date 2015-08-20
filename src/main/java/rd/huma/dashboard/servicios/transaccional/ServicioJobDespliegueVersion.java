@@ -63,6 +63,7 @@ public class ServicioJobDespliegueVersion {
 		if (estado.getEstadoVersionRelativo()!=null){
 			servicioVersion.actualizarEstado(estado.getEstadoVersionRelativo(), job.getVersion());
 		}
+
 	}
 
 	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url, Consumer<Boolean> handlerResult) {

@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="HISTIRICO_DESPLIEGE_DUENO")
+@Table(name="HISTORICO_DESPLIEGUE_DUENO")
 public class EntHistoricoDespliegueDueno extends AEntModelo {
 
 	/**

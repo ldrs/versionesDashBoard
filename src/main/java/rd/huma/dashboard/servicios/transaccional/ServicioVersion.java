@@ -180,7 +180,7 @@ public class ServicioVersion {
 
 
 	public List<EntVersionJira> buscaJiras(EntJira jira){
-		return entityManager.createNamedQuery("buscarPorVersion.versionJira",EntVersionJira.class)
+		return entityManager.createNamedQuery("buscarPorJira.versionJira",EntVersionJira.class)
 				.setParameter("jira", jira)
 				.setParameter("est" , Arrays.stream(EEstadoVersion.values()).filter(e -> e.activo()).collect(Collectors.toSet()))
 				.getResultList();
@@ -299,7 +299,7 @@ public class ServicioVersion {
 			h.setPathFile(alerta.getPathFile());
 			h.setVersion(alerta.getVersion());
 			entityManager.persist(h);
-			entityManager.remove(alerta);
+			entityManager.remove(entityManager.find(EntVersionAlerta.class, alerta.getId()));
 			historia.add(h);
 		}
 		return historia;

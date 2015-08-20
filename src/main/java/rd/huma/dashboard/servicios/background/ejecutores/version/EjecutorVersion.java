@@ -53,7 +53,7 @@ public class EjecutorVersion  extends AEjecutor{
 
 		new BuscadorModulos(configuracionGeneral,aplicacion, version).procesar();
 
-		new ComparadorModulos(version).procesar();
+		//new ComparadorModulos(version).procesar();
 
 		servicio.actualizarEstado(EEstadoVersion.DATOS_INTEGRADO,version);
 

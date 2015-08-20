@@ -67,7 +67,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 
 	private void jiraExiste(Issues issues, EntJira jira, String nuevoEstado){
 		String estadoPresente = jira.getEstado();
-		if (!estadoPresente.equals(nuevoEstado)){
+		if (estadoPresente==null || !estadoPresente.equals(nuevoEstado)){
 			jira.setEstado(nuevoEstado);
 			servicioJira.salva(jira);
 
