@@ -1798,3 +1798,8 @@ dialog {
 }
 
 .vacio{}
+
+.divContenedor{
+	width: 100%;
+	display: inline-block;
+}

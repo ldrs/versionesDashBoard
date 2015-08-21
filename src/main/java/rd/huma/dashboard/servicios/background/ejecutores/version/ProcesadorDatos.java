@@ -1,12 +1,15 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
@@ -18,6 +21,7 @@ class ProcesadorDatos {
 	private EntVersion version;
 	private ServicioJira servicioJira;
 	private ServicioVersion servicioVersion;
+	private Map<String, EntVersionJira> jiras = new HashMap<>();
 
 	public ProcesadorDatos(ProcesadorTickets procesadorTickets) {
 		this.procesadorTickets = procesadorTickets;
@@ -40,10 +44,14 @@ class ProcesadorDatos {
 		procesadorTickets.getReportes().forEach(this::adicionarReporte);
 	}
 
-	private void adicionarReporte(String reporte){
+	private void adicionarReporte(EntVersionReporte reporte){
 		EntVersionReporte versionReporte = new EntVersionReporte();
-		versionReporte.setReporte(reporte);
+		versionReporte.setReporte(reporte.getReporte());
 		versionReporte.setVersion(version);
+		versionReporte.setAutor(reporte.getAutor());
+		versionReporte.setJira(jiras.get(versionReporte.getJira().getNumero()).getJira());
+		versionReporte.setRevision(reporte.getNumeroRevision());
+
 		servicioVersion.crearVersionReporte(versionReporte);
 	}
 
@@ -67,6 +75,6 @@ class ProcesadorDatos {
 	}
 
 	private void grabarVersionJira(EntJira jira){
-		servicioVersion.crearVersionJira(jira, version);
+		jiras.put(jira.getNumero(), servicioVersion.crearVersionJira(jira, version));
 	}
 }

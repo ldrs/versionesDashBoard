@@ -52,15 +52,18 @@
 					<div style="float: right;"><h2>{{app.version.branch}}</h2></div>
 					</div>
 
-					<div>
+					<div  class="divContenedor">
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in app.version.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in app.version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 
 					</div>
-					<div>
-							<div  style="float: left; padding-right: 15px" ng-repeat="participante in app.version.participantes | orderBy">{{participante}}</div>
+					<div  class="divContenedor">
+							<div  style="float: left; padding-right: 15px" ng-repeat="participante in app.version.participantes | orderBy nombre">{{participante.nombre}}</div>
 					</div>
 
+					<div  class="divContenedor">
+
+					</div>
 
 
 				</div>

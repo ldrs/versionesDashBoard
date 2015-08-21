@@ -26,7 +26,18 @@ public class EntVersionReporte extends AEntModelo {
 	@ManyToOne
 	private EntVersion version;
 
+
+	@JoinColumn
+	@ManyToOne
+	private EntJira jira;
+
 	private String reporte;
+
+	private EntPersona autor;
+
+	private long numeroRevision;
+
+	private String nombre;
 
 	public EntVersion getVersion() {
 		return version;
@@ -42,5 +53,66 @@ public class EntVersionReporte extends AEntModelo {
 
 	public void setReporte(String reporte) {
 		this.reporte = reporte;
+		if (reporte!=null){
+			this.nombre = reporte.substring(reporte.lastIndexOf('/'));
+		}
+	}
+
+	public EntJira getJira() {
+		return jira;
+	}
+
+	public void setJira(EntJira jira) {
+		this.jira = jira;
+	}
+
+	public EntPersona getAutor() {
+		return autor;
+	}
+
+	public void setAutor(EntPersona autor) {
+		this.autor = autor;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((reporte == null) ? 0 : reporte.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof EntVersionReporte)) {
+			return false;
+		}
+		EntVersionReporte other = (EntVersionReporte) obj;
+		if (reporte == null) {
+			if (other.reporte != null) {
+				return false;
+			}
+		} else if (!reporte.equals(other.reporte)) {
+			return false;
+		}
+		return true;
+	}
+
+	public void setRevision(long numeroRevision) {
+		this.numeroRevision = numeroRevision;
+	}
+
+	public long getNumeroRevision() {
+		return numeroRevision;
+	}
+
+	public String getNombre() {
+		return nombre;
 	}
 }

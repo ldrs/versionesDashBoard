@@ -23,7 +23,7 @@ public class RevisaVersionJira {
 	private Set<String> duenos = new HashSet<>();
 	private Set<EntJiraParticipante> participantes = new HashSet<>();
 	private Set<EntTicketSysAid> ticketSysAids = new HashSet<>();
-	private Set<String> reportes = new HashSet<>();
+	private Set<EntVersionReporte> reportes = new HashSet<>();
 	private EntVersion version;
 	private Fields fields;
 	private ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
@@ -81,7 +81,18 @@ public class RevisaVersionJira {
 				servicioVersion.eliminarVersion(versionReporte);
 			}
 		}
-		reportes.forEach(r -> servicioVersion.crearVersionReporte(r, version));
+		reportes.forEach(this::creaVersionReporte);
+	}
+
+	private EntVersionReporte creaVersionReporte(EntVersionReporte reporte){
+		EntVersionReporte versionReporte = new EntVersionReporte();
+		versionReporte.setReporte(reporte.getReporte());
+		versionReporte.setVersion(version);
+		versionReporte.setAutor(reporte.getAutor());
+		versionReporte.setJira(jira);
+		versionReporte.setRevision(reporte.getNumeroRevision());
+		servicioVersion.crearVersionReporte(versionReporte);
+		return versionReporte;
 	}
 
 	private void manejaCambioParticipantes(){
@@ -103,6 +114,4 @@ public class RevisaVersionJira {
 		servicioVersion.buscaParticipantes(version).stream().forEach( participante ->  versionParticipantes.add(participante.getParticipante().getUsuarioSvn()));
 		return versionParticipantes;
 	}
-
-
 }

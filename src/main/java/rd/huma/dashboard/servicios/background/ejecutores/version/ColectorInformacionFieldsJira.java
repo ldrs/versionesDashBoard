@@ -9,9 +9,13 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
+import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
+import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
+import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 
 public class ColectorInformacionFieldsJira {
 
@@ -21,12 +25,13 @@ public class ColectorInformacionFieldsJira {
 	private Set<EntVersionScript> scripts;
 	private Set<EntTicketSysAid> ticketSysAids;
 	private EntJira jira;
-	private Set<String> reportes;
+	private Set<EntVersionReporte> reportes;
+	private ServicioPersona servicioPersona = ServicioPersona.getInstanciaTransaccional();
 
 	public ColectorInformacionFieldsJira(Fields fields, Set<String> duenos,
 			Set<EntJiraParticipante> participantes,
 			Set<EntVersionScript> scripts, EntJira jira,
-			Set<EntTicketSysAid> ticketSysAids, Set<String> reportes) {
+			Set<EntTicketSysAid> ticketSysAids, Set<EntVersionReporte> reportes) {
 		this.fields = fields;
 		this.duenos = duenos;
 		this.participantes = participantes;
@@ -60,10 +65,26 @@ public class ColectorInformacionFieldsJira {
 			return;
 		}
 		for (String rep : grupoReportes.split(".rdf")) {
-			this.reportes.add(rep+".rdf");
+			EntVersionReporte reporte = adicionarReporte(rep+".rdf");
+			if (reporte!=null){
+				this.reportes.add(reporte);
+			}
 		}
 	}
 
+	private EntVersionReporte adicionarReporte(String url){
+		UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(url).revision();
+		if (ultimaRevision == null){
+			return null;
+		}
+
+		EntVersionReporte versionReporte = new EntVersionReporte();
+		versionReporte.setReporte(url);
+		versionReporte.setAutor(servicioPersona.buscaOCreaPersona(ultimaRevision.getUsuarioSVN()));
+		versionReporte.setRevision(ultimaRevision.getNumeroRevision());
+		versionReporte.setJira(jira);
+		return versionReporte;
+	}
 
 
 

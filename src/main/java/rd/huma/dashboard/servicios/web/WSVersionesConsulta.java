@@ -6,15 +6,19 @@ import static javax.json.Json.createObjectBuilder;
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
+import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -61,9 +65,20 @@ public class WSVersionesConsulta {
 		.add("jiras", consultaJiras(version))
 		.add("tickets", consultaTickets(version))
 		.add("propiedades", consultaPropiedades(version))
-		.add("participantes", consultaDuenos(version));
-
+		.add("participantes", consultaParticipantes(version))
+		.add("scripts", consultaScript(version))
+		.add("reportes", consultaReportes(version))
+		;
 	}
+
+	private JsonArrayBuilder consultaReportes(EntVersion version) {
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaReportesVersion(version).stream().forEach(j -> agrega(builder, j));
+		return builder;
+	}
+
+
+
 
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
@@ -83,8 +98,36 @@ public class WSVersionesConsulta {
 		return builder;
 	}
 
+	private JsonArrayBuilder consultaScript(EntVersion version){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaScript(version).stream().forEach(j -> agrega(builder, j));
+		return builder;
+	}
 
-	private JsonArrayBuilder consultaDuenos(EntVersion version){
+
+
+	private JsonArrayBuilder agrega(JsonArrayBuilder builder, EntVersionScript script) {
+		return builder.add(
+		createObjectBuilder().add("id", script.getId())
+							 .add("nombre", script.getNombre())
+							 .add("url", script.getUrlScript())
+							 .add("jira", script.getJira().getId())
+		);
+	}
+
+
+	private JsonArrayBuilder agrega(JsonArrayBuilder builder, EntVersionReporte reporte) {
+		return builder.add(
+				createObjectBuilder().add("id", reporte.getId())
+									 .add("nombre", reporte.getNombre())
+									 .add("url", reporte.getReporte())
+									 .add("jira", reporte.getJira().getId())
+				);
+	}
+
+
+
+	private JsonArrayBuilder consultaParticipantes(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
 		servicioVersion.buscaParticipantes(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
@@ -103,6 +146,11 @@ public class WSVersionesConsulta {
 	}
 
 	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
-		builder.add(jira.getParticipante().getUsuarioSvn());
+		EntPersona participante = jira.getParticipante();
+		builder.add( createObjectBuilder().add("id", participante.getId())
+							 .add("nombre", participante.getNombreNullSafe())
+							 .add("usuarioSVN", participante.getUsuarioSvn())
+							 .add("correo", participante.getCorreo())
+							 );
 	}
 }

@@ -95,11 +95,12 @@ public class ServicioVersion {
 		return version;
 	}
 
-	public void crearVersionJira(EntJira jira, EntVersion version) {
+	public EntVersionJira crearVersionJira(EntJira jira, EntVersion version) {
 		EntVersionJira versionJira = new EntVersionJira();
 		versionJira.setJira(jira);
 		versionJira.setVersion(version);
 		entityManager.persist(versionJira);
+		return versionJira;
 	}
 
 	public boolean crearVersionTicketSysAid(String numero, EntVersion version) {
@@ -152,6 +153,9 @@ public class ServicioVersion {
 		versionScript.setTipoScript(tipoScript);
 		versionScript.setUrlScript(script);
 		versionScript.setVersion(version);
+		if (script!=null){
+			versionScript.setNombre(script.substring(script.lastIndexOf('/')));
+		}
 		entityManager.persist(versionScript);
 	}
 
@@ -247,13 +251,6 @@ public class ServicioVersion {
 
 	public long contarScriptVersion(EntVersion version){
 		return entityManager.createNamedQuery("contar.versionScripts",Long.class).setParameter("ver", version).getSingleResult();
-	}
-
-	public void crearVersionReporte(String reporte, EntVersion version) {
-		EntVersionReporte versionReporte = new EntVersionReporte();
-		versionReporte.setReporte(reporte);
-		versionReporte.setVersion(version);
-		crearVersionReporte(versionReporte);
 	}
 
 	public void crearVersionReporte(EntVersionReporte versionReporte) {

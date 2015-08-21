@@ -37,6 +37,8 @@ public class EntVersionScript extends AEntModelo {
 
 	private String urlScript;
 
+	private String nombre;
+
 	@Enumerated(EnumType.STRING)
 	private ETipoScript tipoScript;
 
@@ -70,6 +72,12 @@ public class EntVersionScript extends AEntModelo {
 
 	public void setTipoScript(ETipoScript tipoScript) {
 		this.tipoScript = tipoScript;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	@Override
