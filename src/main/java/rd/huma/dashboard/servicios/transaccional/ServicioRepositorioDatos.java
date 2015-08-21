@@ -68,6 +68,11 @@ public class ServicioRepositorioDatos {
 		return repositorioDatos;
 	}
 
+	public EntRepositorioDatosScriptEjecutados crearScript(EntRepositorioDatosScriptEjecutados script) {
+		entityManager.persist(script);
+		return script;
+	}
+
 	public EntRepositorioDatosScriptEjecutados actualizarScript(EntRepositorioDatosScriptEjecutados script) {
 		return entityManager.merge(script);
 	}

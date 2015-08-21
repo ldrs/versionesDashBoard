@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -21,6 +22,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
+
+	private static final Logger LOGGER = Logger.getLogger(ServicioGeneracionZipFileFromUrls.class.getName());
 
 	private List<String> urls;
 	private String nombre;
@@ -71,14 +74,14 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 			ZipEntry entry = new ZipEntry(file.getName());
 			entry.setCreationTime(FileTime.fromMillis(file.lastModified()));
 
-
+			zipStream.putNextEntry(entry);
 			byte[] readBuffer = new byte[2048];
 			int amountRead;
 
 			while ((amountRead = inputStream.read(readBuffer)) > 0) {
 				zipStream.write(readBuffer, 0, amountRead);
 			}
-
+			zipStream.closeEntry();
 		}catch(IOException ioException){
 			throw new UncheckedIOException(ioException);
 		}
@@ -89,9 +92,12 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 	private List<Path> deArchivos(Path carpetaTemporal) throws IOException{
 		List<Path> files = new ArrayList<>();
 		for (String url : urls) {
+			LOGGER.info(String.format("Bajando el url %s para el archivo %s",url,nombre));
+
 			Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
 			if (resultado.getStatus()==200){
-				Path path = Files.createFile(Paths.get(carpetaTemporal.toString(), nombre));
+				String nombreScript = url.substring(url.lastIndexOf('/'));
+				Path path = Files.createFile(Paths.get(carpetaTemporal.toString(), nombreScript));
 				try (OutputStream out = Files.newOutputStream(path)){
 					out.write(resultado.readEntity(String.class).getBytes()) ;
 					out.flush();
@@ -113,10 +119,10 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 
 	@Override
 	public void close() {
-		for (File archivo : carpetaTemporal.toFile().listFiles()){
-			archivo.delete();
-		}
-		carpetaTemporal.toFile().delete();
+//		for (File archivo : carpetaTemporal.toFile().listFiles()){
+//			archivo.delete();
+//		}
+//		carpetaTemporal.toFile().delete();
 	}
 
 }

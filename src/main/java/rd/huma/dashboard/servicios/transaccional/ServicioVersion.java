@@ -320,4 +320,8 @@ public class ServicioVersion {
 	public int eliminarCambiosObjectoCambio(EntVersion version) {
 		return entityManager.createQuery("DELETE FROM EntVersionCambioObjectoSql E where E.version = :ver").setParameter("ver", version).executeUpdate();
 	}
+
+	public EntVersion buscaPorId(String id) {
+		return entityManager.find(EntVersion.class, id);
+	}
 }

@@ -168,6 +168,8 @@ class JobDeployVersion {
 					repositorioDatosScriptEjecutados.setAutorScript(servicioPersona.buscaOCreaPersona(ultimaRevision.getUsuarioSVN()));
 					repositorioDatosScriptEjecutados.setRevisionScript(ultimaRevision.getNumeroRevision());
 					repositorioDatosScriptEjecutados.setJob(jobScript);
+
+					servicioRepositorioDatos.crearScript(repositorioDatosScriptEjecutados);
 				}
 			}
 		}

@@ -39,6 +39,7 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 				cambioObjectoSql.setTipo(objectoCambio.getCambioTabla());
 				cambioObjectoSql.setVersion(version);
 				cambioObjectoSql.setColumnas(objectoCambio.getColumnastoString());
+				cambioObjectoSql.setObjecto(entry.getKey().getNombre());
 				servicioVersion.crearCambioObjectoSQL(cambioObjectoSql);
 			}
 

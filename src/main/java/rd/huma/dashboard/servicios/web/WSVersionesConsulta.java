@@ -5,8 +5,10 @@ import static javax.json.Json.createObjectBuilder;
 
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -16,8 +18,9 @@ import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.util.UtilFecha;
 
-@Path("/versionConsulta")
+@Path("versionConsulta")
 public class WSVersionesConsulta {
 
 	@Inject
@@ -32,18 +35,34 @@ public class WSVersionesConsulta {
 		return builder.build().toString();
 	}
 
+
+
+	@GET
+	@Produces("text/plain")
+	@Path("{id}")
+	public String consultaPorId(@PathParam("id") String id){
+		return toJson(servicioVersion.buscaPorId(id)).build().toString();
+	}
+
 	private void consultaInt(JsonArrayBuilder builder, EntVersion version){
-		builder.add(createObjectBuilder()
-						.add("version", version.getNumero())
-						.add("estado", version.getEstado().name())
-						.add("autor", version.getAutor().getNombreNullSafe())
-						.add("branchOrigen", version.getBranchOrigen())
-						.add("fecha", version.getFechaRegistro().toString())
-						.add("jiras", consultaJiras(version))
-						.add("tickets", consultaTickets(version))
-						.add("propiedades", consultaPropiedades(version))
-						.add("duenos", consultaDuenos(version))
-					);
+		builder.add(toJson(version)) ;
+	}
+
+	private JsonObjectBuilder toJson(EntVersion version){
+		return		createObjectBuilder()
+		.add("numero", version.getNumero())
+		.add("svnOrigen", version.getSvnOrigen())
+		.add("svnRevision", version.getRevisionSVN())
+		.add("comentario", version.getComentario())
+		.add("estado", version.getEstado().name())
+		.add("autor", version.getAutor().getNombreNullSafe())
+		.add("branch", version.getBranchOrigen())
+		.add("fecha", UtilFecha.getFechaFormateada(version.getFechaRegistro()))
+		.add("jiras", consultaJiras(version))
+		.add("tickets", consultaTickets(version))
+		.add("propiedades", consultaPropiedades(version))
+		.add("participantes", consultaDuenos(version));
+
 	}
 
 	private JsonArrayBuilder consultaJiras(EntVersion version){
@@ -67,7 +86,7 @@ public class WSVersionesConsulta {
 
 	private JsonArrayBuilder consultaDuenos(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaParticipantes(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaParticipantes(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 

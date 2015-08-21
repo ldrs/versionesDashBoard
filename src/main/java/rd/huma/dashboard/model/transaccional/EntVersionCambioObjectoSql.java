@@ -2,6 +2,7 @@ package rd.huma.dashboard.model.transaccional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,7 +29,7 @@ public class EntVersionCambioObjectoSql extends AEntModelo {
 
 	private String objecto;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private ETipoCambioTabla tipo;
 
 	@Column(name="columnas", length=4000)

@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.web;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ import rd.huma.dashboard.servicios.utilitarios.ServicioGeneracionZipFileFromUrls
 @Path("versionArchivo")
 public class WSVersionArchivo {
 
+	private static final Logger LOGGER = Logger.getLogger(WSVersionArchivo.class.getName());
+
 	@Inject
 	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
@@ -44,7 +47,11 @@ public class WSVersionArchivo {
 			throw new IllegalArgumentException("No existe ese id" + idJob + " para ejecutar el script");
 		}
 
+		LOGGER.info(String.format("Creando el archivo zip para la version %s",jobDespliegueVersion.getVersion().getNumero()));
+
 		List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(idJob);
+		
+		
 		ResponseBuilder response;
 		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntRepositorioDatosScriptEjecutados::getScript)
 																																								.map(EntVersionScript::getUrlScript)
