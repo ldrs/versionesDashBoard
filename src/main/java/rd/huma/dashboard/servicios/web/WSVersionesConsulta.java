@@ -3,24 +3,33 @@ package rd.huma.dashboard.servicios.web;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import rd.huma.dashboard.model.transaccional.EntPersona;
+import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
+import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
 
@@ -29,6 +38,10 @@ public class WSVersionesConsulta {
 
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
+	
+
+	@Inject
+	private @Servicio ServicioServidor servicioServidor;
 
 	@GET
 	@Produces("text/plain")
@@ -40,16 +53,74 @@ public class WSVersionesConsulta {
 	}
 
 
-
 	@GET
 	@Produces("text/plain")
-	@Path("{id}")
+	@Path("consulta/{id}")
 	public String consultaPorId(@PathParam("id") String id){
 		return toJson(servicioVersion.buscaPorId(id)).build().toString();
+	}
+	
+	
+	@GET
+	@Produces("text/plain")
+	@Path("servidores/{id}")
+	public String consultaServidores(@PathParam("id") String id){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioServidor.getServidoresPorVersion(id).forEach(s -> builder.add(toJson(s)));
+		return builder.toString();
+	}
+	
+	@GET
+	@Produces("text/plain")
+	@Path("cambiosModelos/{id}")
+	public String consultaCambioModelos(@PathParam("id") String id){
+		JsonArrayBuilder builder = createArrayBuilder();
+		for (Entry<String, Map<ObjectoCambioAgrupado, ObjectoCambioAgrupado>> entry : getAgrupadosCambiosSQL(id).entrySet()){
+			JsonObjectBuilder objecto = createObjectBuilder().add("objecto", entry.getKey());
+			JsonArrayBuilder cambios = createArrayBuilder();
+			int cantidadCambio = 0;
+			for (Entry<ObjectoCambioAgrupado, ObjectoCambioAgrupado> entryInt : entry.getValue().entrySet()){
+				 cantidadCambio+=entryInt.getKey().getCantidadVeces();
+				 cambios.add(createObjectBuilder().add("tipo", entryInt.getKey().getObjectoCambio().getCambioTabla().name())
+									 .add("cantidad", entryInt.getKey().getCantidadVeces()));
+			}
+			builder.add(objecto.add("cambios",cambios).add("totalCantidad", cantidadCambio));
+		}
+		
+		return builder.toString();
+	}
+	
+	private Map<String, Map<ObjectoCambioAgrupado,ObjectoCambioAgrupado>> getAgrupadosCambiosSQL(String idVersion){
+		List<EntVersionCambioObjectoSql> cambios = servicioVersion.buscaCambioModelos(idVersion);
+		Map<String, Map<ObjectoCambioAgrupado,ObjectoCambioAgrupado>> cambiosAgrupados = new HashMap<>();
+		for (EntVersionCambioObjectoSql entVersionCambioObjectoSql : cambios) {
+			Map<ObjectoCambioAgrupado, ObjectoCambioAgrupado> cambio = cambiosAgrupados.get(entVersionCambioObjectoSql.getObjecto());
+			 if (cambio == null){
+				 cambio = new HashMap<>();
+				 cambiosAgrupados.put(entVersionCambioObjectoSql.getObjecto(), cambio);
+			 }
+			 ObjectoCambioAgrupado agrupado = ObjectoCambioAgrupado.from(entVersionCambioObjectoSql);
+			 ObjectoCambioAgrupado encontrado = cambio.get(agrupado);
+			 if (encontrado == null){
+				 cambio.put(agrupado, agrupado);
+			 }else{
+				 encontrado.adicionarVeces(agrupado.getCantidadVeces());
+			 }
+		}
+		return cambiosAgrupados;
 	}
 
 	private void consultaInt(JsonArrayBuilder builder, EntVersion version){
 		builder.add(toJson(version)) ;
+	}
+	
+	private JsonObjectBuilder toJson(EntServidor servidor){
+		return createObjectBuilder().add("id", servidor.getId())
+									.add("url", servidor.getRutaEntrada())
+									.add("nombre", servidor.getNombre())
+									.add("estado", servidor.getEstadoServidor().name())
+									.add("basedatos", servidor.getBaseDatos().toString())
+				;
 	}
 
 	private JsonObjectBuilder toJson(EntVersion version){
@@ -111,6 +182,7 @@ public class WSVersionesConsulta {
 		createObjectBuilder().add("id", script.getId())
 							 .add("nombre", script.getNombre())
 							 .add("url", script.getUrlScript())
+							 .add("tipo", script.getTipoScript().name())
 							 .add("jira", script.getJira().getId())
 		);
 	}
@@ -142,7 +214,9 @@ public class WSVersionesConsulta {
 	}
 
 	private void agrega(JsonArrayBuilder builder, EntVersionPropiedad jira){
-		builder.add(createObjectBuilder().add(jira.getPropiedad(), jira.getValor()));
+		builder.add(createObjectBuilder().add("nombre", jira.getPropiedad())
+										 .add("valor",  jira.getValor())
+				   );
 	}
 
 	private void agrega(JsonArrayBuilder builder, EntVersionParticipante jira){
@@ -153,4 +227,70 @@ public class WSVersionesConsulta {
 							 .add("correo", participante.getCorreo())
 							 );
 	}
+}
+
+class ObjectoCambioAgrupado{
+	private ObjectoCambio objectoCambio;
+	private int cantidadVeces;
+
+	public ObjectoCambioAgrupado(ObjectoCambio objectoCambio) {
+		this.objectoCambio = objectoCambio;
+	}
+	
+	public ObjectoCambioAgrupado adicionarVeces(int cantidadAdicionada){
+		cantidadVeces+=cantidadAdicionada;
+		return this;
+	}
+	
+	public int getCantidadVeces() {
+		return cantidadVeces;
+	}
+	
+	public ObjectoCambio getObjectoCambio() {
+		return objectoCambio;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((objectoCambio == null) ? 0 : ( objectoCambio.getCambioTabla() .hashCode()) + objectoCambio.getNombre().hashCode() );
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ObjectoCambioAgrupado)) {
+			return false;
+		}
+		ObjectoCambioAgrupado other = (ObjectoCambioAgrupado) obj;
+		if (objectoCambio == null) {
+			if (other.objectoCambio != null) {
+				return false;
+			}
+		}
+		 if (!objectoCambio.getCambioTabla().equals(other.objectoCambio.getCambioTabla())) {
+				return false;
+		 }
+		 
+		 if (!objectoCambio.getNombre().equals(other.objectoCambio.getNombre())) {
+				return false;
+		 }
+		
+		return true;
+	}
+	
+	public static ObjectoCambioAgrupado from(EntVersionCambioObjectoSql origen){
+		return new ObjectoCambioAgrupado	(new ObjectoCambio(origen.getTipo(), origen.getObjecto(), Collections.emptyList()))
+				.adicionarVeces(origen.getCantidad());
+	}
+	
+	
 }

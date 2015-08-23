@@ -11,7 +11,7 @@ public class ObjectoCambio {
 
 	private ETipoCambioTabla cambioTabla;
 
-	ObjectoCambio(ETipoCambioTabla cambioTabla ,String nombre, List<String> columnas) {
+	public ObjectoCambio(ETipoCambioTabla cambioTabla ,String nombre, List<String> columnas) {
 		this.nombre = nombre;
 		this.columnas = columnas;
 		this.cambioTabla = cambioTabla;

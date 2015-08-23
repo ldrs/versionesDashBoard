@@ -133,15 +133,18 @@ public class ServicioVersion {
 	}
 
 	public void crearVersionParticipante(EntPersona persona, EntVersion version) {
-		if (entityManager.createNamedQuery("buscarVersionParticipante.versionParticipantes",EntVersionParticipante.class)
-		.setParameter("ver", version)
-		.setParameter("par", persona).getResultList().isEmpty()){
-
-			EntVersionParticipante versionDueno = new EntVersionParticipante();
-			versionDueno.setVersion(version);
-			versionDueno.setParticipante(persona);
-
-			entityManager.persist(versionDueno);
+		synchronized(version.getNumero()){
+			
+			if (entityManager.createNamedQuery("buscarVersionParticipante.versionParticipantes",EntVersionParticipante.class)
+					.setParameter("ver", version)
+					.setParameter("par", persona).getResultList().isEmpty()){
+				
+				EntVersionParticipante versionDueno = new EntVersionParticipante();
+				versionDueno.setVersion(version);
+				versionDueno.setParticipante(persona);
+				
+				entityManager.persist(versionDueno);
+			}
 		}
 
 
@@ -320,5 +323,9 @@ public class ServicioVersion {
 
 	public EntVersion buscaPorId(String id) {
 		return entityManager.find(EntVersion.class, id);
+	}
+
+	public List<EntVersionCambioObjectoSql> buscaCambioModelos(String id) {
+		return entityManager.createNamedQuery("buscarPorVersionId.cambioSQL",EntVersionCambioObjectoSql.class).setParameter("id", id).getResultList();
 	}
 }

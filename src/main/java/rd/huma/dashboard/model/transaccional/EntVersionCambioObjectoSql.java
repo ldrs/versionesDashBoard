@@ -6,12 +6,17 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import rd.huma.dashboard.model.transaccional.dominio.ETipoCambioTabla;
 
 @Entity
 @Table(name="VERSION_CAMBIO_OBJECTO_SQL")
+@NamedQueries({
+	@NamedQuery(name="buscarPorVersionId.cambioSQL",query="SELECT E FROM EntVersionCambioObjectoSql E join E.version V where V.id = :id")
+})
 public class EntVersionCambioObjectoSql extends AEntModelo {
 
 	/**

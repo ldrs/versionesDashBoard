@@ -36,7 +36,7 @@
 						<div class="12u">
 
 							<header id="header">
-								<h1><a href="app.html" id="logo">version {{app.version.numero}}</a></h1>
+								<h1><a href="{{app.link}}" id="logo" title="{{app.mensaje}}">version {{app.version.numero}}</a></h1>
 								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br>{{app.version.svnOrigen}}<br>{{app.version.svnRevision}}</div>
 							</header>
 
@@ -62,10 +62,23 @@
 					</div>
 
 					<div  class="divContenedor">
-
+						<div  style="float: left; padding-right: 15px" ng-repeat="script in app.version.scripts"> <div style="padding: 20px">  <a href="{{script.url}}">{{script.nombre}}</a> <br> {{script.tipo}} <br> <a href="http://172.16.7.42:8080/browse/{{script.jira}}">{{script.jira}}</a> </div> </div>
+					</div>
+					
+					<div  class="divContenedor">
+						<div  style="float: left; padding-right: 15px" ng-repeat="reporte in app.version.reportes"> <div style="padding: 20px">  <a href="{{reporte.url}}">{{reporte.nombre}}</a> <br>  <a href="http://172.16.7.42:8080/browse/{{reporte.jira}}">{{reporte.jira}}</a> </div> </div>
 					</div>
 
-
+					<div  class="divContenedor">
+						<div  style="float: left; padding-right: 15px" ng-repeat="propiedad in app.version.propiedades">  {{propiedad.nombre}} = {{propiedad.valor}} </div>
+					</div>
+					<div  class="divContenedor">
+						<div  style="float: left; padding-right: 15px" ng-repeat="cambio in app.cambiosModelo"> 
+							 <div style="padding: 20px">{{cambio.objecto}} - {{totalCantidad}}} </div>  
+							 	<div ng-repeat="tipoCambio in cambio.cambios"> {{tipoCambio.tipo}} - {{tipoCambio.cantidad}}
+							 	</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="footer-wrapper">

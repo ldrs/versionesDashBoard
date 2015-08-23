@@ -79,4 +79,9 @@ public class EntRepositorioDatos extends AEntModelo {
 	public void setPuerto(int puerto) {
 		this.puerto = puerto;
 	}
+	
+	@Override
+	public String toString() {
+		return new StringBuilder(150).append(host).append(':').append(puerto).append('/').append(servicio).append('.').append(esquema).toString();
+	}
 }
