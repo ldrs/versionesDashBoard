@@ -79,6 +79,13 @@
 							 	</div>
 						</div>
 					</div>
+					<div  class="divContenedor">
+						<div  style="float: left; padding-right: 15px" ng-repeat="job in app.version.jobs">
+							<p>{{job.numero}} - {{job.fechaRegistro}}</p>
+							<br>
+							<b>{{job.estado}} - {{job.tipo}}</b>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="footer-wrapper">

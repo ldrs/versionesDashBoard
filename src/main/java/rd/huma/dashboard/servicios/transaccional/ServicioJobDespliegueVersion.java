@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.ejb.Stateless;
@@ -33,6 +34,10 @@ public class ServicioJobDespliegueVersion {
 
 	@Servicio @Inject
 	private  ServicioVersion servicioVersion;
+	
+	public List<EntJobDespliegueVersion> buscarJobPorIdVersion(String id){
+		return entityManager.createNamedQuery("buscaPorId.jobDespliegue",EntJobDespliegueVersion.class).setParameter("id", id).getResultList();
+	}
 
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
 		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion());

@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -29,6 +30,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
@@ -38,6 +40,9 @@ public class WSVersionesConsulta {
 
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
+	
+	@Inject
+	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 	
 
 	@Inject
@@ -90,6 +95,27 @@ public class WSVersionesConsulta {
 		return builder.toString();
 	}
 	
+	@GET
+	@Produces("text/plain")
+	@Path("jobs/{id}")
+	public String consultaJobs(@PathParam("id") String id){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioJobDespliegueVersion.buscarJobPorIdVersion(id).forEach( j -> builder.add(toJson(j)));
+		return builder.toString();
+	}
+	
+	private JsonObjectBuilder toJson(EntJobDespliegueVersion j) {
+		return createObjectBuilder().add("id", j.getId())
+									.add("tipo", j.getTipoDespliegue().name())
+									.add("fechaRegistro", UtilFecha.getFechaFormateada (j.getFechaRegistro()))
+									.add("estado", j.getEstado().name())
+									.add("numero", j.getJobNumber())
+									.add("fila", j.getFilaDespliegue().getId())
+				
+				;
+	}
+
+
 	private Map<String, Map<ObjectoCambioAgrupado,ObjectoCambioAgrupado>> getAgrupadosCambiosSQL(String idVersion){
 		List<EntVersionCambioObjectoSql> cambios = servicioVersion.buscaCambioModelos(idVersion);
 		Map<String, Map<ObjectoCambioAgrupado,ObjectoCambioAgrupado>> cambiosAgrupados = new HashMap<>();

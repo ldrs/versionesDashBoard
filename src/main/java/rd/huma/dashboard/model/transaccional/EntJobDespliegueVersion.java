@@ -9,6 +9,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +21,9 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 
 @Entity
 @Table(name="JOB_DESPLIEGUE")
+@NamedQueries({
+	@NamedQuery(name="buscaPorId.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E join E.version V where v.id = :id")
+})
 public class EntJobDespliegueVersion extends AEntModelo {
 
 	/**

@@ -20,7 +20,9 @@ versionesApp.factory("Version", function($resource) {
 	return $resource("/dashboard/api/versionConsulta/consulta/:id",null,{
 		'get':{ 'method':'GET'},
 		'getServidores':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/servidores/:id'},
-		'getCambiosModelos':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/cambiosModelos/:id'}
+		'getCambiosModelos':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/cambiosModelos/:id'},
+		'getJobs':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/jobs/:id'}
+		
     });
 });
 
@@ -39,6 +41,7 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	app.mensaje = "Version no esta deploy";
 	app.link = "app.html";
 	app.cambiosModelo = [];
+	app.jobs = [];
 	
 	 Version.get({id :app.versionId},function(data){
 		 app.version = data;
@@ -54,5 +57,9 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	 
 	 Version.getCambiosModelos({id :app.versionId},function(data){
 		 app.cambiosModelo = data;
+	 });
+	 
+	 Version.getJobs({id :app.versionId},function(data){
+		 app.jobs = data;
 	 });
 })
