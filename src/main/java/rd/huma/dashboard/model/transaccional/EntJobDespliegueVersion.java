@@ -49,7 +49,7 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	private EEstadoJobDespliegue estado = EEstadoJobDespliegue.ESPERANDO_DEPLOY;
 
 	@Enumerated(EnumType.STRING)
-	private ETipoDespliegueJob tipoDespliegue;
+	private ETipoDespliegueJob tipoDespliegue = ETipoDespliegueJob.VERSION;
 
 	@Enumerated(EnumType.STRING)
 	private ETipoScript tipoScript;

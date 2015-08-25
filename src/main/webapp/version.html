@@ -46,40 +46,57 @@
 			</div>
 			<div id="main" style="padding-bottom: 1.2em;">
 				<div class="container">
-					<div>
-					<div><h2>{{app.version.autor}}</h2></div>
-
-					<div style="float: right;"><h2>{{app.version.branch}}</h2></div>
-					</div>
 
 					<div  class="divContenedor">
+							<span title="Autor de la version" class="label">{{app.version.autor}}</span>
+							<span title="Branch de la version"  style="float: right;"><a href="branch.html?{{app.version.branch}}">{{app.version.branch}}</a> </span>
+
+					</div>
+
+					<div  class="divContenedor cuadroDiv" style="margin-top: 20px;">
+							<h2>Jiras/SysAid Tickets</h2>
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in app.version.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in app.version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 
 					</div>
-					<div  class="divContenedor">
-							<div  style="float: left; padding-right: 15px" ng-repeat="participante in app.version.participantes | orderBy nombre">{{participante.nombre}}</div>
+					<div  class="divContenedor cuadroDiv">
+						<h2>Participantes</h2>
+							<div  style="float: left; padding-right: 15px; margin-top: 20px;" ng-repeat="participante in app.version.participantes">{{participante.nombre}}</div>
 					</div>
 
-					<div  class="divContenedor">
-						<div  style="float: left; padding-right: 15px" ng-repeat="script in app.version.scripts"> <div style="padding: 20px">  <a href="{{script.url}}">{{script.nombre}}</a> <br> {{script.tipo}} <br> <a href="http://172.16.7.42:8080/browse/{{script.jira}}">{{script.jira}}</a> </div> </div>
+					<div  class="divContenedor cuadroDiv">
+						<h2>Scripts</h2>
+						<div  style="float: left; padding-right: 15px" ng-repeat="script in app.version.scripts">
+						 	<div style="padding: 20px 20px 0 0">
+						 								 <a href="{{script.url}}" target="script">{{script.nombre}}</a>
+						 								  <br> {{script.tipo}} <br>
+						 								  <a href="http://172.16.7.42:8080/browse/{{script.jira.numero}}" target="jira">{{script.jira.numero}}</a>
+						 	 </div>
+
+						  </div>
 					</div>
-					
-					<div  class="divContenedor">
+
+					<div  class="divContenedor cuadroDiv">
+						<h2>Reportes</h2>
 						<div  style="float: left; padding-right: 15px" ng-repeat="reporte in app.version.reportes"> <div style="padding: 20px">  <a href="{{reporte.url}}">{{reporte.nombre}}</a> <br>  <a href="http://172.16.7.42:8080/browse/{{reporte.jira}}">{{reporte.jira}}</a> </div> </div>
 					</div>
 
-					<div  class="divContenedor">
+					<div  class="divContenedor cuadroDiv">
+						<h2>Propiedades</h2>
 						<div  style="float: left; padding-right: 15px" ng-repeat="propiedad in app.version.propiedades">  {{propiedad.nombre}} = {{propiedad.valor}} </div>
 					</div>
-					<div  class="divContenedor">
-						<div  style="float: left; padding-right: 15px" ng-repeat="cambio in app.cambiosModelo"> 
-							 <div style="padding: 20px">{{cambio.objecto}} - {{totalCantidad}}} </div>  
-							 	<div ng-repeat="tipoCambio in cambio.cambios"> {{tipoCambio.tipo}} - {{tipoCambio.cantidad}}
+					<div  class="divContenedor cuadroDiv">
+						<h2>Cambios de Modelo de Datos</h2>
+						<div  style="float: left; padding-right: 15px" ng-repeat="cambio in app.cambiosModelo">
+							 <div style="padding: 20px; width: 300px"><h4>{ {{cambio.totalCantidad}} } {{cambio.objecto}} </h4>
+
+							 	<div ng-repeat="tipoCambio in cambio.cambios">{ {{tipoCambio.cantidad}} } {{tipoCambio.tipo}}
+							 </div>
 							 	</div>
 						</div>
 					</div>
-					<div  class="divContenedor">
+					<div  class="divContenedor cuadroDiv">
+						<h2>Job Ejecutados</h2>
 						<div  style="float: left; padding-right: 15px" ng-repeat="job in app.version.jobs">
 							<p>{{job.numero}} - {{job.fechaRegistro}}</p>
 							<br>
@@ -92,10 +109,6 @@
 
 			</div>
 		</div>
-
-
-		<!-- Scripts -->
-
 	</body>
 
 </html>

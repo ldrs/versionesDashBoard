@@ -28,6 +28,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
@@ -40,10 +41,10 @@ public class WSVersionesConsulta {
 
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
-	
+
 	@Inject
 	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
-	
+
 
 	@Inject
 	private @Servicio ServicioServidor servicioServidor;
@@ -64,17 +65,17 @@ public class WSVersionesConsulta {
 	public String consultaPorId(@PathParam("id") String id){
 		return toJson(servicioVersion.buscaPorId(id)).build().toString();
 	}
-	
-	
+
+
 	@GET
 	@Produces("text/plain")
 	@Path("servidores/{id}")
 	public String consultaServidores(@PathParam("id") String id){
 		JsonArrayBuilder builder = createArrayBuilder();
 		servicioServidor.getServidoresPorVersion(id).forEach(s -> builder.add(toJson(s)));
-		return builder.toString();
+		return builder.build().toString();
 	}
-	
+
 	@GET
 	@Produces("text/plain")
 	@Path("cambiosModelos/{id}")
@@ -91,27 +92,27 @@ public class WSVersionesConsulta {
 			}
 			builder.add(objecto.add("cambios",cambios).add("totalCantidad", cantidadCambio));
 		}
-		
-		return builder.toString();
+
+		return builder.build().toString();
 	}
-	
+
 	@GET
 	@Produces("text/plain")
 	@Path("jobs/{id}")
 	public String consultaJobs(@PathParam("id") String id){
 		JsonArrayBuilder builder = createArrayBuilder();
 		servicioJobDespliegueVersion.buscarJobPorIdVersion(id).forEach( j -> builder.add(toJson(j)));
-		return builder.toString();
+		return builder.build().toString();
 	}
-	
+
 	private JsonObjectBuilder toJson(EntJobDespliegueVersion j) {
 		return createObjectBuilder().add("id", j.getId())
-									.add("tipo", j.getTipoDespliegue().name())
-									.add("fechaRegistro", UtilFecha.getFechaFormateada (j.getFechaRegistro()))
+									.add("tipo", j.getTipoDespliegue() == null ? ETipoDespliegueJob.VERSION.name(): j.getTipoDespliegue().name())
+									.add("fechaRegistro", j.getFechaRegistro() == null ?"" :  UtilFecha.getFechaFormateada (j.getFechaRegistro()))
 									.add("estado", j.getEstado().name())
-									.add("numero", j.getJobNumber())
+									.add("numero", j.getJobNumber() == null ? "-1": j.getJobNumber())
 									.add("fila", j.getFilaDespliegue().getId())
-				
+
 				;
 	}
 
@@ -139,7 +140,7 @@ public class WSVersionesConsulta {
 	private void consultaInt(JsonArrayBuilder builder, EntVersion version){
 		builder.add(toJson(version)) ;
 	}
-	
+
 	private JsonObjectBuilder toJson(EntServidor servidor){
 		return createObjectBuilder().add("id", servidor.getId())
 									.add("url", servidor.getRutaEntrada())
@@ -206,10 +207,10 @@ public class WSVersionesConsulta {
 	private JsonArrayBuilder agrega(JsonArrayBuilder builder, EntVersionScript script) {
 		return builder.add(
 		createObjectBuilder().add("id", script.getId())
-							 .add("nombre", script.getNombre())
+							 .add("nombre", script.getNombre() == null? "": script.getNombre())
 							 .add("url", script.getUrlScript())
 							 .add("tipo", script.getTipoScript().name())
-							 .add("jira", script.getJira().getId())
+							 .add("jira", createObjectBuilder().add("id", script.getJira().getId()).add("numero", script.getJira().getNumero()) )
 		);
 	}
 
@@ -217,9 +218,9 @@ public class WSVersionesConsulta {
 	private JsonArrayBuilder agrega(JsonArrayBuilder builder, EntVersionReporte reporte) {
 		return builder.add(
 				createObjectBuilder().add("id", reporte.getId())
-									 .add("nombre", reporte.getNombre())
+									 .add("nombre", reporte.getNombre() == null ? "": reporte.getNombre())
 									 .add("url", reporte.getReporte())
-									 .add("jira", reporte.getJira().getId())
+									 .add("jira", reporte.getJira() == null ? "" : reporte.getJira().getId())
 				);
 	}
 
@@ -262,21 +263,21 @@ class ObjectoCambioAgrupado{
 	public ObjectoCambioAgrupado(ObjectoCambio objectoCambio) {
 		this.objectoCambio = objectoCambio;
 	}
-	
+
 	public ObjectoCambioAgrupado adicionarVeces(int cantidadAdicionada){
 		cantidadVeces+=cantidadAdicionada;
 		return this;
 	}
-	
+
 	public int getCantidadVeces() {
 		return cantidadVeces;
 	}
-	
+
 	public ObjectoCambio getObjectoCambio() {
 		return objectoCambio;
 	}
-	
-	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -305,18 +306,18 @@ class ObjectoCambioAgrupado{
 		 if (!objectoCambio.getCambioTabla().equals(other.objectoCambio.getCambioTabla())) {
 				return false;
 		 }
-		 
+
 		 if (!objectoCambio.getNombre().equals(other.objectoCambio.getNombre())) {
 				return false;
 		 }
-		
+
 		return true;
 	}
-	
+
 	public static ObjectoCambioAgrupado from(EntVersionCambioObjectoSql origen){
 		return new ObjectoCambioAgrupado	(new ObjectoCambio(origen.getTipo(), origen.getObjecto(), Collections.emptyList()))
 				.adicionarVeces(origen.getCantidad());
 	}
-	
-	
+
+
 }

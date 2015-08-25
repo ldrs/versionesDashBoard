@@ -44,6 +44,8 @@ public class EntRepositorioDatosScriptEjecutados extends AEntModelo {
 	@ManyToOne
 	private EntVersionScript script;
 
+	@JoinColumn
+	@ManyToOne
 	private EntPersona autorScript;
 
 	private long revisionScript;

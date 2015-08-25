@@ -1803,3 +1803,15 @@ dialog {
 	width: 100%;
 	display: inline-block;
 }
+
+.cuadroDiv{
+    border: 1px solid;
+    padding: 30px;
+}
+
+.label{
+	color: #007897;
+    font-weight: bolder;
+    text-transform: capitalize;
+    font-size: 1.25em;
+}

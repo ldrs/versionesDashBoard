@@ -134,15 +134,15 @@ public class ServicioVersion {
 
 	public void crearVersionParticipante(EntPersona persona, EntVersion version) {
 		synchronized(version.getNumero()){
-			
+
 			if (entityManager.createNamedQuery("buscarVersionParticipante.versionParticipantes",EntVersionParticipante.class)
 					.setParameter("ver", version)
 					.setParameter("par", persona).getResultList().isEmpty()){
-				
+
 				EntVersionParticipante versionDueno = new EntVersionParticipante();
 				versionDueno.setVersion(version);
 				versionDueno.setParticipante(persona);
-				
+
 				entityManager.persist(versionDueno);
 			}
 		}
@@ -157,7 +157,7 @@ public class ServicioVersion {
 		versionScript.setUrlScript(script);
 		versionScript.setVersion(version);
 		if (script!=null){
-			versionScript.setNombre(script.substring(script.lastIndexOf('/')));
+			versionScript.setNombre(script.substring(script.lastIndexOf('/')+1));
 		}
 		entityManager.persist(versionScript);
 	}
@@ -306,15 +306,15 @@ public class ServicioVersion {
 	}
 
 	public void eliminarVersion(EntVersionReporte versionReporte) {
-		entityManager.remove(versionReporte);
+		entityManager.remove(entityManager.find(EntVersionReporte.class, versionReporte.getId()));
 	}
 
-	public void eliminarScript(EntVersionScript versionReporte) {
-		entityManager.remove(versionReporte);
+	public void eliminarScript(EntVersionScript versionScript) {
+		entityManager.remove(entityManager.find(EntVersionScript.class, versionScript.getId()));
 	}
 
 	public void crearCambioObjectoSQL(	EntVersionCambioObjectoSql cambioObjectoSql) {
-		entityManager.persist(cambioObjectoSql);
+		entityManager.persist(  cambioObjectoSql);
 	}
 
 	public int eliminarCambiosObjectoCambio(EntVersion version) {

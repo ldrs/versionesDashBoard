@@ -9,6 +9,8 @@ public enum EEstadoVersion {
 	ESPERANDO_FILA(true,true),
 	CANCELADA_POR_ERROR_DESPLIEGUE_JENKINS(false,true),
 	CANCELADA_POR_ERROR_DESPLIEGUE(false,true),
+	CANCELADA_POR_ERROR_BUILD(false,false),
+	CANCELADA(false,true),
 	EJECUTO_EXITOSO_JENKINS(true,true),
 	DESPLIEGE_EXITOSO(true,true)
 	;

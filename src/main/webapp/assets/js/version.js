@@ -22,7 +22,7 @@ versionesApp.factory("Version", function($resource) {
 		'getServidores':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/servidores/:id'},
 		'getCambiosModelos':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/cambiosModelos/:id'},
 		'getJobs':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/jobs/:id'}
-		
+
     });
 });
 
@@ -42,23 +42,23 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	app.link = "app.html";
 	app.cambiosModelo = [];
 	app.jobs = [];
-	
+
 	 Version.get({id :app.versionId},function(data){
 		 app.version = data;
 	 } );
-	 
+
 	 Version.getServidores({id :app.versionId},function(data){
-	 	if (data.lenght>0){
+	 	if (data.length>0){
 	 		 servidor =  data[0];
 	 		app.mensaje = "Version esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
 	 		app.link = servidor.url;
 	 	}
 	 });
-	 
+
 	 Version.getCambiosModelos({id :app.versionId},function(data){
 		 app.cambiosModelo = data;
 	 });
-	 
+
 	 Version.getJobs({id :app.versionId},function(data){
 		 app.jobs = data;
 	 });
