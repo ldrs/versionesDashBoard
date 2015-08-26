@@ -59,7 +59,7 @@
 						<div class="12u"  style="padding: 0 0 0 50px">
 							<header id="headerAmbientes">
 								<nav id="ambientes">
-									<a ng-repeat="ambiente in app.ambientes" href="{{ambiente.href}}" class="{{ambiente.css}}" style="text-transform: capitalize">{{ambiente.nombre}}</a>
+									<a ng-repeat="ambiente in app.ambientes | orderBy:'orden'" href="{{ambiente.href}}" class="{{ambiente.css}}" style="text-transform: capitalize">{{ambiente.nombre}}</a>
 								</nav>
 							</header>
 						</div>

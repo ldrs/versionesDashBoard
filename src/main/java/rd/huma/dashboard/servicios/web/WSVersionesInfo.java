@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.web;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ public class WSVersionesInfo {
 		long versionesProcesando = servicioVersion.buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter(EEstadoVersion::isProcesandoDato).collect(Collectors.toSet())).stream().count();
 
 
-		long versionesConError = servicioVersion.buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter( e-> !e.activo()).collect(Collectors.toSet())).stream().count();
+		long versionesConError = servicioVersion.buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter( e-> !e.activo()).collect(Collectors.toSet())).stream().filter(v -> v.getFechaRegistro().isAfter(Instant.now().minus(Duration.ofDays(3))) ) .count();
 
 		return Json.createObjectBuilder()
 										.add("procesandoDato", versionesProcesando)
