@@ -12,6 +12,7 @@ import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorDespliegueVersionJenkins;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorJenkinsSeguimientoDespliegue;
@@ -34,7 +35,7 @@ public class ServicioJobDespliegueVersion {
 
 	@Servicio @Inject
 	private  ServicioVersion servicioVersion;
-	
+
 	public List<EntJobDespliegueVersion> buscarJobPorIdVersion(String id){
 		return entityManager.createNamedQuery("buscaPorId.jobDespliegue",EntJobDespliegueVersion.class).setParameter("id", id).getResultList();
 	}
@@ -81,5 +82,12 @@ public class ServicioJobDespliegueVersion {
 
 	public EntJobDespliegueVersion getJob(String id){
 		return entityManager.find(EntJobDespliegueVersion.class, id);
+	}
+
+	public EntJobDespliegueVersion buscarPorJobRelacionado(EntJobDespliegueVersion jobDeployVersion) {
+		return entityManager.createNamedQuery("buscaPorVersionTipo.jobDespliegue",EntJobDespliegueVersion.class)
+		.setParameter("ver", jobDeployVersion.getVersion())
+		.setParameter("tipo", ETipoDespliegueJob.VERSION)
+		.setParameter("est", EEstadoJobDespliegue.ESPERANDO_DEPLOY).getResultList().stream().findFirst().orElse(null);
 	}
 }

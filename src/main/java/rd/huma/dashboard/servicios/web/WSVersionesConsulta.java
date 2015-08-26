@@ -63,7 +63,13 @@ public class WSVersionesConsulta {
 	@Produces("text/plain")
 	@Path("consulta/{id}")
 	public String consultaPorId(@PathParam("id") String id){
-		return toJson(servicioVersion.buscaPorId(id)).build().toString();
+		EntVersion version = servicioVersion.buscaPorId(id);
+		if (version == null){
+			return "{}";
+		}
+
+
+		return toJson(version).build().toString();
 	}
 
 

@@ -3,19 +3,7 @@ package rd.huma.dashboard.model.jira;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({ "timespent", "project", "customfield_11000",
-		"fixVersions", "aggregatetimespent", "aggregateprogress", "resolution",
-		"customfield_10700",
-		"customfield_10701", "customfield_10900", "resolutiondate",
-		"customfield_10903", "customfield_10904", "customfield_10905",
-		"customfield_10906", "customfield_10907", "workratio", "lastViewed",
-		"watches", "priority", "labels", "timeestimate",
-		"aggregatetimeoriginalestimate", "versions", "issuelinks", "updated",
-		"components", "timeoriginalestimate", "customfield_10401",
-		 "customfield_10800", "customfield_10801",
-		"aggregatetimeestimate", "customfield_10802", "customfield_10806",
-		"customfield_10807", "customfield_10400", "environment", "progress",
-		"votes","parent" })
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Fields {
 	private String summary;
 

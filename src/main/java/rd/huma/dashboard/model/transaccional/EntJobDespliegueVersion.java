@@ -22,7 +22,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 @Entity
 @Table(name="JOB_DESPLIEGUE")
 @NamedQueries({
-	@NamedQuery(name="buscaPorId.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E join E.version V where v.id = :id")
+	@NamedQuery(name="buscaPorId.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E join E.version V where V.id = :id"),
+	@NamedQuery(name="buscaPorVersionTipo.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E where V = :ver AND E.tipoDespliegue = :tipo  AND E.estado = :est")
 })
 public class EntJobDespliegueVersion extends AEntModelo {
 
@@ -39,11 +40,8 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	@ManyToOne
 	private EntServidor servidor;
 
-	private String jobNumber;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
-
 
 	@Enumerated(EnumType.STRING)
 	private EEstadoJobDespliegue estado = EEstadoJobDespliegue.ESPERANDO_DEPLOY;
@@ -58,7 +56,11 @@ public class EntJobDespliegueVersion extends AEntModelo {
 	@ManyToOne
 	private EntFilaDespliegue filaDespliegue;
 
+	private String jobNumber;
+
 	private String url;
+
+	private String inicioJob;
 
 	public EntVersion getVersion() {
 		return version;
@@ -125,6 +127,14 @@ public class EntJobDespliegueVersion extends AEntModelo {
 
 	public void setFilaDespliegue(EntFilaDespliegue filaDespliegue) {
 		this.filaDespliegue = filaDespliegue;
+	}
+
+	public void setInicioJob(String inicioJob) {
+		this.inicioJob = inicioJob;
+	}
+
+	public String getInicioJob() {
+		return inicioJob;
 	}
 
 }

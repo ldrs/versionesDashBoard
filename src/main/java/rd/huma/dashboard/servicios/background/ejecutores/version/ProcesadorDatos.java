@@ -49,7 +49,7 @@ class ProcesadorDatos {
 		versionReporte.setReporte(reporte.getReporte());
 		versionReporte.setVersion(version);
 		versionReporte.setAutor(reporte.getAutor());
-		versionReporte.setJira(jiras.get(versionReporte.getJira().getNumero()).getJira());
+		versionReporte.setJira(jiras.get(reporte.getJira().getNumero()).getJira());
 		versionReporte.setRevision(reporte.getNumeroRevision());
 
 		servicioVersion.crearVersionReporte(versionReporte);

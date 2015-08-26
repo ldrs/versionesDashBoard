@@ -70,9 +70,9 @@
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
 								<div class="versionRow">
 										<div class="row rowFila">
-										<div class="aplicacion v versionNumber c1"><a href="versionMetrica.html?id={{version.id}}">{{version.numero}}</a></div>
-										<div class="aplicacion v c3"><a href="personaMetrica.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
-										<div class="aplicacion v c3"><a href="branchMetrica.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
+										<div class="aplicacion v versionNumber c1"><a href="version.html?id={{version.id}}">{{version.numero}}</a></div>
+										<div class="aplicacion v c3"><a href="persona.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
+										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
 										<div class="aplicacion v c3" style="float: right">
 											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
@@ -96,7 +96,7 @@
 
 									</div>
 									<div class="tickets">
-										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos"><a href="personaMetrica.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos"><a href="persona.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
 									</div>
 								</div>
 

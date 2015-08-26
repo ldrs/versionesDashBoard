@@ -97,7 +97,9 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 			Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
 			if (resultado.getStatus()==200){
 				String nombreScript = url.substring(url.lastIndexOf('/'));
-				Path path = Files.createFile(Paths.get(carpetaTemporal.toString(), nombreScript));
+				Path archivoCrear = Paths.get(carpetaTemporal.toString(), nombreScript);
+				Files.deleteIfExists(archivoCrear);
+				Path path = Files.createFile(archivoCrear);
 				try (OutputStream out = Files.newOutputStream(path)){
 					out.write(resultado.readEntity(String.class).getBytes()) ;
 					out.flush();

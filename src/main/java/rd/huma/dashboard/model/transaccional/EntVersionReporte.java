@@ -33,6 +33,8 @@ public class EntVersionReporte extends AEntModelo {
 
 	private String reporte;
 
+	@JoinColumn
+	@ManyToOne
 	private EntPersona autor;
 
 	private long numeroRevision;

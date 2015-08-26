@@ -8,6 +8,7 @@ import javax.ws.rs.QueryParam;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorConfirmacionEjecucionScript;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorConfirmacionReporte;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorConfirmacionVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
@@ -44,6 +45,19 @@ public class WSJobDespliegue {
 		job.setURL(urlJenkins);
 		job.setInicioJob(inicioJob);
 		monitorEjecutor.ejecutarAsync(new EjecutorConfirmacionVersion(job));
+		return "{}";
+	}
+
+	@GET
+	@Path("reporte")
+	public String confirmaReporte(@QueryParam("id") String idJob, @QueryParam("urlJenkins") String urlJenkins, @QueryParam("inicioJob") String inicioJob){
+		EntJobDespliegueVersion job = servicioJobDespliegueVersion.getJob(idJob);
+		if (job == null){
+			return "{}";
+		}
+		job.setURL(urlJenkins);
+		job.setInicioJob(inicioJob);
+		monitorEjecutor.ejecutarAsync(new EjecutorConfirmacionReporte(job));
 		return "{}";
 	}
 
