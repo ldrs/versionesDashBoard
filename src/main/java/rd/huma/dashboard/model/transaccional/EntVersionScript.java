@@ -14,9 +14,9 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 @Entity
 @Table(name="VERSION_SCRIPT")
 @NamedQueries({
-		 @NamedQuery(name = "contar.versionScripts", query="select count(e) from EntVersionScript E where E.version = :ver"),
-		 @NamedQuery(name = "buscarAntesDespues.versionScripts", query="select E from EntVersionScript E where E.version = :ver and tipoScript= :tipo"),
-		 @NamedQuery(name = "buscar.versionScripts", query="select E from EntVersionScript E where E.version = :ver")
+		 @NamedQuery(name = "contar.versionScripts", query="select count(e) from EntVersionScript E where E.version = :ver and E.habilitado=true"),
+		 @NamedQuery(name = "buscarAntesDespues.versionScripts", query="select E from EntVersionScript E where E.version = :ver and tipoScript= :tipo and E.habilitado=true"),
+		 @NamedQuery(name = "buscar.versionScripts", query="select E from EntVersionScript E where E.version = :ver and E.habilitado=true")
 
 			}
 		)
@@ -41,6 +41,8 @@ public class EntVersionScript extends AEntModelo {
 
 	@Enumerated(EnumType.STRING)
 	private ETipoScript tipoScript;
+
+	private boolean habilitado = true;
 
 	public EntVersion getVersion() {
 		return version;
@@ -78,6 +80,14 @@ public class EntVersionScript extends AEntModelo {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
+	}
+
+	public boolean isHabilitado() {
+		return habilitado;
 	}
 
 	@Override

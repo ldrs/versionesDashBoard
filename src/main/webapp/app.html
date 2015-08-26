@@ -116,20 +116,17 @@
 										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos | orderBy:'nombre'"><a href="personaMetrica.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
 									</div>
 								</div>
-
 								</div>
 							</div>
-
-
 					</div>
-
 				</div>
 				<div class="container" style="padding-top: 50px;padding-bottom: 50px">
 					<h2>Servidores</h2>
 					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores">
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
 						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.host}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
-						<div class="servidorVersion"><a href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>
+						<div class="servidorVersion"><a  title="Numero de la version" href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>
+						<div class="servidorVersion"><a title="Branch de la version" href="branch.html?branch={{servidor.version.branch}}">{{servidor.version.branch}}</a> </div>
 						<div class="tickets servidorTick">
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>

@@ -14,6 +14,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.servicios.background.ejecutores.version.ColectorInformacionFieldsJira;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class RevisaVersionJira {
@@ -27,7 +28,6 @@ public class RevisaVersionJira {
 	private EntVersion version;
 	private Fields fields;
 	private ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
-
 	public RevisaVersionJira(EntJira jira, EntVersion version, Fields fields) {
 		this.jira = jira;
 		this.version = version;
@@ -55,11 +55,14 @@ public class RevisaVersionJira {
 				EntVersionScript found = scripts.stream().filter(s -> s.equals(versionScript)).findFirst().get();
 				if (versionScript.getTipoScript()!=found.getTipoScript()){
 					versionScript.setTipoScript(found.getTipoScript());
+					versionScript.setHabilitado(true);
 					servicioVersion.actualizarVersionScript(versionScript);
 				}
 
 			}else{
-				servicioVersion.eliminarScript(versionScript);
+				servicioVersion.eliminarCambiosObjectoCambio(versionScript);
+				versionScript.setHabilitado(false);
+				servicioVersion.actualizarVersionScript(versionScript);
 			}
 		}
 		scripts.forEach(this::crearScript);

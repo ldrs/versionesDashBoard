@@ -53,7 +53,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 
 	private void encontrarJira(Issues issues){
 		Optional<EntJira> posibleJira = servicioJira.encuentra(numeroJira);
-		String estado = issues.getFields().getStatus().getStatusCategory().getName();
+		String estado = issues.getFields().getStatus().getDescription();
 		if (posibleJira.isPresent()){
 			jiraExiste(issues, posibleJira.get(),estado);
 		}else{
@@ -68,36 +68,48 @@ public class EjecutorJiraCambio extends AEjecutor {
 	private void jiraExiste(Issues issues, EntJira jira, String nuevoEstado){
 		String estadoPresente = jira.getEstado();
 		if (estadoPresente==null || !estadoPresente.equals(nuevoEstado)){
+			LOGGER.info("Cambio el Estado de Jira {" + numeroJira + "} se esta buscando los cambios del mismo.");
+
 			jira.setEstado(nuevoEstado);
 			servicioJira.salva(jira);
-
-			Optional<EntVersionJira> posibleVersionJira = encontraVersion(jira);
-			if (posibleVersionJira.isPresent()){
-				EntVersion version = posibleVersionJira.get().getVersion();
-				Set<EntFilaDespliegue> filas =  new HashSet<>(new ServicioSeleccionFila(version).filasParaVersion());
-				new RevisaVersionJira(jira, version, issues.getFields()).ejecutar();
-				this.servicioFila = ServicioFila.getInstanciaTransaccional();
-				if (!filas.isEmpty()){
-					List<EntFilaDespliegueVersion> filasVersiones = servicioFila.getFilas(version);
-					Set<EntFilaDespliegue> filasExistentes = filasVersiones.stream().map(EntFilaDespliegueVersion::getFila).collect(Collectors.toSet());
-
-
-					Set<EntFilaDespliegue> filasIgnorar = filasExistentes.stream().filter(fila -> filas.contains(fila)).collect(Collectors.toSet());
-
-					ServicioVersion.getInstanciaTransaccional().gestionarFila(new EjecutorSeleccionFila(version, filasIgnorar));
-				}
-				this.servicioServidor = ServicioServidor.getInstanciaTransaccional();
-				List<EntServidor>  servidors = servicioServidor.getServidoresPorBranch(version.getBranchOrigen());
-				if (!servidors.isEmpty()){
-					servidors.forEach(servidor-> sacarLaVersionSiTieneQueHacerlo(servidor, nuevoEstado));
-				}
-			}
 		}
+
+		Optional<EntVersionJira> posibleVersionJira = encontraVersion(jira);
+		if (posibleVersionJira.isPresent()){
+			EntVersion version = posibleVersionJira.get().getVersion();
+			Set<EntFilaDespliegue> filas =  new HashSet<>(new ServicioSeleccionFila(version).filasParaVersion());
+			new RevisaVersionJira(jira, version, issues.getFields()).ejecutar();
+			this.servicioFila = ServicioFila.getInstanciaTransaccional();
+			if (!filas.isEmpty()){
+				List<EntFilaDespliegueVersion> filasVersiones = servicioFila.getFilas(version);
+				Set<EntFilaDespliegue> filasExistentes = filasVersiones.stream().map(EntFilaDespliegueVersion::getFila).collect(Collectors.toSet());
+
+
+				Set<EntFilaDespliegue> filasIgnorar = filasExistentes.stream().filter(fila -> filas.contains(fila)).collect(Collectors.toSet());
+
+				ServicioVersion.getInstanciaTransaccional().gestionarFila(new EjecutorSeleccionFila(version, filasIgnorar));
+			}
+			this.servicioServidor = ServicioServidor.getInstanciaTransaccional();
+			List<EntServidor>  servidors = servicioServidor.getServidoresPorBranch(version.getBranchOrigen());
+			if (!servidors.isEmpty()){
+				LOGGER.info("Buscando si se tiene que retirar la version " + version.getNumero() + " de algun servidor por el cambio de estado {" + nuevoEstado + "}" );
+
+				servidors.forEach(servidor-> sacarLaVersionSiTieneQueHacerlo(servidor, nuevoEstado));
+			}
+		}else{
+			LOGGER.info("No se encontro la versionJira para verificar cambios del Jira {" + numeroJira + "}");
+		}
+
 	}
 
 	private void sacarLaVersionSiTieneQueHacerlo(EntServidor servidor, String nuevoEstado){
+
+
 		Optional<EntFilaDespliegue> fila =  servicioFila.getFilasDeploment().stream().filter( f -> f.getAmbiente().equals(servidor.getAmbiente())).findFirst();
 		if (fila.isPresent()){
+
+
+
 			EntFilaDespliegue filaDespliegue = fila.get();
 			if (Arrays.stream(filaDespliegue.getEstadosJiras().split(",")).filter(s-> nuevoEstado.equals(s)).count()==0){
 				LOGGER.info(String.format("Retirando la version del servidor %s ya que el jira(%s) cambio al estado %s",servidor.getNombre(),numeroJira, nuevoEstado));

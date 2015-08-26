@@ -97,11 +97,19 @@
 					</div>
 					<div  class="divContenedor cuadroDiv">
 						<h2>Job Ejecutados</h2>
-						<div  style="float: left; padding-right: 15px" ng-repeat="job in app.version.jobs">
-							<p>{{job.numero}} - {{job.fechaRegistro}}</p>
-							<br>
-							<b>{{job.estado}} - {{job.tipo}}</b>
-						</div>
+						<table style="width: 100%;">
+							<tr>
+								<td><h4>Fecha Registro</h4></td>
+								<td><h4>Tipo Job</h4></td>
+								<td><h4>Estado</h4></td>
+							</tr>
+							<tr ng-repeat="job in app.jobs">
+								<td>{{job.fechaRegistro}}</td>
+								<td>{{job.tipo}}</td>
+								<td>{{job.estado}}</td>
+							</tr>
+
+						</table>
 					</div>
 				</div>
 			</div>

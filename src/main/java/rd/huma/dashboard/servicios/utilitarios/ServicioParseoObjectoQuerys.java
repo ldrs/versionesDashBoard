@@ -63,7 +63,8 @@ public class ServicioParseoObjectoQuerys {
 		String[] datos = script.toUpperCase().split(";");
 		for (String dato : datos) {
 			for(ETipoCambioTabla tipo : ETipoCambioTabla.values()){
-				if (dato.matches(tipo.regex())){
+
+				if (dato.matches(tipo.regex()) || dato.indexOf(tipo.inicioComandoBuscar())!=-1){
 					dato = dato.substring(dato.indexOf(tipo.inicioComandoBuscar()));
 					try{
 						buscandoInformacion(dato,tipo,listaObjectos);

@@ -321,6 +321,10 @@ public class ServicioVersion {
 		return entityManager.createQuery("DELETE FROM EntVersionCambioObjectoSql E where E.version = :ver").setParameter("ver", version).executeUpdate();
 	}
 
+	public int eliminarCambiosObjectoCambio(EntVersionScript versionScript) {
+		return entityManager.createQuery("DELETE FROM EntVersionCambioObjectoSql E where E.script = :src").setParameter("src", versionScript).executeUpdate();
+	}
+
 	public EntVersion buscaPorId(String id) {
 		return entityManager.find(EntVersion.class, id);
 	}
@@ -328,4 +332,6 @@ public class ServicioVersion {
 	public List<EntVersionCambioObjectoSql> buscaCambioModelos(String id) {
 		return entityManager.createNamedQuery("buscarPorVersionId.cambioSQL",EntVersionCambioObjectoSql.class).setParameter("id", id).getResultList();
 	}
+
+
 }

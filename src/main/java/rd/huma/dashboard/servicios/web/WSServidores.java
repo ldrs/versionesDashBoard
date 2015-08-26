@@ -64,6 +64,7 @@ public class WSServidores {
 			servicioFila.getDuenosVersion(version).forEach(d -> duenos.add(d.getId()));
 
 			rt.add("numero", version.getNumero());
+			rt.add("branch", version.getBranchOrigen());
 			rt.add("id", version.getId());
 			rt.add("duenos", duenos );
 		}

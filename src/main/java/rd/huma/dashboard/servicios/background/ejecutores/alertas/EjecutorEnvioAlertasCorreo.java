@@ -9,6 +9,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.util.UtilFecha;
 
 public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 
@@ -37,14 +38,15 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 			if (entVersionAlerta.getPathFile()!=null){
 				archivos.add(entVersionAlerta.getPathFile());
 			}
-			sbMensaje.append("En la fecha ").append(entVersionAlerta.getFechaRegistro()).append(" ocurrio la notificacion del tipo: ").append(entVersionAlerta.getAlerta().name())
-			.append("\n")
+			sbMensaje.append("\n")
 			.append(entVersionAlerta.getMensaje())
-			.append("\n");
+			.append("\n")
+			.append("Tipo de Notificacion :").append(entVersionAlerta.getAlerta().name()).append(" ").append(UtilFecha.getFechaFormateada(entVersionAlerta.getFechaRegistro()));
 		}
 
-		servicioEmail.enviar(getCorreos(servicioVersion, version), "Notificaciones de la version :" + version.getNumero(), sbMensaje.toString(), archivos);
-		servicioVersion.moverHistorico(alertas);
+		if (servicioEmail.enviar(getCorreos(servicioVersion, version), "Notificaciones de la version :" + version.getNumero(), sbMensaje.toString(), archivos)){
+			servicioVersion.moverHistorico(alertas);
+		}
 	}
 
 	private String getCorreos(ServicioVersion servicioVersion, EntVersion version){

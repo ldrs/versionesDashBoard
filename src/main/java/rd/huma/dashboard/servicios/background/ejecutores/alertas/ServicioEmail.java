@@ -28,11 +28,11 @@ public class ServicioEmail {
 	}
 
 
-    public void enviar(String correos, String subjecto, String mensaje, List<String> archivos) {
+    public boolean enviar(String correos, String subjecto, String mensaje, List<String> archivos) {
 
         try {
 
-        	final Session session = Session.getInstance(propiedadesCorreo(), null);
+        	final Session session = Session.getDefaultInstance(propiedadesCorreo(), null);
 
             Message message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correos));
@@ -40,6 +40,7 @@ public class ServicioEmail {
             message.setFrom(new InternetAddress("dashboard.version@sigef.gov.do"));
             message.setSubject(subjecto);
             message.setText(mensaje);
+            message.setContent(message, "text/html");
             if (!archivos.isEmpty()){
             	MimeMultipart multipart = new MimeMultipart();
             	for (String ruta : archivos){
@@ -51,10 +52,11 @@ public class ServicioEmail {
 
 
             Transport.send(message);
-
+            return true;
         } catch (MessagingException | IOException e) {
         	LOGGER.warning("No se pudo mandar el correo por: "+ e.getMessage());
         }
+        return false;
     }
 
 

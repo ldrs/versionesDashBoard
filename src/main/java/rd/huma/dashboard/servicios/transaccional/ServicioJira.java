@@ -38,13 +38,23 @@ public class ServicioJira {
 	}
 
 	public EntJira encuentraOSalva(String numero, String estado) {
-		EntJira jira = encuentra(numero).orElse(nuevoJira(numero));
-		jira.setEstado(estado);
-		jira = entityManager.find(EntJira.class, jira.getId());
+		Optional<EntJira> posible =  encuentra(numero);
+		if (posible.isPresent()){
+			return posible.get();
+		}
 
-		entityManager.persist(jira);
+		synchronized(numero){
+			posible =  encuentra(numero);
+			if (posible.isPresent()){
+				return posible.get();
+			}
 
-		return jira;
+			EntJira jira = new EntJira();
+			jira.setNumero(numero);
+			jira.setEstado(estado);
+			entityManager.persist(jira);
+			return jira;
+		}
 	}
 
 	public void salvarParticipante(EntJiraParticipante participante){
@@ -63,10 +73,4 @@ public class ServicioJira {
 		entityManager.persist(participanteFull);
 	}
 
-	private EntJira nuevoJira(String numero) {
-		EntJira jira = new EntJira();
-		jira.setNumero(numero);
-		entityManager.persist(jira);
-		return jira;
-	}
 }
