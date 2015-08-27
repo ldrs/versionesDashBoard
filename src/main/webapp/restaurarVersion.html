@@ -70,7 +70,7 @@
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
 								<div class="versionRow">
 										<div class="row rowFila">
-										<div class="aplicacion v versionNumber c1"><a href="version.html?id={{version.id}}">{{version.numero}}</a></div>
+										<div class="aplicacion v versionNumber c1"><a href="version.html?versionId={{version.versionId}}">{{version.numero}}</a></div>
 										<div class="aplicacion v c3"><a href="persona.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
 										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>

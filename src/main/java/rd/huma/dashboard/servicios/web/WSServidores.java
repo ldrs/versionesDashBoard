@@ -20,7 +20,7 @@ import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
-@Path("/servidores/{ambiente}")
+@Path("servidores")
 public class WSServidores {
 
 	private @Servicio @Inject ServicioServidor servicioServidor;
@@ -29,29 +29,40 @@ public class WSServidores {
 
 
 	@GET
+	@Path("ambiente/{ambiente}")
 	public String servidores(@PathParam("ambiente") String ambiente){
 		JsonArrayBuilder builder = createArrayBuilder();
-		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(createObjectBuilder()
-																				.add("nombre", s.getNombre())
-																				.add("css", "none")
-																				.add("ruta", s.getRutaEntrada())
-																				.add("id",s.getId())
-																				.add("version",  version(s) )
-																				.add("estado", s.getEstadoServidor().name())
-																				.add("tickets", tickets(s.getVersionActual()))
-																				.add("repositorioDatos", Json.createObjectBuilder()
-																										.add("id", s.getBaseDatos().getId())
-																										.add("schema", s.getBaseDatos().getSchema())
-																										.add("puerto", s.getBaseDatos().getPuerto())
-																										.add("host", s.getBaseDatos().getHost())
-																										.add("servicio", s.getBaseDatos().getServicio())
-																										.add("actualizacion",  UtilFecha.getFechaFormateada(s.getBaseDatos().getUltimaActualizacion()))
-																										)
-																				.add("jiras", jiras(s.getVersionActual()))
-														 )
+		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(toJson(s))
+
 										);
 
 		return builder.build().toString();
+	}
+
+	@GET
+	@Path("undeploy/{servidor}")
+	public String undeploy(@PathParam("servidor") String idServidor ){
+		return toJson(servicioServidor.getServidorPorId(idServidor)).build().toString();
+	}
+
+	private JsonObjectBuilder toJson(EntServidor s){
+		return createObjectBuilder()
+		.add("nombre", s.getNombre())
+		.add("css", "none")
+		.add("ruta", s.getRutaEntrada())
+		.add("id",s.getId())
+		.add("version",  version(s) )
+		.add("estado", s.getEstadoServidor().name())
+		.add("tickets", tickets(s.getVersionActual()))
+		.add("repositorioDatos", Json.createObjectBuilder()
+								.add("id", s.getBaseDatos().getId())
+								.add("schema", s.getBaseDatos().getSchema())
+								.add("puerto", s.getBaseDatos().getPuerto())
+								.add("host", s.getBaseDatos().getHost())
+								.add("servicio", s.getBaseDatos().getServicio())
+								.add("actualizacion",  UtilFecha.getFechaFormateada(s.getBaseDatos().getUltimaActualizacion()))
+								)
+		.add("jiras", jiras(s.getVersionActual()));
 	}
 
 	private JsonObjectBuilder version(EntServidor servidor){

@@ -50,13 +50,13 @@ public class WSVersionArchivo {
 		LOGGER.info(String.format("Creando el archivo zip para la version %s",jobDespliegueVersion.getVersion().getNumero()));
 
 		List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(idJob);
-		
-		
+
+
 		ResponseBuilder response;
 		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntRepositorioDatosScriptEjecutados::getScript)
-																																								.map(EntVersionScript::getUrlScript)
+																															.map(EntVersionScript::getUrlScript)
 																																								.collect(Collectors.toList()))){
-			File fileSQL = servicio.generar();
+			File fileSQL = servicio.setQuery(true).generar();
 			response = Response.ok((Object) fileSQL);
 			response.header("Content-Disposition","attachment; filename=\"script.zip\"");
 

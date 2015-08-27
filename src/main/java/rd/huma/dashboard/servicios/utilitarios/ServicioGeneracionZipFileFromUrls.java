@@ -29,6 +29,7 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 	private String nombre;
 	private Consumer<String> handlerFalloUrl;
 	private Path carpetaTemporal;
+	private boolean query;
 
 	public ServicioGeneracionZipFileFromUrls(String nombre, String... urls) {
 		this(nombre, Arrays.asList(urls));
@@ -41,6 +42,11 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 
 	public ServicioGeneracionZipFileFromUrls setHandlerFalloUrl(Consumer<String> handlerFalloUrl) {
 		this.handlerFalloUrl = handlerFalloUrl;
+		return this;
+	}
+
+	public ServicioGeneracionZipFileFromUrls setQuery(boolean query) {
+		this.query = query;
 		return this;
 	}
 
@@ -97,6 +103,10 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 			Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
 			if (resultado.getStatus()==200){
 				String nombreScript = url.substring(url.lastIndexOf('/'));
+				if (query && !nombreScript.endsWith(".sql")){
+					nombreScript+=".sql";
+				}
+
 				Path archivoCrear = Paths.get(carpetaTemporal.toString(), nombreScript);
 				Files.deleteIfExists(archivoCrear);
 				Path path = Files.createFile(archivoCrear);

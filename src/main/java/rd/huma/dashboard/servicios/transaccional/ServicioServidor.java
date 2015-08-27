@@ -55,4 +55,8 @@ public class ServicioServidor {
 	public List<EntServidor> getServidoresPorVersion(String id) {
 		return entityManager.createNamedQuery("buscarPorVersion.servidor",EntServidor.class).setParameter("id", id).getResultList();
 	}
+
+	public EntServidor getServidorPorId(String idServidor) {
+		return entityManager.find(EntServidor.class, idServidor);
+	}
 }

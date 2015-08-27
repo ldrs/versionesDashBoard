@@ -34,7 +34,7 @@ versionesApp.factory("VersionesFilas", function($resource) {
 });
 
 versionesApp.factory("Servidores", function($resource) {
-	return $resource("/dashboard/api/servidores/:idAmbiente",null,{
+	return $resource("/dashboard/api/servidores/ambiente/:idAmbiente",null,{
 		'delAmbiente':{ 'method':'GET','isArray':true},
 		'undeploy':{'method':'GET','URL':'/dashboard/api/servidores/undeploy/:idServidor'}
 	});

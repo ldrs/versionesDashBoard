@@ -1,21 +1,15 @@
 package rd.huma.dashboard.servicios.transaccional;
 
-import java.util.Optional;
-import java.util.logging.Logger;
-
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
-import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
 
 @Stateless
 @Servicio
 public class ServicioTicketSysaid {
-
-	private static final Logger LOGGER = Logger.getLogger(ServicioTicketSysaid.class.getSimpleName());
 
 	@Inject
 	private EntityManager entityManager;
@@ -27,21 +21,24 @@ public class ServicioTicketSysaid {
 		}
 	}
 
-	private EntTicketSysAid nuevoSysAid(String numero) {
-		LOGGER.warning("Actualmente ignorando sysid : " + numero);
-
-//		Optional<Ticket> opcionalTicket = ServicioIntegracionSYSAID.instancia().getTicket(Long.valueOf(numero));
-//		if (opcionalTicket.isPresent()){
-//			return persiste(opcionalTicket.get());
-//		}
-		return null;
+	public static ServicioTicketSysaid getInstanciaTransaccional() {
+		Servicio servicio = ServicioTicketSysaid.class.getAnnotation(Servicio.class);
+		return CDI.current().select(ServicioTicketSysaid.class, servicio).get();
 	}
 
-	private EntTicketSysAid persiste(Ticket ticket){
+	private EntTicketSysAid nuevoSysAid(String numero) {
+		return persiste(numero);
+	}
+
+	private EntTicketSysAid persiste(String numero){
 		EntTicketSysAid jira = new EntTicketSysAid();
-		jira.setNumero(String.valueOf(ticket.getTicket()));
-		jira.setEstado(String.valueOf(ticket.getEstado()));
+		jira.setNumero(String.valueOf(numero));
+		jira.setEstado("Desconocido");
 		entityManager.persist(jira);
 		return jira;
+	}
+
+	public EntTicketSysAid actualizar(EntTicketSysAid ticketSysAid) {
+		return entityManager.merge(ticketSysAid);
 	}
 }

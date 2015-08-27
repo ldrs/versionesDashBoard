@@ -19,7 +19,7 @@ public class ServicioIntegracionTest {
 	public void probar(){
 		SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 		long sessionId = service.login(ACCONT_ID,USER_ID,PASS_ID);
-		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),4693);
+		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),9301);
 
 
 
