@@ -9,21 +9,28 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoScript;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
+import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
+	private static final Logger LOGGER = Logger.getLogger(Logger.class.getSimpleName());
+
 	private Path rutaResultadoScripts;
 	private ServicioVersion servicioVersion;
 	private ServicioRepositorioDatos servicioRepositorioDatos;
+
+	private ServicioJobDespliegueVersion servicioJob;
 
 	public EjecutorProcesaResultadoScripts(Path rutaResultadoScripts) {
 		this.rutaResultadoScripts = rutaResultadoScripts;
@@ -31,17 +38,23 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
+		LOGGER.info("Intentando de encontrar los logs");
+		this.servicioJob = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 		this.servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 		Path directorio = rutaResultadoScripts.getFileName();
 
+		List<EntJobDespliegueVersion> job = servicioJob.buscarJobPorIdVersion(directorio.toString());
+		job.stream().findFirst().ifPresent(this::actualizaResultado);
 
-		servicioVersion.buscaPorNumero(directorio.toString()).stream().findFirst().ifPresent(this::procesar);
+		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 	}
 
-	private void procesar(EntVersion version) {
-		List<EntRepositorioDatosScriptEjecutados> scripts =  servicioRepositorioDatos.getScriptEjecutadosPorVersion(version.getNumero());
+	private void actualizaResultado(EntJobDespliegueVersion job){
+		 List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(job.getId());
+		 procesar(job.getVersion(), scripts);
+	}
 
+	private void procesar(EntVersion version, List<EntRepositorioDatosScriptEjecutados> scripts) {
 		Map<String,EntRepositorioDatosScriptEjecutados> mapeo = getNombres(scripts);
 		File[] archivos = rutaResultadoScripts.toFile().listFiles();
 		for (File file : archivos) {
