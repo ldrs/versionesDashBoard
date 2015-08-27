@@ -65,7 +65,7 @@ public class ServicioActiveDirectory {
 		}
 
         //default domain base for search
-        domainBase = configuracionGeneral.getDomainBaseActiveDirecty(); ;
+        domainBase = configuracionGeneral.getDomainBaseActiveDirecty(); 
 
         //initializing search controls
         searchCtls = new SearchControls();

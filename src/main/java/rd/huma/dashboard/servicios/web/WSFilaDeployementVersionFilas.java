@@ -39,6 +39,7 @@ public class WSFilaDeployementVersionFilas {
 																				.add("id", f.getId())
 																				.add("prioridad", f.getPrioridad())
 																				.add("numero", f.getVersion().getNumero())
+																				.add("versionId", f.getVersion().getId())
 																				.add("autor", getAutor(f.getVersion()))
 																				.add("duenos", consultaDuenos(f.getVersion()))
 																				.add("branchOrigen", f.getVersion().getBranchOrigen())

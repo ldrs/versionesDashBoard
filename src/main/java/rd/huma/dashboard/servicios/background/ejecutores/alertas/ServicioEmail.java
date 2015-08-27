@@ -39,9 +39,10 @@ public class ServicioEmail {
 
             message.setFrom(new InternetAddress("dashboard.version@sigef.gov.do"));
             message.setSubject(subjecto);
-            message.setText(mensaje);
-            message.setContent(message, "text/html");
-            if (!archivos.isEmpty()){
+
+            if (archivos.isEmpty()){
+            	message.setContent(message, "text/html");
+            }else{
             	MimeMultipart multipart = new MimeMultipart();
             	for (String ruta : archivos){
             		multipart.addBodyPart(new MimeBodyPart(Files.newInputStream(Paths.get(ruta))));
@@ -49,12 +50,14 @@ public class ServicioEmail {
 
             	message.setContent(multipart);
             }
+            message.setText(mensaje);
 
 
             Transport.send(message);
             return true;
         } catch (MessagingException | IOException e) {
-        	LOGGER.warning("No se pudo mandar el correo por: "+ e.getMessage());
+        	e.printStackTrace();
+        	LOGGER.warning("No se pudo mandar el correo de subjecto" + subjecto + " por: "+ e.getMessage());
         }
         return false;
     }

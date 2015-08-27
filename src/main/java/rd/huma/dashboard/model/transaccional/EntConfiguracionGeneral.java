@@ -37,7 +37,7 @@ public class EntConfiguracionGeneral extends AEntModelo {
 
 	private String nombreCampoSysAid = "customfield_10902";
 
-	private String nombreActiveDirectory = "172.16.1.38:389";
+	private String nombreActiveDirectory = "172.16.1.5:389";
 
 	private String domainBaseActiveDirecty = "DC=sigefint,DC=gov,DC=do";
 
