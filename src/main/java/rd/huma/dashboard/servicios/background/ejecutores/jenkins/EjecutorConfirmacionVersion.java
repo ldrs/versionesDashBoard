@@ -35,7 +35,7 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 			DeployVersionScript deployScript = new DeployVersionScript(jobDeployVersion,false,Collections.emptyList());
 			deployScript.inicializar();
 			deployScript.ejecutar();
-			enviarAlertaVersionSubiendo(jobDeployVersion.getVersion());
+			enviarAlertaVersionSubiendo(jobDeployVersion);
 			servicioVersion.actualizarEstado(EEstadoVersion.EJECUTO_EXITOSO_JENKINS, jobDeployVersion.getVersion());
 
 
@@ -45,10 +45,12 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 	}
 
 
-	private void enviarAlertaVersionSubiendo(EntVersion version){
+	private void enviarAlertaVersionSubiendo(EntJobDespliegueVersion job){
+		EntVersion version = job.getVersion();
 		EntVersionAlerta alerta = new EntVersionAlerta();
 		alerta.setAlerta(ETipoAlertaVersion.VERSION_SUBIENDO);
 		alerta.setVersion(version);
+		alerta.setAmbiente(job.getFilaDespliegue().getAmbiente().getAmbiente());
 		alerta.setMensaje(new StringBuilder(150).append("La aplicación del branch ")
 												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente <a href=\"").append(jobDeployVersion.getServidor().getRutaEntrada())
 												.append("\">").append(jobDeployVersion.getServidor().getNombre()).append("</a>")

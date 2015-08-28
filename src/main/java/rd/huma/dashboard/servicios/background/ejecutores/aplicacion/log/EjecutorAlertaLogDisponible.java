@@ -9,17 +9,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionLog;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
+import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorAlertaLogDisponible extends AEjecutor {
@@ -39,6 +43,21 @@ public class EjecutorAlertaLogDisponible extends AEjecutor {
 		 borrarArchivoLogOriginal();
 	}
 
+	private Comparator<EntJobDespliegueVersion> comparador(){
+		return new Comparator<EntJobDespliegueVersion>() {
+			public int compare(EntJobDespliegueVersion o1, EntJobDespliegueVersion o2) {
+				if  (o1.getFechaRegistro().isAfter(o2.getFechaRegistro())){
+					return -1;
+				}else{
+					if (o1.getFechaRegistro().equals(o2.getFechaRegistro())){
+						return 0;
+					}
+				}
+				return -1;
+			}
+		};
+	}
+
 	private void crearVersionLog(Path path) {
 		String numeroVersion = pathArchivoCreado.getParent().getFileName().toString();
 		Optional<EntVersion> posibleVersion = servicioVersion.buscaPorNumero(numeroVersion).stream().findFirst();
@@ -46,12 +65,20 @@ public class EjecutorAlertaLogDisponible extends AEjecutor {
 			EntConfiguracionGeneral configuracionGeneral = ServicioConfiguracionGeneral.getInstanciaTransaccional().getConfiguracionGeneral().get();
 
 			EntVersion version = posibleVersion.get();
+			ServicioJobDespliegueVersion servicio = ServicioJobDespliegueVersion.getInstanciaTransaccional();
+			Optional<EntJobDespliegueVersion> job = servicio.buscarJobPorIdVersion(version.getId()).stream().filter(j -> j.getTipoDespliegue() == ETipoDespliegueJob.VERSION)
+																	.sorted(comparador()).findFirst();
+
 			EntVersionLog log = new EntVersionLog();
 			log.setPath(path.toString());
 			log.setVersion(version);
 			servicioVersion.crearVersionLog(log);
 
 			EntVersionAlerta alerta = new EntVersionAlerta();
+			if (job.isPresent()){
+				alerta.setAmbiente(job.get().getFilaDespliegue().getAmbiente().getAmbiente());
+			}
+
 			alerta.setVersion(version);
 			alerta.setAlerta(ETipoAlertaVersion.VERSION_NO_SUBIO);
 			alerta.setMensaje(new StringBuilder(150)

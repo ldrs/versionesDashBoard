@@ -21,7 +21,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 @Entity
 @Table(name="VERSION_ALERTA")
 @NamedQueries({ @NamedQuery(name="versiones.alerta", query = "SELECT E.version FROM EntVersionAlerta E group by E.version"),
-				@NamedQuery(name="buscaPorVersion.alerta", query = "SELECT E FROM EntVersionAlerta E where E.version = :ver order by E.fechaRegistro")
+				@NamedQuery(name="buscaPorVersion.alerta", query = "SELECT E FROM EntVersionAlerta E where E.version = :ver order by E.fechaRegistro"),
+				@NamedQuery(name="buscaPorPersonasPorTipo.alerta",query="SELECT GD.persona FROM EntVersionAlerta E ,EntConfiguracionNotificacion C, EntGrupoPersonaDetalle GD  join E.version V join E.ambiente where C.ambiente=E.ambiente and GD.grupoPersona =C.grupoPersona  and C.alerta = E.alerta and E = :alt and exists(select 1  from EntVersionParticipante D where D.participante = GD.persona)")
 				})
 public class EntVersionAlerta extends AEntModelo {
 
@@ -42,6 +43,11 @@ public class EntVersionAlerta extends AEntModelo {
 	@JoinColumn
 	@ManyToOne
 	private EntVersion version;
+
+
+	@JoinColumn
+	@ManyToOne
+	private EntAmbiente ambiente;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
@@ -81,4 +87,14 @@ public class EntVersionAlerta extends AEntModelo {
 	public void setPathFile(String pathFile) {
 		this.pathFile = pathFile;
 	}
+
+	public EntAmbiente getAmbiente() {
+		return ambiente;
+	}
+
+	public void setAmbiente(EntAmbiente ambiente) {
+		this.ambiente = ambiente;
+	}
+
+
 }

@@ -19,10 +19,10 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionAlertaHistorica;
 import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
-import rd.huma.dashboard.model.transaccional.EntVersionLog;
-import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.EntVersionLog;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
+import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
@@ -290,19 +290,28 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscaPorVersion.alerta",EntVersionAlerta.class).setParameter("ver", version).getResultList();
 	}
 
+	public List<EntPersona> buscaPersonasPorAlertar(EntVersionAlerta alerta){
+		return entityManager.createNamedQuery("buscaPorPersonasPorTipo.alerta",EntPersona.class)
+				.setParameter("alt", alerta).getResultList();
+	}
+
 	public List<EntVersionAlertaHistorica> moverHistorico(List<EntVersionAlerta> alertas){
 		List<EntVersionAlertaHistorica> historia = new ArrayList<>();
 		for (EntVersionAlerta alerta : alertas) {
-			EntVersionAlertaHistorica h = new EntVersionAlertaHistorica();
-			h.setAlerta(alerta.getAlerta());
-			h.setMensaje(alerta.getMensaje());
-			h.setPathFile(alerta.getPathFile());
-			h.setVersion(alerta.getVersion());
-			entityManager.persist(h);
-			entityManager.remove(entityManager.find(EntVersionAlerta.class, alerta.getId()));
-			historia.add(h);
+			historia.add(moverHistorico(alerta));
 		}
 		return historia;
+	}
+
+	public EntVersionAlertaHistorica moverHistorico(EntVersionAlerta alerta) {
+		EntVersionAlertaHistorica h = new EntVersionAlertaHistorica();
+		h.setAlerta(alerta.getAlerta());
+		h.setMensaje(alerta.getMensaje());
+		h.setPathFile(alerta.getPathFile());
+		h.setVersion(alerta.getVersion());
+		entityManager.persist(h);
+		entityManager.remove(entityManager.find(EntVersionAlerta.class, alerta.getId()));
+		return h;
 	}
 
 	public void eliminarVersion(EntVersionReporte versionReporte) {
@@ -332,6 +341,8 @@ public class ServicioVersion {
 	public List<EntVersionCambioObjectoSql> buscaCambioModelos(String id) {
 		return entityManager.createNamedQuery("buscarPorVersionId.cambioSQL",EntVersionCambioObjectoSql.class).setParameter("id", id).getResultList();
 	}
+
+
 
 
 }

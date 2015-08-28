@@ -51,10 +51,10 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 	private void actualizaResultado(EntJobDespliegueVersion job){
 		 List<EntRepositorioDatosScriptEjecutados> scripts = servicioRepositorioDatos.getScriptEjecutadosPorJob(job.getId());
-		 procesar(job.getVersion(), scripts);
+		 procesar(job,job.getVersion(), scripts);
 	}
 
-	private void procesar(EntVersion version, List<EntRepositorioDatosScriptEjecutados> scripts) {
+	private void procesar(EntJobDespliegueVersion job, EntVersion version, List<EntRepositorioDatosScriptEjecutados> scripts) {
 		Map<String,EntRepositorioDatosScriptEjecutados> mapeo = getNombres(scripts);
 		File[] archivos = rutaResultadoScripts.toFile().listFiles();
 		for (File file : archivos) {
@@ -70,6 +70,7 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 			EntVersionAlerta alerta = new EntVersionAlerta();
 			alerta.setVersion(version);
 			alerta.setPathFile(file.getPath());
+			alerta.setAmbiente(job.getFilaDespliegue().getAmbiente().getAmbiente());
 			if (script == null){
 				alerta.setAlerta(ETipoAlertaVersion.SCRIPT_NO_ENCONTRADO_EN_VERSION);
 				alerta.setMensaje(new StringBuilder().append("El archivo ").append(file.getName()).append(" no aparenta ser parte de la version fue ejecutado").toString());

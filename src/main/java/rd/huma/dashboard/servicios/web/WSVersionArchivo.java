@@ -44,7 +44,7 @@ public class WSVersionArchivo {
 	public Response retornaScript(@PathParam("id") String idJob){
 		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(idJob);
 		if (jobDespliegueVersion == null){
-			throw new IllegalArgumentException("No existe ese id" + idJob + " para ejecutar el script");
+			return Response.serverError().entity("No existe este job id").build();
 		}
 
 		LOGGER.info(String.format("Creando el archivo zip para la version %s",jobDespliegueVersion.getVersion().getNumero()));
@@ -69,6 +69,10 @@ public class WSVersionArchivo {
 	@Path("reporte/{id}")
 	public Response retornaReporte(@PathParam("id") String scriptId){
 		EntJobDespliegueVersion jobDespliegueVersion = servicioJobDespliegueVersion.getJob(scriptId);
+
+		if (jobDespliegueVersion == null){
+			return Response.serverError().entity("No existe este job id").build();
+		}
 
 
 		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDespliegueVersion.getVersion());
