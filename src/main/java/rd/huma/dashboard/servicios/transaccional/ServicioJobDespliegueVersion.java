@@ -90,4 +90,11 @@ public class ServicioJobDespliegueVersion {
 		.setParameter("tipo", ETipoDespliegueJob.VERSION)
 		.setParameter("est", EEstadoJobDespliegue.ESPERANDO_DEPLOY).getResultList().stream().findFirst().orElse(null);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> buscaVersionesAgrupadasPorTipo(ETipoDespliegueJob version) {
+		return  entityManager.createNamedQuery("metricaAgrupadaYear.jobDespliegue").setParameter("tipo", version).getResultList();
+
+
+	}
 }

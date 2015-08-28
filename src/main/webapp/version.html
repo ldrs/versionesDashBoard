@@ -36,8 +36,8 @@
 						<div class="12u">
 
 							<header id="header">
-								<h1><a href="{{app.link}}" id="logo" title="{{app.mensaje}}">version {{app.version.numero}}</a></h1>
-								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br>{{app.version.svnOrigen}}<br>{{app.version.svnRevision}}</div>
+								<h1><a href="app.html" id="logo">version {{app.version.numero}}</a></h1>
+								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br> <a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.version.svnOrigen}}</a><br>{{app.version.svnRevision}}</div>
 							</header>
 
 						</div>
@@ -49,7 +49,7 @@
 
 					<div  class="divContenedor">
 							<span title="Autor de la version" class="label">{{app.version.autor}}</span>
-							<span title="Branch de la version"  style="float: right;"><a href="branch.html?{{app.version.branch}}">{{app.version.branch}}</a> </span>
+							<span title="Branch de la version"  style="float: right;"><a href="branch.html?branch{{app.version.branch}}">{{app.version.branch}}</a> </span>
 
 					</div>
 
