@@ -15,7 +15,7 @@ import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 
-@Path("/ambientes/{aplicacion}")
+@Path("ambientes/{aplicacion}")
 public class WSAmbientes {
 
 	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
