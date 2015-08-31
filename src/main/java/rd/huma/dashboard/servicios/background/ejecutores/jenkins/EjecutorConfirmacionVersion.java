@@ -52,9 +52,10 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		alerta.setVersion(version);
 		alerta.setAmbiente(job.getFilaDespliegue().getAmbiente().getAmbiente());
 		alerta.setMensaje(new StringBuilder(150).append("La aplicación del branch ")
-												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente <a href=\"").append(jobDeployVersion.getServidor().getRutaEntrada())
-												.append("\">").append(jobDeployVersion.getServidor().getNombre()).append("</a>")
-												.append(" Para más información de la versión entrar en <a href=\"http://dashboard.version.sigefint.gov.do/dashboard/version.html?versionId=").append(version.getId()).append("\">").append(version.getNumero()).append("</a>")
+												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente ").append(jobDeployVersion.getServidor().getRutaEntrada())
+												.append(jobDeployVersion.getServidor().getNombre())
+												.append(" Para más información de la versión(").append(version.getNumero())
+												.append(") entrar en http://dashboard.version.sigefint.gov.do/dashboard/version.html?versionId=").append(version.getId())
 												.toString());
 		servicioVersion.crearAlerta(alerta);
 	}

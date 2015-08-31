@@ -24,6 +24,5 @@ public class InicializadorAplicacion implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		ServicioIntegracionSYSAID.instancia().expirar();
 	}
 }

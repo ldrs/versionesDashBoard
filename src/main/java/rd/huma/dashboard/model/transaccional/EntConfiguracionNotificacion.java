@@ -38,6 +38,8 @@ public class EntConfiguracionNotificacion extends AEntModelo {
 	@Enumerated(EnumType.STRING)
 	private ETipoAlertaVersion alerta;
 
+	private boolean alertaPorAmbiente = false;
+
 
 	public EntAmbiente getAmbiente() {
 		return ambiente;
@@ -66,5 +68,13 @@ public class EntConfiguracionNotificacion extends AEntModelo {
 
 	public void setAlerta(ETipoAlertaVersion alerta) {
 		this.alerta = alerta;
+	}
+
+	public boolean isAlertaPorAmbiente() {
+		return alertaPorAmbiente;
+	}
+
+	public void setAlertaPorAmbiente(boolean alertaPorAmbiente) {
+		this.alertaPorAmbiente = alertaPorAmbiente;
 	}
 }

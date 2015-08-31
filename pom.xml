@@ -213,5 +213,39 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		 <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            </resource>
+          </resources>
+
 	</build>
+
+	<profiles>
+		<profile>
+			<id>Produccion</id>
+			<activation><activeByDefault>true</activeByDefault></activation>
+			<properties>
+				<HIBERNATE.DATASOURCE>java:/datasource.dashboard</HIBERNATE.DATASOURCE>
+				<HIBERNATE.DIALECTO>org.hibernate.dialect.MySQL5Dialect</HIBERNATE.DIALECTO>
+				<HIBERNATE.DDL>update</HIBERNATE.DDL>
+
+			</properties>
+			<build></build>
+		</profile>
+		<profile>
+			<id>Desarrollo</id>
+			<activation><activeByDefault>false</activeByDefault></activation>
+			<properties>
+				<HIBERNATE.DATASOURCE>java:jboss/datasources/ExampleDS</HIBERNATE.DATASOURCE>
+				<HIBERNATE.DIALECTO>org.hibernate.dialect.HSQLDialect</HIBERNATE.DIALECTO>
+				<HIBERNATE.DDL>create-drop</HIBERNATE.DDL>
+
+			</properties>
+
+		</profile>
+
+	</profiles>
 </project>

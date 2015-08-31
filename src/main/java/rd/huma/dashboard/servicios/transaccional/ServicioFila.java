@@ -24,8 +24,10 @@ import rd.huma.dashboard.model.transaccional.EntGrupoPersonaDetalle;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 
 @Servicio
 @Stateless
@@ -131,6 +133,17 @@ public class ServicioFila {
 				servicioVersion.buscaParticipantes(version).stream().map(EntVersionParticipante::getParticipante).filter(p -> personasPosibleAUsuar.contains(p)).forEach(p -> nuevaPersonaFilaDueno(deployementVersion, p));
 			}
 		}
+		notificarVersionNueva(version, fila);
+	}
+
+	private void notificarVersionNueva(EntVersion version, EntFilaDespliegue fila){
+		EntVersionAlerta versionAlerta = new EntVersionAlerta();
+		versionAlerta.setAlerta(ETipoAlertaVersion.VERSION_CREADA);
+		versionAlerta.setAmbiente(fila.getAmbiente().getAmbiente());
+		versionAlerta.setVersion(version);
+		versionAlerta.setMensaje("Se ha creado la version " + version.getNumero() + " con el fecha de job -> " + version.getInicioJob()) ;
+
+		servicioVersion.crearAlerta(versionAlerta);
 	}
 
 	public void eliminarFilaVersion(String id){

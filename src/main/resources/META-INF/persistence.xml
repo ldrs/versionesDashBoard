@@ -1,10 +1,10 @@
 <persistence>
    <persistence-unit name="dashboardDeployement">
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
-      <jta-data-source>java:/datasource.dashboard</jta-data-source>
+      <jta-data-source>${HIBERNATE.DATASOURCE}</jta-data-source>
       <properties>
-      	<property name="hibernate.dialect"   value="org.hibernate.dialect.MySQL5Dialect"/>
-         <property name="hibernate.hbm2ddl.auto" value="update"/>
+      	<property name="hibernate.dialect"   value="${HIBERNATE.DIALECTO}"/>
+         <property name="hibernate.hbm2ddl.auto" value="${HIBERNATE.DDL}"/>
       </properties>
    </persistence-unit>
 </persistence>

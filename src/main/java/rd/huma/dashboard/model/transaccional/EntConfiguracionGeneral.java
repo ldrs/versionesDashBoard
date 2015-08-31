@@ -20,7 +20,7 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	private String usrJira;
 	private String pwdJira;
 
-	private String rutaSysaid = "http://serviciossiafe.hacienda.gov.do:8080/";
+	private String rutaSysaid = "http://172.16.1.38:8080/";
 	private String usrSysaid = "integrador";
 	private String pwdSysaid = "integrador";
 

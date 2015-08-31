@@ -27,6 +27,7 @@ public class WSAmbientes {
 																				.add("nombre", s.getAmbiente().getNombre())
 																				.add("css", "")
 																				.add("id",s.getId())
+																				.add("idAmbiente",s.getAmbiente().getId())
 																				.add("orden",s.getAmbiente().getOrden())
 														 )
 										);

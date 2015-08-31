@@ -40,6 +40,12 @@ public class EntVersionAlertaHistorica extends AEntModelo {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
 
+
+
+	@JoinColumn
+	@ManyToOne
+	private EntAmbiente ambiente;
+
 	public Instant getFechaRegistro() {
 		return fechaRegistro.toInstant();
 	}
@@ -74,5 +80,13 @@ public class EntVersionAlertaHistorica extends AEntModelo {
 
 	public void setPathFile(String pathFile) {
 		this.pathFile = pathFile;
+	}
+
+	public void setAmbiente(EntAmbiente ambiente) {
+		this.ambiente = ambiente;
+	}
+
+	public EntAmbiente getAmbiente() {
+		return ambiente;
 	}
 }

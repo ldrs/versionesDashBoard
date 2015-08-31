@@ -309,6 +309,7 @@ public class ServicioVersion {
 		h.setMensaje(alerta.getMensaje());
 		h.setPathFile(alerta.getPathFile());
 		h.setVersion(alerta.getVersion());
+		h.setAmbiente(alerta.getAmbiente());
 		entityManager.persist(h);
 		entityManager.remove(entityManager.find(EntVersionAlerta.class, alerta.getId()));
 		return h;

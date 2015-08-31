@@ -22,8 +22,15 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 @Table(name="VERSION_ALERTA")
 @NamedQueries({ @NamedQuery(name="versiones.alerta", query = "SELECT E.version FROM EntVersionAlerta E group by E.version"),
 				@NamedQuery(name="buscaPorVersion.alerta", query = "SELECT E FROM EntVersionAlerta E where E.version = :ver order by E.fechaRegistro"),
-				@NamedQuery(name="buscaPorPersonasPorTipo.alerta",query="SELECT GD.persona FROM EntVersionAlerta E ,EntConfiguracionNotificacion C, EntGrupoPersonaDetalle GD  join E.version V join E.ambiente where C.ambiente=E.ambiente and GD.grupoPersona =C.grupoPersona  and C.alerta = E.alerta and E = :alt and exists(select 1  from EntVersionParticipante D where D.participante = GD.persona)")
+				@NamedQuery(name="buscaPorPersonasPorTipo.alerta",query="SELECT GD.persona FROM EntVersionAlerta E ,EntConfiguracionNotificacion C, EntGrupoPersonaDetalle GD where C.ambiente=E.ambiente and GD.grupoPersona =C.grupoPersona  and C.alerta = E.alerta and E = :alt and (C.alertaPorAmbiente=true or  exists(select 1  from EntVersionParticipante D where D.participante = GD.persona and D.version = E.version)  )")
 				})
+
+
+/**
+ * @author priamogermosen
+ *
+ */
+
 public class EntVersionAlerta extends AEntModelo {
 
 	/**

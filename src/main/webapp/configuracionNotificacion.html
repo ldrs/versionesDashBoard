@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html ng-app="personasApp">
+<html ng-app="configApp">
 <head>
 <title>Configuracion Notificacion</title>
 <meta charset="utf-8" />
@@ -14,7 +14,7 @@
 <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 </head>
 
-<body ng-controller="personasController as app">
+<body ng-controller="configController as app">
 	<div id="page-wrapper">
 		<div class="inicioSesion">
 			<a href="inicioSesion.html">Iniciar Sesion</a>
@@ -44,37 +44,37 @@
 			<div class="container">
 
 
-				<div class="gruposContainer">
-					<h2>Grupos</h2>
+
+
 					<div class="grupoContainer" ng-repeat="aplicacion in app.applicaciones">
 						<div>
 							<p style="margin: 0px; line-height: 0px">{{aplicacion.nombre}}</p>
 						</div>
-						
+
 						<div class="grupoContainer" ng-repeat="ambiente in aplicacion.ambientes">
-							
+
 							<div>
 								<p style="margin: 0px; line-height: 0px">{{ambiente.nombre}}</p>
 							</div>
-							
-							<div class="grupoContainer" ng-repeat="tipo in ambiente.tipoNotificaciones">
-							
-							
+
+							<div class="grupoContainer" ng-repeat="tipo in tipo.tipoNotificaciones">
+
+
 								<div>
 									<p style="margin: 0px; line-height: 0px">{tipo}}</p>
 								</div>
 									<ul>
-										<li ng-repeat="grupo in tipos.grupos">{{grupo.grupoNombre}}  <div class="deleteUser" ng-click="eliminaConfig(grupo)"/></li>
+										<li ng-repeat="grupo in tipo.grupos">{{grupo.grupoNombre}}  <div class="deleteUser" ng-click="eliminaConfig(grupo)"/></li>
 									</ul>
-							
+
 							</div>
-						
+
 						</div>
 
 
 					</div>
 				</div>
-			</div>
+
 		</div>
 
 	</div>

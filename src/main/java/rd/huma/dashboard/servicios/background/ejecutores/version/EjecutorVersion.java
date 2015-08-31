@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.version.script.EjecutorInterpretacionScriptsVersion;
@@ -61,4 +62,5 @@ public class EjecutorVersion  extends AEjecutor{
 
 		servicio.ejecutarJob(new EjecutorInterpretacionScriptsVersion(version));
 	}
+
 }

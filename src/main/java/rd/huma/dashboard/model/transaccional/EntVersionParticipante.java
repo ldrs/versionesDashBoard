@@ -18,6 +18,8 @@ import javax.persistence.Table;
 		}
 
 		)
+
+
 public class EntVersionParticipante extends AEntModelo {
 
 	/**
