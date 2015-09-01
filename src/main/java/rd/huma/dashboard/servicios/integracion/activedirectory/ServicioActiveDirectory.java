@@ -53,7 +53,7 @@ public class ServicioActiveDirectory {
 
         properties.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         properties.put(Context.PROVIDER_URL, "LDAP://"+domainController);
-        properties.put(Context.SECURITY_PRINCIPAL, usuario + "@" + domainController);
+        properties.put(Context.SECURITY_PRINCIPAL, "sigefint\\"+ usuario); //domainController);
         properties.put(Context.SECURITY_CREDENTIALS, password);
         properties.put(Context.REFERRAL, "ignore");
 
@@ -65,7 +65,7 @@ public class ServicioActiveDirectory {
 		}
 
         //default domain base for search
-        domainBase = configuracionGeneral.getDomainBaseActiveDirecty(); 
+        domainBase = configuracionGeneral.getDomainBaseActiveDirecty();
 
         //initializing search controls
         searchCtls = new SearchControls();

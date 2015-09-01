@@ -3,10 +3,15 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="AMBIENTE_DUENOS")
+@NamedQueries({
+	@NamedQuery(name="buscarPorAmbiente",query="SELECT E from EntAmbienteDueno E WHERE E.ambiente = :amb")
+})
 public class EntAmbienteDueno  extends AEntModelo{
 
 	/**

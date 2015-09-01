@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.Optional;
+
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -17,8 +19,22 @@ public class ServicioTicketSysaid {
 
 	public EntTicketSysAid encuentraOSalva(String numero) {
 		synchronized(numero){
-			return entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst().orElse(nuevoSysAid(numero));
+			Optional<EntTicketSysAid> ticket = buscarPorNumero(numero);
+			if (ticket.isPresent()){
+				return ticket.get();
+			}else{
+				ticket = buscarPorNumero(numero);
+				if (ticket.isPresent()){
+					return ticket.get();
+				}
+
+				return nuevoSysAid(numero);
+			}
 		}
+	}
+
+	public Optional<EntTicketSysAid> buscarPorNumero(String numero){
+		return entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst();
 	}
 
 	public static ServicioTicketSysaid getInstanciaTransaccional() {

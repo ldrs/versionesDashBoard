@@ -19,7 +19,30 @@ import javax.persistence.Table;
 
 		)
 
+/**
+ *
+ *
+ Query para analizar buscarVersionParticipante.versionParticipantes
 
+
+ select GD.persona_id, P.usuarioSvn  , E.alerta , GP.grupo
+   from   VERSION_ALERTA_HISTORICA E,
+     CONFIGURACION_NOTIFICACION C,     GRUPO_DETALLE GD,
+     PERSONA P ,
+     GRUPO_PERSONA GP
+ WHERE
+ C.alerta = E.alerta
+ AND C.ambiente_id = E.ambiente_id
+ AND GD.grupoPersona_id = C.grupoPersona_id
+ AND P.id = GD.persona_id
+ AND GP.id = GD.grupoPersona_id
+ AND GP.id = C.grupoPersona_id
+ AND E.id= ?
+ AND (C.alertaPorAmbiente=true or   exists(select 1 from VERSION_PARTICIPANTES D where D.participante_id = GD.persona_id and D.version_id=E.version_id) );
+
+
+ *
+ */
 public class EntVersionParticipante extends AEntModelo {
 
 	/**

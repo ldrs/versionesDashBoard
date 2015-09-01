@@ -36,7 +36,7 @@ versionesApp.factory("VersionesFilas", function($resource) {
 versionesApp.factory("Servidores", function($resource) {
 	return $resource("/dashboard/api/servidores/ambiente/:idAmbiente",null,{
 		'delAmbiente':{ 'method':'GET','isArray':true},
-		'undeploy':{'method':'GET','URL':'/dashboard/api/servidores/undeploy/:idServidor'}
+		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor'}
 	});
 });
 
@@ -83,8 +83,15 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	}
 
 	app.cambiaCSSServidores =function(servidores){
-		servidores.forEach=function(s){
-			s.css = app.logeado && s.estado==='OCUPADO' && app.containsElement(s.version.duenos,app.usuario.id) ? "block":"none" ;
+		for (var j=0; j<servidores.length; j++){
+			var s=servidores[j], dueno = false;
+			for (var i=0; i<s.ambienteDuenos.length; i++){
+				if (s.ambienteDuenos[i]==app.usuario.id){
+					dueno = true;
+					break;
+				}
+			}
+			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 &&  (dueno ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
 		}
 	}
 

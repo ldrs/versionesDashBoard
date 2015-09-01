@@ -17,6 +17,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 		@NamedQuery(name="buscaUK.configNotificacion",query="SELECT E from EntConfiguracionNotificacion E where E.ambiente = :amb and  E.grupoPersona = :grp and E.alerta = :tipo"),
 		@NamedQuery(name="buscaGrupo.configNotificacion",query="SELECT E from EntConfiguracionNotificacion E where E.ambiente = :amb and E.alerta = :tipo"),
 		})
+
+
 public class EntConfiguracionNotificacion extends AEntModelo {
 
 	/**

@@ -1,6 +1,6 @@
 var configApp = angular.module('configApp',['ngResource']);
 
-personasApp.factory("ConfigApi", function($resource) {
+configApp.factory("ConfigApi", function($resource) {
 	return $resource("/dashboard/api/configuracionNotificacion/grupos/:idAmb/:tipo",null,{
 		'tiposConfig':{ 'method':'GET','isArray':true},
 		'todasApp':{ 'method':'GET','url':'/dashboard/api/aplicaciones','isArray':true},
@@ -14,15 +14,17 @@ configApp.controller('configController', function($scope,ConfigApi) {
 	var pControl = this;
 
 	cargaGrupoTipoConfigucaciones = function(amb,tipo){
-		ConfigApi.tiposConfig({idAmb:amb.idAmbiente,"tipo":tipo}).$promise.then(function(data){
+		ConfigApi.tiposConfig({idAmb:amb.idAmbiente,"tipo":tipo.nombre}).$promise.then(function(data){
 			tipo.grupos = data;
 		});
 	}
 
 	cargaTiposConfiguraciones = function(amb){
 		ConfigApi.todosTiposNotificaciones().$promise.then(function(data){
-			amb.tipoNotificaciones = data;
-			for (var i=0;i<amb.tipoNotificaciones.length;i++){
+			amb.tipoNotificaciones = [];
+			for (var i=0;i<data.length;i++){
+				var tipo = {"nombre": data[i]}
+				amb.tipoNotificaciones.push(tipo);
 				cargaGrupoTipoConfigucaciones(amb,amb.tipoNotificaciones[i]);
 			}
 		});

@@ -16,6 +16,7 @@ import javax.ws.rs.PathParam;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
+import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -23,6 +24,7 @@ import rd.huma.dashboard.util.UtilFecha;
 @Path("servidores")
 public class WSServidores {
 
+	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
 	private @Servicio @Inject ServicioServidor servicioServidor;
 	private @Servicio @Inject ServicioVersion servicioVersion;
 	private @Servicio @Inject ServicioFila servicioFila;
@@ -42,7 +44,13 @@ public class WSServidores {
 	@GET
 	@Path("undeploy/{servidor}")
 	public String undeploy(@PathParam("servidor") String idServidor ){
-		return toJson(servicioServidor.getServidorPorId(idServidor)).build().toString();
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{}";
+		}
+		servicioServidor.cambiaVersionServidor(servidor, null);
+
+		return toJson(servidor).build().toString();
 	}
 
 	private JsonObjectBuilder toJson(EntServidor s){
@@ -62,7 +70,14 @@ public class WSServidores {
 								.add("servicio", s.getBaseDatos().getServicio())
 								.add("actualizacion",  UtilFecha.getFechaFormateada(s.getBaseDatos().getUltimaActualizacion()))
 								)
+		.add("ambienteDuenos",ambienteDuenos(s))
 		.add("jiras", jiras(s.getVersionActual()));
+	}
+
+	private JsonArrayBuilder ambienteDuenos(EntServidor s){
+		JsonArrayBuilder builder = Json.createArrayBuilder();
+		servicioAmbiente.getDuenos(s.getAmbiente().getAmbiente()).stream().forEach(e -> builder.add(e.getPersona().getId()));
+		return builder;
 	}
 
 	private JsonObjectBuilder version(EntServidor servidor){

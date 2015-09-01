@@ -29,6 +29,7 @@ public class EjecutorSeleccionFila extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
+
 		LOGGER.info(String.format("Procesando la fila de la version %s", version.getNumero()));
 
 

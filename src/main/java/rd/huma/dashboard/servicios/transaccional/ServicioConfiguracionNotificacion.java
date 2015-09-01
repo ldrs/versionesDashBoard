@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 @Stateless
 public class ServicioConfiguracionNotificacion {
 
-	
+	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
+
 	@Inject
 	private EntityManager entityManager;
 
@@ -26,29 +28,29 @@ public class ServicioConfiguracionNotificacion {
 		Servicio servicio = ServicioConfiguracionNotificacion.class.getAnnotation(Servicio.class);
 		return CDI.current().select(ServicioConfiguracionNotificacion.class, servicio).get();
 	}
-	
+
 	public boolean eliminar(String alerta, String ambiente, String grupoPersona){
 		EntAmbiente eAmbiente = entityManager.find(EntAmbiente.class, ambiente);
 		EntGrupoPersona eGrupoPersona = entityManager.find(EntGrupoPersona.class, ambiente);
-		
+
 		Optional<EntConfiguracionNotificacion> eliminar =  buscar(ETipoAlertaVersion.valueOf(alerta), eAmbiente, eGrupoPersona).stream().findFirst();
 		if (eliminar.isPresent()){
 			entityManager.remove(entityManager.find(EntConfiguracionNotificacion.class, eliminar.get().getId()));
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public EntConfiguracionNotificacion nuevo(String alerta, String ambiente, String grupoPersona){
 		EntAmbiente eAmbiente = entityManager.find(EntAmbiente.class, ambiente);
 		EntGrupoPersona eGrupoPersona = entityManager.find(EntGrupoPersona.class, ambiente);
 		return nuevo(ETipoAlertaVersion.valueOf(alerta), eAmbiente, eGrupoPersona);
 	}
-	
+
 	public EntConfiguracionNotificacion nuevo(ETipoAlertaVersion alerta, EntAmbiente ambiente, EntGrupoPersona grupoPersona){
 		List<EntConfiguracionNotificacion> list = buscar(alerta, ambiente, grupoPersona);
-		
+
 		if (list.isEmpty()){
 			EntConfiguracionNotificacion configuracionNotificacion = new EntConfiguracionNotificacion();
 			configuracionNotificacion.setAlerta(alerta);
@@ -59,10 +61,10 @@ public class ServicioConfiguracionNotificacion {
 		}else{
 			return list.get(0);
 		}
-		
+
 
 	}
-	
+
 	private List<EntConfiguracionNotificacion> buscar(ETipoAlertaVersion alerta, EntAmbiente ambiente, EntGrupoPersona grupoPersona){
 		 return entityManager.createNamedQuery("buscaUK.configNotificacion",EntConfiguracionNotificacion.class)
 				.setParameter("amb", ambiente)
@@ -71,9 +73,13 @@ public class ServicioConfiguracionNotificacion {
 	}
 
 	public List<EntConfiguracionNotificacion> buscarGrupos(String ambiente, ETipoAlertaVersion tipo) {
-		return entityManager.createNamedQuery("buscaGrupo.configNotificacion",EntConfiguracionNotificacion.class)
-		.setParameter("amb", ambiente)
-		.setParameter("tipo", tipo)
-		.getResultList();
+		Optional<EntAmbiente> posibleAmbiente = servicioAmbiente.getAmbiente(ambiente);
+		if (posibleAmbiente.isPresent()){
+			return entityManager.createNamedQuery("buscaGrupo.configNotificacion",EntConfiguracionNotificacion.class)
+					.setParameter("amb", posibleAmbiente.get())
+					.setParameter("tipo", tipo)
+					.getResultList();
+		}
+		return Collections.emptyList();
 	}
 }

@@ -51,7 +51,7 @@ public class WSSeguridad {
 				return Json.createObjectBuilder().add("inicioSesion", "true")
 										  .add("usuario", Json.createObjectBuilder()
 												  						.add("id", persona.getId())
-												  						.add("nombre", persona.getNombre())
+												  						.add("nombre", persona.getNombreNullSafe())
 												  						.add("email", persona.getCorreo())
 												  						.add("usuarioSVN", persona.getUsuarioSvn())
 												  						.add("prioridadAmbientes", prioridadesAmbientes(persona.getId()))

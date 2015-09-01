@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
+import rd.huma.dashboard.model.transaccional.EntAmbienteDueno;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 
 @Stateless
@@ -39,8 +41,16 @@ public class ServicioAmbiente {
 		return ambienteAplicacion;
 	}
 
+	public Optional<EntAmbiente> getAmbiente(String id) {
+		 return Optional.ofNullable(entityManager.find(EntAmbiente.class, id));
+	}
+
 	public List<EntAmbienteAplicacion> getAmbientesAplicacion(String id) {
 		return entityManager.createNamedQuery("buscar.ambienteAplicacion",EntAmbienteAplicacion.class).setParameter("app", id).getResultList();
+	}
+
+	public List<EntAmbienteDueno> getDuenos(EntAmbiente entAmbiente) {
+		return entityManager.createNamedQuery("buscarPorAmbiente",EntAmbienteDueno.class).setParameter("amb", entAmbiente).getResultList();
 	}
 
 }
