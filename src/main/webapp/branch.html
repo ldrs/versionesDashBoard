@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html ng-app="versionesApp" lang="es-do">
+<html ng-app="branchApp" lang="es-do">
 <head>
 		<title>Versiones</title>
 		<meta charset="utf-8" />
@@ -18,7 +18,7 @@
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/services.js"></script>
-		<script src="assets/js/version.js"></script>
+		<script src="assets/js/branch.js"></script>
 
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -36,8 +36,8 @@
 						<div class="12u">
 
 							<header id="header">
-								<h1><a href="app.html" id="logo">version {{app.version.numero}}</a></h1>
-								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br> <a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.version.svnOrigen}}</a><br>{{app.version.svnRevision}}</div>
+								<h1><a href="app.html" id="logo">version {{app.branch}}</a></h1>
+								<div style="float: right;color:white;"><a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.svnOrigen}}</a><br>{{app.version.svnRevision}}</div>
 							</header>
 
 						</div>
@@ -48,68 +48,32 @@
 				<div class="container">
 
 					<div  class="divContenedor">
-							<span title="Autor de la version" class="label">{{app.version.autor}}</span>
-							<span title="Branch de la version"  style="float: right;"><a href="branch.html?branch{{app.version.branch}}">{{app.version.branch}}</a> </span>
 
-					</div>
+									<div  style="width: 100%; padding-top: 0px;">
+								<div class="row rowFila rowHeaderFila">
+									<div class="aplicacion c1" style="color: black">Numero</div>
+									<div class="aplicacion c3" style="color: black">Autor</div>
+									<div class="aplicacion c2" style="color: black">Fecha</div>
+									<div class="aplicacion c2" style="color: black">Estado</div>
+									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon" title="Cantidad de Scripts"></div></div>
+									<div class="aplicacion c2" style="float: right" ><div class="reportIcon" title="Cantidad de Reportes"></div></div>
+								</div>
 
-					<div  class="divContenedor cuadroDiv" style="margin-top: 20px;">
-							<h2>Jiras/SysAid Tickets</h2>
-							<div  style="float: left; padding-right: 15px" ng-repeat="jira in app.version.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
-							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in app.version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+								<div  ng-repeat="version in app.versiones">
+									<div class="versionRow">
+											<div class="row rowFila">
+											<div class="aplicacion v versionNumber c1"><a href="version.html?versionId={{version.versionId}}">{{version.numero}}</a></div>
+											<div class="aplicacion v c3">{{version.autor}}</div>
+											<div class="aplicacion v c2">{{version.fecha}}</div>
+											<div class="aplicacion v c2">{{version.estado}}</div>
 
-					</div>
-					<div  class="divContenedor cuadroDiv">
-						<h2>Participantes</h2>
-							<div  style="float: left; padding-right: 15px; margin-top: 20px;" ng-repeat="participante in app.version.participantes">{{participante.nombre}}</div>
-					</div>
+											<div class="aplicacion v c2" style="float: right"><a href="scriptVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadScripts}}</a> </div>
+											<div class="aplicacion v c2" style="float: right"><a href="reporteVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadReports}}</a> </div>
+										</div>
 
-					<div  class="divContenedor cuadroDiv">
-						<h2>Scripts</h2>
-						<div  style="float: left; padding-right: 15px" ng-repeat="script in app.version.scripts">
-						 	<div style="padding: 20px 20px 0 0">
-						 								 <a href="{{script.url}}" target="script">{{script.nombre}}</a>
-						 								  <br> {{script.tipo}} <br>
-						 								  <a href="http://172.16.7.42:8080/browse/{{script.jira.numero}}" target="jira">{{script.jira.numero}}</a>
-						 	 </div>
-
-						  </div>
-					</div>
-
-					<div  class="divContenedor cuadroDiv">
-						<h2>Reportes</h2>
-						<div  style="float: left; padding-right: 15px" ng-repeat="reporte in app.version.reportes"> <div style="padding: 20px">  <a href="{{reporte.url}}">{{reporte.nombre}}</a> <br>  <a href="http://172.16.7.42:8080/browse/{{reporte.jira}}">{{reporte.jira}}</a> </div> </div>
-					</div>
-
-					<div  class="divContenedor cuadroDiv">
-						<h2>Propiedades</h2>
-						<div  style="float: left; padding-right: 15px" ng-repeat="propiedad in app.version.propiedades">  {{propiedad.nombre}} = {{propiedad.valor}} </div>
-					</div>
-					<div  class="divContenedor cuadroDiv">
-						<h2>Cambios de Modelo de Datos</h2>
-						<div  style="float: left; padding-right: 15px" ng-repeat="cambio in app.cambiosModelo">
-							 <div style="padding: 20px; width: 300px"><h4>{ {{cambio.totalCantidad}} } {{cambio.objecto}} </h4>
-
-							 	<div ng-repeat="tipoCambio in cambio.cambios">{ {{tipoCambio.cantidad}} } {{tipoCambio.tipo}}
-							 </div>
-							 	</div>
-						</div>
-					</div>
-					<div  class="divContenedor cuadroDiv">
-						<h2>Job Ejecutados</h2>
-						<table style="width: 100%;">
-							<tr>
-								<td><h4>Fecha Registro</h4></td>
-								<td><h4>Tipo Job</h4></td>
-								<td><h4>Estado</h4></td>
-							</tr>
-							<tr ng-repeat="job in app.jobs">
-								<td>{{job.fechaRegistro}}</td>
-								<td>{{job.tipo}}</td>
-								<td>{{job.estado}}</td>
-							</tr>
-
-						</table>
+									</div>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>

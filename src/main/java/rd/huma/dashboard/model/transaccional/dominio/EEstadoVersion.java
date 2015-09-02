@@ -12,7 +12,8 @@ public enum EEstadoVersion {
 	CANCELADA_POR_ERROR_BUILD(false,false),
 	CANCELADA(false,true),
 	EJECUTO_EXITOSO_JENKINS(true,true),
-	DESPLIEGE_EXITOSO(true,true)
+	DESPLIEGE_EXITOSO(true,true),
+	REMPLAZADA(false,true)
 	;
 
 	private boolean activo = true;

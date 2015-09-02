@@ -343,7 +343,7 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscarPorVersionId.cambioSQL",EntVersionCambioObjectoSql.class).setParameter("id", id).getResultList();
 	}
 
-
-
-
+	public List<EntVersion> buscaPorBranch(String branch) {
+		return entityManager.createNamedQuery("buscarPorBranch.version",EntVersion.class).setParameter("branch", branch).getResultList();
+	}
 }

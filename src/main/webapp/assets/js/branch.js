@@ -10,24 +10,18 @@ function toQueryString(page){
 	return page+"?"+ $.param(queryString);
 }
 
-
-
-var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
+var branchApp = angular.module('branchApp',['ngResource','appDbServices']);
 
 
 
-versionesApp.factory("Version", function($resource) {
-	return $resource("/dashboard/api/versionConsulta/consulta/:id",null,{
-		'get':{ 'method':'GET'},
-		'getServidores':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/servidores/:id'},
-		'getCambiosModelos':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/cambiosModelos/:id'},
-		'getJobs':{ 'method':'GET','isArray':true,'url':'/dashboard/api/versionConsulta/jobs/:id'}
-
+branchApp.factory("Branch", function($resource) {
+	return $resource("/dashboard/api/branchConsulta/consulta/:branch",null,{
+		'get':{ 'method':'GET','isArray':true}
     });
 });
 
 
-versionesApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
+branchApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
 	return $resource("/dashboard/api/filaDeploymentVersion/:idAmbiente",null,{
 		'filas':{ 'method':'GET','isArray':true},
     });
@@ -35,31 +29,17 @@ versionesApp.factory("SeguridadApi", function($resource) { //TODO hacer esto...
 
 
 
-versionesApp.controller('appController', function($scope,Version,SeguridadApi,persistanceService) {
+branchApp.controller('appController', function($scope,Branch,SeguridadApi,persistanceService) {
 	var app = this;
-	app.versionId = queryString.versionId;
+	app.branch = queryString.branch;
 	app.mensaje = "Version no esta deploy";
 	app.link = "app.html";
-	app.cambiosModelo = [];
-	app.jobs = [];
 
-	 Version.get({id :app.versionId},function(data){
-		 app.version = data;
+	app.versiones = [];
+
+	Branch.get({branch :app.branch},function(data){
+		 app.versiones = data;
 	 } );
 
-	 Version.getServidores({id :app.versionId},function(data){
-	 	if (data.length>0){
-	 		 servidor =  data[0];
-	 		app.mensaje = "Version esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
-	 		app.link = servidor.url;
-	 	}
-	 });
 
-	 Version.getCambiosModelos({id :app.versionId},function(data){
-		 app.cambiosModelo = data;
-	 });
-
-	 Version.getJobs({id :app.versionId},function(data){
-		 app.jobs = data;
-	 });
 })

@@ -21,12 +21,13 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 
 @Entity
 @Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
-@NamedQueries	({@NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E order by E.fechaRegistro desc"),
+@NamedQueries	({
+				  @NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E order by E.fechaRegistro desc"),
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
 				  @NamedQuery(name="buscarPorNumero.version",query="SELECT E from EntVersion E where E.numero in :num"),
-				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri")
-				 }
-				)
+				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri"),
+				  @NamedQuery(name="buscarPorBranch.version", query = "SELECT E from EntVersion E where E.branchOrigen = :branch order by revisionSVN desc")
+				  })
 public class EntVersion extends AEntModelo implements Serializable{
 
 	/**
