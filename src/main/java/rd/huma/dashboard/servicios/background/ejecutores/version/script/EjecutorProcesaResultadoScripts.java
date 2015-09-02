@@ -24,7 +24,7 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
-	private static final Logger LOGGER = Logger.getLogger(Logger.class.getSimpleName());
+	private static final Logger LOGGER = Logger.getLogger(EjecutorProcesaResultadoScripts.class.getSimpleName());
 
 	private Path rutaResultadoScripts;
 	private ServicioVersion servicioVersion;
@@ -38,15 +38,16 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-		LOGGER.info("Intentando de encontrar los logs");
 		this.servicioJob = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 		this.servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 		Path directorio = rutaResultadoScripts.getFileName();
+		LOGGER.info(String.format("Procesando los logs de script del job(%s)", directorio.toString()));
 
-		List<EntJobDespliegueVersion> job = servicioJob.buscarJobPorIdVersion(directorio.toString());
-		job.stream().findFirst().ifPresent(this::actualizaResultado);
-
-		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
+		EntJobDespliegueVersion job = servicioJob.getJob(directorio.toString());
+		if (job!=null){
+			this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
+			actualizaResultado(job);
+		}
 	}
 
 	private void actualizaResultado(EntJobDespliegueVersion job){
@@ -58,7 +59,8 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 		Map<String,EntRepositorioDatosScriptEjecutados> mapeo = getNombres(scripts);
 		File[] archivos = rutaResultadoScripts.toFile().listFiles();
 		for (File file : archivos) {
-			String key =  file.getName().substring(0, file.getName().lastIndexOf('.'));
+
+			String key =  file.getName().substring(0, file.getName().indexOf('.'));
 			EntRepositorioDatosScriptEjecutados script = mapeo.get(key);
 			String resultado;
 			try {
@@ -78,7 +80,7 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 				alerta.setAlerta(ETipoAlertaVersion.SCRIPT_RESULTADO);
 
 				script.setResultado(resultado);
-				script.setEstadoScript(resultado.contains("ORA-")? EEstadoScript.EJECUCION_FALLIDO :EEstadoScript.EJECUCION_FALLIDO);
+				script.setEstadoScript(resultado.contains("ORA-")? EEstadoScript.EJECUCION_FALLIDO :EEstadoScript.EJECUCION_EXITOSA);
 				script.setFechaEjecucion(LocalDateTime.now());
 				servicioRepositorioDatos.actualizarScript(script);
 				mapeo.remove(key);
@@ -97,13 +99,15 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 	private Map<String,EntRepositorioDatosScriptEjecutados>  getNombres(List<EntRepositorioDatosScriptEjecutados> scripts){
 		Map<String, EntRepositorioDatosScriptEjecutados> mapeo = new HashMap<>();
-		scripts.stream().forEach(e -> mapeo.put(nombreFromUrl(e.getScript().getUrlScript()), e));
+		for (EntRepositorioDatosScriptEjecutados e : scripts) {
+			mapeo.put( nombreFromUrl(e.getScript().getUrlScript()), e);
+		}
 
 		return mapeo;
 	}
 
 	private String nombreFromUrl(String valor){
-		String tmp = valor.substring(valor.lastIndexOf('/'));
-		return tmp.substring(0, tmp.lastIndexOf('.'));
+		String tmp = valor.substring(valor.lastIndexOf('/')+1);
+		return tmp.substring(0, tmp.indexOf('.'));
 	}
 }

@@ -56,14 +56,15 @@
 							<div>
 								<p style="margin: 0px; line-height: 0px">{{ambiente.nombre}}</p>
 							</div>
-							
-							<div class="grupoContainer" ng-repeat="tipo in ambiente.tipoNotificaciones" ng-hide="ambiente.tipoNotificaciones.grupos.length==0">
-								<div>
-									<p style="margin: 0px; line-height: 0px">{{tipo.nombre}}</p>
+							<div ng-hide="ambiente.tipoNotificaciones.grupos">
+								<div class="grupoContainer" ng-repeat="tipo in ambiente.tipoNotificaciones">
+									<div>
+										<p style="margin: 0px; line-height: 0px">{{tipo.nombre}}</p>
+									</div>
+										<ul>
+											<li ng-repeat="grupo in tipo.grupos">{{grupo.grupoNombre}}  <div class="deleteUser" ng-click="eliminaConfig(grupo)"/></li>
+										</ul>
 								</div>
-									<ul>
-										<li ng-repeat="grupo in tipo.grupos">{{grupo.grupoNombre}}  <div class="deleteUser" ng-click="eliminaConfig(grupo)"/></li>
-									</ul>
 							</div>
 						</div>
 					</div>

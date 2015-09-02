@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
@@ -216,8 +217,16 @@ public class WSVersionesConsulta {
 							 .add("nombre", script.getNombre() == null? "": script.getNombre())
 							 .add("url", script.getUrlScript())
 							 .add("tipo", script.getTipoScript().name())
-							 .add("jira", createObjectBuilder().add("id", script.getJira().getId()).add("numero", script.getJira().getNumero()) )
+							 .add("jira", toJira(script.getJira()))
 		);
+	}
+
+	private JsonObjectBuilder toJira(EntJira jira){
+		JsonObjectBuilder retorno = createObjectBuilder();
+		if (jira == null){
+			return retorno;
+		}
+		return retorno .add("id", jira.getId()).add("numero", jira.getNumero());
 	}
 
 
@@ -226,7 +235,7 @@ public class WSVersionesConsulta {
 				createObjectBuilder().add("id", reporte.getId())
 									 .add("nombre", reporte.getNombre() == null ? "": reporte.getNombre())
 									 .add("url", reporte.getReporte())
-									 .add("jira", reporte.getJira() == null ? "" : reporte.getJira().getId())
+									 .add("jira", toJira(reporte.getJira()))
 				);
 	}
 

@@ -15,7 +15,7 @@ import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 
 	private EntJobDespliegueVersion jobDeployVersion;
-
+	ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
 	public EjecutorConfirmacionEjecucionScript(EntJobDespliegueVersion jobDeployVersion) {
 		this.jobDeployVersion = jobDeployVersion;
@@ -23,11 +23,17 @@ public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-		new EjecutorJenkinsSeguimientoDespliegue(jobDeployVersion.getURL(), jobDeployVersion, this::resultado).ejecutar();
+
+		servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
+		servicioJobDespliegueVersion.cambiarEstado(jobDeployVersion, EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO);
+		ejecutarDespuesScript();
+
+
 	}
 
-	private void resultado(Boolean resultado){
-		if (resultado && jobDeployVersion.getTipoScript() == ETipoScript.ANTES_SUBIDA){
+	private void ejecutarDespuesScript(){
+
+		if (jobDeployVersion.getTipoScript() == ETipoScript.ANTES_SUBIDA){
 			ServicioJobDespliegueVersion servicioJob =  ServicioJobDespliegueVersion.getInstanciaTransaccional();
 			EntJobDespliegueVersion jobVersion = servicioJob.buscarPorJobRelacionado(jobDeployVersion);
 
@@ -35,13 +41,12 @@ public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 			DeployVersion deployVersion = new DeployVersion(jobVersion);
 			deployVersion.inicializar();
 			deployVersion.ejecutar();
-		}
 
-		ServicioJobDespliegueVersion.getInstanciaTransaccional().cambiarEstado(jobDeployVersion, resultado?EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO: EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS);
-		Path path = Paths.get("/logs/scripts/"+jobDeployVersion.getId());
-		File filePath = path.toFile();
-		if (Files.exists(path) && filePath.isDirectory()){
-			new EjecutorProcesaResultadoScripts(path).ejecutar();
+			Path path = Paths.get("/logs/scripts/"+jobDeployVersion.getId());
+			File filePath = path.toFile();
+			if (Files.exists(path) && filePath.isDirectory()){
+				new EjecutorProcesaResultadoScripts(path).ejecutar();
+			}
 		}
 	}
 }

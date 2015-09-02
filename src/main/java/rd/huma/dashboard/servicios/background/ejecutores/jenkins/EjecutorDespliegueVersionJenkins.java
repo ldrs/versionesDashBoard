@@ -19,7 +19,7 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-		LOGGER.info(String.format("Intentando hacer el deploy de la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
+		LOGGER.info(String.format("Iniciando el proceso de despliegues para la version %s en el servidor %s", job.getVersion().getNumero(),job.getServidor().getNombre()));
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 
 		List<EntVersionScript> scriptAntesEjecucion = servicioVersion.getScriptAntesEjecucion(job.getVersion());

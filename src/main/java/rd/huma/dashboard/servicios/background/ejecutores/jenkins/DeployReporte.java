@@ -20,10 +20,10 @@ public class DeployReporte extends ADeployVersion{
 		}
 
 		EntJobDespliegueVersion job = new EntJobDespliegueVersion();
-		job.setVersion(job.getVersion());
+		job.setVersion(getJob().getVersion());
 		job.setTipoDespliegue(ETipoDespliegueJob.REPORTE);
 		job.setServidor(getJob().getServidor());
-		job.setFilaDespliegue( this.job.getFilaDespliegue());
+		job.setFilaDespliegue( getJob().getFilaDespliegue());
 		servicioJobDespliegueVersion.nuevoJob(job);
 
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();

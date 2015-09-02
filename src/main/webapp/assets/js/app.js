@@ -86,7 +86,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		for (var j=0; j<servidores.length; j++){
 			var s=servidores[j], dueno = false;
 			for (var i=0; i<s.ambienteDuenos.length; i++){
-				if (s.ambienteDuenos[i]==app.usuario.id){
+				if (app.usuario && s.ambienteDuenos[i]==app.usuario.id){
 					dueno = true;
 					break;
 				}

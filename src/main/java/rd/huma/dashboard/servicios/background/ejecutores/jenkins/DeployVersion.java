@@ -1,8 +1,12 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
+import java.util.logging.Logger;
+
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 
 public class DeployVersion extends ADeployVersion{
+
+	private static final Logger LOGGER = Logger.getLogger(DeployVersion.class.getSimpleName());
 
 	public DeployVersion(EntJobDespliegueVersion job) {
 		super(job);
@@ -14,6 +18,9 @@ public class DeployVersion extends ADeployVersion{
 	}
 
 	void deployVersion(){
+		LOGGER.info(String.format("Intentando hacer el deploy para el servidor %s para la version %s",job.getServidor().getNombre(), job.getVersion().getNumero()));
+
+
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(urlBaseEjecucionJob+"buildWithParameters");

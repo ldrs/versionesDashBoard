@@ -53,9 +53,9 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		alerta.setAmbiente(job.getFilaDespliegue().getAmbiente().getAmbiente());
 		alerta.setMensaje(new StringBuilder(150).append("La aplicación del branch ")
 												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente ").append(jobDeployVersion.getServidor().getRutaEntrada())
-												.append(jobDeployVersion.getServidor().getNombre())
 												.append(" Para más información de la versión(").append(version.getNumero())
 												.append(") entrar en http://dashboard.version.sigefint.gov.do/dashboard/version.html?versionId=").append(version.getId())
+												.append(" debe durar al menos 2 minutos para que la versión este disponible.")
 												.toString());
 		servicioVersion.crearAlerta(alerta);
 	}

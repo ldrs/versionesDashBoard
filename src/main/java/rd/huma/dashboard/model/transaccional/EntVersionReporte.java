@@ -54,9 +54,12 @@ public class EntVersionReporte extends AEntModelo {
 	}
 
 	public void setReporte(String reporte) {
-		this.reporte = reporte;
-		if (reporte!=null){
-			this.nombre = reporte.substring(reporte.lastIndexOf('/'));
+		if (reporte == null){
+			reporte = null;
+			nombre = null;
+		}else{
+			this.reporte = reporte.trim();
+			this.nombre = reporte.substring(reporte.lastIndexOf('/')+1);
 		}
 	}
 

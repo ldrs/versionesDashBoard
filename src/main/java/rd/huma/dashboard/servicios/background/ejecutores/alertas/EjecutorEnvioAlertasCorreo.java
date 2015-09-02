@@ -13,7 +13,6 @@ import rd.huma.dashboard.util.UtilFecha;
 
 public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 
-
 	@Override
 	public void ejecutar() {
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
@@ -25,6 +24,7 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 				mandarCorreo(servicioVersion, servicioEmail, version);
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			ServicioEmail.LOGGER.warning("No se pudo mandar el correo por "+ e.getMessage());
 		}
 	}
@@ -33,8 +33,8 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 
 		List<EntVersionAlerta> alertas = servicioVersion.buscaAlerta(version);
 		List<String> archivos = new ArrayList<>();
-
-		for (EntVersionAlerta entVersionAlerta : Collections.unmodifiableList(alertas)) {
+		List<EntVersionAlerta> alertasSinModificarse = Collections.unmodifiableList(alertas);
+		for (EntVersionAlerta entVersionAlerta : alertasSinModificarse ) {
 			List<EntPersona> personas =  servicioVersion.buscaPersonasPorAlertar(entVersionAlerta);
 			if (personas.isEmpty()){
 				servicioVersion.moverHistorico(entVersionAlerta);

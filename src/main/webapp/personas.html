@@ -46,13 +46,13 @@
 
 				<div class="gruposContainer">
 					<h2>Grupos</h2>
-					<div class="grupoContainer" ng-repeat="grupo in app.grupos">
+					<div class="grupoContainer" ng-repeat="grupo in app.grupos | orderBy:'nombre'">
 						<div>
 							<p style="margin: 0px; line-height: 0px">{{grupo.nombre}}</p>
 						</div>
 
 						<ul>
-							<li ng-repeat="persona in grupo.personas">{{persona.nombre}}  <div class="deleteUser" ng-click="eliminaPersona(persona)"/></li>
+							<li ng-repeat="persona in grupo.personas | orderBy:'nombre'">{{persona.nombre}}  <div class="deleteUser" ng-click="eliminaPersona(persona)"/></li>
 						</ul>
 					</div>
 				</div>
@@ -64,12 +64,12 @@
 						style="display: inline-block; padding: 20px; border: 1px solid;">
 						<div>
 							<Label style="margin: 0px; line-height: 0px">Personas</Label>
-							<select	style="margin-left: 8px;" ng-options="persona.nombre for persona in app.personas" ng-model="personaSeleccionado">
+							<select	style="margin-left: 8px;" ng-options="persona.nombre for persona in app.personas | orderBy:'nombre'" ng-model="personaSeleccionado">
 							</select>
 						</div>
 						<div style="margin-top: 20px;">
 							<Label style="margin: 0px; line-height: 0px; width: 100px;">Grupos</Label>
-							<select style="margin-left: 20px"  ng-options="grupo.nombre for grupo in app.grupos" ng-model="grupoSeleccionado">
+							<select style="margin-left: 20px"  ng-options="grupo.nombre for grupo in app.grupos | orderBy:'nombre'" ng-model="grupoSeleccionado">
 							</select>
 						</div>
 						</br>
