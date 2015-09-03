@@ -17,7 +17,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
@@ -217,27 +216,33 @@ public class WSVersionesConsulta {
 							 .add("nombre", script.getNombre() == null? "": script.getNombre())
 							 .add("url", script.getUrlScript())
 							 .add("tipo", script.getTipoScript().name())
-							 .add("jira", toJira(script.getJira()))
+							 .add("jiras",  buscaJirasScript(script))
 		);
 	}
-
-	private JsonObjectBuilder toJira(EntJira jira){
-		JsonObjectBuilder retorno = createObjectBuilder();
-		if (jira == null){
-			return retorno;
-		}
-		return retorno .add("id", jira.getId()).add("numero", jira.getNumero());
-	}
-
 
 	private JsonArrayBuilder agrega(JsonArrayBuilder builder, EntVersionReporte reporte) {
 		return builder.add(
 				createObjectBuilder().add("id", reporte.getId())
 									 .add("nombre", reporte.getNombre() == null ? "": reporte.getNombre())
 									 .add("url", reporte.getReporte())
-									 .add("jira", toJira(reporte.getJira()))
+									 .add("jiras",  buscaJirasReporte(reporte))
 				);
 	}
+
+	private JsonArrayBuilder buscaJirasScript(EntVersionScript versionReporte){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaJiraScript(versionReporte).forEach(j -> builder.add(j.getJira().getNumero()));
+		return builder;
+	}
+
+
+	private JsonArrayBuilder buscaJirasReporte(EntVersionReporte versionReporte){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioVersion.buscaJiraReporte(versionReporte).forEach(j -> builder.add(j.getJira().getNumero()));
+		return builder;
+	}
+
+
 
 
 

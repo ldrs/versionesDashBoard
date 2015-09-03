@@ -31,10 +31,6 @@ public class EntVersionScript extends AEntModelo {
 	@JoinColumn
 	private EntVersion version;
 
-	@ManyToOne
-	@JoinColumn
-	private EntJira jira;
-
 	private String urlScript;
 
 	private String nombre;
@@ -50,14 +46,6 @@ public class EntVersionScript extends AEntModelo {
 
 	public void setVersion(EntVersion version) {
 		this.version = version;
-	}
-
-	public EntJira getJira() {
-		return jira;
-	}
-
-	public void setJira(EntJira jira) {
-		this.jira = jira;
 	}
 
 	public String getUrlScript() {

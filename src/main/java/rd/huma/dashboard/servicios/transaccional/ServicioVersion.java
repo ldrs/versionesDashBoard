@@ -25,7 +25,9 @@ import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
@@ -150,9 +152,8 @@ public class ServicioVersion {
 
 	}
 
-	public void crearVersionScript(EntVersion version, EntJira jira, String script, ETipoScript tipoScript){
+	public EntVersionScript crearVersionScript(EntVersion version, String script, ETipoScript tipoScript){
 		EntVersionScript versionScript = new EntVersionScript();
-		versionScript.setJira(jira);
 		versionScript.setTipoScript(tipoScript);
 		versionScript.setUrlScript(script);
 		versionScript.setVersion(version);
@@ -160,6 +161,7 @@ public class ServicioVersion {
 			versionScript.setNombre(script.substring(script.lastIndexOf('/')+1));
 		}
 		entityManager.persist(versionScript);
+		return versionScript;
 	}
 
 	public void crearVersionLog(EntVersionLog versionLog){
@@ -316,6 +318,8 @@ public class ServicioVersion {
 	}
 
 	public void eliminarVersion(EntVersionReporte versionReporte) {
+		entityManager.createQuery("DELETE FROM EntVersionReporteJira E where E.reporte = :rep").setParameter("rep", versionReporte).executeUpdate();
+
 		entityManager.remove(entityManager.find(EntVersionReporte.class, versionReporte.getId()));
 	}
 
@@ -345,5 +349,23 @@ public class ServicioVersion {
 
 	public List<EntVersion> buscaPorBranch(String branch) {
 		return entityManager.createNamedQuery("buscarPorBranch.version",EntVersion.class).setParameter("branch", branch).getResultList();
+	}
+
+	public EntVersionReporteJira crearReporteJira(EntVersionReporteJira reporteJira) {
+		entityManager.persist(reporteJira);
+		return reporteJira;
+	}
+
+	public List<EntVersionReporteJira> buscaJiraReporte(EntVersionReporte versionReporte) {
+		return entityManager.createNamedQuery("buscaPorReporte",EntVersionReporteJira.class).setParameter("rep", versionReporte).getResultList();
+	}
+
+	public List<EntVersionScriptJira> buscaJiraScript(EntVersionScript versionScript) {
+		return entityManager.createNamedQuery("buscaPorReporte.versionScriptJira",EntVersionScriptJira.class).setParameter("src", versionScript).getResultList();
+	}
+
+	public EntVersionScriptJira crearScriptJira(EntVersionScriptJira jiraScript) {
+		entityManager.persist(jiraScript);
+		return jiraScript;
 	}
 }

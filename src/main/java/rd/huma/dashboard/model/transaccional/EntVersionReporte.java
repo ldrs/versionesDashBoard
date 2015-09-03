@@ -27,10 +27,6 @@ public class EntVersionReporte extends AEntModelo {
 	private EntVersion version;
 
 
-	@JoinColumn
-	@ManyToOne
-	private EntJira jira;
-
 	private String reporte;
 
 	@JoinColumn
@@ -61,14 +57,6 @@ public class EntVersionReporte extends AEntModelo {
 			this.reporte = reporte.trim();
 			this.nombre = reporte.substring(reporte.lastIndexOf('/')+1);
 		}
-	}
-
-	public EntJira getJira() {
-		return jira;
-	}
-
-	public void setJira(EntJira jira) {
-		this.jira = jira;
 	}
 
 	public EntPersona getAutor() {

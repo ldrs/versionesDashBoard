@@ -1,6 +1,9 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jira;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,19 +15,21 @@ import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.servicios.background.ejecutores.version.ColectorInformacionFieldsJira;
-import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
+import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class RevisaVersionJira {
 
 	private EntJira jira;
-	private Set<EntVersionScript> scripts = new HashSet<>();
+	private Map<EntVersionScript, List<EntVersionScriptJira>> scripts = new HashMap<>();
 	private Set<String> duenos = new HashSet<>();
 	private Set<EntJiraParticipante> participantes = new HashSet<>();
 	private Set<EntTicketSysAid> ticketSysAids = new HashSet<>();
-	private Set<EntVersionReporte> reportes = new HashSet<>();
+	private Map<EntVersionReporte, List<EntVersionReporteJira>> reportes = new HashMap<>();
 	private EntVersion version;
 	private Fields fields;
 	private ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
@@ -50,9 +55,9 @@ public class RevisaVersionJira {
 	private void manejaCambioScripts() {
 		for(EntVersionScript versionScript : servicioVersion.buscaScript(version)){
 
-			if (scripts.contains(versionScript)){
+			if (scripts.containsKey(versionScript)){
 				scripts.remove(versionScript);
-				EntVersionScript found = scripts.stream().filter(s -> s.equals(versionScript)).findFirst().get();
+				EntVersionScript found = scripts.keySet().stream().filter(s -> s.equals(versionScript)).findFirst().get();
 				if (versionScript.getTipoScript()!=found.getTipoScript()){
 					versionScript.setTipoScript(found.getTipoScript());
 					versionScript.setHabilitado(true);
@@ -68,17 +73,29 @@ public class RevisaVersionJira {
 		scripts.forEach(this::crearScript);
 	}
 
-	private void crearScript(EntVersionScript versionScript){
-		Optional<EntVersionJira> jira = buscarJira(versionScript, versionScript.getJira().getNumero());
-		if (jira.isPresent()){
-			EntVersionJira versionJira = jira.get();
-			servicioVersion.crearVersionScript(version, versionJira.getJira(), versionScript.getUrlScript(), versionScript.getTipoScript());
+	private void crearScript(EntVersionScript versionScript, List<EntVersionScriptJira> jiras){
+		EntVersionScript versionScriptGrabado = servicioVersion.crearVersionScript(version, versionScript.getUrlScript(), versionScript.getTipoScript());
+
+		int n=0;
+		for (EntVersionScriptJira sj : jiras) {
+			sj.setScript(versionScriptGrabado);
+			Optional<EntVersionJira> jira = buscarJira(versionScript, sj.getJira().getNumero());
+
+			if (jira.isPresent()){
+				n++;
+				EntVersionJira versionJira = jira.get();
+				sj.setJira(versionJira.getJira());
+				servicioVersion.crearScriptJira(sj);
+			}
+		}
+		if (n==0){
+			servicioVersion.eliminarScript(versionScriptGrabado);
 		}
 	}
 
 	private void manejaCambiaReportes() {
 		for(EntVersionReporte versionReporte : servicioVersion.buscaReportesVersion(version)){
-			if (reportes.contains(versionReporte.getReporte())){
+			if (reportes.containsKey(versionReporte.getReporte())){
 				reportes.remove(versionReporte.getReporte());
 			}else{
 				servicioVersion.eliminarVersion(versionReporte);
@@ -87,14 +104,21 @@ public class RevisaVersionJira {
 		reportes.forEach(this::creaVersionReporte);
 	}
 
-	private EntVersionReporte creaVersionReporte(EntVersionReporte reporte){
+	private EntVersionReporte creaVersionReporte(EntVersionReporte reporte, List<EntVersionReporteJira> jiras){
+		ServicioJira servicioJira =  ServicioJira.getInstanciaTransaccional();
+
 		EntVersionReporte versionReporte = new EntVersionReporte();
 		versionReporte.setReporte(reporte.getReporte());
 		versionReporte.setVersion(version);
 		versionReporte.setAutor(reporte.getAutor());
-		versionReporte.setJira(jira);
 		versionReporte.setRevision(reporte.getNumeroRevision());
 		servicioVersion.crearVersionReporte(versionReporte);
+
+		for (EntVersionReporteJira reporteJira : jiras) {
+			reporteJira.setReporte(versionReporte);
+			reporteJira.setJira(servicioJira.encuentra(reporteJira.getJira().getNumero()).get());
+			servicioVersion.crearReporteJira(reporteJira);
+		}
 		return versionReporte;
 	}
 

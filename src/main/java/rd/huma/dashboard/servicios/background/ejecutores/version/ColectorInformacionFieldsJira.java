@@ -1,5 +1,8 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import rd.huma.dashboard.model.jira.AJiraPerson;
@@ -10,7 +13,9 @@ import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
@@ -22,16 +27,16 @@ public class ColectorInformacionFieldsJira {
 	private Fields fields;
 	private Set<String> duenos;
 	private Set<EntJiraParticipante> participantes;
-	private Set<EntVersionScript> scripts;
+	private Map<EntVersionScript, List<EntVersionScriptJira>> scripts;
 	private Set<EntTicketSysAid> ticketSysAids;
 	private EntJira jira;
-	private Set<EntVersionReporte> reportes;
+	private Map<EntVersionReporte, List<EntVersionReporteJira>> reportes;
 	private ServicioPersona servicioPersona = ServicioPersona.getInstanciaTransaccional();
 
 	public ColectorInformacionFieldsJira(Fields fields, Set<String> duenos,
 			Set<EntJiraParticipante> participantes,
-			Set<EntVersionScript> scripts, EntJira jira,
-			Set<EntTicketSysAid> ticketSysAids, Set<EntVersionReporte> reportes) {
+			Map<EntVersionScript, List<EntVersionScriptJira>>scripts, EntJira jira,
+			Set<EntTicketSysAid> ticketSysAids, Map<EntVersionReporte, List<EntVersionReporteJira>> reportes) {
 		this.fields = fields;
 		this.duenos = duenos;
 		this.participantes = participantes;
@@ -67,7 +72,15 @@ public class ColectorInformacionFieldsJira {
 		for (String rep : grupoReportes.split(".rdf")) {
 			EntVersionReporte reporte = adicionarReporte(rep+".rdf");
 			if (reporte!=null){
-				this.reportes.add(reporte);
+				List<EntVersionReporteJira> reportes = this.reportes.get(reporte);
+				if (reportes==null){
+					reportes = new ArrayList<>();
+					this.reportes.put(reporte, reportes);
+				}
+				EntVersionReporteJira versionReporteJira = new EntVersionReporteJira();
+				versionReporteJira.setJira(jira);
+				versionReporteJira.setReporte(reporte);
+				reportes.add(versionReporteJira);
 			}
 		}
 	}
@@ -82,7 +95,6 @@ public class ColectorInformacionFieldsJira {
 		versionReporte.setReporte(url);
 		versionReporte.setAutor(servicioPersona.buscaOCreaPersona(ultimaRevision.getUsuarioSVN()));
 		versionReporte.setRevision(ultimaRevision.getNumeroRevision());
-		versionReporte.setJira(jira);
 		return versionReporte;
 	}
 
@@ -93,11 +105,19 @@ public class ColectorInformacionFieldsJira {
 			return;
 		}
 
+
 		EntVersionScript script = new EntVersionScript();
 		script.setTipoScript(tipoScript);
 		script.setUrlScript(datoScript);
-		script.setJira(jira);
-		scripts.add(script);
+		List<EntVersionScriptJira> jiras = scripts.get(script);
+		if (jiras == null){
+			jiras = new ArrayList<>();
+			scripts.put(script, jiras);
+		}
+		EntVersionScriptJira versionScriptJira = new EntVersionScriptJira();
+		versionScriptJira.setJira(jira);
+		versionScriptJira.setScript(script);
+		jiras.add(versionScriptJira);
 	}
 
 	private void adicionarParticipante(AJiraPerson person, ETipoParticipante tipoParticipante){

@@ -2,10 +2,13 @@ package rd.huma.dashboard.servicios.background.ejecutores.version;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -19,7 +22,9 @@ import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
@@ -34,8 +39,8 @@ public class ProcesadorTickets {
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
 	private Set<String> duenos = new TreeSet<>();
 	private Set<EntJiraParticipante> participantes = new TreeSet<>();
-	private Set<EntVersionReporte> reportes = new HashSet<>();
-	private Set<EntVersionScript> scripts = new  TreeSet<>( new Comparator<EntVersionScript>() {
+	private Map<EntVersionReporte, List<EntVersionReporteJira>> reportes = new HashMap<>();
+	private Map<EntVersionScript, List<EntVersionScriptJira>> scripts = new  TreeMap<>( new Comparator<EntVersionScript>() {
 
 		@Override
 		public int compare(EntVersionScript o1, EntVersionScript o2) {
@@ -126,11 +131,11 @@ public class ProcesadorTickets {
 		return ticketSysAid;
 	}
 
-	public Set<EntVersionScript> getScripts() {
+	public Map<EntVersionScript, List<EntVersionScriptJira>> getScripts() {
 		return scripts;
 	}
 
-	Set<EntVersionReporte> getReportes() {
+	Map<EntVersionReporte, List<EntVersionReporteJira>> getReportes() {
 		return reportes;
 	}
 }
