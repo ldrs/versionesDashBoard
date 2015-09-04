@@ -94,7 +94,14 @@ public class ServicioJobDespliegueVersion {
 	@SuppressWarnings("unchecked")
 	public List<Object[]> buscaVersionesAgrupadasPorTipo(ETipoDespliegueJob version) {
 		return  entityManager.createNamedQuery("metricaAgrupadaYear.jobDespliegue").setParameter("tipo", version).getResultList();
+	}
 
-
+	public List<EntJobDespliegueVersion> buscaPorBranch(String branch, ETipoDespliegueJob  tipo){
+		return entityManager.createNamedQuery("buscaPorBranch.jobDespliegue",EntJobDespliegueVersion.class).setParameter("branch", branch)
+				   .setParameter("tipo", tipo)
+				   .getResultList();
+	}
+	public List<EntJobDespliegueVersion> buscaPorBranch(String branch){
+		return buscaPorBranch(branch, ETipoDespliegueJob.VERSION);
 	}
 }

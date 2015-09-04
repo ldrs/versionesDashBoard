@@ -24,7 +24,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 @NamedQueries({
 	@NamedQuery(name="buscaPorId.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E join E.version V where V.id = :id"),
 	@NamedQuery(name="buscaPorVersionTipo.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E  join E.version V where V = :ver AND E.tipoDespliegue = :tipo  AND E.estado = :est"),
-	@NamedQuery(name="metricaAgrupadaYear.jobDespliegue", query="SELECT count(E), E.estado, FUNCTION('MONTH',e.fechaRegistro) from EntJobDespliegueVersion E where E.tipoDespliegue = :tipo group by E.estado, FUNCTION('MONTH',e.fechaRegistro)")
+	@NamedQuery(name="metricaAgrupadaYear.jobDespliegue", query="SELECT count(E), E.estado, FUNCTION('MONTH',e.fechaRegistro) from EntJobDespliegueVersion E where E.tipoDespliegue = :tipo group by E.estado, FUNCTION('MONTH',e.fechaRegistro)"),
+	@NamedQuery(name="buscaPorBranch.jobDespliegue", query="SELECT E from EntJobDespliegueVersion E join E.version V where V.branchOrigen = :branch AND E.tipoDespliegue = :tipo order by fechaRegistro desc"),
 })
 public class EntJobDespliegueVersion extends AEntModelo {
 

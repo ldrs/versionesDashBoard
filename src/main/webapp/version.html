@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html ng-app="versionesApp" lang="es-do">
+<html ng-app="versionesApp" lang="es-do" style="background-color: white;">
 <head>
 		<title>Versiones</title>
 		<meta charset="utf-8" />
@@ -70,7 +70,7 @@
 						 	<div style="padding: 20px 20px 0 0">
 						 								 <a href="{{script.url}}" target="script">{{script.nombre}}</a>
 						 								  <br> {{script.tipo}} <br>
-						 								  <a ng-repeat="jira in script.jiras" href="http://172.16.7.42:8080/browse/{{jira}}" style="margin-right: 10px"  target="jira">{{jira}</a>
+						 								  <a ng-repeat="jira in script.jiras" href="http://172.16.7.42:8080/browse/{{jira}}" style="margin-right: 10px"  target="jira">{{jira}}</a>
 						 	 </div>
 
 						  </div>
@@ -92,7 +92,7 @@
 						<div  style="float: left; padding-right: 15px" ng-repeat="propiedad in app.version.propiedades">  {{propiedad.nombre}} = {{propiedad.valor}} </div>
 					</div>
 					<div  class="divContenedor cuadroDiv">
-						<h2>Cambios de Modelo de Datos</h2>
+						<h2>Expresiones de Cambios de Modelo de Datos</h2>
 						<div  style="float: left; padding-right: 15px" ng-repeat="cambio in app.cambiosModelo">
 							 <div style="padding: 20px; width: 300px"><h4>{ {{cambio.totalCantidad}} } {{cambio.objecto}} </h4>
 
