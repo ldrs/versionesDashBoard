@@ -1,13 +1,20 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
 import java.util.Collections;
+import java.util.List;
 
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
+import rd.huma.dashboard.model.transaccional.EntVersionReporte;
+import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
+import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorConfirmacionVersion extends AEjecutor {
@@ -27,21 +34,37 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 	private void resultado(Boolean resultado){
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		if (resultado){
-			DeployReporte deployReporte = new DeployReporte(jobDeployVersion);
-			deployReporte.inicializar();
-			deployReporte.ejecutar();
-
-
-			DeployVersionScript deployScript = new DeployVersionScript(jobDeployVersion,false,Collections.emptyList());
-			deployScript.inicializar();
-			deployScript.ejecutar();
 			enviarAlertaVersionSubiendo(jobDeployVersion);
-			servicioVersion.actualizarEstado(EEstadoVersion.EJECUTO_EXITOSO_JENKINS, jobDeployVersion.getVersion());
-
+			
+			enviarAJobReporteSiNecesita();
+			
+			enviarAJobScriptSiNecesita();
 
 		}else{
 			servicioVersion.actualizarEstado(EEstadoVersion.CANCELADA_POR_ERROR_DESPLIEGUE_JENKINS, jobDeployVersion.getVersion());
 		}
+	}
+	
+	private void enviarAJobReporteSiNecesita(){
+		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDeployVersion.getVersion());
+		if (!reportes.isEmpty()){
+			DeployReporte deployReporte = new DeployReporte(jobDeployVersion);
+			deployReporte.inicializar();
+			deployReporte.ejecutar();
+			
+		}
+	}
+	
+	private void enviarAJobScriptSiNecesita(){
+		List<EntVersionScript> scriptEjecucion = servicioVersion.getScriptDespuesEjecucion(jobDeployVersion.getVersion());
+		if (!scriptEjecucion.isEmpty() && tieneScriptPorEjecutar(scriptEjecucion)){
+			
+			DeployVersionScript deployScript = new DeployVersionScript(jobDeployVersion,false,Collections.emptyList());
+			deployScript.inicializar();
+			deployScript.ejecutar();
+			servicioVersion.actualizarEstado(EEstadoVersion.EJECUTO_EXITOSO_JENKINS, jobDeployVersion.getVersion());
+		}
+
 	}
 
 
@@ -58,5 +81,23 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 												.append(" debe durar al menos 2 minutos para que la versión este disponible.")
 												.toString());
 		servicioVersion.crearAlerta(alerta);
+	}
+	
+	private boolean tieneScriptPorEjecutar(List<EntVersionScript> scripts){
+		ServicioRepositorioDatos servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
+		
+		for (EntVersionScript versionScript: scripts){
+			UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(versionScript.getUrlScript()).revision();
+			if (ultimaRevision!=null){
+				List<EntRepositorioDatosScriptEjecutados> scriptEjecutados = servicioRepositorioDatos.getScriptEjecutados(jobDeployVersion.getServidor().getBaseDatos(), versionScript.getUrlScript());
+
+				if (scriptEjecutados.stream().filter(s -> s.getEstadoScript().puedeEjecutarDeNuevo())
+								.filter(s -> s.getRevisionScript()<=ultimaRevision.getNumeroRevision())
+								.count()==0){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
