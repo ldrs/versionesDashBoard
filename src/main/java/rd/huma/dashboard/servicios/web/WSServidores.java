@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
+import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
@@ -28,6 +29,7 @@ public class WSServidores {
 	private @Servicio @Inject ServicioServidor servicioServidor;
 	private @Servicio @Inject ServicioVersion servicioVersion;
 	private @Servicio @Inject ServicioFila servicioFila;
+	private @Servicio @Inject ServicioPersona servicioPersona;
 
 
 	@GET
@@ -43,12 +45,14 @@ public class WSServidores {
 
 	@GET
 	@Path("undeploy/{servidor}")
-	public String undeploy(@PathParam("servidor") String idServidor ){
+	public String undeploy(@PathParam("servidor") String idServidor , @PathParam("autor") String autor  ){
 		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
 		if (servidor == null){
 			return "{}";
 		}
-		servicioServidor.cambiaVersionServidor(servidor, null);
+
+
+		servicioServidor.cambiaVersionServidor(servidor, null,servicioPersona.busca(autor));
 
 		return toJson(servidor).build().toString();
 	}

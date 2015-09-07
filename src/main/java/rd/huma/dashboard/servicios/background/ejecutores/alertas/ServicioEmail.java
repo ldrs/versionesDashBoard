@@ -1,12 +1,14 @@
 package rd.huma.dashboard.servicios.background.ejecutores.alertas;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -41,21 +43,36 @@ public class ServicioEmail {
             message.setSubject(subjecto);
 
             if (archivos.isEmpty()){
+            	message.setText(mensaje);
             	message.setContent(message, "text/html");
             }else{
+            	LOGGER.info(String.format("Se estan mandando %s archivos del correo %s", String.valueOf(archivos.size()), subjecto) );
+
             	MimeMultipart multipart = new MimeMultipart();
+
+                BodyPart messageBodyPart = new MimeBodyPart();
+
+                messageBodyPart.setText(mensaje);
+
+                multipart.addBodyPart(messageBodyPart);
+
             	for (String ruta : archivos){
-            		multipart.addBodyPart(new MimeBodyPart(Files.newInputStream(Paths.get(ruta))));
+            		MimeBodyPart part = new MimeBodyPart();
+            		DataSource source = new FileDataSource(Paths.get(ruta).toFile());
+            		part.setDataHandler(new DataHandler(source));
+            		part.setFileName(ruta.substring(ruta.lastIndexOf('/')+1));
+
+            		multipart.addBodyPart(part);
+
             	}
 
             	message.setContent(multipart);
             }
-            message.setText(mensaje);
 
 
             Transport.send(message);
             return true;
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
         	e.printStackTrace();
         	LOGGER.warning("No se pudo mandar el correo de subjecto" + subjecto + " por: "+ e.getMessage());
         }

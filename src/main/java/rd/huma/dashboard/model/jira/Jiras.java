@@ -15,6 +15,10 @@ public class Jiras {
 
 	private String maxResults;
 
+	private ChangeLog changelog;
+
+
+
 	public String getTotal() {
 		return total;
 	}
@@ -55,4 +59,12 @@ public class Jiras {
 		this.maxResults = maxResults;
 	}
 
+
+	public ChangeLog getChangelog() {
+		return changelog;
+	}
+
+	public void setChangelog(ChangeLog changelog) {
+		this.changelog = changelog;
+	}
 }

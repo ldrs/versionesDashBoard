@@ -81,7 +81,12 @@ public class EjecutorProcesaResultadoScripts extends AEjecutor {
 
 				script.setResultado(resultado);
 				script.setEstadoScript(resultado.contains("ORA-")? EEstadoScript.EJECUCION_FALLIDO :EEstadoScript.EJECUCION_EXITOSA);
+				alerta.setMensaje(new StringBuilder(150)
+											.append("Se ha ejecutado el reporte (").append(key).append(") en el base de datos (")
+											.append(job.getServidor().getBaseDatos()).append(") ")
+											.append(script.getEstadoScript()).toString() );
 				script.setFechaEjecucion(LocalDateTime.now());
+
 				servicioRepositorioDatos.actualizarScript(script);
 				mapeo.remove(key);
 			}

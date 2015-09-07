@@ -41,7 +41,7 @@ public class ServicioJobDespliegueVersion {
 	}
 
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
-		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion());
+		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion(),null);
 
 		EntJobDespliegueVersion job = new EntJobDespliegueVersion();
 		job.setServidor(servidor);
@@ -64,7 +64,7 @@ public class ServicioJobDespliegueVersion {
 		jobActualizado.setEstado(estado);
 		entityManager.merge(jobActualizado);
 		if (estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
-			servicioServidor.cambiaVersionServidor(job.getServidor(), null);
+			servicioServidor.cambiaVersionServidor(job.getServidor(), null,null);
 		}
 		if (estado.getEstadoVersionRelativo()!=null){
 			servicioVersion.actualizarEstado(estado.getEstadoVersionRelativo(), job.getVersion());

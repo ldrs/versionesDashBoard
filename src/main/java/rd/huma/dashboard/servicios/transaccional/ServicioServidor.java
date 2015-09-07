@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
+import rd.huma.dashboard.model.transaccional.EntHistoricoUndeploy;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -45,11 +47,19 @@ public class ServicioServidor {
 		return entityManager.createNamedQuery("buscarPorBranch.servidor",EntServidor.class).setParameter("branch", branch).getResultList();
 	}
 
-	public void cambiaVersionServidor(EntServidor servidor, EntVersion version) {
+	public void cambiaVersionServidor(EntServidor servidor, EntVersion version, EntPersona persona) {
 		EntServidor servidorDatos = entityManager.find(EntServidor.class, servidor.getId());
+		if (version == null && servidor.getVersionActual()!=null){
+			EntHistoricoUndeploy undeploy = new EntHistoricoUndeploy();
+			undeploy.setAutor(persona);
+			undeploy.setServidor(servidorDatos);
+			undeploy.setVersion(servidor.getVersionActual());
+			entityManager.persist(undeploy);
+		}
 		servidorDatos.setVersionActual(version);
 		servidorDatos.setEstadoServidor(version == null ? EEstadoServidor.LIBRE : EEstadoServidor.OCUPADO_DESPLIEGE_EN_PROCESO);
 		entityManager.persist(servidorDatos);
+
 	}
 
 	public List<EntServidor> getServidoresPorVersion(String id) {

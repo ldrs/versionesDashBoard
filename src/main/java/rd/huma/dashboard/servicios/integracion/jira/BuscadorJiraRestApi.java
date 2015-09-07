@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
+import rd.huma.dashboard.model.jira.Histories;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Jiras;
 import rd.huma.dashboard.model.transaccional.EntJira;
@@ -17,6 +18,7 @@ public class BuscadorJiraRestApi {
 	private List<Issues> issues = Collections.emptyList();
 	private JiraQuery jiraQuery;
 	private boolean ejecuto = false;
+	private Jiras jiras;
 
 	public BuscadorJiraRestApi(	JiraQuery jiraQuery){
 		this.jiraQuery = jiraQuery;
@@ -25,13 +27,15 @@ public class BuscadorJiraRestApi {
 	public List<EntJira> encuentra(){
 		ejecuto = true;
 		List<EntJira> jiraRetorno = new ArrayList<EntJira>();
-		Jiras jiras = ClientBuilder	.newClient()
+		this.jiras = ClientBuilder	.newClient()
 						.target(jiraQuery.getUrl())
 						.request(MediaType.APPLICATION_JSON)
 						.get(Jiras.class)
 						;
-		this.issues = Arrays.asList(jiras.getIssues());
-		issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey(), j.getFields().getStatus().getName())));
+		if (jiras.getIssues()!=null){
+			this.issues = Arrays.asList(jiras.getIssues());
+			issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey(), j.getFields().getStatus().getName())));
+		}
 
 		return jiraRetorno;
 	}
@@ -49,4 +53,12 @@ public class BuscadorJiraRestApi {
 		}
 
 		return issues;
-	}}
+	}
+
+	public List<Histories> getHistories(){
+		if (ejecuto == false){
+			encuentra();
+		}
+		return Arrays.asList(jiras.getChangelog().getHistories());
+	}
+}

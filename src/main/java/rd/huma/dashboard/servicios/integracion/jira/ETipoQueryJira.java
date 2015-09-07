@@ -14,6 +14,14 @@ public enum ETipoQueryJira {
 
 
 	},
+	KEY_CAMBIOS{
+
+		@Override
+		String getURL(EntConfiguracionGeneral configuracionGeneral, String value) {
+			return new StringBuilder(150)	.append(configuracionGeneral.getRutaJira()).append("rest/api/2/issue/").append(value).append("?expand=changelog").toString();
+		}
+
+	},
 	BRANCH{
 
 		@Override
@@ -29,5 +37,7 @@ public enum ETipoQueryJira {
 		return getURLInterno(new StringBuilder(150)	.append(configuracionGeneral.getRutaJira()).append("rest/api/2/search?jql="), configuracionGeneral,	value);
 	}
 
-	abstract String getURLInterno(StringBuilder url,EntConfiguracionGeneral configuracionGeneral, String value);
+	String getURLInterno(StringBuilder url,EntConfiguracionGeneral configuracionGeneral, String value){
+		return "";
+	};
 }

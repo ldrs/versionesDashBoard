@@ -27,6 +27,10 @@ public class ServicioPersona {
 		return entityManager.createNamedQuery("buscaPersonas",EntPersona.class).getResultList();
 	}
 
+	public EntPersona busca(String id){
+		return entityManager.find(EntPersona.class, id);
+	}
+
 	public EntPersona buscaOCreaPersona(String usuarioSVN){
 		return entityManager.createNamedQuery("buscaPersonaSVN", EntPersona.class)
 			.setParameter("usrSVN", miniscula(usuarioSVN)).getResultList()

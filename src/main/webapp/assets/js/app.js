@@ -36,7 +36,7 @@ versionesApp.factory("VersionesFilas", function($resource) {
 versionesApp.factory("Servidores", function($resource) {
 	return $resource("/dashboard/api/servidores/ambiente/:idAmbiente",null,{
 		'delAmbiente':{ 'method':'GET','isArray':true},
-		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor'}
+		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor/:idUsuario'}
 	});
 });
 
@@ -258,7 +258,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	}
 
 	$scope.undeploy=function(s){
-		Servidores.undeploy({'idServidor':s.id}).$promise.then(function(data){
+		Servidores.undeploy({'idServidor':s.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
 			app.actualizaServidores();
 		});
 	}

@@ -8,11 +8,13 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import rd.huma.dashboard.model.jira.Histories;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
@@ -25,6 +27,7 @@ import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
+import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
@@ -37,6 +40,8 @@ public class EjecutorJiraCambio extends AEjecutor {
 	private ServicioFila servicioFila;
 	private String numeroJira;
 
+	private EntConfiguracionGeneral configuracion;
+
 	public EjecutorJiraCambio(String numeroJira) {
 		this.numeroJira = numeroJira;
 	}
@@ -46,7 +51,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 		LOGGER.info("Buscando Informacion de Jira " + numeroJira);
 
 		this.servicioJira = ServicioJira.getInstanciaTransaccional();
-		EntConfiguracionGeneral configuracion = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get();
+		this.configuracion = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get();
 
 		new BuscadorJiraRestApi(new JiraQuery(configuracion, ETipoQueryJira.KEY, numeroJira)).getIssues().stream().findFirst().ifPresent(this::encontrarJira);
 	}
@@ -112,8 +117,18 @@ public class EjecutorJiraCambio extends AEjecutor {
 
 			EntFilaDespliegue filaDespliegue = fila.get();
 			if (Arrays.stream(filaDespliegue.getEstadosJiras().split(",")).filter(s-> nuevoEstado.equals(s)).count()==0){
+
+				List<Histories> historico = new BuscadorJiraRestApi(new JiraQuery(configuracion, ETipoQueryJira.KEY_CAMBIOS, "SGF-1649")).getHistories();
+				EntPersona autor;
+				if (historico.isEmpty()){
+					autor = null;
+				}else{
+					autor = ServicioPersona.getInstanciaTransaccional().buscaOCreaPersona(historico.get(historico.size()-1).getAuthor().getName());
+
+				}
+
 				LOGGER.info(String.format("Retirando la version del servidor %s ya que el jira(%s) cambio al estado %s",servidor.getNombre(),numeroJira, nuevoEstado));
-				servicioServidor.cambiaVersionServidor(servidor, null);
+				servicioServidor.cambiaVersionServidor(servidor, null,autor);
 			}
 		}
 	}
