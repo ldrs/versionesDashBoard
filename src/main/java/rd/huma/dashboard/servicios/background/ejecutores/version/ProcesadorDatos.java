@@ -9,8 +9,6 @@ import java.util.Set;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
-import rd.huma.dashboard.model.transaccional.EntVersionReporte;
-import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
@@ -42,7 +40,7 @@ class ProcesadorDatos {
 
 		procesadorTickets.getParticipantes().stream().forEach(servicioJira::salvarParticipante);
 
-		procesadorTickets.getReportes().forEach(this::adicionarReporte);
+		procesadorTickets.getReportes().forEach((urlReporte,reportesJira)-> servicioVersion.crearVersionReporteYJiras(urlReporte, version, reportesJira));
 		procesadorTickets.getScripts().forEach(this::adicionarScript);
 	}
 
@@ -52,22 +50,6 @@ class ProcesadorDatos {
 			 jiraScript.setScript(scriptGrabado);
 			 jiraScript.setJira(servicioJira.encuentra(jiraScript.getJira().getNumero()).get());
 			 servicioVersion.crearScriptJira(jiraScript);
-		}
-	}
-
-	private void adicionarReporte(EntVersionReporte reporte, List<EntVersionReporteJira> reportesJira){
-		EntVersionReporte versionReporte = new EntVersionReporte();
-		versionReporte.setReporte(reporte.getReporte());
-		versionReporte.setVersion(version);
-		versionReporte.setAutor(reporte.getAutor());
-		versionReporte.setRevision(reporte.getNumeroRevision());
-
-		servicioVersion.crearVersionReporte(versionReporte);
-
-		for (EntVersionReporteJira reporteJira: reportesJira){
-			reporteJira.setReporte(versionReporte);
-			reporteJira.setJira(jiras.get(reporteJira.getJira().getNumero()).getJira());
-			servicioVersion.crearReporteJira(reporteJira);
 		}
 	}
 

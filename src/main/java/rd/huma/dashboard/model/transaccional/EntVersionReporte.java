@@ -14,7 +14,7 @@ import javax.persistence.Table;
 		@NamedQuery(name="buscar.versionReportes", query="select E from EntVersionReporte E where E.version = :ver")
 		}
 		)
-public class EntVersionReporte extends AEntModelo {
+public class EntVersionReporte extends AEntModelo implements Comparable<EntVersionReporte> {
 
 	/**
 	 *
@@ -107,5 +107,10 @@ public class EntVersionReporte extends AEntModelo {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	@Override
+	public int compareTo(EntVersionReporte o) {
+		return o.reporte.compareTo(reporte);
 	}
 }

@@ -36,6 +36,7 @@ public class WSBranchConsulta {
 	private JsonObjectBuilder toJson(EntVersion version){
 		return		createObjectBuilder()
 		.add("numero", version.getNumero())
+		.add("versionId", version.getId())
 		.add("svnOrigen", version.getSvnOrigen())
 		.add("svnRevision", version.getRevisionSVN())
 		.add("estado", version.getEstado().name())

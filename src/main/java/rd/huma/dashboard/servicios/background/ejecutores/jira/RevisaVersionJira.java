@@ -19,7 +19,6 @@ import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.servicios.background.ejecutores.version.ColectorInformacionFieldsJira;
-import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class RevisaVersionJira {
@@ -29,7 +28,7 @@ public class RevisaVersionJira {
 	private Set<String> duenos = new HashSet<>();
 	private Set<EntJiraParticipante> participantes = new HashSet<>();
 	private Set<EntTicketSysAid> ticketSysAids = new HashSet<>();
-	private Map<EntVersionReporte, List<EntVersionReporteJira>> reportes = new HashMap<>();
+	private Map<String, List<EntVersionReporteJira>> reportes = new HashMap<>();
 	private EntVersion version;
 	private Fields fields;
 	private ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
@@ -101,25 +100,8 @@ public class RevisaVersionJira {
 				servicioVersion.eliminarVersion(versionReporte);
 			}
 		}
-		reportes.forEach(this::creaVersionReporte);
-	}
+		reportes.forEach((urlReporte,reportesJira)-> servicioVersion.crearVersionReporteYJiras(urlReporte, version, reportesJira));
 
-	private EntVersionReporte creaVersionReporte(EntVersionReporte reporte, List<EntVersionReporteJira> jiras){
-		ServicioJira servicioJira =  ServicioJira.getInstanciaTransaccional();
-
-		EntVersionReporte versionReporte = new EntVersionReporte();
-		versionReporte.setReporte(reporte.getReporte());
-		versionReporte.setVersion(version);
-		versionReporte.setAutor(reporte.getAutor());
-		versionReporte.setRevision(reporte.getNumeroRevision());
-		servicioVersion.crearVersionReporte(versionReporte);
-
-		for (EntVersionReporteJira reporteJira : jiras) {
-			reporteJira.setReporte(versionReporte);
-			reporteJira.setJira(servicioJira.encuentra(reporteJira.getJira().getNumero()).get());
-			servicioVersion.crearReporteJira(reporteJira);
-		}
-		return versionReporte;
 	}
 
 	private void manejaCambioParticipantes(){
@@ -141,4 +123,6 @@ public class RevisaVersionJira {
 		servicioVersion.buscaParticipantes(version).stream().forEach( participante ->  versionParticipantes.add(participante.getParticipante().getUsuarioSvn()));
 		return versionParticipantes;
 	}
+
+
 }

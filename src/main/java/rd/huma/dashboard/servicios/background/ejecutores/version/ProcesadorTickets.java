@@ -21,7 +21,6 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
@@ -39,7 +38,7 @@ public class ProcesadorTickets {
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
 	private Set<String> duenos = new TreeSet<>();
 	private Set<EntJiraParticipante> participantes = new TreeSet<>();
-	private Map<EntVersionReporte, List<EntVersionReporteJira>> reportes = new HashMap<>();
+	private Map<String, List<EntVersionReporteJira>> reportes = new HashMap<>();
 	private Map<EntVersionScript, List<EntVersionScriptJira>> scripts = new  TreeMap<>( new Comparator<EntVersionScript>() {
 
 		@Override
@@ -135,7 +134,7 @@ public class ProcesadorTickets {
 		return scripts;
 	}
 
-	Map<EntVersionReporte, List<EntVersionReporteJira>> getReportes() {
+	Map<String, List<EntVersionReporteJira>> getReportes() {
 		return reportes;
 	}
 }

@@ -34,6 +34,8 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.EjecutorSeleccionFila;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
+import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
 
 @Servicio
 @Stateless
@@ -47,6 +49,9 @@ public class ServicioVersion {
 
 	@Inject
 	private @Servicio ServicioTicketSysaid servicioTicketSysaid;
+
+	@Inject
+	private @Servicio ServicioJira servicioJira;
 
 	@Inject
 	private MonitorEjecutor monitorEjecutor;
@@ -367,5 +372,24 @@ public class ServicioVersion {
 	public EntVersionScriptJira crearScriptJira(EntVersionScriptJira jiraScript) {
 		entityManager.persist(jiraScript);
 		return jiraScript;
+	}
+
+
+	public EntVersionReporte crearVersionReporteYJiras(String urlReporte, EntVersion version, List<EntVersionReporteJira> reportesJira){
+		UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(urlReporte).revision();
+		EntVersionReporte versionReporte = new EntVersionReporte();
+		versionReporte.setReporte(urlReporte);
+		versionReporte.setVersion(version);
+		versionReporte.setAutor(servicioPersona.buscaOCreaPersona(ultimaRevision.getUsuarioSVN()));
+		versionReporte.setRevision(ultimaRevision.getNumeroRevision());
+
+		crearVersionReporte(versionReporte);
+
+		for (EntVersionReporteJira reporteJira: reportesJira){
+			reporteJira.setReporte(versionReporte);
+			reporteJira.setJira(servicioJira.encuentra(reporteJira.getJira().getNumero()).get());
+			crearReporteJira(reporteJira);
+		}
+		return versionReporte;
 	}
 }
