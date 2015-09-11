@@ -34,11 +34,12 @@ public class EjecutorVersion  extends AEjecutor{
 																		);
 
 		ServicioVersion servicio = getInstanciaTransaccional();
+		EntAplicacion aplicacion = getCacheAplicacion(version.getSvnOrigen()).orElseThrow(() -> new IllegalStateException("aplicacion  No esta"));
+
 		version =	servicio.actualizarVersion(
 																	version.getId(),
-																	new BuscadorComentario(version, configuracionGeneral).encuentraComentario()
+																	new BuscadorComentario(version, aplicacion).encuentraComentario()
 																	);
-		EntAplicacion aplicacion = getCacheAplicacion(version.getSvnOrigen()).orElseThrow(() -> new IllegalStateException("aplicacion  No esta"));
 
 
 		LOGGER.info(String.format("Recaudando todas las informaciones de  la version %s del branch %s", version.getNumero(), version.getBranchOrigen()));

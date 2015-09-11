@@ -4,6 +4,7 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -13,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
@@ -44,7 +46,7 @@ public class WSServidores {
 	}
 
 	@GET
-	@Path("undeploy/{servidor}")
+	@Path("undeploy/{servidor}/{autor}")
 	public String undeploy(@PathParam("servidor") String idServidor , @PathParam("autor") String autor  ){
 		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
 		if (servidor == null){
@@ -75,7 +77,18 @@ public class WSServidores {
 								.add("actualizacion",  UtilFecha.getFechaFormateada(s.getBaseDatos().getUltimaActualizacion()))
 								)
 		.add("ambienteDuenos",ambienteDuenos(s))
+		.add("ambienteResponsables",ambienteResponsables(s,s.getVersionActual()))
 		.add("jiras", jiras(s.getVersionActual()));
+	}
+
+	private JsonArrayBuilder ambienteResponsables(EntServidor s,EntVersion version) {
+		JsonArrayBuilder builder = Json.createArrayBuilder();
+		if (version == null){
+			return builder;
+		}
+		Set<EntPersona> responsables = servicioAmbiente.getResponsables(s.getAmbiente().getAmbiente());
+		servicioVersion.buscaParticipantes(version).stream().filter(p ->  responsables.contains(p.getParticipante())).forEach( p-> builder.add(p.getParticipante().getId()));
+		return builder;
 	}
 
 	private JsonArrayBuilder ambienteDuenos(EntServidor s){

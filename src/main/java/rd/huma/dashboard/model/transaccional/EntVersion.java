@@ -26,7 +26,8 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
 				  @NamedQuery(name="buscarPorNumero.version",query="SELECT E from EntVersion E where E.numero in :num"),
 				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri"),
-				  @NamedQuery(name="buscarPorBranch.version", query = "SELECT E from EntVersion E where E.branchOrigen = :branch order by revisionSVN desc")
+				  @NamedQuery(name="buscarPorBranch.version", query = "SELECT E from EntVersion E where E.branchOrigen = :branch order by revisionSVN desc"),
+				  @NamedQuery(name="buscarPorBranchDuplicado.version", query = "SELECT E.branchOrigen from EntVersion E where E.estado in :est group by E.branchOrigen having Count(E)>2")
 				  })
 public class EntVersion extends AEntModelo implements Serializable{
 

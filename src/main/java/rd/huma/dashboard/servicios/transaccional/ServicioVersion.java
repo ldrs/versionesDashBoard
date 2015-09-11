@@ -60,6 +60,11 @@ public class ServicioVersion {
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
 	}
 
+	public List<String> buscaBranchVersionesDuplicadas(Set<EEstadoVersion> estados){
+		return entityManager.createNamedQuery("buscarPorBranchDuplicado.version",String.class).setParameter("est", estados).getResultList();
+	}
+
+
 	public EntVersion crearVersion(String numeroVersion, String autorSVN, String svnOrigen, String branchOrigen, String revisionSVN, String inicioJob) {
 		synchronized(svnOrigen+numeroVersion){
 			Optional<EntVersion> opcional = entityManager.createNamedQuery("buscarPorNumeroOrigen.version",EntVersion.class).setParameter("num", numeroVersion).setParameter("sOri", svnOrigen).getResultList().stream().findFirst();

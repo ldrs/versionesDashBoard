@@ -1,37 +1,20 @@
 package rd.huma.dashboard.servicios.background.ejecutores.version;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.util.IOUtil;
+import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
 
 class BuscadorComentario {
 
 	private EntVersion version;
-	private EntConfiguracionGeneral configuracionGeneral;
+	private EntAplicacion aplicacion;
 
-	public BuscadorComentario(EntVersion version,EntConfiguracionGeneral configuracionGeneral) {
+	public BuscadorComentario(EntVersion version,EntAplicacion aplicacion) {
 		this.version = version;
-		this.configuracionGeneral = configuracionGeneral;
+		this.aplicacion = aplicacion;
 	}
-
-
-	private String getRutaSvn(){
-		return configuracionGeneral.getRutaSvn() + version.getSvnOrigen() + "/branches/" + version.getBranchOrigen();
-	}
-
 
 	public String  encuentraComentario(){
-		try {
-			Process proceso = Runtime.getRuntime().exec("svn log -r"+version.getRevisionSVN()+" "+getRutaSvn());
-			proceso.waitFor(3, TimeUnit.SECONDS);
-
-			return IOUtil.toString(proceso.getInputStream());
-		} catch (IOException | InterruptedException e) {
-			throw new IllegalStateException("No pudo ser encontrado el log.");
-		}
+		return ServicioSVN.para(aplicacion).buscaComentario("/branches/" + version.getBranchOrigen(), version.getRevisionSVN());
 	}
-
 }

@@ -12,6 +12,7 @@ import rd.huma.dashboard.servicios.background.ejecutores.alertas.EjecutorEnvioAl
 import rd.huma.dashboard.servicios.background.ejecutores.estado.branch.EjecutorBranchActivo;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.deploy.EjecutorDeployVersionAutomatico;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.EjecutorEliminadorFilas;
+import rd.huma.dashboard.servicios.background.ejecutores.nexus.EjecutorBorrarVersionesNexus;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 
 @ApplicationScoped
@@ -28,6 +29,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
 		scheduler.scheduleAtFixedRate(new EjecutorEnvioAlertasCorreo(), 5, 2, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorBorrarVersionesNexus(), 1, 5, TimeUnit.HOURS);
 	}
 
 	@PreDestroy

@@ -84,14 +84,21 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 
 	app.cambiaCSSServidores =function(servidores){
 		for (var j=0; j<servidores.length; j++){
-			var s=servidores[j], dueno = false;
+			var s=servidores[j], dueno = false, responsable = false;
 			for (var i=0; i<s.ambienteDuenos.length; i++){
 				if (app.usuario && s.ambienteDuenos[i]==app.usuario.id){
 					dueno = true;
 					break;
 				}
 			}
-			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 &&  (dueno ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
+			for (var i=0; i<s.ambienteResponsables.length; i++){
+				if (app.usuario && s.ambienteResponsables[i]==app.usuario.id){
+					responsable = true;
+					break;
+				}
+			}
+
+			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
 		}
 	}
 

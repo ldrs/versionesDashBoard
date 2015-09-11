@@ -42,6 +42,11 @@ public class BuscadorModulos {
 		return encuentraModulos(true,getRutaSvn(), new ArrayList<EntVersionModulo>());
 	}
 
+	public List<EntVersionModulo> buscar(String path){
+		return encuentraModulos(true,getRutaSvn(path), new ArrayList<EntVersionModulo>());
+	}
+
+
 	private List<EntVersionModulo> encuentraModulos(boolean root, String ruta , List<EntVersionModulo> modulos){
 		Builder tmp = ClientBuilder.newClient().target(ruta+"/pom.xml").request().accept(MediaType.MEDIA_TYPE_WILDCARD);
 		Response get = tmp.get();
@@ -49,7 +54,7 @@ public class BuscadorModulos {
 			return Collections.emptyList();
 		}
 		Model project = get.readEntity(Model.class);
-		if (root){
+		if (root && aplicacion.getNombrePropiedadesPom()!=null){
 
 			Set<String> propiedades = new HashSet<>();
 			Arrays.asList(aplicacion.getNombrePropiedadesPom().split(",")).stream().forEach(p-> propiedades.add(p.trim()));
@@ -86,8 +91,13 @@ public class BuscadorModulos {
 
 
 	private String getRutaSvn(){
-		return configuracionGeneral.getRutaSvn() + version.getSvnOrigen() + "/branches/" + version.getBranchOrigen();
+		return getRutaSvn(version.getSvnOrigen() + "/branches/" + version.getBranchOrigen());
 	}
+
+	private String getRutaSvn(String path){
+		return configuracionGeneral.getRutaSvn() + path;
+	}
+
 
 
 	public void procesar() {

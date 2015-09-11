@@ -1,7 +1,9 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -11,7 +13,10 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAmbienteDueno;
+import rd.huma.dashboard.model.transaccional.EntAmbienteParticipanteResponsable;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntGrupoPersonaDetalle;
+import rd.huma.dashboard.model.transaccional.EntPersona;
 
 @Stateless
 @Servicio
@@ -19,6 +24,8 @@ public class ServicioAmbiente {
 
 	@Inject
 	private EntityManager entityManager;
+
+	private @Inject @Servicio ServicioGrupo servicioGrupo;
 
 	public static ServicioAmbiente getInstanciaTransaccional(){
 		Servicio servicio = ServicioAmbiente.class.getAnnotation(Servicio.class);
@@ -51,6 +58,15 @@ public class ServicioAmbiente {
 
 	public List<EntAmbienteDueno> getDuenos(EntAmbiente entAmbiente) {
 		return entityManager.createNamedQuery("buscarPorAmbiente",EntAmbienteDueno.class).setParameter("amb", entAmbiente).getResultList();
+	}
+
+	public Set<EntPersona> getResponsables(EntAmbiente entAmbiente) {
+		Set<EntPersona> personas = new HashSet<>();
+		List<EntAmbienteParticipanteResponsable> responsables = entityManager.createNamedQuery("buscarPorAmbiente.ambParcipanteResponsable",EntAmbienteParticipanteResponsable.class).setParameter("amb", entAmbiente).getResultList();
+		for (EntAmbienteParticipanteResponsable responsable : responsables) {
+			servicioGrupo.buscarDetallePorGrupo(responsable.getResponsables().getId()).stream().map(EntGrupoPersonaDetalle::getPersona).forEach(p -> personas.add(p));
+		}
+		return personas;
 	}
 
 }

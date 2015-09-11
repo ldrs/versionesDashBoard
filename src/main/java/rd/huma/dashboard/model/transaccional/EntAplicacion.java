@@ -40,6 +40,10 @@ public class EntAplicacion extends AEntModelo {
 
 	private String nombreJobOracleReportJenkins;
 
+	private String nombreArtefactoBusquedaNexus;
+
+	private String nombreGrupoBusquedaNexus;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -114,6 +118,23 @@ public class EntAplicacion extends AEntModelo {
 
 	public void setNombreJobOracleReportJenkins(String nombreJobOracleReportJenkins) {
 		this.nombreJobOracleReportJenkins = nombreJobOracleReportJenkins;
+	}
+
+	public String getNombreArtefactoBusquedaNexus() {
+		return nombreArtefactoBusquedaNexus;
+	}
+
+	public String getNombreGrupoBusquedaNexus() {
+		return nombreGrupoBusquedaNexus;
+	}
+
+	public void setNombreArtefactoBusquedaNexus(
+			String nombreArtefactoBusquedaNexus) {
+		this.nombreArtefactoBusquedaNexus = nombreArtefactoBusquedaNexus;
+	}
+
+	public void setNombreGrupoBusquedaNexus(String nombreGrupoBusquedaNexus) {
+		this.nombreGrupoBusquedaNexus = nombreGrupoBusquedaNexus;
 	}
 
 	@Override

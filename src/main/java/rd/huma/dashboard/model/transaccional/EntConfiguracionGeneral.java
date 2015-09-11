@@ -43,6 +43,12 @@ public class EntConfiguracionGeneral extends AEntModelo {
 
 	private String rutaDashBoard = "http://172.16.7.52:8080/dashboard/";
 
+	private String rutaNexus = "http://172.16.7.40:8080/nexus";
+
+	private String usrNexus = "dashboard.version";
+
+	private String pwdNexus = "pdsv229";
+
 	public String getRutaJira() {
 		return rutaJira;
 	}
@@ -271,5 +277,26 @@ public class EntConfiguracionGeneral extends AEntModelo {
 	}
 	public void setDomainBaseActiveDirecty(String domainBaseActiveDirecty) {
 		this.domainBaseActiveDirecty = domainBaseActiveDirecty;
+	}
+
+	public String getRutaNexus() {
+		return rutaNexus;
+	}
+	public void setRutaNexus(String rutaNexus) {
+		this.rutaNexus = rutaNexus;
+	}
+	public String getUsrNexus() {
+		return usrNexus;
+	}
+	public void setUsrNexus(String usrNexus) {
+		this.usrNexus = usrNexus;
+	}
+
+	public String getPwdNexus() {
+		return pwdNexus;
+	}
+
+	public void setPwdNexus(String pwdNexus) {
+		this.pwdNexus = pwdNexus;
 	}
 }
