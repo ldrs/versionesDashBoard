@@ -27,13 +27,14 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 	@Override
 	public void ejecutar() {
 		 this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
+		 servicioNexus = ServicioNexus.nuevo();
 		 eliminaDuplicaciones();
 		 borrarVersionesNoExistenTag();
 	}
 
 	private void borrarVersionesNoExistenTag(){
 		List<EntAplicacion> aplicaciones = ServicioAplicacion.getInstanciaTransaccional().getAplicaciones();
-		ServicioNexus servicioNexus = ServicioNexus.nuevo();
+
 		for (EntAplicacion aplicacion : aplicaciones) {
 			List<EntVersionModulo> modulos = new BuscadorModulos(ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get(), aplicacion, new EntVersion()).buscar("/trunk/sigef/");
 			ServicioSVN servicioSVN = ServicioSVN.para(aplicacion);

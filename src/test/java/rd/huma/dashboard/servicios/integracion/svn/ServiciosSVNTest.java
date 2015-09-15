@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Ignore;
@@ -28,7 +27,6 @@ import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 import rd.huma.dashboard.servicios.integracion.nexus.ServicioNexus;
 import rd.huma.dashboard.servicios.integracion.nexus.SimulaNexus;
 import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
-import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 
 public class ServiciosSVNTest {
 
@@ -53,7 +51,7 @@ public class ServiciosSVNTest {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void versionesYaEnProduccion() throws InterruptedException{
 
 

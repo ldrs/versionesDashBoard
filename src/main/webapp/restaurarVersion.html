@@ -24,7 +24,7 @@
 						<div class="12u">
 
 							<header id="header">
-								<h1><a href="app.html" id="logo">Restaurar Versioens</a></h1>
+								<h1><a href="app.html" id="logo">Restaurar Versiones</a></h1>
 								 <div >
 
 									<nav id="nav">
@@ -62,9 +62,9 @@
 									<div class="aplicacion c3" style="color: black">Autor</div>
 									<div class="aplicacion c3" style="color: black">Branch</div>
 									<div class="aplicacion c2" style="color: black">Fecha</div>
+									<div class="aplicacion c2" style="color: black">Estado Fila</div>
+									<div class="aplicacion c2" style="color: black">Estado Version</div>
 									<div class="aplicacion c3" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
-									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon"></div></div>
-									<div class="aplicacion c2" style="float: right" ><div class="reportIcon"></div></div>
 								</div>
 
 								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
@@ -72,8 +72,10 @@
 										<div class="row rowFila">
 										<div class="aplicacion v versionNumber c1"><a href="version.html?versionId={{version.versionId}}">{{version.numero}}</a></div>
 										<div class="aplicacion v c3"><a href="persona.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
-										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
+										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branch}}">{{version.branch}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
+										<div class="aplicacion v c2">{{version.estado}} </div>
+										<div class="aplicacion v c2">{{version.versionEstado}} </div>
 										<div class="aplicacion v c3" style="float: right">
 											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
 													<dialog id="dig{{version.id}}">
@@ -86,17 +88,15 @@
 													<div class="operacion bottomCancelar" ng-click="cancelarVersionDialog(version)"></div>
 											</div>
 										</div>
-										<div class="aplicacion v c2" style="float: right"><a href="scriptVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadScripts}}</a> </div>
-										<div class="aplicacion v c2" style="float: right"><a href="reporteVersion.html?version={{version.id}}" class="scriptNumber">{{version.cantidadReports}}</a> </div>
 									</div>
 
 									<div class="tickets">
-										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 
 									</div>
 									<div class="tickets">
-										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.duenos"><a href="persona.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.participantes"><a href="persona.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
 									</div>
 								</div>
 

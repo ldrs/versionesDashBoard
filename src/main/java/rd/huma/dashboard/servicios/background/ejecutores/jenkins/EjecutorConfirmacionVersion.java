@@ -35,30 +35,30 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		if (resultado){
 			enviarAlertaVersionSubiendo(jobDeployVersion);
-			
+
 			enviarAJobReporteSiNecesita();
-			
+
 			enviarAJobScriptSiNecesita();
 
 		}else{
 			servicioVersion.actualizarEstado(EEstadoVersion.CANCELADA_POR_ERROR_DESPLIEGUE_JENKINS, jobDeployVersion.getVersion());
 		}
 	}
-	
+
 	private void enviarAJobReporteSiNecesita(){
 		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDeployVersion.getVersion());
 		if (!reportes.isEmpty()){
 			DeployReporte deployReporte = new DeployReporte(jobDeployVersion);
 			deployReporte.inicializar();
 			deployReporte.ejecutar();
-			
+
 		}
 	}
-	
+
 	private void enviarAJobScriptSiNecesita(){
 		List<EntVersionScript> scriptEjecucion = servicioVersion.getScriptDespuesEjecucion(jobDeployVersion.getVersion());
 		if (!scriptEjecucion.isEmpty() && tieneScriptPorEjecutar(scriptEjecucion)){
-			
+
 			DeployVersionScript deployScript = new DeployVersionScript(jobDeployVersion,false,Collections.emptyList());
 			deployScript.inicializar();
 			deployScript.ejecutar();
@@ -75,17 +75,17 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		alerta.setVersion(version);
 		alerta.setAmbiente(job.getFilaDespliegue().getAmbiente().getAmbiente());
 		alerta.setMensaje(new StringBuilder(150).append("La aplicación del branch ")
-												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente ").append(jobDeployVersion.getServidor().getRutaEntrada())
-												.append(" Para más información de la versión(").append(version.getNumero())
-												.append(") entrar en http://dashboard.version.sigefint.gov.do/dashboard/version.html?versionId=").append(version.getId())
-												.append(" debe durar al menos 2 minutos para que la versión este disponible.")
+												.append(version.getBranchOrigen()).append(" se esta subiendo en el ambiente <a href=\"").append(jobDeployVersion.getServidor().getRutaEntrada())
+												.append("\">").append(jobDeployVersion.getServidor().getNombre()).append( "</a><br> Para más información de la versión(").append(version.getNumero())
+												.append(") entrar en <a href=\"http://dashboard.version.sigef.gov.do/dashboard/version.html?versionId=").append(version.getId())
+												.append("\">").append(version.getNumero()).append("</a> <br>debe durar al menos 2 minutos para que la versión este disponible.")
 												.toString());
 		servicioVersion.crearAlerta(alerta);
 	}
-	
+
 	private boolean tieneScriptPorEjecutar(List<EntVersionScript> scripts){
 		ServicioRepositorioDatos servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
-		
+
 		for (EntVersionScript versionScript: scripts){
 			UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(versionScript.getUrlScript()).revision();
 			if (ultimaRevision!=null){

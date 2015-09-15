@@ -43,8 +43,7 @@ public class ServicioEmail {
             message.setSubject(subjecto);
 
             if (archivos.isEmpty()){
-            	message.setText(mensaje);
-            	//message.setContent(message, "text/html");
+            	message.setContent(mensaje, "text/html");
             }else{
             	LOGGER.info(String.format("Se estan mandando %s archivos del correo %s", String.valueOf(archivos.size()), subjecto) );
 

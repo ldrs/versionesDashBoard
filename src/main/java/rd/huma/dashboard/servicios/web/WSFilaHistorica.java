@@ -2,6 +2,9 @@ package rd.huma.dashboard.servicios.web;
 
 import static javax.json.Json.createArrayBuilder;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -18,12 +21,26 @@ import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFilaHistorica;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.util.UtilFecha;
 
 @Path("filaHistorica")
 public class WSFilaHistorica {
 
 	private @Servicio @Inject ServicioFilaHistorica servicioFilaHistorica;
 	private @Servicio @Inject ServicioVersion servicioVersion;
+
+
+	@GET
+	@Path("versiones3Dias/{idAmbiente}")
+	public String getVersionesUltimosDias(@PathParam("idAmbiente") String idAmbiente){
+		Instant hace3Dias =  Instant.now().minus(Duration.ofDays(3));
+
+		JsonArrayBuilder arreglo = Json.createArrayBuilder();
+		servicioFilaHistorica.getVersiones(idAmbiente).stream()
+		.filter(f -> f.getFechaRegistro().isAfter(hace3Dias))
+		.forEach(a -> arreglo.add(agregarVersion(a)));
+		return arreglo.build().toString();
+	}
 
 	@GET
 	@Path("versiones/{idAmbiente}")
@@ -39,12 +56,13 @@ public class WSFilaHistorica {
 
 					.add("id", versionFilaHistorica.getId())
 					.add("estado", versionFilaHistorica.getEstado().name())
+					.add("versionEstado", version.getEstado().name())
 					.add("fecha", versionFilaHistorica.getFechaRegistro().toString())
 					.add("versionId", version.getId())
 					.add("numero", version.getNumero())
 					.add("branch", version.getBranchOrigen())
-					.add("autor", Json.createObjectBuilder().add("id", version.getAutor().getId()).add("nomber", version.getAutor().getNombreNullSafe()) )
-					.add("fechaVersion", version.getFechaRegistro().toString())
+					.add("autor", Json.createObjectBuilder().add("id", version.getAutor().getId()).add("nombre", version.getAutor().getNombreNullSafe()) )
+					.add("fechaVersion", UtilFecha.getFechaFormateada(version.getFechaRegistro()))
 					.add("jiras", consultaJiras(version))
 					.add("tickets", consultaTickets(version))
 					.add("participantes", consultaParticipantes(version))

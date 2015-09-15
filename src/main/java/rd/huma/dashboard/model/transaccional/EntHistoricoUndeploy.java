@@ -7,12 +7,17 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="HISTORICO_UNDEPLOY")
+@NamedQueries({
+	@NamedQuery(name="buscarPorVersion.historicoUndeploy",query="select E from EntHistoricoUndeploy E join E.version V where V.id = :ver")
+})
 public class EntHistoricoUndeploy extends AEntModelo {
 
 	/**
@@ -61,8 +66,8 @@ public class EntHistoricoUndeploy extends AEntModelo {
 		this.autor = autor;
 	}
 
-	public Date getFechaRegistro() {
-		return fechaRegistro;
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
 	@Override

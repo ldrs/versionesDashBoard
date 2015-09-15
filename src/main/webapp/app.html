@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 
-<html ng-app="versionesApp" lang="es-do" style="background-color: white;">
+<html ng-app="versionesApp" lang="es-do" style="background-color: white;" >
 <head>
 		<title>Versiones</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-				<script src="assets/js/jquery.min.js"></script>
+		<meta http-equiv="refresh" content="300">
+			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/skel-viewport.min.js"></script>
 			<script src="assets/js/util.js"></script>
@@ -16,6 +16,7 @@
 
 
 		<script src="assets/js/angular.min.js"></script>
+		<script src="assets/js/angucomplete-alt.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/services.js"></script>
 		<script src="assets/js/app.js"></script>
@@ -30,6 +31,7 @@
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
 		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
+		<div angucomplete-alt class="divBuscar" minlength="3" placeholder="Buscar"  input-class="inpBuscar"  match-class="highlight" remote-url="http://dashboard.version.sigef.gov.do/dashboard/api/versionBuscar?s=" remote-url-data-field="resultados" title-field="numero,branch" description-field="branch" selected-object="seleccionVersionAut" ></div>
 		<div class="info">
 			<a title="Versiones Procesando aun sin fila" href="versionProcesando.html" class="number">{{app.versionesProcesando}}</a>
 			<a title="Versiones Recientemente fallaron" href="restaurarVersion.html" class="number">{{app.versionesFallidas}}</a>

@@ -397,4 +397,8 @@ public class ServicioVersion {
 		}
 		return versionReporte;
 	}
+
+	public List<EntVersion> buscarVersionPorNumeroObranch(String query) {
+		return entityManager.createNamedQuery("buscar.versionParecida",EntVersion.class).setParameter("query", "%"+query +"%").getResultList();
+	}
 }

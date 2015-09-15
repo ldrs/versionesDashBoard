@@ -108,13 +108,20 @@
 								<td><h4>Fecha Registro</h4></td>
 								<td><h4>Tipo Job</h4></td>
 								<td><h4>Estado</h4></td>
+								<td><h4>Observacion</h4></td>
 							</tr>
 							<tr ng-repeat="job in app.jobs">
 								<td>{{job.fechaRegistro}}</td>
 								<td>{{job.tipo}}</td>
 								<td>{{job.estado}}</td>
+								<td>{{job.observacion}}</td>
 							</tr>
-
+							<tr ng-repeat="undeploy in app.undeploys">
+								<td>{{undeploy.fechaRegistro}}</td>
+								<td>VERSION</td>
+								<td>UNDEPLOY_SERVIDOR</td>
+								<td>La Version se retiro de <a href="{{undeploy.servidor.ruta}}">{{undeploy.servidor.nombre}}</a> por la persona {{undeploy.persona.nombre}} </td>
+							</tr>
 						</table>
 					</div>
 				</div>

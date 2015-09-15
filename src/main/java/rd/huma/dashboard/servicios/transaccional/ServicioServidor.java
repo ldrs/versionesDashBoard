@@ -66,6 +66,10 @@ public class ServicioServidor {
 		return entityManager.createNamedQuery("buscarPorVersion.servidor",EntServidor.class).setParameter("id", id).getResultList();
 	}
 
+	public List<EntHistoricoUndeploy> getHistoricoUndeploy(String id){
+		return entityManager.createNamedQuery("buscarPorVersion.historicoUndeploy",EntHistoricoUndeploy.class).setParameter("ver", id).getResultList();
+	}
+
 	public EntServidor getServidorPorId(String idServidor) {
 		return entityManager.find(EntServidor.class, idServidor);
 	}

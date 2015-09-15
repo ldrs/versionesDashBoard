@@ -10,7 +10,6 @@ function toQueryString(page){
 	return page+"?"+ $.param(queryString);
 }
 
-
 var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
 
 
@@ -19,7 +18,7 @@ versionesApp.factory("Aplicaciones", function($resource) {
 });
 
 versionesApp.factory("HistoricaFilas", function($resource) {
-	return $resource("/dashboard/api/filaHistorica/versiones/:idAmbiente",null,{
+	return $resource("/dashboard/api/filaHistorica/versiones3Dias/:idAmbiente",null,{
 		'filas':{ 'method':'GET','isArray':true},
     });
 });
@@ -41,7 +40,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.cssControlesPrioridad = "none";
 	app.cssControlesUndeploy = "none";
 
-	
+
 	app.containsElement = function(arr,value){
 		for (var i=0; i < arr.length; i++){
 			 if (arr[i] == value){
@@ -51,20 +50,16 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		return false;
 	}
 
-	
+
 	app.actualizarAparienciaPorPermisos=function(){
 		tienePermisoControlesPrioridad = function(){
 			return app.logeado &&  app.containsElement(app.usuario.prioridadAmbientes,app.ambienteId);
 		};
 		app.cssControlesPrioridad = tienePermisoControlesPrioridad()?"block":"none";
-		
-	
-			
-	//	app.cssControlesUndeploy = estilo;
-		
+
 	}
-	
-	
+
+
 
 	persistanceService.init().then(function(){
 
@@ -165,12 +160,8 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	});
 
 
-
-
-
 	$scope.seleccionarAplicacion = function(o){
 		seleccionAplicacion(o);
 	}
 })
 ;
-

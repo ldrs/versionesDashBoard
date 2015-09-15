@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import rd.huma.dashboard.model.transaccional.EntHistoricoUndeploy;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
@@ -44,7 +45,6 @@ public class WSVersionesConsulta {
 
 	@Inject
 	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
-
 
 	@Inject
 	private @Servicio ServicioServidor servicioServidor;
@@ -110,6 +110,29 @@ public class WSVersionesConsulta {
 		servicioJobDespliegueVersion.buscarJobPorIdVersion(id).forEach( j -> builder.add(toJson(j)));
 		return builder.build().toString();
 	}
+
+	@GET
+	@Produces("text/plain")
+	@Path("undeploys/{id}")
+	public String consultaUndeploys(@PathParam("id") String id){
+		JsonArrayBuilder builder = createArrayBuilder();
+		servicioServidor.getHistoricoUndeploy(id).forEach(h -> builder.add(toJson(h)));
+		return builder.build().toString();
+	}
+
+	private JsonObjectBuilder toJson(EntHistoricoUndeploy h) {
+		return createObjectBuilder()
+									.add("fechaRegistro", h.getFechaRegistro() == null ?"" :  UtilFecha.getFechaFormateada (h.getFechaRegistro()))
+									.add("persona", createObjectBuilder().add("id", h.getAutor().getId())
+																		 .add("nombre", h.getAutor().getNombreNullSafe())
+																		 )
+									.add("servidor", createObjectBuilder().add("id", h.getServidor().getId())
+																		 .add("nombre", h.getServidor().getNombre())
+																		 .add("ruta", h.getServidor().getRutaEntrada())
+																		)
+									;
+	}
+
 
 	private JsonObjectBuilder toJson(EntJobDespliegueVersion j) {
 		return createObjectBuilder().add("id", j.getId())

@@ -10,13 +10,7 @@ function toQueryString(page){
 	return page+"?"+ $.param(queryString);
 }
 
-$(document).ready(function(){
-	var isq = $(".inicioSesion>a").offset().left;
-	$(".info").offset({top:130, left : isq});
-});
-
-
-var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
+var versionesApp = angular.module('versionesApp',['ngResource','appDbServices','angucomplete-alt']);
 
 
 versionesApp.factory("Aplicaciones", function($resource) {
@@ -268,6 +262,10 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		Servidores.undeploy({'idServidor':s.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
 			app.actualizaServidores();
 		});
+	}
+
+	$scope.seleccionVersionAut=function(s){
+		 window.location.assign("http://dashboard.version.sigef.gov.do/dashboard/version.html?versionId="+s.originalObject.id);
 	}
 
 	app.actualizar = function(){
