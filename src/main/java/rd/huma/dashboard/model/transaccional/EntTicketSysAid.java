@@ -1,9 +1,15 @@
 package rd.huma.dashboard.model.transaccional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="TICKET_SYSAID")
@@ -19,6 +25,9 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	private String estado="En Desarrollo";
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaRegistro = Timestamp.from(Instant.now());
+
 	public String getNumero() {
 		return numero;
 	}
@@ -33,6 +42,10 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Instant getFechaRegistro() {
+		return fechaRegistro.toInstant();
 	}
 
 	@Override

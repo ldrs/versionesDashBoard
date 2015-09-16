@@ -19,6 +19,9 @@ import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorReporteReintento;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptAntes;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptTodos;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
@@ -62,7 +65,7 @@ public class WSServidores {
 
 		return toJson(servidor).build().toString();
 	}
-	
+
 	@GET
 	@Path("cambiarServidor/{servidorOrigen}/{servidorDestino}/{autor}")
 	public String cambiaServidor(@PathParam("servidorOrigen") String idServidorOrigen,@PathParam("servidorDestino") String idServidorDestino  , @PathParam("autor") String autor  ){
@@ -73,16 +76,56 @@ public class WSServidores {
 		}
 		EntFilaDespliegue fila = servicioFila.getFilaPorAmbienteAplicacion(servidorOrigen.getAmbiente().getId());
 		EntVersion version = servidorOrigen.getVersionActual();
-		
-		
+
+
 		servicioServidor.cambiaVersionServidor(servidorOrigen, null,servicioPersona.busca(autor));
-		
+
+		servicioServidor.cambiaVersionServidor(servidorDestino, version,servicioPersona.busca(autor));
+
 		servicioJobDespliegueVersion.nuevoDeploy(servidorDestino, fila, version);
 
 		return toJson(servidorDestino).build().toString();
 	}
-	
-	public String cambiaDisponibilidad(@PathParam("servidor") String idServidor , @PathParam("autor") String autor , @PathParam("disponible") boolean disponible  ){
+
+	@GET
+	@Path("copiaReportes/{idServidor}/{idUsuario}")
+	public String copiaReportes(@PathParam("idServidor") String idServidor, @PathParam("idUsuario") String idUsuario){
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{ejecuto:false}";
+		}
+		servicioVersion.ejecutarJob(new EjecutorReporteReintento(servidor.getVersionActual()));
+		return "{ejecuto:llamado}";
+	}
+
+
+	@GET
+	@Path("ejecutarTodosScripts/{idServidor}/{idUsuario}")
+	public String ejecutarTodosScripts(@PathParam("idServidor") String idServidor, @PathParam("idUsuario") String idUsuario){
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{ejecuto:false}";
+		}
+
+		servicioVersion.ejecutarJob(new EjecutorScriptTodos(servidor.getVersionActual()));
+		return "{ejecuto:llamado}";
+	}
+
+	@GET
+	@Path("ejecutarAntesScripts/{idServidor}/{idUsuario}")
+	public String ejecutarAntesScripts(@PathParam("idServidor") String idServidor, @PathParam("idUsuario") String idUsuario){
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{ejecuto:false}";
+		}
+
+		servicioVersion.ejecutarJob(new EjecutorScriptAntes(servidor.getVersionActual()));
+		return "{ejecuto:llamado}";
+	}
+
+	@GET
+	@Path("cambiaDisponibilidad/{idServidor}/{idUsuario}/{disponible}")
+	public String cambiaDisponibilidad(@PathParam("idServidor") String idServidor ,@PathParam("idUsuario") String idUsuario, @PathParam("disponible") boolean disponible  ){
 		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
 		if (servidor == null){
 			return "{}";

@@ -6,20 +6,21 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta http-equiv="refresh" content="300">
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/skel-viewport.min.js"></script>
-			<script src="assets/js/util.js"></script>
+			<script src="assets/js/jquery.min.js" type="text/javascript"></script>
+			<script src="assets/js/jquery.toastmessage.js" type="text/javascript"></script>
+			<script src="assets/js/skel.min.js" type="text/javascript"></script>
+			<script src="assets/js/skel-viewport.min.js" type="text/javascript"></script>
+			<script src="assets/js/util.js" type="text/javascript"></script>
 
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+			<script src="assets/js/main.js" type="text/javascript"></script>
 
 
-		<script src="assets/js/angular.min.js"></script>
-		<script src="assets/js/angucomplete-alt.js"></script>
-		<script src="assets/js/angular-resource.js"></script>
-		<script src="assets/js/services.js"></script>
-		<script src="assets/js/app.js"></script>
+		<script src="assets/js/angular.min.js" type="text/javascript"></script>
+		<script src="assets/js/angucomplete-alt.js" type="text/javascript"></script>
+		<script src="assets/js/angular-resource.js" type="text/javascript"></script>
+		<script src="assets/js/services.js" type="text/javascript"></script>
+		<script src="assets/js/app.js" type="text/javascript"></script>
 
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -79,7 +80,7 @@
 									<div class="aplicacion c3" style="color: black">Autor</div>
 									<div class="aplicacion c3" style="color: black">Branch</div>
 									<div class="aplicacion c2" style="color: black">Fecha</div>
-									<div class="aplicacion c3" style="color: black;float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
+									<div class="aplicacion c3" style="color: black; float: right"><p style="display: {{app.cssControlesPrioridad">Operaciones</p></div>
 									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon" title="Cantidad de Scripts"></div></div>
 									<div class="aplicacion c2" style="float: right" ><div class="reportIcon" title="Cantidad de Reportes"></div></div>
 								</div>
@@ -92,11 +93,11 @@
 										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
 										<div class="aplicacion v c3" style="float: right">
-											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
+											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad">
 													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
 													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
 													<dialog id="dig{{version.id}}">
-													<div class="bottomCancelar" style="float: left;margin-right: 20px;background-color: black;border: 1px solid black;border-radius: 30px;"></div>
+													<div class="bottomCancelar" style="float: left; margin-right: 20px; background-color: black; border: 1px solid black; border-radius: 30px;"></div>
 														<h3>Esta seguro que quiere eliminar de la fila la version {{version.numero}}</h3>
 														<p>Esta operacion puede ser reversada, recupuerandola de versiones historicas.</p>
 														<button class="eliminaFila" ng-click="eliminaVersion(version)">Eliminar</button>
@@ -111,7 +112,7 @@
 
 									<div class="tickets">
 										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
-										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 
 									</div>
 									<div class="tickets">
@@ -122,30 +123,39 @@
 							</div>
 					</div>
 				</div>
-				<div class="container" style="padding-top: 50px;padding-bottom: 50px">
+				<div class="container" style="padding-top: 50px; padding-bottom: 50px">
 					<h2>Servidores</h2>
-					<div class="server s{{servidor.estado}} {{server.cssNoDisponible}}" ng-repeat="servidor in app.servidores | orderBy:'nombre'">
+					<div class="server s{{servidor.estado}} {{servidor.cssNoDisponible}}" ng-repeat="servidor in app.servidores | orderBy:'nombre'">
 						<nav class="menuCss" ng-show="app.usuarioDuenoAmbiente">
+						<ul>
+							<li><a href="#" class="iconoProcesar"></a>
 								<ul>
-									<li ng-show="versionPuedeCambiarServidor(servidor)"><div>Cambiar Servidor</div>
-											<ul>
-												<li ng-repeat="oServer in app.servidores | orderBy:'nombre' | filter: filtroServidoresLibres"><div ng-click="cambiaVersionServidor(oserver,server)">{{oServer.nombre}}</div></li>
-											</ul>
+									<li style="display: {{servidor.estiloNoLibre}}"><a href="#">Cambiar Servidor -> </a>
+										<ul>
+											<li	ng-repeat="oServer in app.servidores | filter: puedeHacerDeploy | orderBy:'nombre'">
+											  <a href="#" ng-click="cambiaVersionServidor(oServer,servidor)">{{oServer.nombre}}</a>
+											 </li>
+										</ul>
 									</li>
-									<li ng-show="server.disponible"><a href="#" ng-click="servidorMarcaNoDisponible(servidor)">Marcar como no disponible</a></li>
-									<li ng-show="!server.disponible"><a href="#" ng-click="servidorMarcaDisponible(servidor)">Marcar como disponible</a></li>
-									<li ng-show="server.libre"><a href="#" ng-click="servidorCopiaReportes(servidor)">Copiar reporte de nuevo</a></li>
-									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarScripts(servidor)">Ejecutar Todos Scripts de nuevo</a></li>
-									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarAntesScripts(servidor)">Ejecutar Scripts Antes de nuevo</a></li>
-									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarDespuesScripts(servidor)">Ejecutar Scripts Despues de nuevo</a></li>
-							</ul>
-						</nav>
+									<li style="display: {{servidor.estiloDisponible}}"><a href="#" ng-click="servidorMarcaNoDisponible(servidor)">Marcar como no disponible</a></li>
+									<li style="display: {{servidor.estiloNoDisponible}}"><a href="#" ng-click="servidorMarcaDisponible(servidor)">Marcar como disponible</a></li>
+									<li style="display: {{servidor.estiloDisponibleOcupado}}"><a href="#"ng-click="servidorCopiaReportes(servidor)">Copiar reporte	de nuevo</a></li>
+									<li style="display: {{servidor.estiloDisponibleOcupado}}"><a href="#"ng-click="servidorEjecutarScripts(servidor)">Ejecutar	Todos Scripts de nuevo</a></li>
+									<li style="display: {{servidor.estiloDisponibleOcupado}}"><a href="#"ng-click="servidorEjecutarAntesScripts(servidor)">Ejecutar Scripts Antes de nuevo</a></li>
+									<li style="display: {{servidor.estiloDisponibleOcupado}}"><a href="#"ng-click="servidorEjecutarDespuesScripts(servidor)">Ejecutar Scripts Despues de nuevo</a></li>
+								</ul>
+							</li>
+
+						</ul>
+
+
+					</nav>
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
 						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.host}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
 						<div class="servidorVersion"><a  title="Numero de la version" href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>
 						<div class="servidorVersion"><a title="Branch de la version" href="branch.html?branch={{servidor.version.branch}}">{{servidor.version.branch}}</a> </div>
 						<div class="tickets servidorTick">
-							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 						</div>
 						<div class="button" style="display: {{servidor.css}}" ng-click="undeploy(servidor)">Undeploy</div>

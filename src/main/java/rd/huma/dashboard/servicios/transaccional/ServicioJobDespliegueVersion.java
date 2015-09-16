@@ -44,15 +44,15 @@ public class ServicioJobDespliegueVersion {
 
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
 		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion(),null);
-		
+
 		EntJobDespliegueVersion job = nuevoDeploy(servidor, versionFila.getFila(), versionFila.getVersion());
 
 		servicioFilaHistorica.moverAHistorico(versionFila,job);
 		return job;
 	}
-	
+
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegue fila, EntVersion version){
-	
+
 		EntJobDespliegueVersion job = new EntJobDespliegueVersion();
 		job.setServidor(servidor);
 		job.setVersion(version);
@@ -72,7 +72,7 @@ public class ServicioJobDespliegueVersion {
 		EntJobDespliegueVersion jobActualizado = entityManager.find(EntJobDespliegueVersion.class, job.getId());
 		jobActualizado.setEstado(estado);
 		entityManager.merge(jobActualizado);
-		if (estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
+		if (job.getTipoDespliegue() == ETipoDespliegueJob.VERSION && estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
 			servicioServidor.cambiaVersionServidor(job.getServidor(), null,null);
 		}
 		if (estado.getEstadoVersionRelativo()!=null){

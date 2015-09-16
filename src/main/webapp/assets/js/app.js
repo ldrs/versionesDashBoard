@@ -31,8 +31,13 @@ versionesApp.factory("Servidores", function($resource) {
 	return $resource("/dashboard/api/servidores/ambiente/:idAmbiente",null,{
 		'delAmbiente':{ 'method':'GET','isArray':true},
 		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor/:idUsuario'},
-		'cambiarServidor':{'method':'GET','url':'/dashboard/api/servidores/cambiaVersion/:idServidorOrigen/:idServidorDestino/:idUsuario'},
-		'cambiaDisponibilidad':{'method':'GET','url':'/dashboard/api/servidores/cambiaDisponibilidad/:idServidor/:idUsuario/:disponible'}
+		'cambiarServidor':{'method':'GET','url':'/dashboard/api/servidores/cambiarServidor/:idServidorOrigen/:idServidorDestino/:idUsuario'},
+		'cambiaDisponibilidad':{'method':'GET','url':'/dashboard/api/servidores/cambiaDisponibilidad/:idServidor/:idUsuario/:disponible'},
+		'copiaReportes':{'method':'GET','url':'/dashboard/api/servidores/copiaReportes/:idServidor/:idUsuario/'},
+		'ejecutarTodosScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarTodosScripts/:idServidor/:idUsuario/'},
+		'ejecutarAntesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarAntesScripts/:idServidor/:idUsuario/'},
+		'ejecutarDespuesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarDespuesScripts/:idServidor/:idUsuario/'}
+
 	});
 });
 
@@ -69,7 +74,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.usuarioDuenoAmbiente = false;
 
 	app.animarMensaje = function(s){
-		
+		   $().toastmessage('showNoticeToast', s);
 	}
 
 	app.containsElement = function(arr,value){
@@ -97,10 +102,18 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 					break;
 				}
 			}
-			s.disponible=s.estado.indexOf("NO_DISPONIBLE")!=-1;
-			s.libre=s.estado==="LIBRE";
-			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 && s.estado.indexOf("NO_DISPONIBLE")!=-1  &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
-			s.cssNoDisponible = s.estado.indexOf("NO_DISPONIBLE")==-1?"":"static-motion";
+			s.disponible=s.estado.indexOf("NO_DISPONIBLE")===-1;
+			s.libre = s.estado.indexOf("OCUPADO")===-1;
+			s.ocupado = s.estado.indexOf("OCUPADO")!==-1;
+			s.puedeHacerDeploy = s.libre && s.disponible;
+			s.estiloPudeDeploy = s.puedeHacerDeploy ? "block":"none";
+			s.estiloDisponibleOcupado = s.disponible && s.ocupado ? "block":"none";
+			s.estiloNoLibre=s.libre?"none":"block";
+			s.estiloDisponible = s.disponible?"block":"none";
+			s.estiloNoDisponible = s.disponible?"none":"block";
+
+			s.css = app.logeado && s.ocupado && s.disponible &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
+			s.cssNoDisponible = s.disponible?"":"static-motion";
 		}
 	}
 
@@ -275,43 +288,57 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	$scope.seleccionVersionAut=function(s){
 		 window.location.assign("http://dashboard.version.sigef.gov.do/dashboard/version.html?versionId="+s.originalObject.id);
 	}
-	
-	$scope.filtroServidoresLibres=function(s){
-		return s.estado==='LIBRE';
-	}
-	
-	$scope.versionPuedeCambiarServidor(s){
-		return s.estado!=='LIBRE' && s.estado.indexOf('NO_DISPONIBLE')===-1;
-	}
-	
-	$scope.cambiaVersionServidor(servidorVa, servidorEsta){
+
+	$scope.cambiaVersionServidor=function(servidorVa, servidorEsta){
 		  Servidores.cambiarServidor({'idServidorOrigen':servidorEsta.id,'idServidorDestino':servidorVa.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
 				app.actualizaServidores();
 			});
 	}
-	
-	$scope.servidorMarcaNoDisponible(servidor){
-		if (s.estado.indexOf('NO_DISPONIBLE')===-1){
+
+	$scope.servidorMarcaNoDisponible=function(servidor){
+		if (servidor.estado.indexOf('NO_DISPONIBLE')===-1){
 			Servidores.cambiaDisponibilidad({'idServidor':servidor.id,'idUsuario':app.usuario.id,'disponible':'false'}).$promise.then(function(data){
 				app.actualizaServidores();
 			});
 		}
 	}
-	
-	$scope.servidorMarcaDisponible(servidor){
-		if (s.estado.indexOf('NO_DISPONIBLE')!==-1){
+
+	$scope.servidorMarcaDisponible=function(servidor){
+		if (servidor.estado.indexOf('NO_DISPONIBLE')!==-1){
 			Servidores.cambiaDisponibilidad({'idServidor':servidor.id,'idUsuario':app.usuario.id,'disponible':'true'}).$promise.then(function(data){
 				app.actualizaServidores();
 			});
 		}
 	}
-	
-	$scope.servidorCopiaReportes(servidor){
-		Servudores.copiaReportes({'idServidor':servidor.id}).$promise.then(function(data){
-			app.animarMensaje("Se mando a copiar los reportes del servidor"+servidor.nombre);
+
+	$scope.puedeHacerDeploy =function(servidor){
+		return servidor.libre && servidor.disponible;
+	}
+
+	$scope.servidorCopiaReportes=function(servidor){
+		Servidores.copiaReportes({'idServidor':servidor.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
+			app.animarMensaje("Se mando a copiar los reportes del servidor "+servidor.nombre);
 		});
 	}
 
+	$scope.servidorEjecutarScripts=function(servidor){
+		Servidores.ejecutarTodosScripts({'idServidor':servidor.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
+			app.animarMensaje("Se mando a ejecutar los scripts del servidor "+servidor.nombre);
+		});
+	}
+
+	$scope.servidorEjecutarAntesScripts=function(servidor){
+		Servidores.ejecutarAntesScripts({'idServidor':servidor.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
+			app.animarMensaje("Se mando a ejecutar los scripts del servidor "+servidor.nombre);
+		});
+	}
+
+
+	$scope.servidorEjecutarDespuesScripts=function(servidor){
+		Servidores.ejecutarDespuesScripts({'idServidor':servidor.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
+			app.animarMensaje("Se mando a ejecutar los scripts del servidor "+servidor.nombre);
+		});
+	}
 
 	app.actualizar = function(){
 		app.actualizaFila();

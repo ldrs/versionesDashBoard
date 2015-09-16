@@ -23,6 +23,7 @@ public class DeployVersionScript extends ADeployVersion {
 	private EntVersion version;
 	private ServicioPersona servicioPersona;
 	private ServicioRepositorioDatos servicioRepositorioDatos;
+	private ETipoScript tipoScriptCustom;
 
 
 	public DeployVersionScript(EntJobDespliegueVersion job, boolean antes, List<EntVersionScript> scripts) {
@@ -47,7 +48,6 @@ public class DeployVersionScript extends ADeployVersion {
 		}else{
 			desployDespuesVersionScript();
 		}
-
 	}
 
 
@@ -62,6 +62,10 @@ public class DeployVersionScript extends ADeployVersion {
 		deployScriptEjecucion(scriptAntesEjecucion, ETipoScript.ANTES_SUBIDA);
 	}
 
+	void setTipoScriptCustom(ETipoScript tipoScriptCustom) {
+		this.tipoScriptCustom = tipoScriptCustom;
+	}
+
 	private void deployScriptEjecucion(List<EntVersionScript> scripts, ETipoScript tipoScript){
 
 
@@ -70,7 +74,7 @@ public class DeployVersionScript extends ADeployVersion {
 		jobScript.setVersion(version);
 		jobScript.setFilaDespliegue(this.job.getFilaDespliegue());
 		jobScript.setTipoDespliegue(ETipoDespliegueJob.SCRIPT);
-		jobScript.setTipoScript(tipoScript);
+		jobScript.setTipoScript(tipoScriptCustom == null?tipoScript:tipoScriptCustom);
 		servicioJobDespliegueVersion.nuevoJob(jobScript);
 
 		for (EntVersionScript versionScript: scripts){
