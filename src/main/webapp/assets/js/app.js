@@ -68,7 +68,9 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.versionesFallidas = 0;
 	app.usuarioDuenoAmbiente = false;
 
-
+	app.animarMensaje = function(s){
+		
+	}
 
 	app.containsElement = function(arr,value){
 		for (var i=0; i < arr.length; i++){
@@ -96,7 +98,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 				}
 			}
 			s.disponible=s.estado.indexOf("NO_DISPONIBLE")!=-1;
-
+			s.libre=s.estado==="LIBRE";
 			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 && s.estado.indexOf("NO_DISPONIBLE")!=-1  &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
 			s.cssNoDisponible = s.estado.indexOf("NO_DISPONIBLE")==-1?"":"static-motion";
 		}
@@ -302,6 +304,12 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 				app.actualizaServidores();
 			});
 		}
+	}
+	
+	$scope.servidorCopiaReportes(servidor){
+		Servudores.copiaReportes({'idServidor':servidor.id}).$promise.then(function(data){
+			app.animarMensaje("Se mando a copiar los reportes del servidor"+servidor.nombre);
+		});
 	}
 
 

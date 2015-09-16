@@ -134,6 +134,10 @@
 									</li>
 									<li ng-show="server.disponible"><a href="#" ng-click="servidorMarcaNoDisponible(servidor)">Marcar como no disponible</a></li>
 									<li ng-show="!server.disponible"><a href="#" ng-click="servidorMarcaDisponible(servidor)">Marcar como disponible</a></li>
+									<li ng-show="server.libre"><a href="#" ng-click="servidorCopiaReportes(servidor)">Copiar reporte de nuevo</a></li>
+									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarScripts(servidor)">Ejecutar Todos Scripts de nuevo</a></li>
+									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarAntesScripts(servidor)">Ejecutar Scripts Antes de nuevo</a></li>
+									<li ng-show="server.libre"><a href="#" ng-click="servidorEjecutarDespuesScripts(servidor)">Ejecutar Scripts Despues de nuevo</a></li>
 							</ul>
 						</nav>
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
