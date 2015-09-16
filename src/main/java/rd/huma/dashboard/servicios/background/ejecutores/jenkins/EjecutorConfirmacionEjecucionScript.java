@@ -38,9 +38,7 @@ public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 			ServicioJobDespliegueVersion servicioJob =  ServicioJobDespliegueVersion.getInstanciaTransaccional();
 			EntJobDespliegueVersion jobVersion = servicioJob.buscarPorJobRelacionado(job);
 			if (jobVersion!=null){
-				DeployVersion deployVersion = new DeployVersion(jobVersion);
-				deployVersion.inicializar();
-				deployVersion.ejecutar();
+				new DeployVersion(jobVersion).ejecutar();
 			}
 
 

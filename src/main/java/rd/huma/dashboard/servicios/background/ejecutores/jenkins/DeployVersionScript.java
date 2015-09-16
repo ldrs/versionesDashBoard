@@ -32,15 +32,16 @@ public class DeployVersionScript extends ADeployVersion {
 		this.scripts = scripts;
 	}
 
-	@Override
-	void inicializar() {
-		super.inicializar();
+	private void inicializar() {
 		servicioPersona = ServicioPersona.getInstanciaTransaccional();
 		servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
 	}
 
 	@Override
 	public void ejecutar() {
+		super.ejecutar();
+		inicializar();
+
 		this.servicioVersion = getServicioVersion();
 		this.version = getVersion();
 		if (antes){

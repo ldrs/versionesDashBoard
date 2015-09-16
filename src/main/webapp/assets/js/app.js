@@ -33,10 +33,10 @@ versionesApp.factory("Servidores", function($resource) {
 		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor/:idUsuario'},
 		'cambiarServidor':{'method':'GET','url':'/dashboard/api/servidores/cambiarServidor/:idServidorOrigen/:idServidorDestino/:idUsuario'},
 		'cambiaDisponibilidad':{'method':'GET','url':'/dashboard/api/servidores/cambiaDisponibilidad/:idServidor/:idUsuario/:disponible'},
-		'copiaReportes':{'method':'GET','url':'/dashboard/api/servidores/copiaReportes/:idServidor/:idUsuario/'},
-		'ejecutarTodosScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarTodosScripts/:idServidor/:idUsuario/'},
-		'ejecutarAntesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarAntesScripts/:idServidor/:idUsuario/'},
-		'ejecutarDespuesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarDespuesScripts/:idServidor/:idUsuario/'}
+		'copiaReportes':{'method':'GET','url':'/dashboard/api/servidores/copiaReportes/:idServidor/:idUsuario'},
+		'ejecutarTodosScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarTodosScripts/:idServidor/:idUsuario'},
+		'ejecutarAntesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarAntesScripts/:idServidor/:idUsuario'},
+		'ejecutarDespuesScripts':{'method':'GET','url':'/dashboard/api/servidores/ejecutarDespuesScripts/:idServidor/:idUsuario'}
 
 	});
 });
@@ -108,6 +108,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			s.puedeHacerDeploy = s.libre && s.disponible;
 			s.estiloPudeDeploy = s.puedeHacerDeploy ? "block":"none";
 			s.estiloDisponibleOcupado = s.disponible && s.ocupado ? "block":"none";
+			s.estiloOcupado =  s.ocupado ? "block":"none";
 			s.estiloNoLibre=s.libre?"none":"block";
 			s.estiloDisponible = s.disponible?"block":"none";
 			s.estiloNoDisponible = s.disponible?"none":"block";

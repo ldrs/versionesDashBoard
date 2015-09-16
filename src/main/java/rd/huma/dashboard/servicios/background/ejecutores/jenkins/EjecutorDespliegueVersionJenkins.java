@@ -33,13 +33,12 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 		}else{
 			deploy = new DeployVersionScript(job, true, scriptAntesEjecucion);
 		}
-		deploy.inicializar();
 		deploy.ejecutar();
 	}
-	
+
 	private boolean tieneScriptPorEjecutar(List<EntVersionScript> scripts){
 		ServicioRepositorioDatos servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
-		
+
 		for (EntVersionScript versionScript: scripts){
 			UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(versionScript.getUrlScript()).revision();
 			if (ultimaRevision!=null){

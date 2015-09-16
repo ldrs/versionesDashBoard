@@ -31,7 +31,7 @@ abstract class ADeployVersion {
 		this.job = job;
 	}
 
-	void inicializar(){
+	private void inicializar(){
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 
 		this.configuracionGeneral = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get();
@@ -69,7 +69,9 @@ abstract class ADeployVersion {
 		return new StringBuilder(150).append(configuracionGeneral.getRutaDashBoard()).append("api/versionArchivo/reporte/").toString();
 	}
 
-	public abstract void ejecutar();
+	public void ejecutar(){
+		inicializar();
+	}
 
 	public EntVersion getVersion() {
 		return version;

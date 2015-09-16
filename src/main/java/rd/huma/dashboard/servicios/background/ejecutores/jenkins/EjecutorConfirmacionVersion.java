@@ -48,10 +48,7 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 	private void enviarAJobReporteSiNecesita(){
 		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDeployVersion.getVersion());
 		if (!reportes.isEmpty()){
-			DeployReporte deployReporte = new DeployReporte(jobDeployVersion);
-			deployReporte.inicializar();
-			deployReporte.ejecutar();
-
+			new DeployReporte(jobDeployVersion).ejecutar();
 		}
 	}
 
@@ -59,9 +56,7 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		List<EntVersionScript> scriptEjecucion = servicioVersion.getScriptDespuesEjecucion(jobDeployVersion.getVersion());
 		if (!scriptEjecucion.isEmpty() && tieneScriptPorEjecutar(scriptEjecucion)){
 
-			DeployVersionScript deployScript = new DeployVersionScript(jobDeployVersion,false,Collections.emptyList());
-			deployScript.inicializar();
-			deployScript.ejecutar();
+			new DeployVersionScript(jobDeployVersion,false,Collections.emptyList()).ejecutar();
 			servicioVersion.actualizarEstado(EEstadoVersion.EJECUTO_EXITOSO_JENKINS, jobDeployVersion.getVersion());
 		}
 

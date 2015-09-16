@@ -95,7 +95,7 @@ public class WSServidores {
 			return "{ejecuto:false}";
 		}
 		servicioVersion.ejecutarJob(new EjecutorReporteReintento(servidor.getVersionActual()));
-		return "{ejecuto:llamado}";
+		return "{ejecuto:true}";
 	}
 
 
@@ -104,11 +104,11 @@ public class WSServidores {
 	public String ejecutarTodosScripts(@PathParam("idServidor") String idServidor, @PathParam("idUsuario") String idUsuario){
 		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
 		if (servidor == null){
-			return "{ejecuto:false}";
+			return "{ejecuto:true}";
 		}
 
 		servicioVersion.ejecutarJob(new EjecutorScriptTodos(servidor.getVersionActual()));
-		return "{ejecuto:llamado}";
+		return "{ejecuto:true}";
 	}
 
 	@GET
@@ -120,7 +120,7 @@ public class WSServidores {
 		}
 
 		servicioVersion.ejecutarJob(new EjecutorScriptAntes(servidor.getVersionActual()));
-		return "{ejecuto:llamado}";
+		return "{ejecuto:true}";
 	}
 
 	@GET

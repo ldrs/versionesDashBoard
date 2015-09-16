@@ -14,6 +14,7 @@ public class DeployVersion extends ADeployVersion{
 
 	@Override
 	public void ejecutar() {
+		super.ejecutar();
 		deployVersion();
 	}
 

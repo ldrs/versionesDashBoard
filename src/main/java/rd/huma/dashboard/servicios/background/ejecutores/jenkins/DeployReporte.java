@@ -11,6 +11,7 @@ public class DeployReporte extends ADeployVersion{
 
 	@Override
 	public void ejecutar() {
+		super.ejecutar();
 		deployReporte();
 	}
 
