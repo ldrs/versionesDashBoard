@@ -10,7 +10,8 @@ public enum EEstadoServidor {
 	},
 	OCUPADO,
 	OCUPADO_DESPLIEGE_EN_PROCESO,
-	NO_DISPONIBLE;
+	NO_DISPONIBLE,
+	NO_DISPONIBLE_MANUAL;
 
 
 	public boolean disponibleVersion(){

@@ -124,7 +124,18 @@
 				</div>
 				<div class="container" style="padding-top: 50px;padding-bottom: 50px">
 					<h2>Servidores</h2>
-					<div class="server s{{servidor.estado}}" ng-repeat="servidor in app.servidores | orderBy:'nombre'">
+					<div class="server s{{servidor.estado}} {{server.cssNoDisponible}}" ng-repeat="servidor in app.servidores | orderBy:'nombre'">
+						<nav class="menuCss" ng-show="app.usuarioDuenoAmbiente">
+								<ul>
+									<li ng-show="versionPuedeCambiarServidor(servidor)"><div>Cambiar Servidor</div>
+											<ul>
+												<li ng-repeat="oServer in app.servidores | orderBy:'nombre' | filter: filtroServidoresLibres"><div ng-click="cambiaVersionServidor(oserver,server)">{{oServer.nombre}}</div></li>
+											</ul>
+									</li>
+									<li ng-show="server.disponible"><a href="#" ng-click="servidorMarcaNoDisponible(servidor)">Marcar como no disponible</a></li>
+									<li ng-show="!server.disponible"><a href="#" ng-click="servidorMarcaDisponible(servidor)">Marcar como disponible</a></li>
+							</ul>
+						</nav>
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
 						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.host}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
 						<div class="servidorVersion"><a  title="Numero de la version" href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>

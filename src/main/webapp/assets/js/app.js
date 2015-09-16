@@ -30,7 +30,9 @@ versionesApp.factory("VersionesFilas", function($resource) {
 versionesApp.factory("Servidores", function($resource) {
 	return $resource("/dashboard/api/servidores/ambiente/:idAmbiente",null,{
 		'delAmbiente':{ 'method':'GET','isArray':true},
-		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor/:idUsuario'}
+		'undeploy':{'method':'GET','url':'/dashboard/api/servidores/undeploy/:idServidor/:idUsuario'},
+		'cambiarServidor':{'method':'GET','url':'/dashboard/api/servidores/cambiaVersion/:idServidorOrigen/:idServidorDestino/:idUsuario'},
+		'cambiaDisponibilidad':{'method':'GET','url':'/dashboard/api/servidores/cambiaDisponibilidad/:idServidor/:idUsuario/:disponible'}
 	});
 });
 
@@ -64,6 +66,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	app.cssActualizando = "vacio";
 	app.versionesProcesando = 0;
 	app.versionesFallidas = 0;
+	app.usuarioDuenoAmbiente = false;
 
 
 
@@ -82,6 +85,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			for (var i=0; i<s.ambienteDuenos.length; i++){
 				if (app.usuario && s.ambienteDuenos[i]==app.usuario.id){
 					dueno = true;
+					app.usuarioDuenoAmbiente = true;
 					break;
 				}
 			}
@@ -91,8 +95,10 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 					break;
 				}
 			}
+			s.disponible=s.estado.indexOf("NO_DISPONIBLE")!=-1;
 
-			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
+			s.css = app.logeado && s.estado.indexOf("OCUPADO")!=-1 && s.estado.indexOf("NO_DISPONIBLE")!=-1  &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
+			s.cssNoDisponible = s.estado.indexOf("NO_DISPONIBLE")==-1?"":"static-motion";
 		}
 	}
 
@@ -267,6 +273,37 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 	$scope.seleccionVersionAut=function(s){
 		 window.location.assign("http://dashboard.version.sigef.gov.do/dashboard/version.html?versionId="+s.originalObject.id);
 	}
+	
+	$scope.filtroServidoresLibres=function(s){
+		return s.estado==='LIBRE';
+	}
+	
+	$scope.versionPuedeCambiarServidor(s){
+		return s.estado!=='LIBRE' && s.estado.indexOf('NO_DISPONIBLE')===-1;
+	}
+	
+	$scope.cambiaVersionServidor(servidorVa, servidorEsta){
+		  Servidores.cambiarServidor({'idServidorOrigen':servidorEsta.id,'idServidorDestino':servidorVa.id,'idUsuario':app.usuario.id}).$promise.then(function(data){
+				app.actualizaServidores();
+			});
+	}
+	
+	$scope.servidorMarcaNoDisponible(servidor){
+		if (s.estado.indexOf('NO_DISPONIBLE')===-1){
+			Servidores.cambiaDisponibilidad({'idServidor':servidor.id,'idUsuario':app.usuario.id,'disponible':'false'}).$promise.then(function(data){
+				app.actualizaServidores();
+			});
+		}
+	}
+	
+	$scope.servidorMarcaDisponible(servidor){
+		if (s.estado.indexOf('NO_DISPONIBLE')!==-1){
+			Servidores.cambiaDisponibilidad({'idServidor':servidor.id,'idUsuario':app.usuario.id,'disponible':'true'}).$promise.then(function(data){
+				app.actualizaServidores();
+			});
+		}
+	}
+
 
 	app.actualizar = function(){
 		app.actualizaFila();

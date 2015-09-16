@@ -31,7 +31,10 @@ public class ProcesaFilaDeployAutomatico {
 	}
 
 	private void intentaDeploy(EntFilaDespliegueVersion versionFila){
-		List<EntServidor> servidores = servicioServidor.getServidoresAmbiente(fila.getAmbiente().getId()).stream().filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.NO_DISPONIBLE).collect(Collectors.toList());
+		List<EntServidor> servidores = servicioServidor.getServidoresAmbiente(fila.getAmbiente().getId()).stream()
+				.filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.NO_DISPONIBLE)
+				.filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.NO_DISPONIBLE_MANUAL)
+				.collect(Collectors.toList());
 		Optional<EntServidor> optional = buscaSiYaTieneEsteBranchActivo(versionFila, servidores);
 		if (optional.isPresent()){
 			deploy(optional.get(), versionFila);

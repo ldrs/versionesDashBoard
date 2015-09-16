@@ -14,12 +14,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
+import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -32,6 +35,7 @@ public class WSServidores {
 	private @Servicio @Inject ServicioVersion servicioVersion;
 	private @Servicio @Inject ServicioFila servicioFila;
 	private @Servicio @Inject ServicioPersona servicioPersona;
+	private @Servicio @Inject ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
 
 	@GET
@@ -56,6 +60,35 @@ public class WSServidores {
 
 		servicioServidor.cambiaVersionServidor(servidor, null,servicioPersona.busca(autor));
 
+		return toJson(servidor).build().toString();
+	}
+	
+	@GET
+	@Path("cambiarServidor/{servidorOrigen}/{servidorDestino}/{autor}")
+	public String cambiaServidor(@PathParam("servidorOrigen") String idServidorOrigen,@PathParam("servidorDestino") String idServidorDestino  , @PathParam("autor") String autor  ){
+		EntServidor servidorOrigen = servicioServidor.getServidorPorId(idServidorOrigen);
+		EntServidor servidorDestino = servicioServidor.getServidorPorId(idServidorDestino);
+		if (servidorOrigen == null || servidorDestino == null){
+			return "{}";
+		}
+		EntFilaDespliegue fila = servicioFila.getFilaPorAmbienteAplicacion(servidorOrigen.getAmbiente().getId());
+		EntVersion version = servidorOrigen.getVersionActual();
+		
+		
+		servicioServidor.cambiaVersionServidor(servidorOrigen, null,servicioPersona.busca(autor));
+		
+		servicioJobDespliegueVersion.nuevoDeploy(servidorDestino, fila, version);
+
+		return toJson(servidorDestino).build().toString();
+	}
+	
+	public String cambiaDisponibilidad(@PathParam("servidor") String idServidor , @PathParam("autor") String autor , @PathParam("disponible") boolean disponible  ){
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{}";
+		}
+		servidor.setEstadoServidor (disponible? servidor.getVersionActual() == null ? EEstadoServidor.LIBRE : EEstadoServidor.OCUPADO:  EEstadoServidor.NO_DISPONIBLE_MANUAL);
+		servidor = servicioServidor.actualizarServidor(servidor);
 		return toJson(servidor).build().toString();
 	}
 

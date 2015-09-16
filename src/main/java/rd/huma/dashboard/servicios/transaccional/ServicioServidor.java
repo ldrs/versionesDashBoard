@@ -73,4 +73,8 @@ public class ServicioServidor {
 	public EntServidor getServidorPorId(String idServidor) {
 		return entityManager.find(EntServidor.class, idServidor);
 	}
+
+	public EntServidor actualizarServidor(EntServidor servidor) {
+		return entityManager.merge(servidor);
+	}
 }

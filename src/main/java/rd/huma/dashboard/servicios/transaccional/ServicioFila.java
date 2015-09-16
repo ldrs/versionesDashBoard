@@ -64,7 +64,7 @@ public class ServicioFila {
 						.getResultList();
 	}
 
-	public EntFilaDespliegue getFila(String id){
+	public EntFilaDespliegue getFilaPorAmbienteAplicacion(String id){
 		return entityManager.createNamedQuery("buscar.filaDeploment",EntFilaDespliegue.class).setParameter("amb", id).getSingleResult();
 	}
 
