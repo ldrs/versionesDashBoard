@@ -32,7 +32,7 @@
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
 		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
-		<div angucomplete-alt class="divBuscar" minlength="3" placeholder="Buscar"  input-class="inpBuscar"  match-class="highlight" remote-url="http://dashboard.version.sigef.gov.do/dashboard/api/versionBuscar?s=" remote-url-data-field="resultados" title-field="numero,branch" description-field="branch" selected-object="seleccionVersionAut" ></div>
+		<div angucomplete-alt class="divBuscar" minlength="3" placeholder="Buscar"  input-class="inpBuscar"  match-class="highlight" remote-url="http://dashboard.version.sigef.gov.do/dashboard/api/versionBuscar?s=" remote-url-data-field="resultados" title-field="numero" description-field="branch,tickets" selected-object="seleccionVersionAut" ></div>
 		<div class="info">
 			<a title="Versiones Procesando aun sin fila" href="versionProcesando.html" class="number">{{app.versionesProcesando}}</a>
 			<a title="Versiones Recientemente fallaron" href="restaurarVersion.html" class="number">{{app.versionesFallidas}}</a>
@@ -80,7 +80,7 @@
 									<div class="aplicacion c3" style="color: black">Autor</div>
 									<div class="aplicacion c3" style="color: black">Branch</div>
 									<div class="aplicacion c2" style="color: black">Fecha</div>
-									<div class="aplicacion c3" style="color: black; float: right"><p style="display: {{app.cssControlesPrioridad">Operaciones</p></div>
+									<div class="aplicacion c3" style="color: black; float: right"><p style="display: {{app.cssControlesPrioridad}}">Operaciones</p></div>
 									<div class="aplicacion c2" style="float: right" ><div class="scriptIcon" title="Cantidad de Scripts"></div></div>
 									<div class="aplicacion c2" style="float: right" ><div class="reportIcon" title="Cantidad de Reportes"></div></div>
 								</div>
@@ -93,7 +93,7 @@
 										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branchOrigen}}">{{version.branchOrigen}}</a></div>
 										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
 										<div class="aplicacion v c3" style="float: right">
-											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad">
+											<div class="controlesPrioridad" style="display: {{app.cssControlesPrioridad}}">
 													<div class="operacion bottomUp" ng-click="upVersion(version)"></div>
 													<div class="operacion bottomDown" ng-click="downVersion(version)"></div>
 													<dialog id="dig{{version.id}}">

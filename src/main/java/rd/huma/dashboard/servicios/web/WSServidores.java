@@ -19,6 +19,7 @@ import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorReporteReintento;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptAntes;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptTodos;
@@ -61,7 +62,7 @@ public class WSServidores {
 		}
 
 
-		servicioServidor.cambiaVersionServidor(servidor, null,servicioPersona.busca(autor));
+		servicioServidor.cambiaVersionServidor(servidor, null,servicioPersona.busca(autor),ETipoUndeploy.MANUAL);
 
 		return toJson(servidor).build().toString();
 	}
@@ -78,9 +79,9 @@ public class WSServidores {
 		EntVersion version = servidorOrigen.getVersionActual();
 
 
-		servicioServidor.cambiaVersionServidor(servidorOrigen, null,servicioPersona.busca(autor));
+		servicioServidor.cambiaVersionServidor(servidorOrigen, null,servicioPersona.busca(autor),ETipoUndeploy.MANUAL);
 
-		servicioServidor.cambiaVersionServidor(servidorDestino, version,servicioPersona.busca(autor));
+		servicioServidor.cambiaVersionServidor(servidorDestino, version,servicioPersona.busca(autor),null);
 
 		servicioJobDespliegueVersion.nuevoDeploy(servidorDestino, fila, version);
 

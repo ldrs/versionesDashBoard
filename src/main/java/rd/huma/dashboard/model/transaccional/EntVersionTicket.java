@@ -9,7 +9,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "VERSION_TICKET")
-@NamedQueries({@NamedQuery(name="buscar.versionTicketPorVersion", query="select E from EntVersionTicket E where E.version = :ver")})
+@NamedQueries({@NamedQuery(name="buscar.versionTicketPorVersion", query="select E from EntVersionTicket E where E.version = :ver"),
+				@NamedQuery(name="buscar.versionParecida",query="SELECT E from EntVersionTicket T join T.version E join T.ticketSysAid S where E.numero like :query or E.branchOrigen like :query or S.numero like :query order by E.fechaRegistro desc"),
+			  }
+
+		)
 public class EntVersionTicket extends AEntModelo {
 
 	/**

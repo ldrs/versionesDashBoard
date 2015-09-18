@@ -16,6 +16,6 @@ public class ServicioSeleccionFila {
 	}
 
 	public List<EntFilaDespliegue> filasParaVersion() {
-		return new  FiltradorTicketVersionFila(version, new FiltradorJiraVersionFila(version, servicio.getFilasDeploment()).filtra()).filtra();
+		return new  FiltradorTicketVersionFila(version, servicio.getFilasDeploment()).filtra();
 	}
 }

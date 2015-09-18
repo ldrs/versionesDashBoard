@@ -18,11 +18,11 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFilaHistorica;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
-
 @Path("filaHistorica")
 public class WSFilaHistorica {
 
@@ -41,6 +41,21 @@ public class WSFilaHistorica {
 		.forEach(a -> arreglo.add(agregarVersion(a)));
 		return arreglo.build().toString();
 	}
+
+	@GET
+	@Path("versiones3DiasError/{aplicacion}")
+	public String getVersionesUltimosDiasError(@PathParam("aplicacion") String aplicacionNombre){
+
+		Instant hace3Dias =  Instant.now().minus(Duration.ofDays(3));
+
+		JsonArrayBuilder arreglo = Json.createArrayBuilder();
+		servicioFilaHistorica.getVersionesPorAplicacion(aplicacionNombre).stream()
+		.filter(f -> f.getFechaRegistro().isAfter(hace3Dias))
+		.filter(f ->  !f.getVersion().getEstado().activo() && !EEstadoVersion.NEXUS_ELIMINADO.equals(f.getVersion().getEstado()) )
+		.forEach(a -> arreglo.add(agregarVersion(a)));
+		return arreglo.build().toString();
+	}
+
 
 	@GET
 	@Path("versiones/{idAmbiente}")

@@ -1,11 +1,16 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -55,6 +60,15 @@ public class ServicioVersion {
 
 	@Inject
 	private MonitorEjecutor monitorEjecutor;
+
+	public static Predicate<EEstadoVersion> estadosNegativos(){
+		return e -> !e.activo() && e!=EEstadoVersion.NEXUS_ELIMINADO;
+	}
+
+	public Stream<EntVersion> versionesConError(){
+		return buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter(estadosNegativos())
+				.collect(Collectors.toSet())).stream().filter(v -> v.getFechaRegistro().isAfter(Instant.now().minus(Duration.ofDays(3))) );
+	}
 
 	public List<EntVersion> buscaVersiones(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
@@ -398,7 +412,15 @@ public class ServicioVersion {
 		return versionReporte;
 	}
 
-	public List<EntVersion> buscarVersionPorNumeroObranch(String query) {
+	public List<EntVersion> buscarVersionPorNumeroObranchOTicket(String query) {
 		return entityManager.createNamedQuery("buscar.versionParecida",EntVersion.class).setParameter("query", "%"+query +"%").getResultList();
+	}
+
+	public Set<EntTicketSysAid> actualizaEstadosSysaid(EntVersion version) {
+		Set<EntTicketSysAid> tickets = new HashSet<>();
+		for (EntTicketSysAid entTicketSysAid : buscaTickets(version).stream().map(EntVersionTicket::getTicketSysAid).collect(Collectors.toSet())) {
+			 tickets.add(servicioTicketSysaid.refrescarEstado(entTicketSysAid));
+		}
+		return tickets;
 	}
 }

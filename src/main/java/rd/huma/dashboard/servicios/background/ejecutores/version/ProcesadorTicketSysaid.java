@@ -11,7 +11,6 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
-import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioTicketSysaid;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
@@ -41,7 +40,7 @@ public class ProcesadorTicketSysaid extends AEjecutor {
 
 	private void actualizaEstado(EntVersionTicket versionTicket){
 		try{
-			Optional<Ticket> intentalTicket = servicioSysaid.getTicket(ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get(), Long.valueOf(versionTicket.getTicketSysAid().getNumero()));
+			Optional<Ticket> intentalTicket = servicioSysaid.getTicket(versionTicket.getTicketSysAid().getNumero());
 			if (intentalTicket.isPresent()){
 				Ticket ticket = intentalTicket.get();
 				EntTicketSysAid t = versionTicket.getTicketSysAid();

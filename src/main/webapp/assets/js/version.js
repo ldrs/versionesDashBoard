@@ -45,27 +45,31 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	app.jobs = [];
 	app.undeploys = [];
 
-	 Version.get({id :app.versionId},function(data){
-		 app.version = data;
-	 } );
 
-	 Version.getServidores({id :app.versionId},function(data){
-	 	if (data.length>0){
-	 		 servidor =  data[0];
-	 		app.mensaje = "Version esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
-	 		app.link = servidor.url;
-	 	}
-	 });
+	if (typeof app.versionId != 'undefined'){
+		 Version.get({id :app.versionId},function(data){
+			 app.version = data;
+		 } );
 
-	 Version.getCambiosModelos({id :app.versionId},function(data){
-		 app.cambiosModelo = data;
-	 });
+		 Version.getServidores({id :app.versionId},function(data){
+		 	if (data.length>0){
+		 		 servidor =  data[0];
+		 		app.mensaje = "Version esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
+		 		app.link = servidor.url;
+		 	}
+		 });
 
-	 Version.getJobs({id :app.versionId},function(data){
-		 app.jobs = data;
-	 });
+		 Version.getCambiosModelos({id :app.versionId},function(data){
+			 app.cambiosModelo = data;
+		 });
 
-	 Version.getUndeploys({id :app.versionId},function(data){
-		 app.undeploys = data;
-	 });
+		 Version.getJobs({id :app.versionId},function(data){
+			 app.jobs = data;
+		 });
+
+		 Version.getUndeploys({id :app.versionId},function(data){
+			 app.undeploys = data;
+		 });
+
+	}
 })

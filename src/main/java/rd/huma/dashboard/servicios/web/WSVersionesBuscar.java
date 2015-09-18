@@ -24,7 +24,7 @@ public class WSVersionesBuscar {
 	@GET
 	public String buscar(@QueryParam("s") String query){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-		 for (EntVersion version : servicioVersion.buscarVersionPorNumeroObranch(query)){
+		 for (EntVersion version : servicioVersion.buscarVersionPorNumeroObranchOTicket(query)){
 			 arrayBuilder.add(toJson(version));
 		 }
 		 return Json.createObjectBuilder().add("resultados", arrayBuilder).build().toString();
@@ -37,6 +37,14 @@ public class WSVersionesBuscar {
 		.add("numero", version.getNumero())
 		.add("branch", version.getBranchOrigen())
 		.add("fecha", UtilFecha.getFechaFormateada(version.getFechaRegistro()))
+		.add("tickets", consultaTickets(version))
 		;
+	}
+
+
+	private String consultaTickets(EntVersion version){
+		StringBuilder sb = new StringBuilder(150);
+		servicioVersion.buscaTickets(version).stream().forEach(j -> sb.append(j.getTicketSysAid().getNumero()).append(' ') );
+		return sb.toString();
 	}
 }

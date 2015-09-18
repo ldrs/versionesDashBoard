@@ -1901,8 +1901,12 @@ dialog {
     width: 34px;
 }
 .info{
- 	float: right;
-    margin-right: 25px;
+    position: absolute;
+    float: right;
+    top: 90px;
+    width: 100%;
+    text-align: right;
+    padding-right: 25px;
 }
 
 .iconoProcesar{

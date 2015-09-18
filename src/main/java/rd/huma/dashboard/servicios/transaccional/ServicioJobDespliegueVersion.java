@@ -15,6 +15,7 @@ import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoJobDespliegue;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorDespliegueVersionJenkins;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorJenkinsSeguimientoDespliegue;
@@ -43,7 +44,7 @@ public class ServicioJobDespliegueVersion {
 	}
 
 	public EntJobDespliegueVersion nuevoDeploy(EntServidor servidor, EntFilaDespliegueVersion versionFila){
-		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion(),null);
+		servicioServidor.cambiaVersionServidor(servidor,versionFila.getVersion(),null,null);
 
 		EntJobDespliegueVersion job = nuevoDeploy(servidor, versionFila.getFila(), versionFila.getVersion());
 
@@ -73,7 +74,7 @@ public class ServicioJobDespliegueVersion {
 		jobActualizado.setEstado(estado);
 		entityManager.merge(jobActualizado);
 		if (job.getTipoDespliegue() == ETipoDespliegueJob.VERSION && estado == EEstadoJobDespliegue.FALLIDO_DEPLOY_JENKINS){
-			servicioServidor.cambiaVersionServidor(job.getServidor(), null,null);
+			servicioServidor.cambiaVersionServidor(job.getServidor(), null,null,ETipoUndeploy.AUTOMOMATICO_POR_FALLIDO_JENKINS);
 		}
 		if (estado.getEstadoVersionRelativo()!=null){
 			servicioVersion.actualizarEstado(estado.getEstadoVersionRelativo(), job.getVersion());

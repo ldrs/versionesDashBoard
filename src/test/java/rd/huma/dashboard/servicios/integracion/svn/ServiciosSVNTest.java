@@ -99,7 +99,7 @@ public class ServiciosSVNTest {
 			if (encontrado.isPresent()){
 				Issues issue = encontrado.get();
 				if (issue.getFields().getSysAidTicket()!=null){
-					Optional<Ticket> ticketFound = s.getTicket(configuracionGeneral, Long.valueOf(issue.getFields().getSysAidTicket()));
+					Optional<Ticket> ticketFound = s.getTicket(configuracionGeneral, Integer.valueOf(issue.getFields().getSysAidTicket()));
 					if (ticketFound.isPresent()){
 						Ticket ticket = ticketFound.get();
 						if (ticket.getEstado()==21){

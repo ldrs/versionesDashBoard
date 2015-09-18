@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -12,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 
 @Entity
 @Table(name="HISTORICO_UNDEPLOY")
@@ -38,6 +42,9 @@ public class EntHistoricoUndeploy extends AEntModelo {
 	@JoinColumn
 	@ManyToOne
 	private EntPersona autor;
+
+	@Enumerated(EnumType.STRING)
+	private ETipoUndeploy tipoUndeploy;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
@@ -68,6 +75,14 @@ public class EntHistoricoUndeploy extends AEntModelo {
 
 	public Instant getFechaRegistro() {
 		return fechaRegistro.toInstant();
+	}
+
+	public ETipoUndeploy getTipoUndeploy() {
+		return tipoUndeploy;
+	}
+
+	public void setTipoUndeploy(ETipoUndeploy tipoUndeploy) {
+		this.tipoUndeploy = tipoUndeploy;
 	}
 
 	@Override

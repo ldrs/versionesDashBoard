@@ -43,6 +43,5 @@ public class EjecutorSeleccionFila extends AEjecutor {
 
 		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
 		filas.stream().sorted().forEach(fila -> servicio.crearVersionFila(version, fila));
-
 	}
 }

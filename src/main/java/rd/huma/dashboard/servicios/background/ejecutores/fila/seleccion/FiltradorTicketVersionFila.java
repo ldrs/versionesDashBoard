@@ -1,14 +1,16 @@
 package rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
-import rd.huma.dashboard.model.transaccional.EntVersionTicket;
+import rd.huma.dashboard.servicios.transaccional.ServicioTicketSysaid;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class FiltradorTicketVersionFila {
@@ -22,9 +24,16 @@ public class FiltradorTicketVersionFila {
 	}
 
 	public List<EntFilaDespliegue> filtra() {
-		Set<String> estados = ServicioVersion.getInstanciaTransaccional().buscaTickets(version)
-				.stream().map(EntVersionTicket::getTicketSysAid).map(EntTicketSysAid::getEstado).collect(Collectors.toSet());
+		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
+		Set<EntTicketSysAid> ticketsActualizados = servicioVersion.actualizaEstadosSysaid(version);
+		Optional<EntAmbiente> ambiente = ServicioTicketSysaid.getInstanciaTransaccional().getAmbientesTickets(ticketsActualizados).stream().findFirst();
 
-		return filas.stream().filter(f ->  f.isPermiteSinTicketSysAid() ||  Arrays.asList(f.getEstadosSysAid().split(",")).stream().filter(s -> estados.contains(s)).findFirst().isPresent()).collect(Collectors.toList());
+		if (ambiente.isPresent()){
+			EntAmbiente ambienteFila = ambiente.get();
+			return filas.stream().filter(f -> f.getAmbiente().getAmbiente().equals(ambienteFila)).collect(Collectors.toList());
+
+		}else{
+			return Collections.emptyList();
+		}
 	}
 }

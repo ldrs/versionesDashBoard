@@ -19,7 +19,8 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoFilaDeployement;
 @Entity
 @Table(name="HISTORICO_DESPLIEGUE")
 @NamedQueries({
-	@NamedQuery(name ="buscarPorAmbiente.historico", query = "SELECT E from EntHistoricoDespliegue E join E.fila F join F.ambiente A join E.version V where A.id = :idAmbiente order by E.fechaRegistro desc, V.revisionSVN ")
+	@NamedQuery(name ="buscarPorAmbiente.historico", query = "SELECT E from EntHistoricoDespliegue E join E.fila F join F.ambiente A join E.version V where A.id = :idAmbiente order by E.fechaRegistro desc "),
+	@NamedQuery(name ="buscarPorAplicacion.historico", query = "SELECT E from EntHistoricoDespliegue E join E.version V where V.svnOrigen = :app order by E.fechaRegistro desc ")
 }
 
 		)

@@ -30,6 +30,11 @@ public class ServicioFilaHistorica {
 		return entityManager.createNamedQuery("buscarPorAmbiente.historico", EntHistoricoDespliegue.class).setParameter("idAmbiente", idAmbiente).getResultList();
 	}
 
+	public List<EntHistoricoDespliegue> getVersionesPorAplicacion(String aplicacionNombre) {
+		return entityManager.createNamedQuery("buscarPorAplicacion.historico", EntHistoricoDespliegue.class).setParameter("app", aplicacionNombre).getResultList();
+	}
+
+
 	public void moverAHistorico(EntFilaDespliegueVersion filaVersion, EntJobDespliegueVersion jobDespliegueVersion){
 
 

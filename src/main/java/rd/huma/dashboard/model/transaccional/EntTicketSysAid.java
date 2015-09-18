@@ -13,7 +13,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="TICKET_SYSAID")
-@NamedQueries({@NamedQuery(name="buscar.versionTicket", query="SELECT E from EntTicketSysAid E where E.numero = :num")})
+@NamedQueries({
+				@NamedQuery(name="buscar.versionTicket", query="SELECT E from EntTicketSysAid E where E.numero = :num"),
+				@NamedQuery(name="buscarAmbienteSegunEstados.versionTicket", query="SELECT A from EntTicketSysAid T, EntTicketSysAidEstado E join E.ambiente A where T.estado = E.codigo and T in :tickets order by A.orden"),
+				@NamedQuery(name="buscarTodos.versionTicket", query="SELECT E from EntTicketSysAid E"),
+			})
 public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketSysAid> {
 
 	/**
@@ -27,6 +31,10 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
+
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaUltimaModificacion = Timestamp.from(Instant.now());
 
 	public String getNumero() {
 		return numero;
@@ -46,6 +54,16 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	public Instant getFechaRegistro() {
 		return fechaRegistro.toInstant();
+	}
+
+	public Instant asignarFechaModificacion(){
+		Instant instante = Instant.now();
+		fechaUltimaModificacion = Timestamp.from(instante);
+		return instante;
+	}
+
+	public Instant getUltimaModificacion(){
+		return fechaUltimaModificacion.toInstant();
 	}
 
 	@Override

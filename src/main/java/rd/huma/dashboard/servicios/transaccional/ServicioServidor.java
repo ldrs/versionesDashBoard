@@ -14,6 +14,7 @@ import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 
 
 @Stateless
@@ -47,13 +48,14 @@ public class ServicioServidor {
 		return entityManager.createNamedQuery("buscarPorBranch.servidor",EntServidor.class).setParameter("branch", branch).getResultList();
 	}
 
-	public void cambiaVersionServidor(EntServidor servidor, EntVersion version, EntPersona persona) {
+	public void cambiaVersionServidor(EntServidor servidor, EntVersion version, EntPersona persona, ETipoUndeploy tipoUndeploy) {
 		EntServidor servidorDatos = entityManager.find(EntServidor.class, servidor.getId());
 		if (version == null && servidor.getVersionActual()!=null){
 			EntHistoricoUndeploy undeploy = new EntHistoricoUndeploy();
 			undeploy.setAutor(persona);
 			undeploy.setServidor(servidorDatos);
 			undeploy.setVersion(servidor.getVersionActual());
+			undeploy.setTipoUndeploy(tipoUndeploy);
 			entityManager.persist(undeploy);
 		}
 		servidorDatos.setVersionActual(version);

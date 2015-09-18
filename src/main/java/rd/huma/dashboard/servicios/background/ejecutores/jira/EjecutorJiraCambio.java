@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.EjecutorSeleccionFila;
 import rd.huma.dashboard.servicios.background.ejecutores.fila.seleccion.ServicioSeleccionFila;
@@ -118,7 +119,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 			EntFilaDespliegue filaDespliegue = fila.get();
 			if (Arrays.stream(filaDespliegue.getEstadosJiras().split(",")).filter(s-> nuevoEstado.equals(s)).count()==0){
 
-				List<Histories> historico = new BuscadorJiraRestApi(new JiraQuery(configuracion, ETipoQueryJira.KEY_CAMBIOS, "SGF-1649")).getHistories();
+				List<Histories> historico = new BuscadorJiraRestApi(new JiraQuery(configuracion, ETipoQueryJira.KEY_CAMBIOS, numeroJira)).getHistories();
 				EntPersona autor;
 				if (historico.isEmpty()){
 					autor = null;
@@ -128,7 +129,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 				}
 
 				LOGGER.info(String.format("Retirando la version del servidor %s ya que el jira(%s) cambio al estado %s",servidor.getNombre(),numeroJira, nuevoEstado));
-				servicioServidor.cambiaVersionServidor(servidor, null,autor);
+				servicioServidor.cambiaVersionServidor(servidor, null,autor,ETipoUndeploy.AUTOMOMATICO_JIRA);
 			}
 		}
 	}

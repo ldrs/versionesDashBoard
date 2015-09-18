@@ -11,12 +11,15 @@ import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 @Path("filaConsulta")
 public class WSFilaConsulta {
 	@Servicio @Inject
 	private ServicioFila servicioFila;
 
+	@Servicio @Inject
+	private ServicioVersion servicioVersion;
 
 	@Path("todas")
 	@GET
@@ -25,6 +28,7 @@ public class WSFilaConsulta {
 		servicioFila.getFilasDeploment().forEach(fila -> arreglo.add(filaToJson(fila)));
 		return arreglo.build().toString();
 	}
+
 
 	private JsonObjectBuilder filaToJson(EntFilaDespliegue fila){
 		JsonObjectBuilder retorno = Json.createObjectBuilder();

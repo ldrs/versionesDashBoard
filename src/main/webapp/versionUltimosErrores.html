@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+
+<html ng-app="versionesApp">
+<head>
+		<title>Versiones</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="assets/js/angular.min.js"></script>
+		<script src="assets/js/angular-resource.js"></script>
+		<script src="assets/js/services.js"></script>
+		<script src="assets/js/appVersionErrores.js"></script>
+
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+
+    <body ng-controller="appController as app">
+		<div id="page-wrapper">
+
+			<div id="header-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="12u">
+
+							<header id="header">
+								<h1><a href="app.html" id="logo">Versiones Con Errores Reciente</a></h1>
+								 <div >
+
+									<nav id="nav">
+										<a ng-repeat="aplicacion in app.aplicaciones" href="app.html?aplicacion={{aplicacion.nombre}}" class="{{aplicacion.css}}">{{aplicacion.nombre}}</a>
+									</nav>
+								</div>
+							</header>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="footer-wrapper">
+				<div class="container">
+
+									<div class="row">
+
+							<h2 style="margin-bottom: 0;">Versiones</h2>
+							<div  style="width: 100%">
+								<div class="row rowFila rowHeaderFila">
+									<div class="aplicacion c1" style="color: black">Numero</div>
+									<div class="aplicacion c3" style="color: black">Autor</div>
+									<div class="aplicacion c3" style="color: black">Branch</div>
+									<div class="aplicacion c2" style="color: black">Fecha</div>
+									<div class="aplicacion c2" style="color: black">Estado Fila</div>
+									<div class="aplicacion c2" style="color: black">Estado Version</div>
+								</div>
+
+								<div  ng-repeat="version in app.versionesFila | orderBy:'prioridad' ">
+								<div class="versionRow">
+										<div class="row rowFila">
+										<div class="aplicacion v versionNumber c1"><a href="version.html?versionId={{version.versionId}}">{{version.numero}}</a></div>
+										<div class="aplicacion v c3"><a href="persona.html?id={{version.autor.id}}">{{version.autor.nombre}}</a></div>
+										<div class="aplicacion v c3"><a href="branch.html?branch={{version.branch}}">{{version.branch}}</a></div>
+										<div class="aplicacion v c2">{{version.fechaVersion}}</div>
+										<div class="aplicacion v c2">{{version.estado}} </div>
+										<div class="aplicacion v c2">{{version.versionEstado}} </div>
+									</div>
+
+									<div class="tickets">
+										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
+
+									</div>
+									<div class="tickets">
+										<div  style="float: left; padding-right: 15px" ng-repeat="dueno in version.participantes"><a href="persona.html?id={{version.autor.id}}" target="dueno">{{dueno.nombre}}</a></div>
+									</div>
+								</div>
+
+								</div>
+							</div>
+
+
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+
+</html>

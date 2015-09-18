@@ -67,8 +67,6 @@ public class WSVersionesConsulta {
 		if (version == null){
 			return "{}";
 		}
-
-
 		return toJson(version).build().toString();
 	}
 
