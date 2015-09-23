@@ -24,9 +24,13 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
+import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraEnComentario;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
 import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
+import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
+import rd.huma.dashboard.servicios.integracion.svn.util.SVNOrigenBranch;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioSvnBuscaOrigenBranch;
 
 public class ProcesadorTickets {
 	private EntConfiguracionGeneral configuracionGeneral;
@@ -55,7 +59,16 @@ public class ProcesadorTickets {
 
 	public ProcesadorTickets procesaJiras(){
 		EjecutorVersion.LOGGER.info("Buscando los jiras el jira en el comentario de la version :" + version.getNumero());
-		List<EntJira> jirasEncontradoComentarios = BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira();
+		List<EntJira> jirasEncontradoComentarios = new ArrayList<>();
+		try{
+			SVNOrigenBranch origen = new ServicioSvnBuscaOrigenBranch(ServicioSVN.para(aplicacion).toBranchCompleto(version.getBranchOrigen()), aplicacion.getJiraKey()).getOrigen();
+			jirasEncontradoComentarios.addAll(origen.getJiras());
+		}catch(Exception e){
+			e.printStackTrace();
+			EjecutorVersion.LOGGER.warning("No se pudo interpretar el origen");
+		}
+
+		jirasEncontradoComentarios.addAll(BuscadorJiraEnComentario.of(version.getComentario(), aplicacion.getJiraKey()).encuentraJira());
 		this.buscadorJiraQuery =  new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.BRANCH, version.getBranchOrigen()));
 
 

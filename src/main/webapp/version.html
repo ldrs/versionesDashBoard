@@ -16,6 +16,7 @@
 
 
 		<script src="assets/js/angular.min.js"></script>
+	   <script src="assets/js/angular-sanitize.min.js"></script>
 		<script src="assets/js/angular-resource.js"></script>
 		<script src="assets/js/services.js"></script>
 		<script src="assets/js/version.js"></script>
@@ -36,7 +37,7 @@
 						<div class="12u">
 
 							<header id="header">
-								<h1><a href="app.html" id="logo">version {{app.version.numero}}</a></h1>
+								<h1><a href="app.html" id="logo">versión {{app.version.numero}}</a></h1>
 								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br> <a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.version.svnOrigen}}</a><br>{{app.version.svnRevision}}</div>
 							</header>
 
@@ -110,17 +111,11 @@
 								<td><h4>Estado</h4></td>
 								<td><h4>Observacion</h4></td>
 							</tr>
-							<tr ng-repeat="job in app.jobs | orderBy:'fechaRegistro'">
+							<tr ng-repeat="job in app.allJobs | orderBy:'fechaRegistro'">
 								<td>{{job.fechaRegistro}}</td>
 								<td>{{job.tipo}}</td>
 								<td>{{job.estado}}</td>
-								<td>{{job.observacion}}</td>
-							</tr>
-							<tr ng-repeat="undeploy in app.undeploys | orderBy:'fechaRegistro'">
-								<td>{{undeploy.fechaRegistro}}</td>
-								<td>VERSION</td>
-								<td>UNDEPLOY_SERVIDOR</td>
-								<td>La Version se retiro de <a href="{{undeploy.servidor.ruta}}">{{undeploy.servidor.nombre}}</a> por la persona {{undeploy.persona.nombre}} </td>
+								<td> <span ng-bind-html="job.observacion"></span></td>
 							</tr>
 						</table>
 					</div>

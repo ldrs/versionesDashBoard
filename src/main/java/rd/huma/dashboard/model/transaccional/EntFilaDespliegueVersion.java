@@ -23,8 +23,8 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name = "buscarPorVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where V.id = :ver order by V.fechaRegistro"),
 	@NamedQuery(name = "buscarPorFila.fila", query = "Select F from EntFilaDespliegueVersion F where F.fila = :fil  order by prioridad"),
 	@NamedQuery(name = "buscarPorAmbiente.fila", query = "Select E from EntFilaDespliegueVersion E Join E.fila F Join F.ambiente A where A.id = :amb order by E.prioridad"),
-	@NamedQuery(name = "buscarPorFilaMenorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad<prd order by E.prioridad"),
-	@NamedQuery(name = "buscarPorFilaMayorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad>prd order by E.prioridad desc"),
+	@NamedQuery(name = "buscarPorFilaMenorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad < :prd order by E.prioridad"),
+	@NamedQuery(name = "buscarPorFilaMayorPrioridad.fila", query = "Select E from EntFilaDespliegueVersion E where E.fila = :fil and E.prioridad > :prd order by E.prioridad desc"),
 	@NamedQuery(name = "maxVersion.fila",query = "Select Max(F.prioridad) +1 from EntFilaDespliegueVersion F where F.fila = :fil")
 })
 public class EntFilaDespliegueVersion extends AEntModelo {

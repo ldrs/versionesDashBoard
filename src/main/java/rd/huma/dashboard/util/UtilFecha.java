@@ -1,5 +1,6 @@
 package rd.huma.dashboard.util;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,11 @@ public class UtilFecha {
 	private static final String FORMATO_FECHA = "dd/MM/yyyy HH:mm a";
 
 	private UtilFecha() {
+	}
+
+	public static LocalDateTime getFechaJenkins(String fecha){
+
+		return LocalDateTime.parse(fecha,DateTimeFormatter.ofPattern("yyyy-MM-DD_HH-mm-ss"));
 	}
 
 

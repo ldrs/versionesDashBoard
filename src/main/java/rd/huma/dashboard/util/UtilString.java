@@ -12,4 +12,11 @@ public class UtilString {
 		return valor.toLowerCase();
 	}
 
+	public static String defecto(String valor){
+		if (valor == null){
+			return "";
+		}
+		return valor;
+	}
+
 }

@@ -12,7 +12,7 @@ function toQueryString(page){
 
 
 
-var versionesApp = angular.module('versionesApp',['ngResource','appDbServices']);
+var versionesApp = angular.module('versionesApp',['ngResource','appDbServices','ngSanitize']);
 
 
 
@@ -44,6 +44,7 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	app.cambiosModelo = [];
 	app.jobs = [];
 	app.undeploys = [];
+	app.allJobs=[];
 
 
 	if (typeof app.versionId != 'undefined'){
@@ -65,10 +66,20 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 
 		 Version.getJobs({id :app.versionId},function(data){
 			 app.jobs = data;
+				for (var i=0; i<app.jobs.length; i++){
+					var job = app.jobs[i];
+					app.allJobs.push({fechaRegistro:job.fechaRegistro,tipo:job.tipo,estado:job.estado,observacion:job.observacion});
+				}
 		 });
 
 		 Version.getUndeploys({id :app.versionId},function(data){
 			 app.undeploys = data;
+			 for (var i=0; i< app.undeploys.length; i++){
+				 	var undeploy = app.undeploys[i] , obs ="La versión se retiro de <a href=" + undeploy.servidor.ruta + ">" +undeploy.servidor.nombre+"</a> por la persona "+ undeploy.persona.nombre;
+
+
+					app.allJobs.push({fechaRegistro:undeploy.fechaRegistro,tipo:"UNDEPLOY",estado:"EJECUTADO",observacion:obs});
+				}
 		 });
 
 	}

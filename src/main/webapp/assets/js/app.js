@@ -112,6 +112,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			s.estiloNoLibre=s.libre?"none":"block";
 			s.estiloDisponible = s.disponible?"block":"none";
 			s.estiloNoDisponible = s.disponible?"none":"block";
+			app.cssControlesPrioridad = app.usuarioDuenoAmbiente?"block":"none";
 
 			s.css = app.logeado && s.ocupado && s.disponible &&  (dueno || responsable ||  app.containsElement(s.version.duenos,app.usuario.id)) ? "block":"none" ;
 			s.cssNoDisponible = s.disponible?"":"static-motion";

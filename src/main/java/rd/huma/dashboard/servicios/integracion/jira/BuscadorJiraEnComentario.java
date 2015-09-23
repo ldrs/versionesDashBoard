@@ -1,4 +1,4 @@
-package rd.huma.dashboard.servicios.background.ejecutores.version;
+package rd.huma.dashboard.servicios.integracion.jira;
 
 import java.util.ArrayList;
 import java.util.Collections;

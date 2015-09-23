@@ -23,6 +23,10 @@ public class ServicioSVN {
 		this.aplicacion = aplicacion;
 	}
 
+	public String toBranchCompleto(String branch){
+		return rootPath().append("/branches/").append(branch).toString();
+	}
+
 	public String buscaComentario(String path, String svnRevsion){
 		try {
 			Process proceso = Runtime.getRuntime().exec(new StringBuilder(150).append("svn log -r").append(svnRevsion).append(' ').append(rootPath()).append(path).toString());

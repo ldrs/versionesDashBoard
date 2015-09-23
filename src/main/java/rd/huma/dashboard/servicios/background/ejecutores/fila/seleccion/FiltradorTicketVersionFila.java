@@ -26,6 +26,9 @@ public class FiltradorTicketVersionFila {
 	public List<EntFilaDespliegue> filtra() {
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		Set<EntTicketSysAid> ticketsActualizados = servicioVersion.actualizaEstadosSysaid(version);
+		if (ticketsActualizados.isEmpty()){
+			return Collections.emptyList();
+		}
 		Optional<EntAmbiente> ambiente = ServicioTicketSysaid.getInstanciaTransaccional().getAmbientesTickets(ticketsActualizados).stream().findFirst();
 
 		if (ambiente.isPresent()){

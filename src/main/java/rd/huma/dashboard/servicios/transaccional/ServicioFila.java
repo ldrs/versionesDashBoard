@@ -26,8 +26,10 @@ import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
+import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
+import rd.huma.dashboard.util.UtilFecha;
 
 @Servicio
 @Stateless
@@ -137,11 +139,20 @@ public class ServicioFila {
 	}
 
 	private void notificarVersionNueva(EntVersion version, EntFilaDespliegue fila){
+		StringBuilder mensaje = new StringBuilder(150).append("Se ha agrega la versión ").append(version.getNumero()). append(" a la fila de ").append(fila.getAmbiente().getAmbiente().getNombre()).append(" en la fecha ").append(UtilFecha.getFechaFormateada(UtilFecha.getFechaJenkins(version.getInicioJob()))).append(" para el branch " ).append(version.getBranchOrigen()).append(" de los tickets (");
+		List<EntVersionTicket> tickets = servicioVersion.buscaTickets(version);
+		for (EntVersionTicket ticket : tickets) {
+			mensaje.append(ticket.getTicketSysAid().getNumero()).append(',');
+		}
+		mensaje.deleteCharAt(mensaje.length()-1);
+		mensaje.append(')');
+
+
 		EntVersionAlerta versionAlerta = new EntVersionAlerta();
 		versionAlerta.setAlerta(ETipoAlertaVersion.VERSION_CREADA);
 		versionAlerta.setAmbiente(fila.getAmbiente().getAmbiente());
 		versionAlerta.setVersion(version);
-		versionAlerta.setMensaje("Se ha creado la version " + version.getNumero() + " con el fecha de job -> " + version.getInicioJob()) ;
+		versionAlerta.setMensaje(mensaje.toString()) ;
 
 		servicioVersion.crearAlerta(versionAlerta);
 	}

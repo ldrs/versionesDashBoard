@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import rd.huma.dashboard.model.transaccional.EntHistoricoUndeploy;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntPersona;
+import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
@@ -33,6 +34,7 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 import rd.huma.dashboard.util.UtilFecha;
@@ -45,6 +47,9 @@ public class WSVersionesConsulta {
 
 	@Inject
 	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+
+	@Inject
+	private @Servicio ServicioRepositorioDatos servicioRepositorioDatos;
 
 	@Inject
 	private @Servicio ServicioServidor servicioServidor;
@@ -139,8 +144,29 @@ public class WSVersionesConsulta {
 									.add("estado", j.getEstado().name())
 									.add("numero", j.getJobNumber() == null ? "-1": j.getJobNumber())
 									.add("fila", j.getFilaDespliegue().getId())
+									.add("observacion",  observacionPorTipo(j.getTipoDespliegue() ,j.getId()))
 
 				;
+	}
+
+	private String observacionPorTipo(ETipoDespliegueJob tipo, String idJob){
+		if (tipo == null){
+			return "";
+		}else if (tipo == ETipoDespliegueJob.SCRIPT){
+			StringBuilder resultado = new StringBuilder(150);
+
+			for (EntRepositorioDatosScriptEjecutados ejecucion : servicioRepositorioDatos.getScriptEjecutadosPorJob(idJob)){
+				resultado.append("Para el Script <a title=\"Dar click para ver el resultado del script\" download=\"").append(ejecucion.getScript().getNombre()).append(".out.txt").append("\" href=\"http://dashboard.version.sigef.gov.do/dashboard/api/resultadoScript/").append(idJob).append("\">")
+				.append(ejecucion.getScript().getNombre()).append("</a>")
+				.append(" en su ejecucion el resultado fue (<span class=\"\">").append(ejecucion.getEstadoScript().name()).append(") autor (").append(ejecucion.getAutorScript().getNombreNullSafe() ) .append(") ")
+				;
+
+			}
+			return resultado.toString();
+
+		}else{
+			return "";
+		}
 	}
 
 
