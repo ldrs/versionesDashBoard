@@ -29,7 +29,9 @@ public class EjecutorScriptAntes extends AEjecutor {
 
 		List<EntVersionScript> scriptAntesEjecucion = servicioVersion.getScriptAntesEjecucion(version);
 		if (!scriptAntesEjecucion.isEmpty()){
-			 new DeployVersionScript(jobVersion, true, scriptAntesEjecucion).ejecutar();
+			DeployVersionScript deploy = new DeployVersionScript(jobVersion, true, scriptAntesEjecucion);
+			deploy.setEjecutarSiempre(true);
+			deploy.ejecutar();
 		}
 	}
 }

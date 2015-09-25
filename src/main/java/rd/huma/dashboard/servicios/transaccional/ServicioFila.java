@@ -139,7 +139,7 @@ public class ServicioFila {
 	}
 
 	private void notificarVersionNueva(EntVersion version, EntFilaDespliegue fila){
-		StringBuilder mensaje = new StringBuilder(150).append("Se ha agrega la versión ").append(version.getNumero()). append(" a la fila de ").append(fila.getAmbiente().getAmbiente().getNombre()).append(" en la fecha ").append(UtilFecha.getFechaFormateada(UtilFecha.getFechaJenkins(version.getInicioJob()))).append(" para el branch " ).append(version.getBranchOrigen()).append(" de los tickets (");
+		StringBuilder mensaje = new StringBuilder(150).append("Se ha agrega la versión ").append(version.getNumero()). append(" a la fila de ").append(fila.getAmbiente().getAmbiente().getNombre()).append(" en la fecha ").append( UtilFecha.getFechaFormateada(UtilFecha.getFechaJenkins(version.getInicioJob()))).append(" para el branch " ).append(version.getBranchOrigen()).append(" de los tickets (");
 		List<EntVersionTicket> tickets = servicioVersion.buscaTickets(version);
 		for (EntVersionTicket ticket : tickets) {
 			mensaje.append(ticket.getTicketSysAid().getNumero()).append(',');

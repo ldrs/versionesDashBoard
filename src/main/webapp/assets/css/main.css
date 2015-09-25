@@ -1033,7 +1033,7 @@ ul.link-list li:first-child {
 @media screen and (min-width: 737px) {
 	/* Basic */
 	body {
-		min-width: 1200px;
+		min-width: 800px;
 	}
 	section, article {
 		margin: 0 0 60px 0;
@@ -1199,7 +1199,7 @@ ul.link-list li:first-child {
 }
 
 /* Tablet Only */
-@media screen and (min-width: 737px) and (max-width: 1200px) {
+@media screen and (min-width: 600px) and (max-width: 800px) {
 	/* Basic */
 	body {
 		min-width: 1000px;

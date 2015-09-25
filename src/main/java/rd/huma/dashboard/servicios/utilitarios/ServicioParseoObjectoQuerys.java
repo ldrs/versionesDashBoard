@@ -1,6 +1,7 @@
 package rd.huma.dashboard.servicios.utilitarios;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,10 @@ public class ServicioParseoObjectoQuerys {
 	private void buscandoInformacion(String query, ETipoCambioTabla tipo, List<ObjectoCambio> l) throws JSQLParserException{
 		if (tipo == ETipoCambioTabla.INSERT_INTO){
 		}else{
+			if (Arrays.stream(query.split("")).filter(s -> "'".equals(s)).count()==1){
+				query = query.replace('\'', ' ');
+			}
+
 			l.add( tipo.getObjectoCambio(CCJSqlParserUtil.parse(query)));
 		}
 

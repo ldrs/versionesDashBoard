@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 				@NamedQuery(name="buscar.versionTicket", query="SELECT E from EntTicketSysAid E where E.numero = :num"),
 				@NamedQuery(name="buscarAmbienteSegunEstados.versionTicket", query="SELECT A from EntTicketSysAid T, EntTicketSysAidEstado E join E.ambiente A where T.estado = E.codigo and T in :tickets order by A.orden"),
-				@NamedQuery(name="buscarTodos.versionTicket", query="SELECT E from EntTicketSysAid E"),
+				@NamedQuery(name="buscarTodos.versionTicket", query="SELECT E from EntTicketSysAid E")
 			})
 public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketSysAid> {
 

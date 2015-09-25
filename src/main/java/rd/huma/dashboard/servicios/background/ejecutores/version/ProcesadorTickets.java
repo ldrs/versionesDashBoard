@@ -16,6 +16,7 @@ import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Subtasks;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntBranch;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
@@ -37,6 +38,7 @@ public class ProcesadorTickets {
 	private EntVersion version;
 	private EntAplicacion aplicacion;
 	private BuscadorJiraRestApi buscadorJiraQuery;
+	private EntBranch branch;
 	private Set<EntTicketSysAid> ticketSysAid = new TreeSet<>();
 	private List<EntJira> jiras = new ArrayList<>();
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
@@ -51,6 +53,7 @@ public class ProcesadorTickets {
 		}
 	});
 
+
 	private ProcesadorTickets(EntConfiguracionGeneral configuracionGeneral,EntVersion version, EntAplicacion aplicacion) {
 		this.configuracionGeneral = configuracionGeneral;
 		this.version = version;
@@ -61,8 +64,14 @@ public class ProcesadorTickets {
 		EjecutorVersion.LOGGER.info("Buscando los jiras el jira en el comentario de la version :" + version.getNumero());
 		List<EntJira> jirasEncontradoComentarios = new ArrayList<>();
 		try{
-			SVNOrigenBranch origen = new ServicioSvnBuscaOrigenBranch(ServicioSVN.para(aplicacion).toBranchCompleto(version.getBranchOrigen()), aplicacion.getJiraKey()).getOrigen();
+			SVNOrigenBranch origen = new ServicioSvnBuscaOrigenBranch(ServicioSVN.para(aplicacion).toBranchCompleto(version.getBranchOrigen()), aplicacion.getJiraKey(),version.getBranchOrigen()).getOrigen();
 			jirasEncontradoComentarios.addAll(origen.getJiras());
+
+			branch = new EntBranch();
+			branch.setAplicacion(aplicacion);
+			branch.setBranch(version.getBranchOrigen());
+			branch.setOrigen(origen.getOrigenBranch());
+			branch.setRevisionOrigen(origen.getRevision());
 		}catch(Exception e){
 			e.printStackTrace();
 			EjecutorVersion.LOGGER.warning("No se pudo interpretar el origen");
@@ -92,7 +101,12 @@ public class ProcesadorTickets {
 	}
 
 	private void buscarInformacionJira(EntJira jira){
-		new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())) .getIssues().stream().forEach( i-> collectInformationTicket(jira, i));
+		try{
+			new BuscadorJiraRestApi(new JiraQuery(configuracionGeneral, ETipoQueryJira.KEY, jira.getNumero())) .getIssues().stream().forEach( i-> collectInformationTicket(jira, i));
+		}catch(Exception e){
+			EjecutorVersion.LOGGER.warning("Buscando el Jira " + jira.getNumero() + " dio problemas" );
+			e.printStackTrace();
+		}
 	}
 
 	private void collectInformationTicket(EntJira jira,Issues issue){
@@ -145,6 +159,10 @@ public class ProcesadorTickets {
 
 	public Map<EntVersionScript, List<EntVersionScriptJira>> getScripts() {
 		return scripts;
+	}
+
+	public EntBranch getBranch() {
+		return branch;
 	}
 
 	Map<String, List<EntVersionReporteJira>> getReportes() {

@@ -1,9 +1,12 @@
 package rd.huma.dashboard.util;
 
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 
 public class UtilFecha {
@@ -13,9 +16,13 @@ public class UtilFecha {
 	private UtilFecha() {
 	}
 
-	public static LocalDateTime getFechaJenkins(String fecha){
-
-		return LocalDateTime.parse(fecha,DateTimeFormatter.ofPattern("yyyy-MM-DD_HH-mm-ss"));
+	public static Instant getFechaJenkins(String fecha){
+		 try {
+			return new  SimpleDateFormat("YYYY-MM-DD_hh-mm-ss").parse(fecha).toInstant();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new DateTimeParseException(e.getMessage(),"",1,e);
+		}
 	}
 
 

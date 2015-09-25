@@ -55,8 +55,5 @@ public class PruebaString {
 		}
 	}
 
-	@Test
-	public void bla2(){
-		System.out.println(new java.text.DecimalFormat("********#,##0.00").format(Double.valueOf("237500")));
-	}
+
 }

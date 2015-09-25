@@ -11,6 +11,7 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
+import rd.huma.dashboard.servicios.transaccional.ServicioBranch;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
@@ -21,6 +22,7 @@ class ProcesadorDatos {
 	private ServicioJira servicioJira;
 	private ServicioVersion servicioVersion;
 	private Map<String, EntVersionJira> jiras = new HashMap<>();
+
 
 	public ProcesadorDatos(ProcesadorTickets procesadorTickets) {
 		this.procesadorTickets = procesadorTickets;
@@ -42,6 +44,14 @@ class ProcesadorDatos {
 
 		procesadorTickets.getReportes().forEach((urlReporte,reportesJira)-> servicioVersion.crearVersionReporteYJiras(urlReporte, version, reportesJira));
 		procesadorTickets.getScripts().forEach(this::adicionarScript);
+		grabarBranch();
+	}
+
+	private void grabarBranch() {
+		if (procesadorTickets.getBranch()!=null){
+			ServicioBranch.getInstanciaTransaccional().grabar(procesadorTickets.getBranch());
+		}
+
 	}
 
 	private void adicionarScript(EntVersionScript script, List<EntVersionScriptJira> reportesJira){

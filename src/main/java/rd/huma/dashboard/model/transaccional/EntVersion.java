@@ -52,7 +52,6 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	private int minutosCompiladoVersion;
 
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
 

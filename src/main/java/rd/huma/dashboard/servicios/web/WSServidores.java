@@ -22,6 +22,7 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoUndeploy;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorReporteReintento;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptAntes;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptDespues;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptTodos;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
@@ -121,6 +122,19 @@ public class WSServidores {
 		}
 
 		servicioVersion.ejecutarJob(new EjecutorScriptAntes(servidor.getVersionActual()));
+		return "{ejecuto:true}";
+	}
+
+
+	@GET
+	@Path("ejecutarDespuesScripts/{idServidor}/{idUsuario}")
+	public String ejecutarScriptDespues(@PathParam("idServidor") String idServidor, @PathParam("idUsuario") String idUsuario){
+		EntServidor servidor = servicioServidor.getServidorPorId(idServidor);
+		if (servidor == null){
+			return "{ejecuto:false}";
+		}
+
+		servicioVersion.ejecutarJob(new EjecutorScriptDespues(servidor.getVersionActual()));
 		return "{ejecuto:true}";
 	}
 

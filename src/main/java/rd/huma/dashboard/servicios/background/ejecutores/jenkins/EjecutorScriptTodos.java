@@ -12,7 +12,6 @@ import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorScriptTodos extends AEjecutor {
 
-
 	private EntVersion version;
 
 	public EjecutorScriptTodos(EntVersion version){

@@ -24,7 +24,7 @@ public class DeployVersionScript extends ADeployVersion {
 	private ServicioPersona servicioPersona;
 	private ServicioRepositorioDatos servicioRepositorioDatos;
 	private ETipoScript tipoScriptCustom;
-
+	private boolean ejecutarSiempre;
 
 	public DeployVersionScript(EntJobDespliegueVersion job, boolean antes, List<EntVersionScript> scripts) {
 		super(job);
@@ -35,6 +35,11 @@ public class DeployVersionScript extends ADeployVersion {
 	private void inicializar() {
 		servicioPersona = ServicioPersona.getInstanciaTransaccional();
 		servicioRepositorioDatos = ServicioRepositorioDatos.getInstanciaTransaccional();
+	}
+
+
+	public void setEjecutarSiempre(boolean ejecutarSiempre) {
+		this.ejecutarSiempre = ejecutarSiempre;
 	}
 
 	@Override
@@ -85,7 +90,7 @@ public class DeployVersionScript extends ADeployVersion {
 
 				if (scriptEjecutados.stream().filter(s -> s.getEstadoScript().puedeEjecutarDeNuevo())
 								.filter(s -> s.getRevisionScript()<=ultimaRevision.getNumeroRevision())
-								.count()==0){
+								.count()==0 || ejecutarSiempre){
 
 					EntRepositorioDatosScriptEjecutados repositorioDatosScriptEjecutados = new EntRepositorioDatosScriptEjecutados();
 					repositorioDatosScriptEjecutados.setRepositorioDatos(job.getServidor().getBaseDatos());
