@@ -27,11 +27,7 @@ public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaD
 
 	private boolean pideAutorizacion;
 
-	private String grupoDuenos;
-
 	private String estadosJiras;
-
-	private String estadosSysAid;
 
 	private boolean permiteSinTicketSysAid;
 
@@ -56,19 +52,7 @@ public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaD
 		this.estadosJiras = estadosJiras;
 	}
 
-	public String getGrupoDuenos() {
-		return grupoDuenos;
-	}
-	public void setGrupoDuenos(String grupoDuenos) {
-		this.grupoDuenos = grupoDuenos;
-	}
 
-	public String getEstadosSysAid() {
-		return estadosSysAid;
-	}
-	public void setEstadosSysAid(String estadosSysAid) {
-		this.estadosSysAid = estadosSysAid;
-	}
 
 	public boolean isPermiteSinTicketSysAid() {
 		return permiteSinTicketSysAid;

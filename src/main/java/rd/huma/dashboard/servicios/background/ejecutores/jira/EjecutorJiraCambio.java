@@ -49,7 +49,7 @@ public class EjecutorJiraCambio extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-		LOGGER.info("Buscando Informacion de Jira " + numeroJira);
+		LOGGER.fine("Buscando Informacion de Jira " + numeroJira);
 
 		this.servicioJira = ServicioJira.getInstanciaTransaccional();
 		this.configuracion = ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get();

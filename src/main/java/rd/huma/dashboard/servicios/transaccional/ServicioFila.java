@@ -1,13 +1,10 @@
 package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -19,8 +16,6 @@ import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersionDueno;
-import rd.huma.dashboard.model.transaccional.EntGrupoPersona;
-import rd.huma.dashboard.model.transaccional.EntGrupoPersonaDetalle;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -40,6 +35,10 @@ public class ServicioFila {
 	private @Servicio @Inject ServicioVersion servicioVersion;
 
 	private @Servicio @Inject ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+
+
+	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
+
 
 	Function<Object[], FilaBranch> toFilaBranch = new Function<Object[], FilaBranch>() {
 	    public FilaBranch apply(Object[] t) {
@@ -88,7 +87,7 @@ public class ServicioFila {
 	}
 
 	public void salirFila(EntFilaDespliegueVersion filaVersion) {
-		entityManager.remove(filaVersion);
+		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, filaVersion.getId()));
 	}
 
 	public List<FilaBranch> getFilasPorBranchDuplicado(Set<EEstadoVersion> estados) {
@@ -126,13 +125,10 @@ public class ServicioFila {
 
 			servicioVersion.actualizarEstado(EEstadoVersion.ESPERANDO_FILA, version);
 
-			if (fila.getGrupoDuenos()!=null){
-				Set<String> grupos = new HashSet<>(Arrays.asList(fila.getGrupoDuenos().split(",")));
-				Set<String> grupoFiltrados =  servicioGrupo.grupos().stream().filter(g -> grupos.contains(g.getGrupo())).map(EntGrupoPersona::getId).collect(Collectors.toSet());
-				Set<EntPersona> personasPosibleAUsuar = new HashSet<>();
-				grupoFiltrados.forEach(g -> personasPosibleAUsuar.addAll(servicioGrupo.buscarDetallePorGrupo(g).stream().map(EntGrupoPersonaDetalle::getPersona).collect(Collectors.toSet()) ));
+			Set<EntPersona> responsables = servicioAmbiente.getResponsables(fila.getAmbiente().getAmbiente());
 
-				servicioVersion.buscaParticipantes(version).stream().map(EntVersionParticipante::getParticipante).filter(p -> personasPosibleAUsuar.contains(p)).forEach(p -> nuevaPersonaFilaDueno(deployementVersion, p));
+			if (!responsables.isEmpty()){
+				servicioVersion.buscaParticipantes(version).stream().map(EntVersionParticipante::getParticipante).filter(p -> responsables.contains(p)).forEach(p -> nuevaPersonaFilaDueno(deployementVersion, p));
 			}
 		}
 		notificarVersionNueva(version, fila);

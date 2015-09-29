@@ -16,7 +16,7 @@ var branchApp = angular.module('branchApp',['ngResource','appDbServices']);
 
 branchApp.factory("Branch", function($resource) {
 	return $resource("/dashboard/api/branchConsulta/consulta/:branch",null,{
-		'get':{ 'method':'GET','isArray':true}
+		'get':{ 'method':'GET','isArray':false}
     });
 });
 
@@ -38,7 +38,8 @@ branchApp.controller('appController', function($scope,Branch,SeguridadApi,persis
 	app.versiones = [];
 
 	Branch.get({branch :app.branch},function(data){
-		 app.versiones = data;
+		 app.versiones = data.versiones;
+		 app.tickets = data.tickets;
 	 } );
 
 

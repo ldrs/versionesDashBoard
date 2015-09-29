@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html ng-app="branchApp" lang="es-do">
+<html ng-app="branchApp" lang="es-do"  style="background-color: white;" >
 <head>
 		<title>Versiones</title>
 		<meta charset="utf-8" />
@@ -46,7 +46,16 @@
 			</div>
 			<div id="main" style="padding-bottom: 1.2em;">
 				<div class="container">
+					<div style="width: 100%;display: inline-block;">
+						<div style="width: 50%;display: inline-block;float: left;">
+							<div class="tickets">
+								<div  title="Ticket de sysaid" style="float: left; padding-right: 15px" ng-repeat="ticket in app.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+							</div>
+						</div>
+						<div style="width: 50%;display: inline-block;float: right">
 
+						</div>
+					</div>
 					<div  class="divContenedor">
 
 									<div  style="width: 100%; padding-top: 0px;">
