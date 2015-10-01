@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
@@ -22,6 +23,8 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 	private Consumer<Boolean> handlerResult;
 	private ServicioJobDespliegueVersion servicio;
 	private JenkinsJobStatus jenkinsJob;
+	private Predicate<Parameters> filtroEncontrar = p -> "version".equals(p.getName());
+
 
 	public EjecutorJenkinsSeguimientoDespliegue(String url,EntJobDespliegueVersion job,  Consumer<Boolean> handlerResult) {
 		this(url,"lastBuild/api/json",job,handlerResult);
@@ -46,7 +49,7 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 
 		Response respuesta  = ClientBuilder.newClient().target(url).request().buildGet().invoke();
 		if (respuesta.getStatus()!=200){
-			return;//TODO hacer log
+			return;
 		}
 		servicio = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 
@@ -55,7 +58,12 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 		if (isEjecucionJobRetornoErroneo(acciones)){
 			return;
 		}
-		Arrays.stream(acciones[0].getParameters()).filter(p -> "version".equals(p.getName())).findFirst().ifPresent(this::encontradoParametro);
+		Arrays.stream(acciones[0].getParameters()).filter(filtroEncontrar).findFirst().ifPresent(this::encontradoParametro);
+	}
+
+	public EjecutorJenkinsSeguimientoDespliegue setFiltroEncontrar(Predicate<Parameters> filtroEncontrar) {
+		this.filtroEncontrar = filtroEncontrar;
+		return this;
 	}
 
 	private void esperaSiEstaEnSeguimiento(){
@@ -87,6 +95,8 @@ public class EjecutorJenkinsSeguimientoDespliegue extends AEjecutor {
 	private void encontradaVersion(JenkinsJobStatus jenkinsJob,ServicioJobDespliegueVersion servicio ){
 		if (sinResultado(jenkinsJob)){
 			job.setURL(jenkinsJob.getUrl());
+			job.setEstado(EEstadoJobDespliegue.EN_PROCESO_DEPLOY_JENKINS);
+			job = servicio.actualizar(job);
 			servicio.seguimientoJenkinsSeguimientoDespliegue(job, jenkinsJob.getUrl(),handlerResult);
 		}else{
 			manejaResultado(jenkinsJob,servicio);

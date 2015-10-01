@@ -30,9 +30,15 @@ public class ServicioBranch {
 
 
 	public EntBranch grabar(EntBranch branch) {
-		if (!buscaBranch(branch.getBranch()).isPresent()){
+		Optional<EntBranch> posibleRetorno = buscaBranch(branch.getBranch());
+		if (posibleRetorno.isPresent()){
+			return posibleRetorno.get();
+		}else{
 			synchronized(branch.getBranch()){
-				if (!buscaBranch(branch.getBranch()).isPresent()){
+				posibleRetorno  = buscaBranch(branch.getBranch());
+				if (posibleRetorno.isPresent()){
+					return posibleRetorno.get();
+				}else{
 					entityManager.persist(branch);
 				}
 			}

@@ -1,21 +1,21 @@
-var reporte = function(url,contenedor){
+var reporte = function(url,contenedor,titulo,subtitulo){
 	$.ajax({url:url}).done(function(data){
 		datosReporte = JSON.parse(data);
-	
-		  
-		  
+
+
+
 		$('#'+contenedor).highcharts({
 
 	        title: {
-	            text: datosReporte.titulo
+	            text: titulo
 	        },
 
 	        subtitle: {
-	            text: datosReporte.subtitulo
+	            text: subtitulo
 	        },
             xAxis: datosReporte.xAxis ,
             yAxis: datosReporte.yAxis,
-	       
+
 
 	        plotOptions: {
 	            series: {
@@ -27,5 +27,5 @@ var reporte = function(url,contenedor){
 
 	        series: datosReporte.series
 	    });
-	});	
+	});
 }

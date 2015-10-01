@@ -79,7 +79,10 @@ public class ServicioJobDespliegueVersion {
 		if (estado.getEstadoVersionRelativo()!=null){
 			servicioVersion.actualizarEstado(estado.getEstadoVersionRelativo(), job.getVersion());
 		}
+	}
 
+	public EntJobDespliegueVersion actualizar(EntJobDespliegueVersion job){
+		return entityManager.merge(job);
 	}
 
 	public void seguimientoJenkinsSeguimientoDespliegue(EntJobDespliegueVersion job, String url, Consumer<Boolean> handlerResult) {
@@ -113,5 +116,10 @@ public class ServicioJobDespliegueVersion {
 	}
 	public List<EntJobDespliegueVersion> buscaPorBranch(String branch){
 		return buscaPorBranch(branch, ETipoDespliegueJob.VERSION);
+	}
+
+	public List<EntJobDespliegueVersion> buscaJobEstadosPendienteEjecucion() {
+		return entityManager.createNamedQuery("buscaPorPendiente.jobDespliegue",EntJobDespliegueVersion.class).getResultList();
+
 	}
 }

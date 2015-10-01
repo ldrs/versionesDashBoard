@@ -87,6 +87,9 @@ public class ServicioFila {
 	}
 
 	public void salirFila(EntFilaDespliegueVersion filaVersion) {
+		List<EntFilaDespliegueVersionDueno> duenos = getDuenosVersion(filaVersion.getVersion());
+		duenos.forEach(p -> entityManager.remove(entityManager.find(EntFilaDespliegueVersionDueno.class, p.getId())));
+
 		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, filaVersion.getId()));
 	}
 
@@ -157,11 +160,10 @@ public class ServicioFila {
 		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, id));
 	}
 
-	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras, String estadosSysAid){
+	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
 		EntFilaDespliegue fila = new EntFilaDespliegue();
 		fila.setAmbiente(ambiente);
 		fila.setEstadosJiras(estadosJiras);
-		fila.setEstadosSysAid(estadosSysAid);
 		entityManager.persist(fila);
 		return fila;
 	}

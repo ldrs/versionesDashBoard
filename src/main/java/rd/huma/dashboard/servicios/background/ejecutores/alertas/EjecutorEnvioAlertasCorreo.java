@@ -36,10 +36,10 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 
 	private void mandarCorreo(ServicioVersion servicioVersion, ServicioEmail servicioEmail, EntVersion version){
 
-		List<EntVersionAlerta> alertas = servicioVersion.buscaAlerta(version);
-		Collection<List<EntVersionAlerta>> agrupado = agrupaPorTipo(alertas);
+		Collection<List<EntVersionAlerta>> agrupado = agrupaPorTipo(servicioVersion.buscaAlerta(version));
+
 		for (List<EntVersionAlerta> alertasAgrupado : agrupado ) {
-			StringBuilder sbMensaje = new StringBuilder().append("\n");
+			StringBuilder sbMensaje = new StringBuilder(150).append("\n");
 			List<String> archivos = new ArrayList<>();
 			Set<EntPersona> personas = new HashSet<>();
 			List<EntVersionAlerta> alertasSinModificar = Collections.unmodifiableList(alertasAgrupado);

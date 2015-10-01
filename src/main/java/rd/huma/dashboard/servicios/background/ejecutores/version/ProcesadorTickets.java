@@ -31,7 +31,6 @@ import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
 import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
 import rd.huma.dashboard.servicios.integracion.svn.util.SVNOrigenBranch;
-import rd.huma.dashboard.servicios.integracion.svn.util.ServicioSvnBuscaOrigenBranch;
 
 public class ProcesadorTickets {
 	private EntConfiguracionGeneral configuracionGeneral;
@@ -64,7 +63,7 @@ public class ProcesadorTickets {
 		EjecutorVersion.LOGGER.info("Buscando los jiras el jira en el comentario de la version :" + version.getNumero());
 		List<EntJira> jirasEncontradoComentarios = new ArrayList<>();
 		try{
-			SVNOrigenBranch origen = new ServicioSvnBuscaOrigenBranch(ServicioSVN.para(aplicacion).toBranchCompleto(version.getBranchOrigen()), aplicacion.getJiraKey(),version.getBranchOrigen()).getOrigen();
+			SVNOrigenBranch origen = ServicioSVN.para(aplicacion).getOrigen(version.getBranchOrigen());
 			jirasEncontradoComentarios.addAll(origen.getJiras());
 
 			branch = new EntBranch();

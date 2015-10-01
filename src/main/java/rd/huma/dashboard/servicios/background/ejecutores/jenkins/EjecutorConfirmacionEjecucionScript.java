@@ -26,16 +26,15 @@ public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 
 	@Override
 	public void ejecutar() {
-
 		servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 		servicioJobDespliegueVersion.cambiarEstado(job, EEstadoJobDespliegue.DEPLOY_JENKINS_EXITOSO);
 		ejecutarDespuesScript();
 	}
 
-	private void ejecutarDespuesScript(){
+	public void ejecutarDespuesScript(){
 
 		if (job.getTipoScript() == ETipoScript.ANTES_SUBIDA){
-			ServicioJobDespliegueVersion servicioJob =  ServicioJobDespliegueVersion.getInstanciaTransaccional();
+			ServicioJobDespliegueVersion servicioJob = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 			EntJobDespliegueVersion jobVersion = servicioJob.buscarPorJobRelacionado(job);
 			if (jobVersion!=null){
 				new DeployVersion(jobVersion).ejecutar();

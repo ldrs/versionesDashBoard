@@ -427,4 +427,8 @@ public class ServicioVersion {
 		}
 		return tickets;
 	}
+
+	public void eliminaModulos(EntVersion version) {
+		buscaModulos(version).stream().forEach(e-> entityManager.remove(entityManager.find(e.getClass(), e.getId())));
+	}
 }

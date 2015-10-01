@@ -72,6 +72,7 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 	private void eliminaModulos(EntVersion version){
 		servicioVersion.buscaModulos(version).forEach(this::eliminaModulo);
 		servicioVersion.actualizarEstado(EEstadoVersion.NEXUS_ELIMINADO, version);
+		servicioVersion.eliminaModulos(version);
 	}
 
 	private void eliminaModulo(EntVersionModulo modulo){

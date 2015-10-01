@@ -36,6 +36,7 @@ public class WSJobDespliegue {
 		}
 		job.setURL(urlJenkins);
 		job.setInicioJob(inicioJob);
+		job = servicioJobDespliegueVersion.actualizar(job);
 		monitorEjecutor.ejecutarAsync(new EjecutorConfirmacionEjecucionScript(job));
 		return "{}";
 	}
@@ -50,6 +51,7 @@ public class WSJobDespliegue {
 		}
 		job.setURL(urlJenkins);
 		job.setInicioJob(inicioJob);
+		job = servicioJobDespliegueVersion.actualizar(job);
 		monitorEjecutor.ejecutarAsync(new EjecutorConfirmacionVersion(job));
 		return "{}";
 	}
@@ -64,6 +66,7 @@ public class WSJobDespliegue {
 		}
 		job.setURL(urlJenkins);
 		job.setInicioJob(inicioJob);
+		job = servicioJobDespliegueVersion.actualizar(job);
 		monitorEjecutor.ejecutarAsync(new EjecutorConfirmacionReporte(job));
 		return "{}";
 	}

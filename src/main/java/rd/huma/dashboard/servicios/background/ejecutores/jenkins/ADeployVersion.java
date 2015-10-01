@@ -8,6 +8,7 @@ import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.EntVersion;
+import rd.huma.dashboard.servicios.integracion.jenkins.ServicioJenkins;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -26,6 +27,8 @@ abstract class ADeployVersion {
 
 	protected ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
+	private ServicioJenkins servicioJenkins;
+
 
 	public ADeployVersion(EntJobDespliegueVersion job) {
 		this.job = job;
@@ -40,6 +43,7 @@ abstract class ADeployVersion {
 		this.version =  job.getVersion();
 		this.ambienteAplicacion = servidor.getAmbiente();
 		this.aplicacion = ambienteAplicacion.getAplicacion();
+		this.servicioJenkins = ServicioJenkins.para(aplicacion);
 		this.servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
 		this.credenciales = "Basic " + Base64.getEncoder().encodeToString( (configuracionGeneral.getUsrJenkins() + ":" + configuracionGeneral.getPwdJenkins()).getBytes() );
 
@@ -50,15 +54,15 @@ abstract class ADeployVersion {
 	}
 
 	String getURLDeployEjecucionJob(){
-		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobDeployJenkins()).append("/").toString();
+		return servicioJenkins.getURLDeployVersion();
 	}
 
 	String getURLDeployScriptEjecucionJob(){
-		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobSQLJenkins()).append("/").toString();
+		return servicioJenkins.getURLDeployJobScript();
 	}
 
 	String getURLDeployScriptReporteJob(){
-		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/").append(aplicacion.getNombreJobOracleReportJenkins()).append("/").toString();
+		return servicioJenkins.getURLDeployJobReporte();
 	}
 
 	String getURLScriptFile(){

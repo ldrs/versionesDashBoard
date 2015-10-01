@@ -9,6 +9,8 @@ import javax.ws.rs.client.ClientBuilder;
 
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
+import rd.huma.dashboard.servicios.integracion.svn.util.SVNOrigenBranch;
+import rd.huma.dashboard.servicios.integracion.svn.util.ServicioSvnBuscaOrigenBranch;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.util.IOUtil;
 
@@ -39,14 +41,41 @@ public class ServicioSVN {
 	}
 
 	public String buscaInicioPath(String path){
+		 return ejecutarSvn("svn log --stop-on-copy --verbose ", rootPath().append(path));
+	}
+
+	public SVNOrigenBranch buscaOrigenBranchPorRevision(String branch, long revision){
+		return new ServicioSvnBuscaOrigenBranch(branch,aplicacion).getOrigen(buscaBranchPorRevision(toBranchCompleto(branch),revision));
+	}
+
+	private String  buscaComentarioSVNDesdeInicioBranch(String url){
 		try {
-			Process proceso = Runtime.getRuntime().exec(new StringBuilder(150).append("svn log --stop-on-copy --verbose ").append(rootPath()).append(path).toString());
-			proceso.waitFor(3, TimeUnit.SECONDS);
+			Process proceso = Runtime.getRuntime().exec("svn log --stop-on-copy --verbose "+ url);
+			proceso.waitFor(10, TimeUnit.SECONDS);
 
 			return IOUtil.toString(proceso.getInputStream());
 		} catch (IOException | InterruptedException e) {
 			throw new IllegalStateException("No pudo ser encontrado el log.");
 		}
+	}
+
+	String buscaBranchPorRevision(String branch, long revision){
+		 return ejecutarSvn("svn log --stop-on-copy --verbose ", rootPath().append(branch).append('@').append(revision));
+	}
+
+	public SVNOrigenBranch getOrigen(String branch){
+		return new ServicioSvnBuscaOrigenBranch( branch,aplicacion).getOrigen(buscaComentarioSVNDesdeInicioBranch(toBranchCompleto(branch)));
+	}
+
+	private String ejecutarSvn(CharSequence commando, CharSequence ruta){
+		   try {
+				Process proceso = Runtime.getRuntime().exec(new StringBuilder(150).append(commando).append(rootPath()).append(ruta).toString());
+				proceso.waitFor(3, TimeUnit.SECONDS);
+
+				return IOUtil.toString(proceso.getInputStream());
+			} catch (IOException | InterruptedException e) {
+				throw new IllegalStateException("No pudo ser encontrado el log.");
+			}
 	}
 
 	public Set<String> tags(){

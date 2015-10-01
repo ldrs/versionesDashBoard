@@ -31,7 +31,7 @@ public class EjecutorConfirmacionVersion extends AEjecutor {
 		new EjecutorJenkinsSeguimientoDespliegue(jobDeployVersion.getURL(), jobDeployVersion, this::resultado).ejecutar();
 	}
 
-	private void resultado(Boolean resultado){
+	public void resultado(Boolean resultado){
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		if (resultado){
 			enviarAlertaVersionSubiendo(jobDeployVersion);

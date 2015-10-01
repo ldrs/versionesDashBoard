@@ -1,17 +1,16 @@
 package rd.huma.dashboard.servicios.integracion.svn.util;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
+import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.servicios.background.ejecutores.svn.EjecutorRevisaOrigenBranch;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraEnComentario;
-import rd.huma.dashboard.util.IOUtil;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class ServicioSvnBuscaOrigenBranch {
 
 	private static final String PATRON_ORIGEN_SVN = "(from ";
 
-	private String url;
+
 	private String llaveJira;
 
 	private String origen;
@@ -20,15 +19,17 @@ public class ServicioSvnBuscaOrigenBranch {
 
 	private String branch;
 
-	public ServicioSvnBuscaOrigenBranch(String url,String llaveJira, String branch) {
-		this.url = url;
-		this.llaveJira = llaveJira;
+	private EntAplicacion aplicacion;
+
+	public ServicioSvnBuscaOrigenBranch(String branch, EntAplicacion aplicacion) {
+		this.llaveJira = aplicacion.getJiraKey();
 		this.branch = branch;
+		this.aplicacion = aplicacion;
 	}
 
-	public SVNOrigenBranch getOrigen(){
+
+	public SVNOrigenBranch getOrigen(String comentario){
 		SVNOrigenBranch svnOrigen = new SVNOrigenBranch();
-		String comentario =  buscaComentarioSVNDesdeInicioBranch();
 		interpretacionOrigen(comentario);
 		svnOrigen.setJiraEncontrados(BuscadorJiraEnComentario.of(comentario, llaveJira).encuentraJira());
 		svnOrigen.setRevision(Long.valueOf(revision));
@@ -38,6 +39,9 @@ public class ServicioSvnBuscaOrigenBranch {
 			if (!jira.getNumero().contains(llaveJira)){
 				jira.setNumero(llaveJira+"-"+jira.getNumero());
 			}
+		}
+		if (origen.contains("branches")){
+			ServicioVersion.getInstanciaTransaccional().ejecutarJob(new EjecutorRevisaOrigenBranch(svnOrigen, aplicacion));
 		}
 
 
@@ -53,18 +57,6 @@ public class ServicioSvnBuscaOrigenBranch {
 			this.origen = log.substring(0, indexDosPuntos);
 			this.revision = log.substring(indexDosPuntos+1);
 			revision = revision.substring(0, revision.indexOf(')'));
-		}
-
-	}
-
-	private String  buscaComentarioSVNDesdeInicioBranch(){
-		try {
-			Process proceso = Runtime.getRuntime().exec("svn log --stop-on-copy --verbose "+ url);
-			proceso.waitFor(10, TimeUnit.SECONDS);
-
-			return IOUtil.toString(proceso.getInputStream());
-		} catch (IOException | InterruptedException e) {
-			throw new IllegalStateException("No pudo ser encontrado el log.");
 		}
 	}
 }

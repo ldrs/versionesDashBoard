@@ -9,9 +9,11 @@ import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntServidor;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
+import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
+import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class ProcesaFilaDeployAutomatico {
 
@@ -37,7 +39,11 @@ public class ProcesaFilaDeployAutomatico {
 				.collect(Collectors.toList());
 		Optional<EntServidor> optional = buscaSiYaTieneEsteBranchActivo(versionFila, servidores);
 		if (optional.isPresent()){
-			deploy(optional.get(), versionFila);
+			EntServidor servidor = optional.get();
+			if (servidor.getVersionActual()!=null){
+				ServicioVersion.getInstanciaTransaccional().actualizarEstado(EEstadoVersion.REMPLAZADA, servidor.getVersionActual());
+			}
+			deploy(servidor, versionFila);
 			return;
 		}
 
