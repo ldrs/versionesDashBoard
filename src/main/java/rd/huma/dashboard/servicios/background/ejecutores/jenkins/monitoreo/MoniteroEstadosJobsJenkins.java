@@ -30,7 +30,7 @@ class MoniteroEstadosJobsJenkins {
 
 	public void ejecutar(){
 		Instant hace5Minutos = Instant.now().minus(5, ChronoUnit.MINUTES);
-		this.jobs.stream().filter(p -> p.getFechaRegistro().isAfter(hace5Minutos)) .forEach(this::buscarEstadoDespliegue);
+		this.jobs.stream().filter(p -> hace5Minutos.isAfter(p.getFechaRegistro())) .forEach(this::buscarEstadoDespliegue);
 	}
 
 	private void buscarEstadoDespliegue(EntJobDespliegueVersion job){
