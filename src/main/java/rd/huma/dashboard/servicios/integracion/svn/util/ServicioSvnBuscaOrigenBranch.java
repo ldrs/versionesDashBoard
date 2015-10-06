@@ -20,6 +20,7 @@ public class ServicioSvnBuscaOrigenBranch {
 	private String branch;
 
 	private EntAplicacion aplicacion;
+	
 
 	public ServicioSvnBuscaOrigenBranch(String branch, EntAplicacion aplicacion) {
 		this.llaveJira = aplicacion.getJiraKey();
@@ -32,6 +33,7 @@ public class ServicioSvnBuscaOrigenBranch {
 		SVNOrigenBranch svnOrigen = new SVNOrigenBranch();
 		interpretacionOrigen(comentario);
 		svnOrigen.setJiraEncontrados(BuscadorJiraEnComentario.of(comentario, llaveJira).encuentraJira());
+		svnOrigen.setMergeInformacion(BuscadorMergeInfoEnComentario.of(comentario,branch).encuentra());
 		svnOrigen.setRevision(Long.valueOf(revision));
 		svnOrigen.setOrigenBranch(origen);
 

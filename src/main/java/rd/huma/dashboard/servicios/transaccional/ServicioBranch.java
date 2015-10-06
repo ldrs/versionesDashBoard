@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import rd.huma.dashboard.model.transaccional.EntBranch;
+import rd.huma.dashboard.model.transaccional.EntBranchMerge;
 
 
 @Stateless
@@ -44,5 +45,10 @@ public class ServicioBranch {
 			}
 		}
 		return branch;
+	}
+
+
+	public void grabarMerge(EntBranchMerge branchMerge) {
+		entityManager.persist(branchMerge);
 	}
 }
