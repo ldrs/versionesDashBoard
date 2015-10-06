@@ -16,7 +16,6 @@ import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Subtasks;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
-import rd.huma.dashboard.model.transaccional.EntBranch;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
@@ -37,7 +36,7 @@ public class ProcesadorTickets {
 	private EntVersion version;
 	private EntAplicacion aplicacion;
 	private BuscadorJiraRestApi buscadorJiraQuery;
-	private EntBranch branch;
+	private SVNOrigenBranch branch;
 	private Set<EntTicketSysAid> ticketSysAid = new TreeSet<>();
 	private List<EntJira> jiras = new ArrayList<>();
 	private Set<EntJira> paraEncontrarInformacionJira = new TreeSet<>();
@@ -63,14 +62,10 @@ public class ProcesadorTickets {
 		EjecutorVersion.LOGGER.info("Buscando los jiras el jira en el comentario de la version :" + version.getNumero());
 		List<EntJira> jirasEncontradoComentarios = new ArrayList<>();
 		try{
-			SVNOrigenBranch origen = ServicioSVN.para(aplicacion).getOrigen(version.getBranchOrigen());
-			jirasEncontradoComentarios.addAll(origen.getJiras());
+			this.branch = ServicioSVN.para(aplicacion).getOrigen(version.getBranchOrigen());
+			jirasEncontradoComentarios.addAll(branch.getJiras());
 
-			branch = new EntBranch();
-			branch.setAplicacion(aplicacion);
-			branch.setBranch(version.getBranchOrigen());
-			branch.setOrigen(origen.getOrigenBranch());
-			branch.setRevisionOrigen(origen.getRevision());
+		
 		}catch(Exception e){
 			e.printStackTrace();
 			EjecutorVersion.LOGGER.warning("No se pudo interpretar el origen");
@@ -160,11 +155,15 @@ public class ProcesadorTickets {
 		return scripts;
 	}
 
-	public EntBranch getBranch() {
+	public SVNOrigenBranch getBranch() {
 		return branch;
 	}
 
 	Map<String, List<EntVersionReporteJira>> getReportes() {
 		return reportes;
+	}
+	
+	public EntAplicacion getAplicacion() {
+		return aplicacion;
 	}
 }
