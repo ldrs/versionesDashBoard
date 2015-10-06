@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.integracion.svn.util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class SVNOrigenBranch {
 	void setJiraEncontrados(List<EntJira> jiras) {
 		this.jiras = jiras;
 	}
-	
+
 	void setMergeInformacion(Set<String> mergeBranches){
 		this.mergeBranches = mergeBranches;
 	}
@@ -39,8 +40,11 @@ public class SVNOrigenBranch {
 	public String getOrigenBranch() {
 		return origenBranch;
 	}
-	
+
 	public Set<String> getMergeBranches() {
+		if (mergeBranches == null){
+			return Collections.emptySet();
+		}
 		return mergeBranches;
 	}
 }

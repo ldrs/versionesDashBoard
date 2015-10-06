@@ -4,17 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import rd.huma.dashboard.model.transaccional.EntBranch;
-import rd.huma.dashboard.model.transaccional.EntBranchMerge;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
-import rd.huma.dashboard.servicios.integracion.svn.util.SVNOrigenBranch;
 import rd.huma.dashboard.servicios.transaccional.ServicioBranch;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -53,35 +49,8 @@ class ProcesadorDatos {
 
 	private void grabarBranch() {
 		if (procesadorTickets.getBranch()!=null){
-			SVNOrigenBranch origen = procesadorTickets.getBranch();
-			ServicioBranch servicioBranch = ServicioBranch.getInstanciaTransaccional();
-			
-			EntBranch branch = new EntBranch();
-			branch.setAplicacion(procesadorTickets.getAplicacion());
-			branch.setBranch(version.getBranchOrigen());
-			branch.setOrigen(origen.getOrigenBranch());
-			branch.setRevisionOrigen(origen.getRevision());
-			
-			branch = servicioBranch.grabar(branch);
-			
-			for (String branchesOrigen : origen.getMergeBranches()){
-				 Optional<EntBranch> encontrado = servicioBranch.buscaBranch(branchesOrigen);
-				 EntBranch branchEncontrado;
-				 if (encontrado.isPresent()){
-					 branchEncontrado = encontrado.get();
-					 
-				 }else{
-					 branchEncontrado = new EntBranch();
-					 branchEncontrado.setAplicacion(procesadorTickets.getAplicacion());
-					 branchEncontrado.setBranch(branchesOrigen);
-					 branchEncontrado = servicioBranch.grabar(branchEncontrado);
-				 }
-				 EntBranchMerge branchMerge = new EntBranchMerge();
-				 branchMerge.setBranchDestino(branch);
-				 
-			}
+			ServicioBranch.getInstanciaTransaccional().procesarOrigen(procesadorTickets.getBranch(), procesadorTickets.getAplicacion(), version.getBranchOrigen());
 		}
-
 	}
 
 	private void adicionarScript(EntVersionScript script, List<EntVersionScriptJira> reportesJira){

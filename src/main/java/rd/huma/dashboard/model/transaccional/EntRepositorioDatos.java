@@ -14,7 +14,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="REPOSITORIO_DATOS")
-@NamedQueries({@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.esquema = :sc and E.servicio = :serv")})
+@NamedQueries({
+	@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.esquema = :sc and E.servicio = :serv"),
+	@NamedQuery(name = "buscarPorAll.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.host = :host and E.esquema = :sc and E.servicio = :serv")
+	})
 
 public class EntRepositorioDatos extends AEntModelo {
 
@@ -79,7 +82,7 @@ public class EntRepositorioDatos extends AEntModelo {
 	public void setPuerto(int puerto) {
 		this.puerto = puerto;
 	}
-	
+
 	@Override
 	public String toString() {
 		return new StringBuilder(150).append(host).append(':').append(puerto).append('/').append(servicio).append('.').append(esquema).toString();
