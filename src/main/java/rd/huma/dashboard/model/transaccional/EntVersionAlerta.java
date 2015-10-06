@@ -31,7 +31,7 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAlertaVersion;
  *
  */
 
-public class EntVersionAlerta extends AEntModelo {
+public class EntVersionAlerta extends AEntModelo implements Comparable<EntVersionAlerta>{
 
 	/**
 	 *
@@ -101,6 +101,11 @@ public class EntVersionAlerta extends AEntModelo {
 
 	public void setAmbiente(EntAmbiente ambiente) {
 		this.ambiente = ambiente;
+	}
+
+	@Override
+	public int compareTo(EntVersionAlerta o) {
+		return getFechaRegistro().compareTo(o.getFechaRegistro());
 	}
 
 

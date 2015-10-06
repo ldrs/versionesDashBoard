@@ -2,12 +2,12 @@ package rd.huma.dashboard.servicios.background.ejecutores.alertas;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntVersion;
@@ -36,13 +36,13 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 
 	private void mandarCorreo(ServicioVersion servicioVersion, ServicioEmail servicioEmail, EntVersion version){
 
-		Collection<List<EntVersionAlerta>> agrupado = agrupaPorTipo(servicioVersion.buscaAlerta(version));
+		Collection<Set<EntVersionAlerta>> agrupado = agrupaPorTipo(servicioVersion.buscaAlerta(version));
 
-		for (List<EntVersionAlerta> alertasAgrupado : agrupado ) {
+		for (Set<EntVersionAlerta> alertasAgrupado : agrupado ) {
 			StringBuilder sbMensaje = new StringBuilder(150).append("\n");
 			List<String> archivos = new ArrayList<>();
 			Set<EntPersona> personas = new HashSet<>();
-			List<EntVersionAlerta> alertasSinModificar = Collections.unmodifiableList(alertasAgrupado);
+			Set<EntVersionAlerta> alertasSinModificar = new ConcurrentSkipListSet<>(alertasAgrupado);
 
 			ETipoAlertaVersion tipo = null;
 			for (EntVersionAlerta entVersionAlerta : alertasSinModificar) {
@@ -77,13 +77,13 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 		}
 	}
 
-	private Collection<List<EntVersionAlerta>> agrupaPorTipo(List<EntVersionAlerta> alertas){
-		Map<String, List<EntVersionAlerta>> agrupado = new HashMap<>();
+	private Collection<Set<EntVersionAlerta>> agrupaPorTipo(List<EntVersionAlerta> alertas){
+		Map<String, Set<EntVersionAlerta>> agrupado = new HashMap<>();
 		for (EntVersionAlerta entVersionAlerta : alertas) {
 			String key = entVersionAlerta.getAlerta().name()+entVersionAlerta.getVersion().getNumero();
-			List<EntVersionAlerta> agrupados = agrupado.get(key);
+			Set<EntVersionAlerta> agrupados = agrupado.get(key);
 			if (agrupados == null){
-				agrupados = new ArrayList<>();
+				agrupados = new ConcurrentSkipListSet<>();
 				agrupado.put(key, agrupados);
 			}
 			agrupados.add(entVersionAlerta);
