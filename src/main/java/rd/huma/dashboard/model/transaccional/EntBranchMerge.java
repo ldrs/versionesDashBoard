@@ -11,20 +11,21 @@ import javax.persistence.Table;
 @Table(name="BRANCH_MERGE")
 @NamedQueries({
 	@NamedQuery(name="buscaPorOrigen.branchMerge",query="select E from EntBranchMerge E join E.origen B where B.branch = :branch"),
-	@NamedQuery(name="buscaPorDestino.branchMerge",query="select E from EntBranchMerge E join E.destino B where B.branch = :branch")
+	@NamedQuery(name="buscaPorDestino.branchMerge",query="select E from EntBranchMerge E join E.destino B where B.branch = :branch"),
+	@NamedQuery(name="buscaOridenYDestino.branchMerge",query="select E from EntBranchMerge E join E.destino B join E.origen O where B.branch = :branch and O.branch = :origen")
 })
 public class EntBranchMerge extends AEntModelo {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -6884368899974970446L;
 
-	
+
 	@ManyToOne
 	@JoinColumn
 	private EntBranch origen;
-	
+
 	@ManyToOne
 	@JoinColumn
 	private EntBranch destino;

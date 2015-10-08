@@ -64,8 +64,11 @@ public class ProcesaFilaDeployAutomatico {
 
 
 	private Optional<EntServidor> buscaSiYaTieneEsteBranchActivo(EntFilaDespliegueVersion versionFila,List<EntServidor> servidores){
+		String branch = versionFila.getVersion() == null? "" : versionFila.getVersion().getBranchOrigen();
+
 		return servidores.stream()	.filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.LIBRE)
-							.filter(servidor -> servidor.getVersionActual().getBranchOrigen().equals(versionFila.getVersion().getBranchOrigen()))
+							.filter(servidor -> servidor.getVersionActual()!=null)
+							.filter(servidor ->  branch.equals(servidor.getVersionActual().getBranchOrigen()))
 							.findFirst();
 	}
 

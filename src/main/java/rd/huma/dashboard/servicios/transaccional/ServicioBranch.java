@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
@@ -31,7 +32,7 @@ public class ServicioBranch {
 		return CDI.current().select(ServicioBranch.class, servicio).get();
 	}
 
-	public void procesarOrigen(SVNOrigenBranch origen, EntAplicacion aplicacion, String branchOrigen){
+	public EntBranch procesarOrigen(SVNOrigenBranch origen, EntAplicacion aplicacion, String branchOrigen){
 		Optional<EntBranch> original = buscaBranch(branchOrigen);
 		EntBranch branch;
 		if (original.isPresent()){
@@ -63,8 +64,13 @@ public class ServicioBranch {
 			 branchMerge.setBranchOrigen(branchEncontrado);
 			 grabarMerge(branchMerge);
 		}
+		return branch;
 	}
 
+
+	public EntBranch actualizar(EntBranch branch) {
+		return entityManager.merge(branch);
+	}
 
 	public EntBranch grabar(EntBranch branch) {
 		Optional<EntBranch> posibleRetorno = buscaBranch(branch.getBranch());
@@ -86,5 +92,38 @@ public class ServicioBranch {
 
 	public void grabarMerge(EntBranchMerge branchMerge) {
 		entityManager.persist(branchMerge);
+	}
+
+
+	public List<EntBranch> buscaBranchesQueDebenTenerMerge() {
+		return entityManager.createNamedQuery("buscaBranchesSinMerge.branch",EntBranch.class).getResultList();
+	}
+
+
+	public EntBranchMerge buscarOCrear(EntBranch branch, String mergedBranch) {
+		Optional<EntBranchMerge> resultado = entityManager.createNamedQuery("buscaOridenYDestino.branchMerge",EntBranchMerge.class)
+		.setParameter("origen", mergedBranch)
+		.setParameter("branch", branch.getBranch()).getResultList().stream().findFirst();
+		if (resultado.isPresent()){
+			return resultado.get();
+		}
+		Optional<EntBranch> posibleBranch = buscaBranch(mergedBranch);
+		EntBranch branchOrigen;
+		if (posibleBranch.isPresent()){
+			branchOrigen = posibleBranch.get();
+		}else{
+			branchOrigen = new EntBranch();
+			branchOrigen.setAplicacion(branch.getAplicacion());
+			branchOrigen.setBranch(mergedBranch);
+
+			grabar(branchOrigen);
+		}
+
+		 EntBranchMerge branchMerge = new EntBranchMerge();
+		 branchMerge.setBranchDestino(branch);
+		 branchMerge.setBranchOrigen(branchOrigen);
+		 grabarMerge(branchMerge);
+		 return branchMerge;
+
 	}
 }

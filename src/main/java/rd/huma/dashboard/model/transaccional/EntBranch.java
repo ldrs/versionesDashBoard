@@ -10,7 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="Branch")
 @NamedQueries({
-	@NamedQuery(name="busca.branch",query="select E from EntBranch E where E.branch = :branch")
+	@NamedQuery(name="busca.branch",query="select E from EntBranch E where E.branch = :branch"),
+	@NamedQuery(name="buscaBranchesSinMerge.branch",query="select E from EntBranch E where merge='false'")
 })
 public class EntBranch extends AEntModelo {
 
@@ -26,10 +27,13 @@ public class EntBranch extends AEntModelo {
 
 	private String branch;
 
-
 	private String origen;
 
 	private long revisionOrigen;
+
+	private long revisionUltima;
+
+	private boolean merge;
 
 	public EntAplicacion getAplicacion() {
 		return aplicacion;
@@ -61,5 +65,21 @@ public class EntBranch extends AEntModelo {
 
 	public void setRevisionOrigen(long revisionOrigen) {
 		this.revisionOrigen = revisionOrigen;
+	}
+
+	public boolean isMerge() {
+		return merge;
+	}
+
+	public void setMerge(boolean merge) {
+		this.merge = merge;
+	}
+
+	public long getRevisionUltima() {
+		return revisionUltima;
+	}
+
+	public void setRevisionUltima(long revisionUltima) {
+		this.revisionUltima = revisionUltima;
 	}
 }

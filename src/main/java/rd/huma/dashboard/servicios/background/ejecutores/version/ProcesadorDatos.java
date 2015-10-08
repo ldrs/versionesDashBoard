@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import rd.huma.dashboard.model.transaccional.EntBranch;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
@@ -49,7 +50,11 @@ class ProcesadorDatos {
 
 	private void grabarBranch() {
 		if (procesadorTickets.getBranch()!=null){
-			ServicioBranch.getInstanciaTransaccional().procesarOrigen(procesadorTickets.getBranch(), procesadorTickets.getAplicacion(), version.getBranchOrigen());
+			ServicioBranch servicio =  ServicioBranch.getInstanciaTransaccional();
+			EntBranch branch = servicio.procesarOrigen(procesadorTickets.getBranch(), procesadorTickets.getAplicacion(), version.getBranchOrigen());
+			branch.setRevisionUltima(Long.valueOf(version.getRevisionSVN()));
+			branch.setMerge(false);
+			servicio.actualizar(branch);
 		}
 	}
 

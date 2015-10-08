@@ -31,6 +31,10 @@ public class ServicioEmail {
 
 
     public boolean enviar(String correos, String subjecto, String mensaje, List<String> archivos) {
+    	if (correos.isEmpty()){
+    		LOGGER.warning("No se pudo mandar el correo " + subjecto + " por que no tiene a quien enviarle");
+    		return false;
+    	}
 
         try {
 

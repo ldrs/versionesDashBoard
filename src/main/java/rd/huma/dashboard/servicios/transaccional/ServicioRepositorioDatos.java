@@ -56,7 +56,7 @@ public class ServicioRepositorioDatos {
 
 	public Optional<EntRepositorioDatos> buscaRepositorio(String host, String squema, String servicio){
 		return entityManager.createNamedQuery("buscarPorAll.repositorioDatos",EntRepositorioDatos.class).setParameter("host", host)
-				.setParameter("esquema", squema)
+				.setParameter("sc", squema)
 				.setParameter("serv", servicio).getResultList().stream().findFirst();
 	}
 

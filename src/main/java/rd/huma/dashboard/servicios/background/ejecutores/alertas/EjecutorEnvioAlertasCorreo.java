@@ -95,7 +95,9 @@ public class EjecutorEnvioAlertasCorreo extends AEjecutor {
 	private String getCorreos(Collection<EntPersona> personas){
 		StringBuilder correos = new StringBuilder();
 		personas.stream().map(EntPersona::getCorreo).distinct().forEachOrdered(e -> correos.append(e).append(',') );
-		correos.deleteCharAt(correos.length()-1);
+		if (correos.length()>0){
+			correos.deleteCharAt(correos.length()-1);
+		}
 		return correos.toString();
 	}
 }

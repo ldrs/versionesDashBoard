@@ -145,13 +145,11 @@
 									<li style="display: {{servidor.estiloDisponibleOcupado}}"><a href="#"ng-click="servidorEjecutarDespuesScripts(servidor)">Ejecutar Scripts Despues de nuevo</a></li>
 								</ul>
 							</li>
-
 						</ul>
-
 
 					</nav>
 						<div><a href="{{servidor.ruta}}" target="aplicacion">{{servidor.nombre}}</a></div>
-						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.host}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
+						<div style="margin-top: 10px;"><a href="baseDatosMetrica.html?id={{servidor.repositorioDatos.id}}" title="Base de datos actualizada para la fecha {{servidor.repositorioDatos.actualizacion}}">{{servidor.repositorioDatos.servicio}}:{{servidor.repositorioDatos.puerto}}/{{servidor.repositorioDatos.schema}}</a></div>
 						<div class="servidorVersion"><a  title="Numero de la version" href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>
 						<div class="servidorVersion"><a title="Branch de la version" href="branch.html?branch={{servidor.version.branch}}">{{servidor.version.branch}}</a> </div>
 						<div class="tickets servidorTick" style="display: {{servidor.estiloOcupado}}">
@@ -163,10 +161,6 @@
 				</div>
 			</div>
 		</div>
-
-
-		<!-- Scripts -->
-
 	</body>
 
 </html>
