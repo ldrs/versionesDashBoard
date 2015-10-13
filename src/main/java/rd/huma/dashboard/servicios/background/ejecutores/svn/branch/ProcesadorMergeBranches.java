@@ -17,6 +17,8 @@ class ProcesadorMergeBranches {
 		SVNOrigenBranch datosOrigen = ServicioSVN.para(branch.getAplicacion()).buscaOrigenBranchPorRevision(branch.getBranch(), branch.getRevisionUltima());
 		for (String mergedBranch : datosOrigen.getMergeBranches()){
 			servicioBranch.buscarOCrear(branch,mergedBranch);
+		}
+		if (branch.getOrigen()!=null){
 			branch.setMerge(true);
 			servicioBranch.actualizar(branch);
 		}

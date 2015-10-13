@@ -29,6 +29,11 @@ public class ServicioSVN {
 		return rootPath().append("/branches/").append(branch).toString();
 	}
 
+	public StringBuilder toBranches(String branch){
+		return new StringBuilder(150).append("/branches/").append(branch);
+	}
+
+
 	public String buscaComentario(String path, String svnRevsion){
 		try {
 			Process proceso = Runtime.getRuntime().exec(new StringBuilder(150).append("svn log -r").append(svnRevsion).append(' ').append(rootPath()).append(path).toString());
@@ -45,7 +50,7 @@ public class ServicioSVN {
 	}
 
 	public SVNOrigenBranch buscaOrigenBranchPorRevision(String branch, long revision){
-		return new ServicioSvnBuscaOrigenBranch(branch,aplicacion).getOrigen(buscaBranchPorRevision(toBranchCompleto(branch),revision));
+		return new ServicioSvnBuscaOrigenBranch(branch,aplicacion).getOrigen(buscaBranchPorRevision(branch,revision));
 	}
 
 	private String  buscaComentarioSVNDesdeInicioBranch(String url){
@@ -59,8 +64,8 @@ public class ServicioSVN {
 		}
 	}
 
-	String buscaBranchPorRevision(String branch, long revision){
-		 return ejecutarSvn("svn log --stop-on-copy --verbose ", rootPath().append(branch).append('@').append(revision));
+	public String buscaBranchPorRevision(String branch, long revision){
+		 return ejecutarSvn("svn log --stop-on-copy --verbose --use-merge-history ",  toBranches(branch).append('@').append(revision));
 	}
 
 	public SVNOrigenBranch getOrigen(String branch){

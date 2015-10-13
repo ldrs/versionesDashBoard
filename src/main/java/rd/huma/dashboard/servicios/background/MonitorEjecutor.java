@@ -16,6 +16,7 @@ import rd.huma.dashboard.servicios.background.ejecutores.jenkins.monitoreo.Ejecu
 import rd.huma.dashboard.servicios.background.ejecutores.nexus.EjecutorBorrarVersionesNexus;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaMergeBranches;
+import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaOrigenNull;
 
 @ApplicationScoped
 public class MonitorEjecutor {
@@ -36,6 +37,8 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorMonitoreoJobEstadoPendiente(), 1, 5, TimeUnit.MINUTES);
 
 		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaMergeBranches(), 1, 5, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaOrigenNull(), 1, 5, TimeUnit.MINUTES);
+
 
 	}
 

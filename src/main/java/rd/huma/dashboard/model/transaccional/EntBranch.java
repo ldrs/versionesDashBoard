@@ -11,7 +11,8 @@ import javax.persistence.Table;
 @Table(name="Branch")
 @NamedQueries({
 	@NamedQuery(name="busca.branch",query="select E from EntBranch E where E.branch = :branch"),
-	@NamedQuery(name="buscaBranchesSinMerge.branch",query="select E from EntBranch E where merge='false'")
+	@NamedQuery(name="buscaOrigenNull.branch",query="select E from EntBranch E where origen is null"),
+	@NamedQuery(name="buscaBranchesSinMerge.branch",query="select E from EntBranch E where merge=false")
 })
 public class EntBranch extends AEntModelo {
 

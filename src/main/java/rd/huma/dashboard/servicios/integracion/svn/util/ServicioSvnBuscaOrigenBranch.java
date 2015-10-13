@@ -20,7 +20,8 @@ public class ServicioSvnBuscaOrigenBranch {
 	private String branch;
 
 	private EntAplicacion aplicacion;
-	
+
+	private String ultimaRevision;
 
 	public ServicioSvnBuscaOrigenBranch(String branch, EntAplicacion aplicacion) {
 		this.llaveJira = aplicacion.getJiraKey();
@@ -28,24 +29,28 @@ public class ServicioSvnBuscaOrigenBranch {
 		this.aplicacion = aplicacion;
 	}
 
-
 	public SVNOrigenBranch getOrigen(String comentario){
 		SVNOrigenBranch svnOrigen = new SVNOrigenBranch();
 		interpretacionOrigen(comentario);
+		buscaUltimaRevision(comentario);
 		svnOrigen.setJiraEncontrados(BuscadorJiraEnComentario.of(comentario, llaveJira).encuentraJira());
 		svnOrigen.setMergeInformacion(BuscadorMergeInfoEnComentario.of(comentario,branch).encuentra());
-		svnOrigen.setRevision(Long.valueOf(revision));
+		if (revision!=null){
+			svnOrigen.setRevision(Long.valueOf(revision));
+		}
 		svnOrigen.setOrigenBranch(origen);
+		if (ultimaRevision!=null){
+			svnOrigen.setUltimaRevision(Long.valueOf(ultimaRevision));
+		}
 
 		for (EntJira jira : svnOrigen.getJiras()){
 			if (!jira.getNumero().contains(llaveJira)){
 				jira.setNumero(llaveJira+"-"+jira.getNumero());
 			}
 		}
-		if (origen.contains("branches")){
+		if (origen!=null && origen.contains("branches")){
 			ServicioVersion.getInstanciaTransaccional().ejecutarJob(new EjecutorRevisaOrigenBranch(svnOrigen, aplicacion));
 		}
-
 
 		return svnOrigen;
 	}
@@ -60,5 +65,20 @@ public class ServicioSvnBuscaOrigenBranch {
 			this.revision = log.substring(indexDosPuntos+1);
 			revision = revision.substring(0, revision.indexOf(')'));
 		}
+	}
+
+	private void buscaUltimaRevision(String comentario){
+		String[] lines = comentario.split("\\n");
+		if (lines.length>1){
+			String line2 = lines[1];
+			String[] valores =  line2.split(" | ");
+			if (valores.length>0){
+				ultimaRevision = valores[0].substring(1);
+			}
+		}
+	}
+
+	public String getUltimaRevision() {
+		return ultimaRevision;
 	}
 }

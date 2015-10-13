@@ -126,4 +126,18 @@ public class ServicioBranch {
 		 return branchMerge;
 
 	}
+
+
+	public List<EntBranch> buscaBranchesOrigenNull() {
+		return entityManager.createNamedQuery("buscaOrigenNull.branch",EntBranch.class).getResultList();
+	}
+
+
+	public List<EntBranchMerge> buscaOrigenBranch(EntBranch branch) {
+		return entityManager.createNamedQuery("buscaPorOrigen.branchMerge",EntBranchMerge.class).setParameter("branch", branch.getBranch()).getResultList();
+	}
+
+	public List<EntBranchMerge> buscaDestinoBranch(EntBranch branch) {
+		return entityManager.createNamedQuery("buscaPorDestino.branchMerge",EntBranchMerge.class).setParameter("branch", branch.getBranch()).getResultList();
+	}
 }

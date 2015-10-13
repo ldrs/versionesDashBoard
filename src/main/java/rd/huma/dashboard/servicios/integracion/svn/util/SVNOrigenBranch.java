@@ -12,6 +12,7 @@ public class SVNOrigenBranch {
 	private long revision;
 	private List<EntJira> jiras;
 	private Set<String> mergeBranches;
+	private long ultimaRevision;
 
 	void setJiraEncontrados(List<EntJira> jiras) {
 		this.jiras = jiras;
@@ -46,5 +47,13 @@ public class SVNOrigenBranch {
 			return Collections.emptySet();
 		}
 		return mergeBranches;
+	}
+
+	void setUltimaRevision(long ultimaRevision) {
+		this.ultimaRevision = ultimaRevision;
+	}
+
+	public long getUltimaRevision() {
+		return ultimaRevision;
 	}
 }
