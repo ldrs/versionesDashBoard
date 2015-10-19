@@ -16,7 +16,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 				@NamedQuery(name="buscar.versionTicket", query="SELECT E from EntTicketSysAid E where E.numero = :num"),
 				@NamedQuery(name="buscarAmbienteSegunEstados.versionTicket", query="SELECT A from EntTicketSysAid T, EntTicketSysAidEstado E join E.ambiente A where T.estado = E.codigo and T in :tickets order by A.orden"),
-				@NamedQuery(name="buscarTodos.versionTicket", query="SELECT E from EntTicketSysAid E")
+				@NamedQuery(name="buscarTodos.versionTicket", query="SELECT E from EntTicketSysAid E"),
+				@NamedQuery(name="buscarTodosMenosEstado.versionTicket", query="SELECT E from EntTicketSysAid E where estado!= :est")
 			})
 public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketSysAid> {
 
@@ -25,9 +26,9 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 	 */
 	private static final long serialVersionUID = -1463431661829014017L;
 
-	private String numero;
+	private long numero;
 
-	private String estado="En Desarrollo";
+	private int estado = -1 ;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
@@ -36,19 +37,19 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaUltimaModificacion = Timestamp.from(Instant.now());
 
-	public String getNumero() {
+	public long getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(long numero) {
 		this.numero = numero;
 	}
 
-	public String getEstado() {
+	public int getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(int estado) {
 		this.estado = estado;
 	}
 
@@ -70,7 +71,7 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		result = prime * result + Long.valueOf(numero).hashCode();
 		return result;
 	}
 
@@ -87,11 +88,7 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 			return false;
 		}
 		EntTicketSysAid other = (EntTicketSysAid) obj;
-		if (numero == null) {
-			if (other.numero != null) {
-				return false;
-			}
-		} else if (!numero.equals(other.numero)) {
+		if (numero!=other.numero){
 			return false;
 		}
 		return true;
@@ -100,16 +97,6 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	@Override
 	public int compareTo(EntTicketSysAid o) {
-		if (o.numero == null && numero == null){
-			return 0;
-		}
-		if (o.numero != null && numero == null){
-			return 1;
-		}
-		if (o.numero == null && numero != null){
-			return -1;
-		}
-
-		return  o.numero.compareTo(numero);
+		return Long.compare(numero, o.numero);
 	}
 }

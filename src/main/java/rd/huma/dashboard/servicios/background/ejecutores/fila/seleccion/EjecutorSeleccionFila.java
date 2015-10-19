@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
@@ -17,6 +18,10 @@ public class EjecutorSeleccionFila extends AEjecutor {
 
 	private Set<EntFilaDespliegue> filasIgnorar;
 
+	private boolean ponerWarningFaltaFila = true;
+
+	private EntFilaDespliegueVersion filaPosibleEliminar;
+
 	public EjecutorSeleccionFila(EntVersion version) {
 		this.version = version;
 	}
@@ -26,6 +31,13 @@ public class EjecutorSeleccionFila extends AEjecutor {
 		this.filasIgnorar = filasIgnorar;
 	}
 
+
+	public EjecutorSeleccionFila(EntFilaDespliegueVersion fila) {
+		version = fila.getVersion();
+		this.filaPosibleEliminar = fila;
+
+		ponerWarningFaltaFila = false;
+	}
 
 	@Override
 	public void ejecutar() {
@@ -37,11 +49,17 @@ public class EjecutorSeleccionFila extends AEjecutor {
 		if (filasIgnorar!=null){
 			filas = filas.stream().filter(fila -> filasIgnorar.contains(fila)).collect(Collectors.toList());
 		}
-		if (filas.isEmpty()){
+		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
+		if (filaPosibleEliminar!=null && !filas.contains(filaPosibleEliminar.getFila())){
+			servicio.eliminarFilaVersion(filaPosibleEliminar.getId());
+		}else if (filaPosibleEliminar!=null && filas.contains(filaPosibleEliminar.getFila())){
+			filas.remove(filaPosibleEliminar.getFila());
+		}
+
+		if (ponerWarningFaltaFila && filas.isEmpty()){
 			LOGGER.warning(String.format("No se ha encontrado una fila para la version %s", version.getNumero()));
 		}
 
-		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
 		filas.stream().sorted().forEach(fila -> servicio.crearVersionFila(version, fila));
 	}
 }

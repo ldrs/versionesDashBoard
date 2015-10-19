@@ -71,7 +71,7 @@ class ProcesadorDatos {
 		return servicioJira.encuentraOSalva(numeroJira, estado);
 	}
 
-	private void manejaTicketsSysAid(String numero){
+	private void manejaTicketsSysAid(long numero){
 		if (!servicioVersion.crearVersionTicketSysAid(numero, version)){
 			EjecutorVersion.LOGGER.warning(String.format("el ticket %s no fue encontrado, y fue mencionado para la version %s",numero,version.getNumero()));
 		}

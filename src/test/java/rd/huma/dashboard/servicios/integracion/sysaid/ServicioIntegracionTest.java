@@ -8,7 +8,6 @@ import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 
 import com.ilient.api.ApiServiceRequest;
-import com.ilient.api.ApiServiceRequest.CustomFields.Entry;
 import com.ilient.api.SysaidApiService;
 import com.ilient.api.SysaidApiServiceService;
 
@@ -22,21 +21,24 @@ public class ServicioIntegracionTest {
 	public void probar(){
 		SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 		long sessionId = service.login(ACCONT_ID,USER_ID,PASS_ID);
-		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),1269);
+		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10118);
 
 
-		System.out.println(sr.getSrType());
-		System.out.println(sr.getSrSubType());
-		System.out.println(sr.getSource());
-		System.out.println(sr.getAgreement());
+		ApiServiceRequest sr2 = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10119);
 
+		//System.out.println(sr.getDescription());
+//		System.out.println(sr.getSrSubType());
+//		System.out.println(sr.getSource());
+//		System.out.println(sr.getAgreement());
+//
 
-		System.out.println(sr.getStatus());
+		System.out.println("Estado 1 ->" + sr.getStatus());
+		System.out.println("Estado 2 ->" + sr2.getStatus());
 
 	//	System.out.println(sr.getAssignedTo());
-		for (Entry  entry : sr.getCustomFields().getEntry()){
-			System.out.println(entry.getKey() + "-" + entry.getValue());
-		}
+//		for (Entry  entry : sr.getCustomFields().getEntry()){
+//			System.out.println(entry.getKey() + "-" + entry.getValue());
+//		}
 
 
 

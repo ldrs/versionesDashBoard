@@ -17,6 +17,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
@@ -129,7 +130,7 @@ public class ServicioVersion {
 		return versionJira;
 	}
 
-	public boolean crearVersionTicketSysAid(String numero, EntVersion version) {
+	public boolean crearVersionTicketSysAid(long numero, EntVersion version) {
 		EntTicketSysAid ticketSysAid = servicioTicketSysaid.encuentraOSalva(numero);
 		if (ticketSysAid == null){
 			return false;
@@ -271,7 +272,10 @@ public class ServicioVersion {
 
 	public void gestionarFila(EntVersion version) {
 		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(version));
+	}
 
+	public void gestionarFila(EntFilaDespliegueVersion fila) {
+		monitorEjecutor.ejecutarAsync(new EjecutorSeleccionFila(fila));
 	}
 
 	public void gestionarFila(EjecutorSeleccionFila  ejecutorSeleccionFila) {
@@ -431,4 +435,6 @@ public class ServicioVersion {
 	public void eliminaModulos(EntVersion version) {
 		buscaModulos(version).stream().forEach(e-> entityManager.remove(entityManager.find(e.getClass(), e.getId())));
 	}
+
+
 }

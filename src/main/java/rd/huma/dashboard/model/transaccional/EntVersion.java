@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,7 +21,10 @@ import javax.persistence.UniqueConstraint;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 
 @Entity
-@Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }  )
+@Table(name="VERSION" ,uniqueConstraints  = {@UniqueConstraint(columnNames={"numero","svnOrigen"}) }
+		, indexes = {@Index(columnList="numero", name="VERSION_NUM_IDX") , @Index(columnList="branchOrigen", name="VERSION_BRA_IDX") }
+
+		)
 @NamedQueries	({
 				  @NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E order by E.fechaRegistro desc"),
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
@@ -29,6 +33,7 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 				  @NamedQuery(name="buscarPorBranch.version", query = "SELECT E from EntVersion E where E.branchOrigen = :branch order by revisionSVN desc"),
 				  @NamedQuery(name="buscarPorBranchDuplicado.version", query = "SELECT E.branchOrigen from EntVersion E where E.estado in :est group by E.branchOrigen having Count(E)>2")
 				  })
+
 public class EntVersion extends AEntModelo implements Serializable{
 
 	/**
@@ -36,8 +41,8 @@ public class EntVersion extends AEntModelo implements Serializable{
 	 */
 	private static final long serialVersionUID = -5201971151423246320L;
 
-
 	private String numero;
+
 	@JoinColumn
 	@ManyToOne
 	private EntPersona autor;

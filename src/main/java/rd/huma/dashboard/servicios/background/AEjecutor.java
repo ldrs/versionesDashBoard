@@ -10,7 +10,7 @@ public abstract class AEjecutor implements Runnable {
 	@Override
 	public final void run() {
 		try{
-			LOG.info("Inicio de ejecucion del proceso " + getClass().getSimpleName());
+		//	LOG.info("Inicio de ejecucion del proceso " + getClass().getSimpleName());
 
 			ejecutar();
 		}catch(Exception e){

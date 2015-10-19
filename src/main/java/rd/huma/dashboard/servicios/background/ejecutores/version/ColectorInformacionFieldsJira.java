@@ -45,7 +45,10 @@ public class ColectorInformacionFieldsJira {
 
 
 	public void procesar(){
-		nuevoTicketSysAid(fields.getSysAidTicket());
+		String numero = fields.getSysAidTicket();
+		if (numero!=null){
+			nuevoTicketSysAid(Integer.valueOf(numero));
+		}
 		adicionarParticipante(fields.getAssignee(), ETipoParticipante.ASIGNADO);
 
 		adicionarParticipante(fields.getReporter(), ETipoParticipante.REPORTADOR);
@@ -126,7 +129,7 @@ public class ColectorInformacionFieldsJira {
 	}
 
 
-	private void nuevoTicketSysAid(String numero){
+	private void nuevoTicketSysAid(Integer numero){
 		if (numero == null){
 			return;
 		}

@@ -73,6 +73,11 @@ public class ServicioBranch {
 	}
 
 	public EntBranch grabar(EntBranch branch) {
+		int index = branch.getBranch().indexOf(" (from");
+		if (index!=-1){
+			branch.setBranch(branch.getBranch().substring(0, index-1));
+		}
+
 		Optional<EntBranch> posibleRetorno = buscaBranch(branch.getBranch());
 		if (posibleRetorno.isPresent()){
 			return posibleRetorno.get();
@@ -116,7 +121,7 @@ public class ServicioBranch {
 			branchOrigen.setAplicacion(branch.getAplicacion());
 			branchOrigen.setBranch(mergedBranch);
 
-			grabar(branchOrigen);
+			branchOrigen = grabar(branchOrigen);
 		}
 
 		 EntBranchMerge branchMerge = new EntBranchMerge();
@@ -134,10 +139,14 @@ public class ServicioBranch {
 
 
 	public List<EntBranchMerge> buscaOrigenBranch(EntBranch branch) {
-		return entityManager.createNamedQuery("buscaPorOrigen.branchMerge",EntBranchMerge.class).setParameter("branch", branch.getBranch()).getResultList();
+		return entityManager.createNamedQuery("buscaPorOrigenObj.branchMerge",EntBranchMerge.class).setParameter("branch", branch).getResultList();
+	}
+
+	public List<EntBranchMerge> buscaOrigenBranch(String branch) {
+		return entityManager.createNamedQuery("buscaPorOrigen.branchMerge",EntBranchMerge.class).setParameter("branch", branch).getResultList();
 	}
 
 	public List<EntBranchMerge> buscaDestinoBranch(EntBranch branch) {
-		return entityManager.createNamedQuery("buscaPorDestino.branchMerge",EntBranchMerge.class).setParameter("branch", branch.getBranch()).getResultList();
+		return entityManager.createNamedQuery("buscaPorDestino.branchMerge",EntBranchMerge.class).setParameter("branch", branch).getResultList();
 	}
 }

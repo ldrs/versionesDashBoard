@@ -44,7 +44,7 @@ public class ProcesadorTicketSysaid extends AEjecutor {
 			if (intentalTicket.isPresent()){
 				Ticket ticket = intentalTicket.get();
 				EntTicketSysAid t = versionTicket.getTicketSysAid();
-				t.setEstado(String.valueOf(ticket.getEstado()));
+				t.setEstado(ticket.getEstado());
 				servicioTicketSysaid.actualizar(t);
 			}
 		}catch(Exception e){

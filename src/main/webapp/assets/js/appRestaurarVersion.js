@@ -99,7 +99,7 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 			app.ambientes = data;
 
 			app.ambientes.forEach(function(o){
-				o.href="app.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
+				o.href="restaurarVersion.html?aplicacion="+queryString.aplicacion+"&ambiente="+o.nombre;
 				if (! app.ambiente){
 					app.ambiente = o.nombre;
 				}

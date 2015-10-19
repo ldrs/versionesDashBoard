@@ -22,7 +22,7 @@ public class ServicioTicketSysaid {
 	private EntityManager entityManager;
 
 
-	public EntTicketSysAid encuentraOSalva(String numero) {
+	public EntTicketSysAid encuentraOSalva(Long numero) {
 		synchronized(numero){
 			Optional<EntTicketSysAid> ticket = buscarPorNumero(numero);
 			if (ticket.isPresent()){
@@ -42,7 +42,7 @@ public class ServicioTicketSysaid {
 		return entityManager.createNamedQuery("buscarAmbienteSegunEstados.versionTicket",EntAmbiente.class).setParameter("tickets", tickets).getResultList();
 	}
 
-	public Optional<EntTicketSysAid> buscarPorNumero(String numero){
+	public Optional<EntTicketSysAid> buscarPorNumero(Long numero){
 		return entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst();
 	}
 
@@ -51,14 +51,14 @@ public class ServicioTicketSysaid {
 		return CDI.current().select(ServicioTicketSysaid.class, servicio).get();
 	}
 
-	private EntTicketSysAid nuevoSysAid(String numero) {
+	private EntTicketSysAid nuevoSysAid(long numero) {
 		return persiste(numero);
 	}
 
-	private EntTicketSysAid persiste(String numero){
+	private EntTicketSysAid persiste(long numero){
 		EntTicketSysAid jira = new EntTicketSysAid();
-		jira.setNumero(String.valueOf(numero));
-		jira.setEstado("Desconocido");
+		jira.setNumero(numero);
+		jira.setEstado(-1);
 		entityManager.persist(jira);
 		return jira;
 	}
@@ -72,7 +72,7 @@ public class ServicioTicketSysaid {
 		Optional<Ticket> opcional =  ServicioIntegracionSYSAID.instancia().getTicket(entTicketSysAid.getNumero());
 		if (opcional.isPresent()){
 			Ticket ticket = opcional.get();
-			entTicketSysAid.setEstado(String.valueOf(ticket.getEstado()));
+			entTicketSysAid.setEstado(ticket.getEstado());
 			return actualizar(entTicketSysAid);
 		}
 		return entTicketSysAid;
@@ -80,5 +80,9 @@ public class ServicioTicketSysaid {
 
 	public List<EntTicketSysAid> buscarTodos() {
 		return entityManager.createNamedQuery("buscarTodos.versionTicket",EntTicketSysAid.class).getResultList();
+	}
+
+	public  List<EntTicketSysAid> buscarTodosQueNoEstenEnProduccion() {
+		return entityManager.createNamedQuery("buscarTodosMenosEstado.versionTicket",EntTicketSysAid.class).setParameter("est", 21).getResultList();
 	}
 }

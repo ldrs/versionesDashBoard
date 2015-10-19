@@ -18,6 +18,7 @@ import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersionDueno;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
+import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionAlerta;
 import rd.huma.dashboard.model.transaccional.EntVersionParticipante;
@@ -216,5 +217,9 @@ public class ServicioFila {
 
 	public List<EntFilaDespliegueVersion> getFilas(EntFilaDespliegue filaDespliegue, EntVersion version) {
 		return entityManager.createNamedQuery("buscarPorFilaVersion.fila",EntFilaDespliegueVersion.class).setParameter("ver", version.getId()).setParameter("fer", filaDespliegue).getResultList();
+	}
+
+	public List<EntFilaDespliegueVersion> getFilaPorTicket(EntTicketSysAid ticket) {
+		return entityManager.createNamedQuery("buscarPorFilaTicket.fila",EntFilaDespliegueVersion.class).setParameter("ticket", ticket).getResultList();
 	}
 }

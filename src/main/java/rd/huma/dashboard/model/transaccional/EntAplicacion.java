@@ -34,6 +34,8 @@ public class EntAplicacion extends AEntModelo {
 
 	private String rutaSvnAmbiente;
 
+	private String rutaPathTrunk;
+
 	private String nombreJobDeployJenkins;
 
 	private String nombreJobSQLJenkins;
@@ -137,6 +139,14 @@ public class EntAplicacion extends AEntModelo {
 		this.nombreGrupoBusquedaNexus = nombreGrupoBusquedaNexus;
 	}
 
+	public String getRutaPathTrunk() {
+		return rutaPathTrunk;
+	}
+
+	public void setRutaPathTrunk(String rutaPathTrunk) {
+		this.rutaPathTrunk = rutaPathTrunk;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -186,4 +196,6 @@ public class EntAplicacion extends AEntModelo {
 		}
 		return true;
 	}
+
+
 }

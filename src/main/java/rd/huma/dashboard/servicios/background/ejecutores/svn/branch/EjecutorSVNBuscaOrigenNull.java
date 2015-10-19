@@ -9,5 +9,4 @@ public class EjecutorSVNBuscaOrigenNull extends AEjecutor {
 		new ProcesadorOrigenNull().procesar();
 
 	}
-
 }
