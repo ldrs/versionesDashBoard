@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.transaccional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -94,9 +95,9 @@ public class ServicioFila {
 		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, filaVersion.getId()));
 	}
 
-	public List<FilaBranch> getFilasPorBranchDuplicado(Set<EEstadoVersion> estados) {
+	public List<FilaBranch> getFilasPorBranchDuplicado() {
 		List<FilaBranch> filas = new ArrayList<FilaBranch>();
-		entityManager.createNamedQuery("buscarPorDuplicacion.fila",Object[].class).setParameter("est", estados).getResultList()
+		entityManager.createNamedQuery("buscarPorDuplicacion.fila",Object[].class).getResultList()
 
 		.stream().forEach(o-> filas.add(toFilaBranch.apply(o)));
 		return filas;
@@ -157,9 +158,7 @@ public class ServicioFila {
 		servicioVersion.crearAlerta(versionAlerta);
 	}
 
-	public void eliminarFilaVersion(String id){
-		entityManager.remove(entityManager.find(EntFilaDespliegueVersion.class, id));
-	}
+
 
 	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
 		EntFilaDespliegue fila = new EntFilaDespliegue();
@@ -221,5 +220,9 @@ public class ServicioFila {
 
 	public List<EntFilaDespliegueVersion> getFilaPorTicket(EntTicketSysAid ticket) {
 		return entityManager.createNamedQuery("buscarPorFilaTicket.fila",EntFilaDespliegueVersion.class).setParameter("ticket", ticket).getResultList();
+	}
+
+	public Optional<EntFilaDespliegueVersion> getFilaPorId(String id) {
+		return Optional.ofNullable(entityManager.find(EntFilaDespliegueVersion.class, id));
 	}
 }

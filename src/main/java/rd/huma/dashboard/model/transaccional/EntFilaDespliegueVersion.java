@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 @Table(name="FILA_DESPLIEGE_VERSION")
 @NamedQueries({
 	@NamedQuery(name = "buscarPorVersionEstado.fila",query ="Select F from EntFilaDespliegueVersion F join F.version V where V.estado in :est" ),
-	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDespliegueVersion F join F.version V  where V.estado in :est group by F.fila, V.branchOrigen having count(V)>1"),
+	@NamedQuery(name = "buscarPorDuplicacion.fila", query = "Select F.fila, V.branchOrigen from EntFilaDespliegueVersion F join F.version V group by F.fila, V.branchOrigen having count(V)>1"),
 	@NamedQuery(name = "buscarPorFilaBranch.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F.fila = :fil and V.branchOrigen = :bra order by V.fechaRegistro"),
 	@NamedQuery(name = "buscarPorFilaVersion.fila", query = "Select F from EntFilaDespliegueVersion F join F.version V where F = :fil and V.id = :ver order by V.fechaRegistro"),
 	@NamedQuery(name = "buscarPorFilaTicket.fila", query = "Select F from EntFilaDespliegueVersion F, EntVersionTicket VT  where F.version = VT.version and VT.ticketSysAid = :ticket"),

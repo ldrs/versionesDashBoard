@@ -8,7 +8,7 @@ import javax.ws.rs.PathParam;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 
-@Path("filasPrioridad/")
+@Path("filasPrioridad")
 public class WSFilaDeplomentVersionPrioridades {
 
 	private @Servicio @Inject ServicioFila fila;
@@ -32,8 +32,7 @@ public class WSFilaDeplomentVersionPrioridades {
 	@GET
 	@Path("elimina/{id}")
 	public String eliminaFila(@PathParam("id") String id){
-		fila.eliminarFilaVersion(id);
+		fila.getFilaPorId(id).ifPresent(fila::salirFila);
 		return "{}";
 	}
-
 }

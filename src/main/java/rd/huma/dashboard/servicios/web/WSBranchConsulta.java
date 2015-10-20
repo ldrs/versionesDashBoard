@@ -46,7 +46,7 @@ public class WSBranchConsulta {
 	public String buscaVersionesBranch(@PathParam("branch") String branch){
 		JsonArrayBuilder jsonVersiones = Json.createArrayBuilder();
 		List<EntVersion> versiones =  servicioVersion.buscaPorBranch(branch);
-		Set<String> tickets = new HashSet<>();
+		Set<Long> tickets = new HashSet<>();
 		versiones.forEach( v -> jsonVersiones.add(toJson(branch,v,tickets)));
 
 		JsonArrayBuilder ticketsJson = Json.createArrayBuilder();
@@ -56,7 +56,7 @@ public class WSBranchConsulta {
 		return Json.createObjectBuilder().add("versiones", jsonVersiones).add("tickets", ticketsJson).build().toString();
 	}
 
-	private JsonObjectBuilder toJson(String branch, EntVersion version, Set<String> tickets){
+	private JsonObjectBuilder toJson(String branch, EntVersion version, Set<Long> tickets){
 		Optional<EntBranch> posibleBranch = servicioBranch.buscaBranch(branch);
 
 		servicioVersion.buscaNumeroTicketsSegunBranch(branch).forEach(tickets::add);

@@ -227,8 +227,8 @@ public class ServicioVersion {
 				.getResultList();
 	}
 
-	public List<String> buscaNumeroTicketsSegunBranch(String branch){
-		return entityManager.createNamedQuery("buscarPorBranch.versionTicket",String.class).setParameter("branch", branch).getResultList();
+	public List<Long> buscaNumeroTicketsSegunBranch(String branch){
+		return entityManager.createNamedQuery("buscarPorBranch.versionTicket",Long.class).setParameter("branch", branch).getResultList();
 	}
 
 	public List<EntVersionPropiedad> buscaPropiedades(EntVersion version){

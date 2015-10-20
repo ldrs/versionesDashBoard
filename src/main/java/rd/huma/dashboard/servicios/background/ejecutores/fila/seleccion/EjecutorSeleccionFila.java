@@ -51,7 +51,7 @@ public class EjecutorSeleccionFila extends AEjecutor {
 		}
 		ServicioFila servicio = ServicioFila.getInstanciaTransaccional();
 		if (filaPosibleEliminar!=null && !filas.contains(filaPosibleEliminar.getFila())){
-			servicio.eliminarFilaVersion(filaPosibleEliminar.getId());
+			servicio.salirFila(filaPosibleEliminar);
 		}else if (filaPosibleEliminar!=null && filas.contains(filaPosibleEliminar.getFila())){
 			filas.remove(filaPosibleEliminar.getFila());
 		}

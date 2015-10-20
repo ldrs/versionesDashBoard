@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.integracion.sysaid;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -17,11 +18,10 @@ public class ServicioIntegracionTest {
 	private static final String USER_ID = "integrador";
 	private static final String PASS_ID = "integrador";
 
-	@Test
 	public void probar(){
 		SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 		long sessionId = service.login(ACCONT_ID,USER_ID,PASS_ID);
-		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10118);
+		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),9600);
 
 
 		ApiServiceRequest sr2 = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10119);
@@ -45,10 +45,22 @@ public class ServicioIntegracionTest {
 		service.logout(sessionId);
 	}
 
+
 	//@Test
-	public void probar2(){
+	public void probar3(){
+		System.out.println("probar3");
 		EntConfiguracionGeneral configuracionGeneral = new EntConfiguracionGeneral();
-	 	Optional<Ticket> ticket =  ServicioIntegracionSYSAID.instancia().getTicket(configuracionGeneral,9612);
+		 List<Ticket> tick =  ServicioIntegracionSYSAID.instancia().getTickets(configuracionGeneral,9612L,9060L,10119L);
+		for (Ticket ticket : tick) {
+			System.out.println(ticket.getTicket() +" " + ticket.getEstado());
+		}
+	}
+
+//	@Test
+	public void probar2(){
+		System.out.println("probar2");
+		EntConfiguracionGeneral configuracionGeneral = new EntConfiguracionGeneral();
+	 	Optional<Ticket> ticket =  ServicioIntegracionSYSAID.instancia().getTicket(configuracionGeneral,9612L);
 	 	if (ticket.isPresent()){
 	 		System.out.println(ticket.get().getTicket() +" " + ticket.get().getEstado());
 	 	}

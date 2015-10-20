@@ -67,7 +67,7 @@ var ejecutar = function(){
 				for (var indexDestino in jsonRama.branch.destinos){
 					var destino = branches[jsonRama.branch.destinos[indexDestino]];
 					if (destino){
-						destino.rama.merge(jsonRama.rama);
+						destino.rama.merge(jsonRama.rama, {"color":"#008fb5"});
 					}
 				}
 			}

@@ -17,6 +17,7 @@ import rd.huma.dashboard.servicios.background.ejecutores.nexus.EjecutorBorrarVer
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaMergeBranches;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaOrigenNull;
+import rd.huma.dashboard.servicios.background.ejecutores.sysaid.EjecutorSysAidBuscaActualizacion;
 
 @ApplicationScoped
 public class MonitorEjecutor {
@@ -27,7 +28,7 @@ public class MonitorEjecutor {
 	public void inicializar(){
 		scheduler = Executors.newScheduledThreadPool(80);
 		scheduler.scheduleAtFixedRate(new EjecutorBranchActivo(), 5, 30, TimeUnit.MINUTES);
-		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 60, 1, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorEliminadorFilas(), 5, 1, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorModulosAmbienteSVN(), 1, 24, TimeUnit.HOURS);
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
@@ -39,7 +40,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaMergeBranches(), 1, 5, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaOrigenNull(), 1, 5, TimeUnit.MINUTES);
 
-
+		scheduler.scheduleAtFixedRate(new EjecutorSysAidBuscaActualizacion(), 1, 90, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy

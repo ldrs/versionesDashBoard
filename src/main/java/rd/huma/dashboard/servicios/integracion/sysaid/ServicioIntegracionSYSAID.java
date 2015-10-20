@@ -3,6 +3,7 @@ package rd.huma.dashboard.servicios.integracion.sysaid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
@@ -13,23 +14,26 @@ import com.ilient.api.SysaidApiService;
 import com.ilient.api.SysaidApiServiceService;
 
 public final class ServicioIntegracionSYSAID {
+	//private static final Logger LOGGER = Logger.getLogger("ServicioIntegracionSYSAID");
+
+
 	private static final String ACCONT_ID = "ministeriodehacienda";
 
 
 	private ServicioIntegracionSYSAID() {
 	}
 
-	public Optional<Ticket> getTicket(long ticket){
+	public Optional<Ticket> getTicket(Long ticket){
 		return getTicket(ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get(), ticket);
 	}
 
-	public Optional<Ticket> getTicket(EntConfiguracionGeneral configuracionGeneral, long ticket){
+	public Optional<Ticket> getTicket(EntConfiguracionGeneral configuracionGeneral, Long ticket){
 		try{
 
 			SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 			long sessionId = service.login(ACCONT_ID,configuracionGeneral.getUsrSysaid(),configuracionGeneral.getPwdSysaid());
 			try{
-				ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),ticket);
+				ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(), ticket.intValue());
 
 				if (sr == null){
 					return Optional.empty();
@@ -52,8 +56,9 @@ public final class ServicioIntegracionSYSAID {
 			long sessionId = service.login(ACCONT_ID,configuracionGeneral.getUsrSysaid(),configuracionGeneral.getPwdSysaid());
 			try {
 
-				for (long ticket : tickets) {
-					ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),ticket);
+				for (Long ticket : tickets) {
+					ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(), ticket.intValue());
+				//	LOGGER.info(String.format("Buscando ticket %s y fue encontrado %s " , String.valueOf(ticket),String.valueOf(sr!=null)));
 					if (sr!=null){
 						ticketsRetorno.add(new Ticket(ticket, sr.getStatus()));
 					}
