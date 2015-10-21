@@ -8,6 +8,7 @@ import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
+import rd.huma.dashboard.servicios.integracion.jenkins.InvocadorJenkins;
 import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
 import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
 import rd.huma.dashboard.servicios.transaccional.ServicioPersona;

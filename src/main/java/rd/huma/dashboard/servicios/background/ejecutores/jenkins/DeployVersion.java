@@ -3,6 +3,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 import java.util.logging.Logger;
 
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
+import rd.huma.dashboard.servicios.integracion.jenkins.InvocadorJenkins;
 
 public class DeployVersion extends ADeployVersion{
 

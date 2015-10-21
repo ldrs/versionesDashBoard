@@ -1,14 +1,15 @@
-package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
+package rd.huma.dashboard.servicios.integracion.jenkins;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
-import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
-
+import rd.huma.dashboard.model.jenkins.Parameters;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.seguimiento.EjecutorJenkinsSeguimiento;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.seguimiento.ResultadoSeguimientoJenkins;
 
 public class InvocadorJenkins {
 
@@ -16,10 +17,17 @@ public class InvocadorJenkins {
 	private StringBuilder sbPostData = new StringBuilder(150);
 	private String url;
 	private String urlBase;
-	private ResponseHandler responseHanlder;
+	private Consumer<ResultadoInvocadorJenkins> jenkinsResponseHandler;
+	private Predicate<Parameters> filtroEncontrar;
 
 	public InvocadorJenkins(String credenciales) {
 		this.credenciales = credenciales;
+		this.jenkinsResponseHandler = new Consumer<ResultadoInvocadorJenkins>() {
+
+			@Override
+			public void accept(ResultadoInvocadorJenkins t) {
+			}
+		};
 	}
 
 	public InvocadorJenkins setURL(String url){
@@ -35,8 +43,13 @@ public class InvocadorJenkins {
 		return this;
 	}
 
-	public InvocadorJenkins responseHanlder(ResponseHandler handler){
-		this.responseHanlder = handler;
+	public InvocadorJenkins setFiltroEncontrar(Predicate<Parameters> filtroEncontrar) {
+		this.filtroEncontrar = filtroEncontrar;
+		return this;
+	}
+
+	public InvocadorJenkins responseHanlder(Consumer<ResultadoInvocadorJenkins> handler){
+		this.jenkinsResponseHandler = handler;
 		return this;
 	}
 
@@ -66,53 +79,13 @@ public class InvocadorJenkins {
 
 	private void manejaResponse( int responseCode){
 		if (responseCode==201){
-			if (responseHanlder!=null && this.responseHanlder.sucess()!=null){
-				this.responseHanlder.sucess().setUrlSeguimiento(urlBase);
-				this.responseHanlder.sucess().ejecutar();
-			}
-
+			new EjecutorJenkinsSeguimiento(urlBase, filtroEncontrar, this::procesaResultadoJenkins);
 		}else{
-			this.responseHanlder.getFailure().accept(null);
+			jenkinsResponseHandler.accept(new ResultadoInvocadorJenkins(EEstadoJobJenkins.FALLIDO_REQUEST_INVALIDO));
 		}
 	}
-}
 
-class ResponseHandler{
-
-	private SeguimientoJob sucess;
-	private Consumer<Void> failure;
-	public ResponseHandler(SeguimientoJob sucess, Consumer<Void> failure) {
-		this.sucess = sucess;
-		this.failure = failure;
-	}
-
-	public SeguimientoJob sucess() {
-		return sucess;
-	}
-
-	public Consumer<Void> getFailure() {
-		return failure;
-	}
-}
-
-class SeguimientoJob{
-	private EntJobDespliegueVersion valor;
-	private String urlSeguimiento;
-	private Consumer<Boolean> handlerResult;
-
-	public void ejecutar(){
-		ServicioJobDespliegueVersion.getInstanciaTransaccional().seguimientoJenkinsSeguimientoDespliegue(valor, urlSeguimiento,handlerResult);
-	}
-
-	public void setUrlSeguimiento(String urlSeguimiento) {
-		this.urlSeguimiento = urlSeguimiento;
-	}
-
-	public void setHandlerResult(Consumer<Boolean> handlerResult) {
-		this.handlerResult = handlerResult;
-	}
-
-	public void setValor(EntJobDespliegueVersion valor) {
-		this.valor = valor;
+	private void procesaResultadoJenkins(ResultadoSeguimientoJenkins resultado){
+		jenkinsResponseHandler.accept(new ResultadoInvocadorJenkins(resultado));
 	}
 }

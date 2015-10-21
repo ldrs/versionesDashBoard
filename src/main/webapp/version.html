@@ -30,7 +30,7 @@
 
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
-		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
+
 			<div id="header-wrapper">
 				<div class="container">
 					<div class="row">
@@ -109,13 +109,13 @@
 								<td><h4>Fecha Registro</h4></td>
 								<td><h4>Tipo Job</h4></td>
 								<td><h4>Estado</h4></td>
-								<td><h4>Observacion</h4></td>
+								<td style="margin-left: 10px"><h4>Observacion</h4></td>
 							</tr>
 							<tr ng-repeat="job in app.allJobs | orderBy:'fechaRegistro'">
 								<td>{{job.fechaRegistro}}</td>
 								<td>{{job.tipo}}</td>
 								<td>{{job.estado}}</td>
-								<td> <span ng-bind-html="job.observacion"></span></td>
+								<td style="margin-left: 10px"> <span ng-bind-html="job.observacion"></span></td>
 							</tr>
 						</table>
 					</div>

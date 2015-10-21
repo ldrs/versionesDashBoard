@@ -2,6 +2,7 @@ package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
 import rd.huma.dashboard.model.transaccional.EntJobDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
+import rd.huma.dashboard.servicios.integracion.jenkins.InvocadorJenkins;
 
 public class DeployReporte extends ADeployVersion{
 

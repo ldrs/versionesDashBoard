@@ -30,7 +30,7 @@ import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
 
 public class ServiciosSVNTest {
 
-	@Test @Ignore
+	@Test
 	public void versionesSinTag(){
 		ServicioSVN svn = new ServicioSVN();
 		EntAplicacion aplicacion = new EntAplicacion();
@@ -40,6 +40,9 @@ public class ServiciosSVNTest {
 		Set<String> tags = svn.tags(); //Versiones Validas
 
 		ServicioNexus servicioNexus = SimulaNexus.nuevo();
+		EntConfiguracionGeneral configuracionGeneral = new EntConfiguracionGeneral();
+		List<EntVersionModulo> modulos = new BuscadorModulos(configuracionGeneral, aplicacion, new EntVersion()).buscar("/sigef/trunk/sigef/");
+
 		Artefacto artifact = new Artefacto();
 		artifact.setArtefacto("sigef_actual");
 		artifact.setGrupo("dr.gov.sigef");
@@ -47,6 +50,10 @@ public class ServiciosSVNTest {
 		for (String version : versiones) {
 			if (!tags.contains(version)){
 				System.out.println(version);
+//				for (EntVersionModulo m : modulos) {
+//					ArtefactoParaBorrar artefactoParaBorrar = new ArtefactoParaBorrar(m.getArtefacto().getGrupo(), m.getArtefacto().getArtefacto());
+//					servicioNexus.eliminarModulo(artefactoParaBorrar.getGrupo(),artefactoParaBorrar.getArtefacto(), version);
+//				}
 			}
 		}
 	}
