@@ -52,6 +52,7 @@ public class WSFilaHistorica {
 		servicioFilaHistorica.getVersionesPorAplicacion(aplicacionNombre).stream()
 		.filter(f -> f.getFechaRegistro().isAfter(hace3Dias))
 		.filter(f ->  !f.getVersion().getEstado().activo() && !EEstadoVersion.NEXUS_ELIMINADO.equals(f.getVersion().getEstado()) )
+		.filter(f ->  !EEstadoVersion.REMPLAZADA.equals(f.getVersion().getEstado()) )
 		.forEach(a -> arreglo.add(agregarVersion(a)));
 		return arreglo.build().toString();
 	}

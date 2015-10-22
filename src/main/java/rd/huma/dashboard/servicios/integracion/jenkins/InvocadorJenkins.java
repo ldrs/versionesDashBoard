@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import rd.huma.dashboard.model.jenkins.Parameters;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.seguimiento.EjecutorJenkinsSeguimiento;
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.seguimiento.ResultadoSeguimientoJenkins;
 
@@ -20,8 +21,8 @@ public class InvocadorJenkins {
 	private Consumer<ResultadoInvocadorJenkins> jenkinsResponseHandler;
 	private Predicate<Parameters> filtroEncontrar;
 
-	public InvocadorJenkins(String credenciales) {
-		this.credenciales = credenciales;
+	public InvocadorJenkins(EntConfiguracionGeneral configuracionGeneral) {
+		this.credenciales = new JenkinsCredenciales(configuracionGeneral).getCredenciales();
 		this.jenkinsResponseHandler = new Consumer<ResultadoInvocadorJenkins>() {
 
 			@Override

@@ -1,7 +1,5 @@
 package rd.huma.dashboard.servicios.background.ejecutores.jenkins;
 
-import java.util.Base64;
-
 import rd.huma.dashboard.model.transaccional.EntAmbienteAplicacion;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
@@ -24,7 +22,6 @@ abstract class ADeployVersion {
 	private EntVersion version;
 	private EntAmbienteAplicacion ambienteAplicacion;
 	private EntAplicacion aplicacion;
-	private String credenciales;
 
 	protected ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
@@ -46,7 +43,6 @@ abstract class ADeployVersion {
 		this.aplicacion = ambienteAplicacion.getAplicacion();
 		this.servicioJenkins = ServicioJenkins.para(aplicacion);
 		this.servicioJobDespliegueVersion = ServicioJobDespliegueVersion.getInstanciaTransaccional();
-		this.credenciales = "Basic " + Base64.getEncoder().encodeToString( (configuracionGeneral.getUsrJenkins() + ":" + configuracionGeneral.getPwdJenkins()).getBytes() );
 
 	}
 
@@ -93,7 +89,7 @@ abstract class ADeployVersion {
 
 
 	InvocadorJenkins nuevoInvocador(){
-		return  new InvocadorJenkins(credenciales)
+		return  new InvocadorJenkins(configuracionGeneral)
 		.adicionarParametro("SVN_AMBIENTE", version.getRutaSvnAmbiente())
 		.adicionarParametro("Servidor", servidor.getNombreServidorJenkins())
 		.adicionarParametro("version", version.getNumero());

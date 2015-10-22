@@ -46,6 +46,8 @@ public class EntAplicacion extends AEntModelo {
 
 	private String nombreGrupoBusquedaNexus;
 
+	private String nombreJobSubeServidores;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -197,5 +199,11 @@ public class EntAplicacion extends AEntModelo {
 		return true;
 	}
 
+	public String getNombreJobSubeServidores() {
+		return nombreJobSubeServidores;
+	}
 
+	public void setNombreJobSubeServidores(String nombreJobSubeServidores) {
+		this.nombreJobSubeServidores = nombreJobSubeServidores;
+	}
 }

@@ -13,11 +13,10 @@ import rd.huma.dashboard.model.transaccional.EntRepositorioDatos;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatosActualizacion;
 import rd.huma.dashboard.model.transaccional.EntRepositorioDatosScriptEjecutados;
 import rd.huma.dashboard.model.transaccional.EntServidor;
-import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoRepositorioActualizacionDatos;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 import rd.huma.dashboard.servicios.background.MonitorEjecutor;
-import rd.huma.dashboard.servicios.background.ejecutores.jenkins.EjecutorScriptTodos;
+import rd.huma.dashboard.servicios.background.ejecutores.jenkins.basedatos.EjecutorSubeServidorLuegoRefrescamiento;
 
 @Stateless
 @Servicio
@@ -125,6 +124,10 @@ public class ServicioRepositorioDatos {
 		return repositorioDatosActualizacion.getId();
 	}
 
+	public List<EntServidor> getServidores(EntRepositorioDatosActualizacion repositorioDatos){
+		return entityManager.createNamedQuery("buscarPorRepositorio.servidor",EntServidor.class).setParameter("bsd", repositorioDatos) .getResultList();
+	}
+
 	public String finalizarActualizar(String host, String nombreServicio,	String schema, String puerto) {
 		Optional<EntRepositorioDatos> posibleRepositorio = buscaRepositorio(host, schema, nombreServicio);
 		EntRepositorioDatos repositorioDatos;
@@ -140,21 +143,12 @@ public class ServicioRepositorioDatos {
 			actualizacion.setEstado(EEstadoRepositorioActualizacionDatos.FINALIZADO);
 			actualizacion = entityManager.merge(actualizacion);
 
-			List<EntServidor> servidores = entityManager.createNamedQuery("buscarPorRepositorio.servidor",EntServidor.class).setParameter("bsd", repositorioDatos) .getResultList();
 
 			repositorioDatos.setUltimaActualizacion(LocalDateTime.now());
-			entityManager.merge(repositorioDatos);
+			repositorioDatos = entityManager.merge(repositorioDatos);
 
-			for(EntServidor servidor : servidores){
-				servidor.setEstadoServidor(servidor.getVersionActual() == null? EEstadoServidor.LIBRE : EEstadoServidor.OCUPADO);
-				servicioServidor.actualizarServidor(servidor);
-				if (servidor.getVersionActual()!=null){
-					List<EntVersionScript> scripts = servicioVersion.buscaScript(servidor.getVersionActual());
-					if (!scripts.isEmpty()){
-						monitorEjecutor.ejecutarAsync(new EjecutorScriptTodos(servidor.getVersionActual()));
-					}
-				}
-			}
+
+			monitorEjecutor.ejecutarAsync(new EjecutorSubeServidorLuegoRefrescamiento(actualizacion));
 
 			return actualizacion.getId();
 		}

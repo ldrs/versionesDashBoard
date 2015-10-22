@@ -89,8 +89,8 @@ public class ServicioJobDespliegueVersion {
 		monitorEjecutor.ejecutarAsync(new EjecutorJenkinsSeguimientoDespliegue(url, job, handlerResult));
 	}
 
-	public void nuevoJob(EntJobDespliegueVersion jobScript) {
-		entityManager.persist(jobScript);
+	public void nuevoJob(EntJobDespliegueVersion job) {
+		entityManager.persist(job);
 	}
 
 	public EntJobDespliegueVersion getJob(String id){

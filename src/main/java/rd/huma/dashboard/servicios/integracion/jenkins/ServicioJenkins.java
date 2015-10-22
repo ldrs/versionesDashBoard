@@ -11,6 +11,7 @@ public class ServicioJenkins {
 	private String cacheJobScriptReporte;
 	private String cacheJobScript;
 	private String cacheJobVersion;
+	private String cacheJobSubeServidores;
 
 	private ServicioJenkins() {
 	}
@@ -37,6 +38,15 @@ public class ServicioJenkins {
 
 		return cacheJobVersion;
 	}
+
+	public String getURLSubeServidores(){
+		if (cacheJobSubeServidores == null){
+			cacheJobSubeServidores = baseRoot().append(aplicacion.getNombreJobSubeServidores()).append("/").toString();
+		}
+
+		return cacheJobSubeServidores;
+	}
+
 
 	private StringBuilder baseRoot(){
 		return new StringBuilder(150).append(configuracionGeneral.getRutaJenkins()).append("job/");

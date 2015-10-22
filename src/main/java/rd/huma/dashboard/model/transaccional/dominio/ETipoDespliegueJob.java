@@ -21,6 +21,12 @@ public enum ETipoDespliegueJob {
 		public String getUrlDeploy(ServicioJenkins servicioJenkins) {
 			return servicioJenkins.getURLDeployJobReporte();
 		}
+	},
+	SUBIR_SERVIDOR{
+			@Override
+			public String getUrlDeploy(ServicioJenkins servicioJenkins) {
+				return servicioJenkins.getURLSubeServidores();
+			}
 	};
 
 	public abstract String getUrlDeploy(ServicioJenkins servicioJenkins);
