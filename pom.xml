@@ -23,6 +23,7 @@
 		<version.jboss.bom>8.2.0.Final</version.jboss.bom>
 		<version.jersey>2.19</version.jersey>
 		<version.resteasy>3.0.11.Final</version.resteasy>
+		<version.jsplparser>0.9.4</version.jsplparser>
 	</properties>
 
 	<dependencies>
@@ -169,7 +170,7 @@
 		<dependency>
     		<groupId>com.github.jsqlparser</groupId>
     		<artifactId>jsqlparser</artifactId>
-    		<version>0.9</version>
+    		<version>${version.jsplparser}</version>
 		</dependency>
 	</dependencies>
 

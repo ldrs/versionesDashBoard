@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+
+<html ng-app="ticketsApp">
+<head>
+<title>Tickets Por Area</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-resource.js"></script>
+<script src="assets/js/tickets.js"></script>
+
+<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+<link rel="stylesheet" href="assets/css/main.css" />
+<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+</head>
+
+<body ng-controller="ticketsController as app">
+	<div id="page-wrapper">		
+		<div id="header-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="12u">
+
+						<header id="header">
+							<h1>
+								<a href="index.html" id="logo">Tickets</a>
+							</h1>
+							<div>
+
+								<nav id="nav">
+									<a href="app.html">Versiones</a>
+								</nav>
+							</div>
+						</header>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main" style="padding-bottom: 1.2em;">
+			<div class="container">
+				
+				<div class="grupoContainer" ng-repeat="area in app.areas" style="vertical-align: top;">
+					<div>
+						<p style="margin: 0px; line-height: 0px">{{area.nombre}}</p>
+					</div>
+					<div>
+						<p style="margin: 0px; line-height: 0px">{{area.tickets.size}}</p>
+					</div>
+						<ul>
+							<li ng-repeat="ticket in area.tickets | orderBy:'numero'">{{ticket.numero}} </li>
+						</ul>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/skel-viewport.min.js"></script>
+	<script src="assets/js/util.js"></script>
+
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

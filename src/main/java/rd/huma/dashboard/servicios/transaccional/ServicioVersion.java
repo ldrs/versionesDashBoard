@@ -63,7 +63,7 @@ public class ServicioVersion {
 	private MonitorEjecutor monitorEjecutor;
 
 	public static Predicate<EEstadoVersion> estadosNegativos(){
-		return e -> !e.activo() && e!=EEstadoVersion.NEXUS_ELIMINADO;
+		return e -> !e.activo() && e!=EEstadoVersion.NEXUS_ELIMINADO && e!=EEstadoVersion.REMPLAZADA;
 	}
 
 	public Stream<EntVersion> versionesConError(){

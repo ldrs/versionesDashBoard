@@ -30,8 +30,6 @@ public class EjecutorSysAidBuscaActualizacion extends AEjecutor {
 		Map<Long, EntTicketSysAid> mapa = tickets.stream().collect(Collectors.toMap(EntTicketSysAid::getNumero, Function.identity()));
 		List<EntTicketSysAid> ticketsPorCambiarse = new ArrayList<>();
 
-		LOGGER.info("Tickets por iniciar proceso " + mapa.size());
-
 		Long[] ticketsConvertidos = tickets.stream().map(EntTicketSysAid::getNumero).collect(Collectors.toSet()).toArray(new Long[]{});
 
 
@@ -41,14 +39,14 @@ public class EjecutorSysAidBuscaActualizacion extends AEjecutor {
 		for (Ticket ticket : ticketValores) {
 			EntTicketSysAid entidad = mapa.get(ticket.getTicket());
 			if (ticket.getEstado()!=entidad.getEstado()){
-				entidad.setEstado(entidad.getEstado());
+				entidad.setEstado(ticket.getEstado());
 				ticketsPorCambiarse.add(entidad);
 			}
 		}
 		ServicioFila servicioFilas = ServicioFila.getInstanciaTransaccional();
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 
-		LOGGER.info("Tickets que han cambiando " + ticketsPorCambiarse.size());
+		LOGGER.info("Tickets que han cambiando " + ticketsPorCambiarse.size() + " de " +  mapa.size());
 
 		for (EntTicketSysAid ticket : ticketsPorCambiarse) {
 		//	LOGGER.info("Intentando actualizar el ticket " + ticket.getNumero());

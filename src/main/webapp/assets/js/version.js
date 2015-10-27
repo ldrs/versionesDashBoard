@@ -45,7 +45,7 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 	app.jobs = [];
 	app.undeploys = [];
 	app.allJobs=[];
-
+	app.cssDueno="apagado";
 
 	if (typeof app.versionId != 'undefined'){
 		 Version.get({id :app.versionId},function(data){
@@ -55,7 +55,7 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 		 Version.getServidores({id :app.versionId},function(data){
 		 	if (data.length>0){
 		 		 servidor =  data[0];
-		 		app.mensaje = "Version esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
+		 		app.mensaje = "Versión esta desplegada en el servidor " + servidor.nombre + " que tiene la base de datos " + servidor.basedatos;
 		 		app.link = servidor.url;
 		 	}
 		 });
@@ -81,6 +81,26 @@ versionesApp.controller('appController', function($scope,Version,SeguridadApi,pe
 					app.allJobs.push({fechaRegistro:undeploy.fechaRegistro,tipo:"UNDEPLOY",estado:"EJECUTADO",observacion:obs});
 				}
 		 });
+
+
+			persistanceService.init().then(function(){
+
+				persistanceService.getUsuario().then(function(usuario){
+					if (usuario){
+						app.logeado = true;
+						app.usuario = usuario;
+						$(".inicioSesion").find("a").text(usuario.nombre).attr('href','#').click(function(){
+							persistanceService.logout().then(function(){
+								app.logeado = false;
+								$(".inicioSesion").find("a").text("Iniciar Sesion").attr('href','inicioSesion.html').click(function(){});
+							});
+						});
+					}else{
+						app.logeado = false;
+					}
+					app.actualizarAparienciaPorPermisos();
+				});
+			});
 
 	}
 })

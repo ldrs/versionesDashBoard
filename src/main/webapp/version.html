@@ -25,27 +25,31 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 
-
-	</head>
+		</head>
 
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
-
+		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesión</a></div>
 			<div id="header-wrapper">
 				<div class="container">
+					<div class="iconoProcesar {{app.cssDueno}}" style="float:right;margin-bottom: 1.5em;margin-top: 1.5em;"></div>
 					<div class="row">
 						<div class="12u">
 
 							<header id="header">
 								<h1><a href="app.html" id="logo">versión {{app.version.numero}}</a></h1>
-								<div style="float: right;color:white;">{{app.version.estado}}<br>{{app.version.fecha}}<br> <a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.version.svnOrigen}}</a><br>{{app.version.svnRevision}}</div>
+								<div style="float: right;color:white;">
+									<span title="Estado Actual">{{app.version.estado}}</span><br><span title="Fecha de Registro">{{app.version.fecha}}</span><br>
+									<a style="color: white;" title="{{app.mensaje}}" href="{{app.link}}" target="servidor">{{app.version.svnOrigen}}</a>
+									<br><span title="Esta es la revision de cuando se realizo la versión">{{app.version.svnRevision}}</span>
+								</div>
 							</header>
 
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="main" style="padding-bottom: 1.2em;">
+			<div id="main" style="padding-bottom: 1.2em;padding-top: 0px">
 				<div class="container">
 
 					<div  class="divContenedor">
@@ -107,15 +111,15 @@
 						<table style="width: 100%;">
 							<tr>
 								<td><h4>Fecha Registro</h4></td>
-								<td><h4>Tipo Job</h4></td>
-								<td><h4>Estado</h4></td>
-								<td style="margin-left: 10px"><h4>Observacion</h4></td>
+								<td style="padding-left: 5px"><h4>Tipo Job</h4></td>
+								<td style="padding-left: 5px"><h4>Estado</h4></td>
+								<td style="padding-left: 5px"><h4>Observacion</h4></td>
 							</tr>
 							<tr ng-repeat="job in app.allJobs | orderBy:'fechaRegistro'">
 								<td>{{job.fechaRegistro}}</td>
-								<td>{{job.tipo}}</td>
-								<td>{{job.estado}}</td>
-								<td style="margin-left: 10px"> <span ng-bind-html="job.observacion"></span></td>
+								<td style="padding-left: 5px">{{job.tipo}}</td>
+								<td style="padding-left: 5px">{{job.estado}}</td>
+								<td style="padding-left: 5px"> <span ng-bind-html="job.observacion"></span></td>
 							</tr>
 						</table>
 					</div>

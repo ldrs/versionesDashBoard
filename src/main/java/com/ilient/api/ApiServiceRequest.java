@@ -13,9 +13,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for apiServiceRequest complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="apiServiceRequest">
  *   &lt;complexContent>
@@ -130,8 +130,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "apiServiceRequest", propOrder = {
@@ -198,9 +198,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "version",
     "workaround"
 })
-public class ApiServiceRequest
-    extends ApiSysaidObject
-{
+public class ApiServiceRequest  extends ApiSysaidObject{
 
     protected int agreement;
     protected boolean archive;
@@ -278,7 +276,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the agreement property.
-     * 
+     *
      */
     public int getAgreement() {
         return agreement;
@@ -286,7 +284,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the agreement property.
-     * 
+     *
      */
     public void setAgreement(int value) {
         this.agreement = value;
@@ -294,7 +292,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the archive property.
-     * 
+     *
      */
     public boolean isArchive() {
         return archive;
@@ -302,7 +300,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the archive property.
-     * 
+     *
      */
     public void setArchive(boolean value) {
         this.archive = value;
@@ -310,7 +308,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the assignCounter property.
-     * 
+     *
      */
     public int getAssignCounter() {
         return assignCounter;
@@ -318,7 +316,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the assignCounter property.
-     * 
+     *
      */
     public void setAssignCounter(int value) {
         this.assignCounter = value;
@@ -326,11 +324,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the assignedGroup property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAssignedGroup() {
         return assignedGroup;
@@ -338,11 +336,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the assignedGroup property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAssignedGroup(String value) {
         this.assignedGroup = value;
@@ -350,11 +348,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the assignedTo property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAssignedTo() {
         return assignedTo;
@@ -362,11 +360,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the assignedTo property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAssignedTo(String value) {
         this.assignedTo = value;
@@ -374,7 +372,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the ciId property.
-     * 
+     *
      */
     public int getCIId() {
         return ciId;
@@ -382,7 +380,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the ciId property.
-     * 
+     *
      */
     public void setCIId(int value) {
         this.ciId = value;
@@ -390,11 +388,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the category property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCategory() {
         return category;
@@ -402,11 +400,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the category property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCategory(String value) {
         this.category = value;
@@ -414,11 +412,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the cc property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCc() {
         return cc;
@@ -426,11 +424,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the cc property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCc(String value) {
         this.cc = value;
@@ -438,7 +436,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the changeCategory property.
-     * 
+     *
      */
     public int getChangeCategory() {
         return changeCategory;
@@ -446,7 +444,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the changeCategory property.
-     * 
+     *
      */
     public void setChangeCategory(int value) {
         this.changeCategory = value;
@@ -454,11 +452,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the closeTime property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getCloseTime() {
         return closeTime;
@@ -466,11 +464,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the closeTime property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setCloseTime(XMLGregorianCalendar value) {
         this.closeTime = value;
@@ -478,7 +476,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the closureInformation property.
-     * 
+     *
      */
     public int getClosureInformation() {
         return closureInformation;
@@ -486,7 +484,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the closureInformation property.
-     * 
+     *
      */
     public void setClosureInformation(int value) {
         this.closureInformation = value;
@@ -494,11 +492,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the computerID property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getComputerID() {
         return computerID;
@@ -506,11 +504,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the computerID property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setComputerID(String value) {
         this.computerID = value;
@@ -518,7 +516,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the currentSupportLevel property.
-     * 
+     *
      */
     public int getCurrentSupportLevel() {
         return currentSupportLevel;
@@ -526,7 +524,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the currentSupportLevel property.
-     * 
+     *
      */
     public void setCurrentSupportLevel(int value) {
         this.currentSupportLevel = value;
@@ -534,11 +532,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custDate1 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getCustDate1() {
         return custDate1;
@@ -546,11 +544,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custDate1 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setCustDate1(XMLGregorianCalendar value) {
         this.custDate1 = value;
@@ -558,11 +556,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custDate2 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getCustDate2() {
         return custDate2;
@@ -570,11 +568,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custDate2 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setCustDate2(XMLGregorianCalendar value) {
         this.custDate2 = value;
@@ -582,7 +580,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custInt1 property.
-     * 
+     *
      */
     public int getCustInt1() {
         return custInt1;
@@ -590,7 +588,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custInt1 property.
-     * 
+     *
      */
     public void setCustInt1(int value) {
         this.custInt1 = value;
@@ -598,7 +596,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custInt2 property.
-     * 
+     *
      */
     public int getCustInt2() {
         return custInt2;
@@ -606,7 +604,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custInt2 property.
-     * 
+     *
      */
     public void setCustInt2(int value) {
         this.custInt2 = value;
@@ -614,7 +612,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custList1 property.
-     * 
+     *
      */
     public int getCustList1() {
         return custList1;
@@ -622,7 +620,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custList1 property.
-     * 
+     *
      */
     public void setCustList1(int value) {
         this.custList1 = value;
@@ -630,7 +628,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custList2 property.
-     * 
+     *
      */
     public int getCustList2() {
         return custList2;
@@ -638,7 +636,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custList2 property.
-     * 
+     *
      */
     public void setCustList2(int value) {
         this.custList2 = value;
@@ -646,11 +644,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custNotes property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCustNotes() {
         return custNotes;
@@ -658,11 +656,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custNotes property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCustNotes(String value) {
         this.custNotes = value;
@@ -670,11 +668,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custText1 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCustText1() {
         return custText1;
@@ -682,11 +680,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custText1 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCustText1(String value) {
         this.custText1 = value;
@@ -694,11 +692,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the custText2 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCustText2() {
         return custText2;
@@ -706,11 +704,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the custText2 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCustText2(String value) {
         this.custText2 = value;
@@ -718,11 +716,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the customDateFields property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ApiServiceRequest.CustomDateFields }
-     *     
+     *
      */
     public ApiServiceRequest.CustomDateFields getCustomDateFields() {
         return customDateFields;
@@ -730,11 +728,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the customDateFields property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ApiServiceRequest.CustomDateFields }
-     *     
+     *
      */
     public void setCustomDateFields(ApiServiceRequest.CustomDateFields value) {
         this.customDateFields = value;
@@ -742,11 +740,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the customFields property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ApiServiceRequest.CustomFields }
-     *     
+     *
      */
     public ApiServiceRequest.CustomFields getCustomFields() {
         return customFields;
@@ -754,11 +752,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the customFields property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ApiServiceRequest.CustomFields }
-     *     
+     *
      */
     public void setCustomFields(ApiServiceRequest.CustomFields value) {
         this.customFields = value;
@@ -766,11 +764,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the description property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDescription() {
         return description;
@@ -778,11 +776,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the description property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDescription(String value) {
         this.description = value;
@@ -790,11 +788,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the dueDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getDueDate() {
         return dueDate;
@@ -802,11 +800,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the dueDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setDueDate(XMLGregorianCalendar value) {
         this.dueDate = value;
@@ -814,11 +812,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the emailAccount property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEmailAccount() {
         return emailAccount;
@@ -826,11 +824,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the emailAccount property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEmailAccount(String value) {
         this.emailAccount = value;
@@ -838,7 +836,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the escalation property.
-     * 
+     *
      */
     public int getEscalation() {
         return escalation;
@@ -846,7 +844,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the escalation property.
-     * 
+     *
      */
     public void setEscalation(int value) {
         this.escalation = value;
@@ -854,11 +852,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the followupActualDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getFollowupActualDate() {
         return followupActualDate;
@@ -866,11 +864,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the followupActualDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setFollowupActualDate(XMLGregorianCalendar value) {
         this.followupActualDate = value;
@@ -878,11 +876,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the followupPlannedDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getFollowupPlannedDate() {
         return followupPlannedDate;
@@ -890,11 +888,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the followupPlannedDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setFollowupPlannedDate(XMLGregorianCalendar value) {
         this.followupPlannedDate = value;
@@ -902,11 +900,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the followupText property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getFollowupText() {
         return followupText;
@@ -914,11 +912,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the followupText property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setFollowupText(String value) {
         this.followupText = value;
@@ -926,11 +924,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the followupUser property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getFollowupUser() {
         return followupUser;
@@ -938,11 +936,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the followupUser property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setFollowupUser(String value) {
         this.followupUser = value;
@@ -950,7 +948,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the id property.
-     * 
+     *
      */
     public int getId() {
         return id;
@@ -958,7 +956,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the id property.
-     * 
+     *
      */
     public void setId(int value) {
         this.id = value;
@@ -966,7 +964,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the impact property.
-     * 
+     *
      */
     public int getImpact() {
         return impact;
@@ -974,7 +972,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the impact property.
-     * 
+     *
      */
     public void setImpact(int value) {
         this.impact = value;
@@ -982,11 +980,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the insertTime property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getInsertTime() {
         return insertTime;
@@ -994,11 +992,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the insertTime property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setInsertTime(XMLGregorianCalendar value) {
         this.insertTime = value;
@@ -1006,7 +1004,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the location property.
-     * 
+     *
      */
     public int getLocation() {
         return location;
@@ -1014,7 +1012,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the location property.
-     * 
+     *
      */
     public void setLocation(int value) {
         this.location = value;
@@ -1022,7 +1020,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the maxSupportLevel property.
-     * 
+     *
      */
     public int getMaxSupportLevel() {
         return maxSupportLevel;
@@ -1030,7 +1028,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the maxSupportLevel property.
-     * 
+     *
      */
     public void setMaxSupportLevel(int value) {
         this.maxSupportLevel = value;
@@ -1038,11 +1036,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the notes property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getNotes() {
         return notes;
@@ -1050,11 +1048,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the notes property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setNotes(String value) {
         this.notes = value;
@@ -1062,7 +1060,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the parentLink property.
-     * 
+     *
      */
     public int getParentLink() {
         return parentLink;
@@ -1070,7 +1068,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the parentLink property.
-     * 
+     *
      */
     public void setParentLink(int value) {
         this.parentLink = value;
@@ -1078,7 +1076,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the priority property.
-     * 
+     *
      */
     public int getPriority() {
         return priority;
@@ -1086,7 +1084,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the priority property.
-     * 
+     *
      */
     public void setPriority(int value) {
         this.priority = value;
@@ -1094,7 +1092,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the projectID property.
-     * 
+     *
      */
     public int getProjectID() {
         return projectID;
@@ -1102,7 +1100,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the projectID property.
-     * 
+     *
      */
     public void setProjectID(int value) {
         this.projectID = value;
@@ -1110,7 +1108,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the reopenCounter property.
-     * 
+     *
      */
     public int getReopenCounter() {
         return reopenCounter;
@@ -1118,7 +1116,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the reopenCounter property.
-     * 
+     *
      */
     public void setReopenCounter(int value) {
         this.reopenCounter = value;
@@ -1126,11 +1124,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the requestUser property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getRequestUser() {
         return requestUser;
@@ -1138,11 +1136,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the requestUser property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setRequestUser(String value) {
         this.requestUser = value;
@@ -1150,11 +1148,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the resolution property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getResolution() {
         return resolution;
@@ -1162,11 +1160,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the resolution property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setResolution(String value) {
         this.resolution = value;
@@ -1174,11 +1172,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the responsibleManager property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getResponsibleManager() {
         return responsibleManager;
@@ -1186,11 +1184,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the responsibleManager property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setResponsibleManager(String value) {
         this.responsibleManager = value;
@@ -1198,11 +1196,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the solution property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSolution() {
         return solution;
@@ -1210,11 +1208,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the solution property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSolution(String value) {
         this.solution = value;
@@ -1222,7 +1220,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the source property.
-     * 
+     *
      */
     public int getSource() {
         return source;
@@ -1230,7 +1228,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the source property.
-     * 
+     *
      */
     public void setSource(int value) {
         this.source = value;
@@ -1238,7 +1236,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the srSubType property.
-     * 
+     *
      */
     public int getSrSubType() {
         return srSubType;
@@ -1246,7 +1244,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the srSubType property.
-     * 
+     *
      */
     public void setSrSubType(int value) {
         this.srSubType = value;
@@ -1254,7 +1252,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the srType property.
-     * 
+     *
      */
     public int getSrType() {
         return srType;
@@ -1262,7 +1260,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the srType property.
-     * 
+     *
      */
     public void setSrType(int value) {
         this.srType = value;
@@ -1270,7 +1268,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the status property.
-     * 
+     *
      */
     public int getStatus() {
         return status;
@@ -1278,7 +1276,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the status property.
-     * 
+     *
      */
     public void setStatus(int value) {
         this.status = value;
@@ -1286,11 +1284,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the subCategory property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSubCategory() {
         return subCategory;
@@ -1298,11 +1296,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the subCategory property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSubCategory(String value) {
         this.subCategory = value;
@@ -1310,11 +1308,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the submitUser property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSubmitUser() {
         return submitUser;
@@ -1322,11 +1320,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the submitUser property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSubmitUser(String value) {
         this.submitUser = value;
@@ -1334,7 +1332,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the successRating property.
-     * 
+     *
      */
     public int getSuccessRating() {
         return successRating;
@@ -1342,7 +1340,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the successRating property.
-     * 
+     *
      */
     public void setSuccessRating(int value) {
         this.successRating = value;
@@ -1350,7 +1348,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the taskID property.
-     * 
+     *
      */
     public int getTaskID() {
         return taskID;
@@ -1358,7 +1356,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the taskID property.
-     * 
+     *
      */
     public void setTaskID(int value) {
         this.taskID = value;
@@ -1366,11 +1364,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the thirdLevelCategory property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getThirdLevelCategory() {
         return thirdLevelCategory;
@@ -1378,11 +1376,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the thirdLevelCategory property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setThirdLevelCategory(String value) {
         this.thirdLevelCategory = value;
@@ -1390,11 +1388,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the title property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTitle() {
         return title;
@@ -1402,11 +1400,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the title property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTitle(String value) {
         this.title = value;
@@ -1414,11 +1412,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the updateTime property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getUpdateTime() {
         return updateTime;
@@ -1426,11 +1424,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the updateTime property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setUpdateTime(XMLGregorianCalendar value) {
         this.updateTime = value;
@@ -1438,11 +1436,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the updateUser property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getUpdateUser() {
         return updateUser;
@@ -1450,11 +1448,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the updateUser property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setUpdateUser(String value) {
         this.updateUser = value;
@@ -1462,7 +1460,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the urgency property.
-     * 
+     *
      */
     public int getUrgency() {
         return urgency;
@@ -1470,7 +1468,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the urgency property.
-     * 
+     *
      */
     public void setUrgency(int value) {
         this.urgency = value;
@@ -1478,11 +1476,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the userManager property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getUserManager() {
         return userManager;
@@ -1490,11 +1488,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the userManager property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setUserManager(String value) {
         this.userManager = value;
@@ -1502,7 +1500,7 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the version property.
-     * 
+     *
      */
     public int getVersion() {
         return version;
@@ -1510,7 +1508,7 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the version property.
-     * 
+     *
      */
     public void setVersion(int value) {
         this.version = value;
@@ -1518,11 +1516,11 @@ public class ApiServiceRequest
 
     /**
      * Gets the value of the workaround property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getWorkaround() {
         return workaround;
@@ -1530,11 +1528,11 @@ public class ApiServiceRequest
 
     /**
      * Sets the value of the workaround property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setWorkaround(String value) {
         this.workaround = value;
@@ -1543,9 +1541,9 @@ public class ApiServiceRequest
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1568,8 +1566,8 @@ public class ApiServiceRequest
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -1581,25 +1579,25 @@ public class ApiServiceRequest
 
         /**
          * Gets the value of the entry property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the entry property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getEntry().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ApiServiceRequest.CustomDateFields.Entry }
-         * 
-         * 
+         *
+         *
          */
         public List<ApiServiceRequest.CustomDateFields.Entry> getEntry() {
             if (entry == null) {
@@ -1611,9 +1609,9 @@ public class ApiServiceRequest
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1626,8 +1624,8 @@ public class ApiServiceRequest
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -1642,11 +1640,11 @@ public class ApiServiceRequest
 
             /**
              * Gets the value of the key property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getKey() {
                 return key;
@@ -1654,11 +1652,11 @@ public class ApiServiceRequest
 
             /**
              * Sets the value of the key property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setKey(String value) {
                 this.key = value;
@@ -1666,11 +1664,11 @@ public class ApiServiceRequest
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public XMLGregorianCalendar getValue() {
                 return value;
@@ -1678,11 +1676,11 @@ public class ApiServiceRequest
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public void setValue(XMLGregorianCalendar value) {
                 this.value = value;
@@ -1695,9 +1693,9 @@ public class ApiServiceRequest
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1720,8 +1718,8 @@ public class ApiServiceRequest
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -1733,25 +1731,25 @@ public class ApiServiceRequest
 
         /**
          * Gets the value of the entry property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the entry property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getEntry().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ApiServiceRequest.CustomFields.Entry }
-         * 
-         * 
+         *
+         *
          */
         public List<ApiServiceRequest.CustomFields.Entry> getEntry() {
             if (entry == null) {
@@ -1763,9 +1761,9 @@ public class ApiServiceRequest
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1778,8 +1776,8 @@ public class ApiServiceRequest
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -1793,11 +1791,11 @@ public class ApiServiceRequest
 
             /**
              * Gets the value of the key property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link Object }
-             *     
+             *
              */
             public Object getKey() {
                 return key;
@@ -1805,11 +1803,11 @@ public class ApiServiceRequest
 
             /**
              * Sets the value of the key property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link Object }
-             *     
+             *
              */
             public void setKey(Object value) {
                 this.key = value;
@@ -1817,11 +1815,11 @@ public class ApiServiceRequest
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link Object }
-             *     
+             *
              */
             public Object getValue() {
                 return value;
@@ -1829,11 +1827,11 @@ public class ApiServiceRequest
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link Object }
-             *     
+             *
              */
             public void setValue(Object value) {
                 this.value = value;

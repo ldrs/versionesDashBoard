@@ -28,7 +28,7 @@ public class EliminarVersionConBranchDuplicado {
 	}
 
 	private EntFilaDespliegue procesar(FilaBranch fila){
-		LOGGER.info("Haciendo el proceso de eliminar el branch " + fila.getBranch());
+		LOGGER.info("Haciendo el proceso de eliminar las filas duplicadaas el branch " + fila.getBranch());
 
 		 List<EntFilaDespliegueVersion> filas = servicio.getFilas(fila);
 		 filas.sort( (a,b) -> a.getVersion().getRevisionSVN().compareTo(b.getVersion().getRevisionSVN()));

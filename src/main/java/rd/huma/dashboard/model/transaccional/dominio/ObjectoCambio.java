@@ -1,5 +1,6 @@
 package rd.huma.dashboard.model.transaccional.dominio;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,6 +11,10 @@ public class ObjectoCambio {
 	private List<String> columnas = new ArrayList<>();
 
 	private ETipoCambioTabla cambioTabla;
+
+	public ObjectoCambio(ETipoCambioTabla cambioTabla ,String nombre, String... columnas) {
+		this(cambioTabla,nombre, Arrays.asList(columnas));
+	}
 
 	public ObjectoCambio(ETipoCambioTabla cambioTabla ,String nombre, List<String> columnas) {
 		this.nombre = nombre;

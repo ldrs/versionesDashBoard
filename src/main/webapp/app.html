@@ -31,7 +31,7 @@
 
     <body ng-controller="appController as app">
 		<div id="page-wrapper">
-		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesion</a></div>
+		<div class="inicioSesion"><a href="inicioSesion.html">Iniciar Sesión</a></div>
 		<div angucomplete-alt class="divBuscar" minlength="3" placeholder="Buscar"  input-class="inpBuscar"  match-class="highlight" remote-url="http://dashboard.version.sigef.gov.do/dashboard/api/versionBuscar?s=" remote-url-data-field="resultados" title-field="numero" description-field="branch,tickets" selected-object="seleccionVersionAut" ></div>
 		<div class="info">
 			<a title="Versiones Procesando aun sin fila" href="versionProcesando.html" class="number">{{app.versionesProcesando}}</a>

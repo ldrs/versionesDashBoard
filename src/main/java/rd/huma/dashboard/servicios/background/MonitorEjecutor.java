@@ -40,7 +40,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaMergeBranches(), 1, 5, TimeUnit.MINUTES);
 		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaOrigenNull(), 1, 5, TimeUnit.MINUTES);
 
-		scheduler.scheduleAtFixedRate(new EjecutorSysAidBuscaActualizacion(), 1, 90, TimeUnit.MINUTES);
+		scheduler.scheduleAtFixedRate(new EjecutorSysAidBuscaActualizacion(), 1, 10, TimeUnit.MINUTES);
 	}
 
 	@PreDestroy

@@ -11,7 +11,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoCambioTabla;
 import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 
@@ -48,9 +47,11 @@ public class ServicioParseoObjectoQuerys {
 				query = query.replace('\'', ' ');
 			}
 
-			l.add( tipo.getObjectoCambio(CCJSqlParserUtil.parse(query)));
+			ObjectoCambio objectoCambio = tipo.parsear(query);
+			if (objectoCambio != null){
+				l.add(objectoCambio);
+			}
 		}
-
 	}
 
 	private List<ObjectoCambio> busca(String url){
@@ -67,10 +68,12 @@ public class ServicioParseoObjectoQuerys {
 
 		String[] datos = script.toUpperCase().split(";");
 		for (String dato : datos) {
+			dato = dato.replace('\n', ' ').trim();
 			for(ETipoCambioTabla tipo : ETipoCambioTabla.values()){
-
-				if (dato.matches(tipo.regex()) || dato.indexOf(tipo.inicioComandoBuscar())!=-1){
-					dato = dato.substring(dato.indexOf(tipo.inicioComandoBuscar()));
+				if (dato.matches(tipo.regex()) || (tipo.inicioComandoBuscar()!=null && dato.indexOf(tipo.inicioComandoBuscar())!=-1)){
+					if (tipo.inicioComandoBuscar()!=null){
+						dato = dato.substring(dato.indexOf(tipo.inicioComandoBuscar()));
+					}
 					try{
 						buscandoInformacion(dato,tipo,listaObjectos);
 					}catch(JSQLParserException e){

@@ -20,7 +20,7 @@ public class FiltradorTicketVersionFila {
 
 	public FiltradorTicketVersionFila(EntVersion version,List<EntFilaDespliegue> filas) {
 		this.version = version;
-		this.filas = filas;
+		this.filas = filas.stream().filter(fila -> fila.getAmbiente().getAplicacion().getSvnPath().equals(version.getSvnOrigen())).collect(Collectors.toList());
 	}
 
 	public List<EntFilaDespliegue> filtra() {

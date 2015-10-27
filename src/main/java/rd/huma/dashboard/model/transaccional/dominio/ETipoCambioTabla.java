@@ -5,16 +5,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
+import net.sf.jsqlparser.statement.create.table.NamedConstraint;
 import net.sf.jsqlparser.statement.create.view.CreateView;
 import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.drop.Drop;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.update.Update;
+import rd.huma.dashboard.util.UtilString;
 
 public enum ETipoCambioTabla {
 
@@ -27,7 +31,7 @@ public enum ETipoCambioTabla {
 				columnas.add(columna.getColumnName());
 			}
 			Collections.sort(columnas);
-			return new ObjectoCambio(this,update.getTable().getName(),columnas) ;
+			return new ObjectoCambio(this, update.getTables().stream().findFirst().get().getName(),columnas) ;
 		}
 	},
 	INSERT_INTO {
@@ -109,13 +113,29 @@ public enum ETipoCambioTabla {
 			return "CREATE VIEW ";
 		}
 	},
+	CREATE_OR_REPLACE_VIEW{
+		public ObjectoCambio getObjectoCambio(Statement statement) {
+			CreateView cambio = CreateView.class.cast(statement);
+
+			return new ObjectoCambio(this,cambio.getView().getName(), Collections.emptyList());
+		}
+
+		public String regex(){
+			return "(?s).*\\bCREATE OR REPLACE VIEW S \\b.*";
+		}
+
+		@Override
+		public String inicioComandoBuscar() {
+			return "CREATE OR REPLACE VIEW ";
+		}
+	},
 	DROP {
 
 		public ObjectoCambio getObjectoCambio(Statement statement) {
 
 			Drop cambio = Drop.class.cast(statement);
 
-			return new ObjectoCambio(this,cambio.getName(), Collections.emptyList());
+			return new ObjectoCambio(this,cambio.getName().getName(), Collections.emptyList());
 		}
 
 	},
@@ -135,6 +155,19 @@ public enum ETipoCambioTabla {
 		@Override
 		public String inicioComandoBuscar() {
 			return "ALTER TABLE";
+		}
+
+		@Override
+		public ObjectoCambio parsear(String query) {
+			ObjectoCambio objectoCambio = super.parsear(query);
+			if (objectoCambio!=null){
+				return objectoCambio;
+			}
+
+			String despuesComando = query.substring(query.indexOf("ALTER TABLE ")+"ALTER TABLE ".length()).trim();
+
+			return new  ObjectoCambio(this, despuesComando.substring(0, despuesComando.indexOf(' ')).trim(), despuesComando.substring(despuesComando.indexOf("ADD ")+ "ADD ".length()));
+
 		}
 
 	},
@@ -173,6 +206,24 @@ public enum ETipoCambioTabla {
 		public String inicioComandoBuscar() {
 			return "ALTER TABLE";
 		}
+	},
+	ADD_CONSTRAINT {
+		@Override
+		public ObjectoCambio getObjectoCambio(Statement statement) {
+			NamedConstraint alter = NamedConstraint.class.cast(statement);
+			String query = statement.toString();
+			query = UtilString.subStringDespues(query, "ALTER TABLE ");
+			return new ObjectoCambio(this, query.substring(0, query.indexOf(' ')).trim(), alter.getColumnsNames());
+		}
+
+		public String regex(){
+			return "(?s).*\\bALTER TABLE\\b.*\\bADD CONSTRAINT\\b.*";
+		}
+
+		@Override
+		public String inicioComandoBuscar() {
+			return null;
+		}
 	}
 
 	;
@@ -186,4 +237,12 @@ public enum ETipoCambioTabla {
 	}
 
 	public abstract ObjectoCambio getObjectoCambio(Statement statement);
+
+	public ObjectoCambio parsear(String query) {
+		 try {
+			return getObjectoCambio(CCJSqlParserUtil.parse(query));
+		} catch (JSQLParserException e) {
+		}
+		 return null;
+	}
 }
