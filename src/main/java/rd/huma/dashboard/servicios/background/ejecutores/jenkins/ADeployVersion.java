@@ -86,13 +86,11 @@ abstract class ADeployVersion {
 		return configuracionGeneral;
 	}
 
-
-
 	InvocadorJenkins nuevoInvocador(){
 		return  new InvocadorJenkins(configuracionGeneral)
 		.adicionarParametro("SVN_AMBIENTE", version.getRutaSvnAmbiente())
 		.adicionarParametro("Servidor", servidor.getNombreServidorJenkins())
 		.adicionarParametro("version", version.getNumero())
-		.setFiltroEncontrar(parametro ->  "version".equals(parametro.getName()) && "".equals(getVersion().getNumero()));
+		.setFiltroEncontrar(parametro ->  "version".equals(parametro.getName()) &&  parametro.getValue().equals(getVersion().getNumero()));
 	}
 }
