@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html ng-app="metricasApp">
+<head>
+<title>Metricas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="js/report.js"></script>
+
+<script src="../assets/js/angular.min.js"></script>
+<script src="../assets/js/angular-resource.js"></script>
+<script src="../assets/js/metricas.js"></script>
+
+<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+<link rel="stylesheet" href="../assets/css/main.css" />
+<body>
+<body ng-controller="metricasController as app">
+	<div id="page-wrapper">
+		<div id="header-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="12u">
+
+						<header id="header">
+							<h1>
+								<a href="../index.html" id="logo">Metricas</a>
+							</h1>
+							<div>
+
+								<nav id="nav">
+									<a href="../app.html">Versiones</a>
+								</nav>
+							</div>
+						</header>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main" style="padding-bottom: 1.2em;">
+			<div class="container">
+				<ul>
+					<li ng-repeat="reporte in app.reportes" style="float: left; padding-left: 15px;cursor: pointer;"><span
+						ng-click="dibuja(reporte)">{{reporte.nombre}}</span></li>
+				</ul>
+				<div id="containerReporte"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- Scripts -->
+	<script src="../assets/js/skel.min.js"></script>
+	<script src="../assets/js/skel-viewport.min.js"></script>
+	<script src="../assets/js/util.js"></script>
+
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="../assets/js/main.js"></script>
+	<script src="js/highcharts.js"></script>
+	<script src="js/modules/exporting.js"></script>
+
+</body>
+
+</html>
+

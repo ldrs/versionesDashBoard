@@ -1,4 +1,4 @@
-var reporte = function(url,contenedor,titulo,subtitulo){
+var dibujaReporte = function(url,contenedor,titulo,subtitulo){
 	$.ajax({url:url}).done(function(data){
 		datosReporte = JSON.parse(data);
 

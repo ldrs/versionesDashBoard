@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-abstract class Reporte {
+public abstract class Reporte {
 
 
 	public ReporteAgrupado getReporte(){

@@ -436,5 +436,8 @@ public class ServicioVersion {
 		buscaModulos(version).stream().forEach(e-> entityManager.remove(entityManager.find(e.getClass(), e.getId())));
 	}
 
-
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVersionesPorMes() {
+		return entityManager.createNamedQuery("metricaAgrupadaYear.version").getResultList();
+	}
 }

@@ -2,8 +2,8 @@ package rd.huma.dashboard.servicios.reportes;
 
 
 public class DatoAgrupado implements Comparable<DatoAgrupado>{
-	private long cantidad;
 	private String serie;
+	private long cantidad;
 	private int mes;
 
 	public DatoAgrupado(long cantidad, String serie, int mes) {

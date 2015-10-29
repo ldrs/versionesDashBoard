@@ -3,12 +3,20 @@ package rd.huma.dashboard.servicios.reportes.agrupados;
 import java.util.List;
 
 import rd.huma.dashboard.servicios.reportes.Reporte;
-import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
-public class ReporteVersiones extends Reporte {
+public class ReporteAgrupadoGenerico extends Reporte {
+
+	private List<Object[]> valor;
+
+
+	public ReporteAgrupadoGenerico(List<Object[]> valor) {
+		this.valor = valor;
+	}
+
 
 	@Override
 	protected List<Object[]> ejecutaBusquedaReporte() {
-		return ServicioVersion.getInstanciaTransaccional().getVersionesPorMes();
+		return valor ;
 	}
+
 }

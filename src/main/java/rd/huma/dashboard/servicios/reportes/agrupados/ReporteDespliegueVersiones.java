@@ -1,8 +1,9 @@
-package rd.huma.dashboard.servicios.reportes;
+package rd.huma.dashboard.servicios.reportes.agrupados;
 
 import java.util.List;
 
 import rd.huma.dashboard.model.transaccional.dominio.ETipoDespliegueJob;
+import rd.huma.dashboard.servicios.reportes.Reporte;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 
 public class ReporteDespliegueVersiones extends Reporte {

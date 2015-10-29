@@ -9,36 +9,74 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import rd.huma.dashboard.model.transaccional.dominio.EMes;
 import rd.huma.dashboard.servicios.reportes.DatoAgrupado;
 import rd.huma.dashboard.servicios.reportes.ReporteAgrupado;
-import rd.huma.dashboard.servicios.reportes.ReporteDespliegueVersiones;
+import rd.huma.dashboard.servicios.reportes.agrupados.ReporteAgrupadoGenerico;
+import rd.huma.dashboard.servicios.reportes.agrupados.ReporteDespliegueReportes;
+import rd.huma.dashboard.servicios.reportes.agrupados.ReporteDespliegueScripts;
+import rd.huma.dashboard.servicios.reportes.agrupados.ReporteDespliegueVersiones;
+import rd.huma.dashboard.servicios.reportes.agrupados.ReporteVersiones;
 import rd.huma.dashboard.servicios.transaccional.Servicio;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
-import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.servicios.transaccional.ServicioReporte;
 
 
 @Path("metrica")
 public class WSReporteMetrica {
 
-	private @Servicio @Inject ServicioVersion servicioVersion;
 	private @Servicio @Inject ServicioJobDespliegueVersion servicioDespliegueVersion;
 
-	@Path("aplicacion")
+	private @Servicio @Inject ServicioReporte servicioReporte;
+
+	@Path("deployPorMes")
 	@GET
-	public String aplicacion( String id){
+	public String deployPorMes(){
+		return toJson(new ReporteDespliegueVersiones(servicioDespliegueVersion).getReporte()).build().toString();
+	}
 
-		ReporteAgrupado agrupado = new ReporteDespliegueVersiones(servicioDespliegueVersion).getReporte();
+	@Path("scriptPorMes")
+	@GET
+	public String scriptPorMes(){
+		return toJson(new ReporteDespliegueScripts(servicioDespliegueVersion).getReporte()).build().toString();
+	}
 
+	@Path("reportePorMes")
+	@GET
+	public String reportePorMes(){
+		return toJson(new ReporteDespliegueReportes(servicioDespliegueVersion).getReporte()).build().toString();
+	}
 
-		JsonObjectBuilder datosReporte = Json.createObjectBuilder();
-		datosReporte.add("series", getSeries(agrupado));
-		datosReporte.add("xAxis", xAxis(agrupado.getMesInicio(),agrupado.getMesFin()));
-		datosReporte.add("yAxis", yAxis(agrupado.getMesInicio(),agrupado.getMesFin()));
-		datosReporte.add("mesInicio", agrupado.getMesInicio());
-		datosReporte.add("mesFin", agrupado.getMesFin());
-		return datosReporte.build().toString();
+	@Path("versionesPorMes")
+	@GET
+	public String versionesPorMes(){
+		return toJson(new ReporteVersiones().getReporte()).build().toString();
+	}
+
+	@Path("reporteScript/{id}")
+	@GET
+	public String reporteScript(@PathParam("id") String id){
+		return toJson(new ReporteAgrupadoGenerico(servicioReporte.getResultadoReporte(id)).getReporte()).build().toString();
+	}
+
+	@Path("reportesScript")
+	@GET
+	public String reportes(){
+		JsonArrayBuilder arreglos = Json.createArrayBuilder();
+		servicioReporte.getReportes().forEach( r -> arreglos.add(Json.createObjectBuilder().add("id", r.getId()).add("nombre", r.getNombre()) ));
+		return arreglos.build().toString();
+	}
+
+	private JsonObjectBuilder toJson(ReporteAgrupado agrupado){
+		return Json.createObjectBuilder()
+		.add("series", getSeries(agrupado))
+		.add("xAxis", xAxis(agrupado.getMesInicio(),agrupado.getMesFin()))
+		.add("yAxis", yAxis(agrupado.getMesInicio(),agrupado.getMesFin()))
+		.add("mesInicio", agrupado.getMesInicio())
+		.add("mesFin", agrupado.getMesFin())
+		;
 	}
 
 	private JsonArrayBuilder getSeries(ReporteAgrupado reporteAgrupado){
