@@ -4,6 +4,7 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
@@ -50,10 +51,28 @@ public class WSFilaDeployementVersionFilas {
 																				.add("propiedades", consultaPropiedades(f.getVersion()))
 																				.add("cantidadScripts", servicioVersion.contarScriptVersion(f.getVersion()))
 																				.add("cantidadReports", servicioVersion.contarReporteVersion(f.getVersion()))
+																				.add("cssAprobacionContenedor", f.getFila().isPideAutorizacion()?"":"vacio")
+																				.add("cssPorAprobar", f.isAutorizadaVersion()?"bottomQuestion":"aceptadoIcon")
 																				.add("jiras", consultaJiras(f.getVersion()))
 																				)
 															 );
 		return builder.build().toString();
+	}
+
+	@GET
+	@Path("asignacionDespliegue/{idFilaVersion}/{fechaAsignada}")
+	public String asignacionFila(@PathParam("idFilaVersion") String idFilaVersion,@PathParam("fechaAsignada") String fechaAsignada){
+		Optional<EntFilaDespliegueVersion> fila = servicioFila.getFilaPorId(idFilaVersion);
+		if (fila.isPresent()){
+			EntFilaDespliegueVersion filaVersion = fila.get();
+			filaVersion.setAutorizadaVersion(true);
+			filaVersion.setFechaParaDesplegar(UtilFecha.getFechaJenkins(fechaAsignada));
+			servicioFila.actualizar(filaVersion);
+			return "{asignado:true}";
+		}else{
+			return "{asignado:false}";
+		}
+
 	}
 
 	private JsonObjectBuilder getAutor(EntVersion version){
@@ -71,14 +90,14 @@ public class WSFilaDeployementVersionFilas {
 
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaJiras(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 
 	private JsonArrayBuilder consultaTickets(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
 
-		servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaTickets(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 
@@ -88,12 +107,10 @@ public class WSFilaDeployementVersionFilas {
 		return builder;
 	}
 
-
-
 	private JsonArrayBuilder consultaPropiedades(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
 
-		servicioVersion.buscaPropiedades(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaPropiedades(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 

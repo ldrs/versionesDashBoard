@@ -10,6 +10,31 @@ function toQueryString(page){
 	return page+"?"+ $.param(queryString);
 }
 
+$(document).ready(function(){
+	$(".vAccionFecha").click(function(){
+		yo = $(this);
+		yo.next().css("display","block");
+		yo.css("display","none");
+
+	});
+
+	var ponerPorAsignarFecha = function(yo,css){
+		var padre = yo.parent();
+		padre.css("display","none");
+		padre.prev().css("display","block").removeClass( "fechaAsignada fechaPorAsignar" ).addClass(css);
+	};
+
+	$(".vAccionAceptar").click(function(){
+		ponerPorAsignarFecha(yo,'fechaAsignada');
+		$.ajax('/dasboard/api/filaDeploymentVersion/asignacionDespliegue/'+yo.attr('data-version')+'/'+yo.val())
+	});
+	$(".vAccionCancelar").click(function(){
+		ponerPorAsignarFecha(yo,'fechaPorAsignar');
+	});
+
+});
+
+
 var versionesApp = angular.module('versionesApp',['ngResource','appDbServices','angucomplete-alt']);
 
 
@@ -149,17 +174,6 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		});
 	});
 
-	app.actualizaInfoVersiones=function(){
-		if (!app.ambienteId){
-			return;
-		}
-
-		VersionesFilas.versionesInfo({},function(data){
-			app.versionesProcesando = data.procesandoDato;
-			app.versionesFallidas = data.conError;
-		});
-	}
-
 	app.actualizaFila=function(){
 		if (!app.ambienteId){
 			return;
@@ -167,7 +181,10 @@ versionesApp.controller('appController', function($scope,Aplicaciones,Ambientes,
 		VersionesFilas.filas({idAmbiente:app.ambienteId}, function(data) {
 			app.versionesFila = data;
 			app.cssActualizando = "vacio";
-			app.actualizaInfoVersiones();
+
+			app.versionesFila.forEach(function(o){
+				o.cssAprobacionContenedor = "vacio";
+			});
 		});
 
 	}

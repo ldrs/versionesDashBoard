@@ -3,10 +3,15 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_SYSAID_ESTADO")
+@NamedQueries({
+	@NamedQuery(name="todos.sysaidEstados", query="SELECT E from EntTicketSysAidEstado E")
+})
 public class EntTicketSysAidEstado extends AEntModelo {
 
 	/**
@@ -20,6 +25,8 @@ public class EntTicketSysAidEstado extends AEntModelo {
 	@JoinColumn
 	@ManyToOne
 	private EntAmbiente ambiente;
+
+	private boolean borrableNexus;
 
 	public int getCodigo() {
 		return codigo;
@@ -43,5 +50,13 @@ public class EntTicketSysAidEstado extends AEntModelo {
 
 	public void setAmbiente(EntAmbiente ambiente) {
 		this.ambiente = ambiente;
+	}
+
+	public boolean isBorrableNexus() {
+		return borrableNexus;
+	}
+
+	public void setBorrableNexus(boolean borrableNexus) {
+		this.borrableNexus = borrableNexus;
 	}
 }

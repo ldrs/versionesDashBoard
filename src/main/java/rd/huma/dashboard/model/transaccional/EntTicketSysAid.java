@@ -30,6 +30,8 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	private int estado = -1 ;
 
+	private boolean expirableEnNexus;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
 
@@ -65,6 +67,14 @@ public class EntTicketSysAid extends AEntModelo implements Comparable<EntTicketS
 
 	public Instant getUltimaModificacion(){
 		return fechaUltimaModificacion.toInstant();
+	}
+
+	public boolean isExpirableEnNexus() {
+		return expirableEnNexus;
+	}
+
+	public void setExpirableEnNexus(boolean expirableEnNexus) {
+		this.expirableEnNexus = expirableEnNexus;
 	}
 
 	@Override

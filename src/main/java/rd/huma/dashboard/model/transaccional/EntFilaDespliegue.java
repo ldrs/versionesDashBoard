@@ -52,14 +52,13 @@ public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaD
 		this.estadosJiras = estadosJiras;
 	}
 
-
-
 	public boolean isPermiteSinTicketSysAid() {
 		return permiteSinTicketSysAid;
 	}
 	public void setPermiteSinTicketSysAid(boolean permiteSinTicketSysAid) {
 		this.permiteSinTicketSysAid = permiteSinTicketSysAid;
 	}
+
 	@Override
 	public int compareTo(EntFilaDespliegue o) {
 		return ambiente.compareTo(o.ambiente);

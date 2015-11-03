@@ -38,9 +38,7 @@ public class ServicioFila {
 
 	private @Servicio @Inject ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
-
 	private @Servicio @Inject ServicioAmbiente servicioAmbiente;
-
 
 	Function<Object[], FilaBranch> toFilaBranch = new Function<Object[], FilaBranch>() {
 	    public FilaBranch apply(Object[] t) {
@@ -125,6 +123,7 @@ public class ServicioFila {
 			deployementVersion.setVersion(version);
 			deployementVersion.setFila(fila);
 			deployementVersion.setPrioridad(prioridad);
+			deployementVersion.setAutorizadaVersion(!fila.isPideAutorizacion());
 
 			entityManager.persist(deployementVersion);
 
@@ -157,8 +156,6 @@ public class ServicioFila {
 
 		servicioVersion.crearAlerta(versionAlerta);
 	}
-
-
 
 	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
 		EntFilaDespliegue fila = new EntFilaDespliegue();
@@ -224,5 +221,9 @@ public class ServicioFila {
 
 	public Optional<EntFilaDespliegueVersion> getFilaPorId(String id) {
 		return Optional.ofNullable(entityManager.find(EntFilaDespliegueVersion.class, id));
+	}
+
+	public EntFilaDespliegueVersion actualizar(EntFilaDespliegueVersion filavDespliegueVersion){
+		return entityManager.merge(filavDespliegueVersion);
 	}
 }

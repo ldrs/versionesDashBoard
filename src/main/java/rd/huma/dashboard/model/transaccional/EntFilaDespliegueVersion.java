@@ -43,6 +43,10 @@ public class EntFilaDespliegueVersion extends AEntModelo {
 	@ManyToOne
 	private EntFilaDespliegue fila;
 
+	private boolean autorizadaVersion = true;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaParaDesplegar;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
@@ -51,6 +55,13 @@ public class EntFilaDespliegueVersion extends AEntModelo {
 
 	private boolean procesandoDeploy;
 
+	public boolean isAutorizadaVersion() {
+		return autorizadaVersion;
+	}
+
+	public void setAutorizadaVersion(boolean autorizadaVersion) {
+		this.autorizadaVersion = autorizadaVersion;
+	}
 
 	public int getPrioridad() {
 		return prioridad;
@@ -82,6 +93,18 @@ public class EntFilaDespliegueVersion extends AEntModelo {
 	public void setProcesandoDeploy(boolean procesandoDeploy) {
 		this.procesandoDeploy = procesandoDeploy;
 	}
+
+	public Instant getFechaParaDesplegar() {
+		return fechaParaDesplegar == null ? null : fechaParaDesplegar.toInstant();
+	}
+
+	public void setFechaParaDesplegar(Instant fechaParaDesplegar) {
+		this.fechaParaDesplegar =  fechaParaDesplegar == null ? null :Timestamp.from(fechaParaDesplegar);
+	}
+
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

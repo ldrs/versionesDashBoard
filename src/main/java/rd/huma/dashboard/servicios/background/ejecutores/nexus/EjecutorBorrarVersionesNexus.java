@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.transaccional.Artefacto;
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
+import rd.huma.dashboard.model.transaccional.EntTicketSysAidEstado;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionModulo;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -17,9 +19,12 @@ import rd.huma.dashboard.servicios.integracion.nexus.ServicioNexus;
 import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
 import rd.huma.dashboard.servicios.transaccional.ServicioAplicacion;
 import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
+import rd.huma.dashboard.servicios.transaccional.ServicioTicketSysaid;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
 
 public class EjecutorBorrarVersionesNexus extends AEjecutor {
+
+	private static final Logger LOGGER = Logger.getLogger(EjecutorBorrarVersionesNexus.class.getSimpleName());
 
 	private ServicioVersion servicioVersion;
 	private ServicioNexus servicioNexus;
@@ -30,6 +35,17 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 		 servicioNexus = ServicioNexus.nuevo();
 		 eliminaDuplicaciones();
 		 borrarVersionesNoExistenTag();
+		 borrarVersionesExpiraronProduccion();
+	}
+
+	private void borrarVersionesExpiraronProduccion() {
+		List<Integer> estados = ServicioTicketSysaid.getInstanciaTransaccional().estadosSysAid().stream().filter(e -> e.isBorrableNexus()).map(EntTicketSysAidEstado::getCodigo).collect(Collectors.toList());
+		List<EntVersion> versiones = servicioVersion.buscaVersionesPorEstadoSysAid(estados);
+		LOGGER.info(String.format("Cantidad de Versiones por eliminar %s para el estado(primero) %s",versiones.size(), estados.stream().findFirst().orElse(-1)));
+		for (EntVersion version : versiones) {
+			eliminaModulos(version);
+		}
+
 	}
 
 	private void borrarVersionesNoExistenTag(){

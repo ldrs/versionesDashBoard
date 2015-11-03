@@ -33,7 +33,7 @@ public class MonitorEjecutor {
 		scheduler.scheduleAtFixedRate(new EjecutorDeployVersionAutomatico(), 1, 1, TimeUnit.MINUTES);
 
 		scheduler.scheduleAtFixedRate(new EjecutorEnvioAlertasCorreo(), 5, 2, TimeUnit.MINUTES);
-		scheduler.scheduleAtFixedRate(new EjecutorBorrarVersionesNexus(), 1, 5, TimeUnit.HOURS);
+		scheduler.scheduleAtFixedRate(new EjecutorBorrarVersionesNexus(), 1, 30, TimeUnit.MINUTES);
 
 		scheduler.scheduleAtFixedRate(new EjecutorMonitoreoJobEstadoPendiente(), 1, 5, TimeUnit.MINUTES);
 

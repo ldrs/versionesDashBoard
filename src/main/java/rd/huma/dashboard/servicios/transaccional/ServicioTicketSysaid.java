@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntTicketSysAid;
+import rd.huma.dashboard.model.transaccional.EntTicketSysAidEstado;
 import rd.huma.dashboard.servicios.integracion.sysaid.ServicioIntegracionSYSAID;
 
 @Stateless
@@ -44,6 +45,10 @@ public class ServicioTicketSysaid {
 
 	public Optional<EntTicketSysAid> buscarPorNumero(Long numero){
 		return entityManager.createNamedQuery("buscar.versionTicket",EntTicketSysAid.class).setParameter("num", numero) .getResultList().stream().findFirst();
+	}
+
+	public List<EntTicketSysAidEstado> estadosSysAid(){
+		return entityManager.createNamedQuery("todos.sysaidEstados",EntTicketSysAidEstado.class).getResultList();
 	}
 
 	public static ServicioTicketSysaid getInstanciaTransaccional() {

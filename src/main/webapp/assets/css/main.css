@@ -1699,6 +1699,12 @@ ul.link-list li:first-child {
 		height: 40px;
 }
 
+.bottomQuestion{
+		background: #fff url(images/question.png) no-repeat;
+		width: 40px;
+		height: 40px;
+}
+
 dialog {
     width: 500px;
     background:#e8e8e8;
@@ -1787,6 +1793,12 @@ dialog {
 
 .reportIcon{
 	background: #fff url(images/iconReport.png) no-repeat;
+	height: 40px;
+    width: 40px;
+}
+
+.aceptadoIcon{
+	background: #fff url(images/aceptado.png) no-repeat;
 	height: 40px;
     width: 40px;
 }

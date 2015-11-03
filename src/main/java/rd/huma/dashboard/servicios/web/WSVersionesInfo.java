@@ -19,7 +19,7 @@ public class WSVersionesInfo {
 
 	@GET
 	public String info(){
-		long versionesProcesando = servicioVersion.buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter(EEstadoVersion::isProcesandoDato).collect(Collectors.toSet())).stream().count();
+		long versionesProcesando = servicioVersion.buscaVersionesRecientes(Arrays.stream(EEstadoVersion.values()).filter(EEstadoVersion::isProcesandoDato).collect(Collectors.toSet())).stream().count();
 
 
 		long versionesConError = servicioVersion.versionesConError().count();

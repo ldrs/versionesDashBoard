@@ -1,7 +1,9 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -67,13 +69,31 @@ public class ServicioVersion {
 	}
 
 	public Stream<EntVersion> versionesConError(){
-		return buscaVersiones(Arrays.stream(EEstadoVersion.values()).filter(estadosNegativos())
+		return buscaVersionesRecientes(Arrays.stream(EEstadoVersion.values()).filter(estadosNegativos())
 				.collect(Collectors.toSet())).stream().filter(v -> v.getFechaRegistro().isAfter(Instant.now().minus(Duration.ofDays(3))) );
 	}
 
 	public List<EntVersion> buscaVersiones(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorEstado.version",EntVersion.class).setParameter("est", estados).getResultList();
 	}
+
+	public List<EntVersion> buscaVersionesRecientes(Set<EEstadoVersion> estados){
+		return entityManager.createNamedQuery("buscarPorEstadoReciente.version",EntVersion.class)
+				.setParameter("est", estados)
+				.setParameter("fecha",Timestamp.from(Instant.now().minus(3L, ChronoUnit.DAYS)))
+				.getResultList();
+	}
+
+	public List<EntVersion> buscaVersionesPorEstadoSysAid(List<Integer> estadosSysaid){
+		return entityManager.createNamedQuery("buscarPorEstadoSysAid.version",EntVersion.class)
+				.setParameter("est", estadosSysaid)
+				.setParameter("estVersion", EEstadoVersion.NEXUS_ELIMINADO)
+				.setParameter("fechaExpira",Timestamp.from(Instant.now().minus(5L, ChronoUnit.DAYS)))
+				.setParameter("fchReciente",Timestamp.from(Instant.now().minus(2L, ChronoUnit.DAYS)))
+
+				.getResultList();
+	}
+
 
 	public List<String> buscaBranchVersionesDuplicadas(Set<EEstadoVersion> estados){
 		return entityManager.createNamedQuery("buscarPorBranchDuplicado.version",String.class).setParameter("est", estados).getResultList();

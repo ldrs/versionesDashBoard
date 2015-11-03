@@ -1,7 +1,9 @@
 package rd.huma.dashboard.servicios.background.ejecutores.fila.deploy;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
@@ -28,15 +30,32 @@ public class ProcesaFilaDeployAutomatico {
 	}
 
 	public void procesar(){
-		List<EntFilaDespliegueVersion> filas = servicioFila.getFilasPorAmbienteAplicacion(fila.getAmbiente().getId());
+		if (getServidoresDisponibles().isEmpty()){
+			return;
+		}
+
+
+		List<EntFilaDespliegueVersion> filas = servicioFila.getFilasPorAmbienteAplicacion(fila.getAmbiente().getId())
+												.stream()
+												.filter(filaVersion -> filaVersion.isAutorizadaVersion())
+												.filter(filaVersion -> !fila.isPideAutorizacion() || (fila.isPideAutorizacion() && Instant.now().isAfter(filaVersion.getFechaParaDesplegar()))  )
+												.collect(Collectors.toList());
 		filas.stream().filter(v -> !v.isProcesandoDeploy()).findFirst().ifPresent(this::intentaDeploy);
 	}
 
-	private void intentaDeploy(EntFilaDespliegueVersion versionFila){
-		List<EntServidor> servidores = servicioServidor.getServidoresAmbiente(fila.getAmbiente().getId()).stream()
+	public Predicate<EntFilaDespliegueVersion> filtra(){
+		return filaVersion -> filaVersion.isAutorizadaVersion();
+	}
+
+	private List<EntServidor> getServidoresDisponibles(){
+		return servicioServidor.getServidoresAmbiente(fila.getAmbiente().getId()).stream()
 				.filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.NO_DISPONIBLE)
 				.filter(servidor -> servidor.getEstadoServidor() != EEstadoServidor.NO_DISPONIBLE_MANUAL)
 				.collect(Collectors.toList());
+	}
+
+	private void intentaDeploy(EntFilaDespliegueVersion versionFila){
+		List<EntServidor> servidores = getServidoresDisponibles();
 		Optional<EntServidor> optional = buscaSiYaTieneEsteBranchActivo(versionFila, servidores);
 		if (optional.isPresent()){
 			EntServidor servidor = optional.get();
