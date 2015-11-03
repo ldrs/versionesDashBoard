@@ -35,6 +35,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionPropiedad;
 import rd.huma.dashboard.model.transaccional.EntVersionReporte;
 import rd.huma.dashboard.model.transaccional.EntVersionReporteJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.EntVersionScriptAdvertencia;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.model.transaccional.EntVersionTicket;
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
@@ -459,5 +460,9 @@ public class ServicioVersion {
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVersionesPorMes() {
 		return entityManager.createNamedQuery("metricaAgrupadaYear.version").getResultList();
+	}
+
+	public void crearAdvertencia(EntVersionScriptAdvertencia advertencia) {
+		entityManager.persist(advertencia);
 	}
 }

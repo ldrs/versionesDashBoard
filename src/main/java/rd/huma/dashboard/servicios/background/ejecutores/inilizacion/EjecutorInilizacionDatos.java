@@ -10,6 +10,7 @@ public class EjecutorInilizacionDatos extends AEjecutor {
 		if (inicializar()){
 			ServicioConfiguracionGeneral.getInstanciaTransaccional().nuevaConfiguracionDefecto();
 			new InicializacionAmbienteAplicacion().inicializar();
+			new InicializadorCaches().ejecutar();
 		}
 	}
 

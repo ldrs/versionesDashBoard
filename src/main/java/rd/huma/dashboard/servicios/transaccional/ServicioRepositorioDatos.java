@@ -156,4 +156,7 @@ public class ServicioRepositorioDatos {
 		return "not found";
 	}
 
+	public List<EntRepositorioDatos> repositoriosActivos() {
+		return entityManager.createNamedQuery("todosActivos.repositorioDatos",EntRepositorioDatos.class).getResultList();
+	}
 }

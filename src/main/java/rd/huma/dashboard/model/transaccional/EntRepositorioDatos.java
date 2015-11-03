@@ -16,7 +16,8 @@ import javax.persistence.TemporalType;
 @Table(name="REPOSITORIO_DATOS")
 @NamedQueries({
 	@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.esquema = :sc and E.servicio = :serv"),
-	@NamedQuery(name = "buscarPorAll.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.host = :host and E.esquema = :sc and E.servicio = :serv")
+	@NamedQuery(name = "buscarPorAll.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.host = :host and E.esquema = :sc and E.servicio = :serv"),
+	@NamedQuery(name = "todosActivos.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.activo = true"),
 	})
 
 public class EntRepositorioDatos extends AEntModelo {
@@ -33,6 +34,8 @@ public class EntRepositorioDatos extends AEntModelo {
 	private String host;
 
 	private int puerto = 1521;
+
+	private boolean activo;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro = Timestamp.from(Instant.now());
@@ -81,6 +84,14 @@ public class EntRepositorioDatos extends AEntModelo {
 	}
 	public void setPuerto(int puerto) {
 		this.puerto = puerto;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public boolean isActivo() {
+		return activo;
 	}
 
 	@Override

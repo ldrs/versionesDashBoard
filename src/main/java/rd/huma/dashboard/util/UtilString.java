@@ -12,6 +12,15 @@ public class UtilString {
 		return valor.toLowerCase();
 	}
 
+	public static String defecto(CharSequence valor){
+		if (valor == null){
+			return "";
+		}
+		return valor.toString();
+	}
+
+
+
 	public static String defecto(String valor){
 		if (valor == null){
 			return "";

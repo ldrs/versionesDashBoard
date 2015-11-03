@@ -3,6 +3,9 @@ package rd.huma.dashboard.servicios.background.ejecutores.version.script;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
+
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
@@ -29,7 +32,17 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 
 	private void intepreta(EntVersionScript versionScript){
 		try {
-			Map<ObjectoCambio, Integer> informacionScripts = new ServicioParseoObjectoQuerys(versionScript.getUrlScript()).buscar();
+			String datos = busca(versionScript.getUrlScript());
+			if (datos.isEmpty()){
+				return;
+			}
+			try {
+				new InterpretaScriptAdvertencias(servicioVersion, versionScript, datos).validar();
+			}catch(Exception e){
+
+			}
+
+			Map<ObjectoCambio, Integer> informacionScripts = new ServicioParseoObjectoQuerys(datos).buscar();
 
 			for (Entry<ObjectoCambio, Integer> entry : informacionScripts.entrySet()) {
 				ObjectoCambio objectoCambio = entry.getKey();
@@ -47,6 +60,16 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 		}catch(Exception e){
 
 		}
+	}
+
+
+	private String busca(String url){
+
+		Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
+		if (resultado.getStatus()==200){
+			return resultado.readEntity(String.class);
+		}
+		return "";
 	}
 
 }

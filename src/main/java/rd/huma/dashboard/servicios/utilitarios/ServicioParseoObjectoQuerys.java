@@ -2,13 +2,9 @@ package rd.huma.dashboard.servicios.utilitarios;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
 
 import net.sf.jsqlparser.JSQLParserException;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoCambioTabla;
@@ -16,18 +12,16 @@ import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 
 public class ServicioParseoObjectoQuerys {
 
-	private String url;
+	private String datos;
 
-
-	public ServicioParseoObjectoQuerys(String url){
-		this.url = url;
+	public ServicioParseoObjectoQuerys(String datos){
+		this.datos = datos;
 	}
-
 
 	public Map<ObjectoCambio, Integer>  buscar(){
 		Map<ObjectoCambio, Integer> mapping = new HashMap<>();
 
-		for (ObjectoCambio objecto :  busca(url)){
+		for (ObjectoCambio objecto :  buscaObjectosSQL(datos)){
 			Integer veces =  mapping.get(objecto);
 			if (veces == null){
 				mapping.put(objecto, Integer.valueOf(1));
@@ -52,15 +46,6 @@ public class ServicioParseoObjectoQuerys {
 				l.add(objectoCambio);
 			}
 		}
-	}
-
-	private List<ObjectoCambio> busca(String url){
-
-		Response resultado = ClientBuilder.newClient().target(url).request().buildGet().invoke();
-		if (resultado.getStatus()==200){
-			return buscaObjectosSQL(resultado.readEntity(String.class));
-		}
-		return Collections.emptyList();
 	}
 
 	private List<ObjectoCambio> buscaObjectosSQL(String script){

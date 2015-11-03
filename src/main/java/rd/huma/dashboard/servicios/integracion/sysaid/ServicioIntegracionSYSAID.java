@@ -3,7 +3,6 @@ package rd.huma.dashboard.servicios.integracion.sysaid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import rd.huma.dashboard.model.sysaid.Ticket;
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;

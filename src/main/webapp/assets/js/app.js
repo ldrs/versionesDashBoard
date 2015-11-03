@@ -1,3 +1,4 @@
+//http://xdsoft.net/jqplugins/datetimepicker/ para el datetiemepicker
 var tmpQueryString = location.search.slice(1).split('&');
 
 var queryString = {};
