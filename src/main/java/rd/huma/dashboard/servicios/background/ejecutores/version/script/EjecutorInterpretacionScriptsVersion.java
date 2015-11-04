@@ -8,7 +8,9 @@ import javax.ws.rs.core.Response;
 
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionCambioObjectoSql;
+import rd.huma.dashboard.model.transaccional.EntVersionRiesgo;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
+import rd.huma.dashboard.model.transaccional.dominio.ETipoRiesgo;
 import rd.huma.dashboard.model.transaccional.dominio.ObjectoCambio;
 import rd.huma.dashboard.servicios.background.AEjecutor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
@@ -18,6 +20,7 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 
 	private EntVersion version;
 	private ServicioVersion servicioVersion;
+	private boolean cambioEsquemaReversible = true;
 
 	public EjecutorInterpretacionScriptsVersion(EntVersion version){
 		this.version = version;
@@ -28,6 +31,16 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 		this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		servicioVersion.eliminarCambiosObjectoCambio(version);
 		servicioVersion.buscaScript(version).forEach(this::intepreta);
+		riesgoEsquema();
+	}
+
+	private void riesgoEsquema() {
+		if (!cambioEsquemaReversible){
+			EntVersionRiesgo versionRiesgo = new EntVersionRiesgo();
+			versionRiesgo.setRiesgo(ETipoRiesgo.SCRIPT_TRANSFORMACION_ESQUEMA_NO_REVESIBLE);
+			versionRiesgo.setVersion(version);
+			servicioVersion.crear(versionRiesgo);
+		}
 	}
 
 	private void intepreta(EntVersionScript versionScript){
@@ -44,6 +57,7 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 
 			Map<ObjectoCambio, Integer> informacionScripts = new ServicioParseoObjectoQuerys(datos).buscar();
 
+
 			for (Entry<ObjectoCambio, Integer> entry : informacionScripts.entrySet()) {
 				ObjectoCambio objectoCambio = entry.getKey();
 				EntVersionCambioObjectoSql cambioObjectoSql = new EntVersionCambioObjectoSql();
@@ -54,7 +68,11 @@ public class EjecutorInterpretacionScriptsVersion extends AEjecutor {
 				cambioObjectoSql.setColumnas(objectoCambio.getColumnastoString());
 				cambioObjectoSql.setObjecto(entry.getKey().getNombre());
 				servicioVersion.crearCambioObjectoSQL(cambioObjectoSql);
+				if (cambioEsquemaReversible){
+					cambioEsquemaReversible = entry.getKey().getCambioTabla().isCambioRevesible();
+				}
 			}
+
 
 
 		}catch(Exception e){

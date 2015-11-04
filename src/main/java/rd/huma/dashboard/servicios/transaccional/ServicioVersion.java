@@ -19,6 +19,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import rd.huma.dashboard.model.transaccional.AEntModelo;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegueVersion;
 import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.EntPersona;
@@ -464,5 +465,9 @@ public class ServicioVersion {
 
 	public void crearAdvertencia(EntVersionScriptAdvertencia advertencia) {
 		entityManager.persist(advertencia);
+	}
+
+	public <T extends AEntModelo> void crear(T entidad) {
+		entityManager.persist(entidad);
 	}
 }

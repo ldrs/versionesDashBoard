@@ -14,7 +14,7 @@ import rd.huma.dashboard.model.transaccional.dominio.ETipoAdvertencia;
 @Entity
 @Table(name="VERSION_SCRIPT_ADVERTENCIA")
 @NamedQueries({
-	@NamedQuery(name="buscaPorScript.versionScriptAdvertencia",query="SELECT J from EntVersionScriptAdvertencia J where J.script = :src")
+	@NamedQuery(name="buscaPorScript.versionScriptAdvertencia",query="SELECT J from EntVersionScriptAdvertencia J where J.versionScript = :src")
 })
 public class EntVersionScriptAdvertencia extends AEntModelo {
 

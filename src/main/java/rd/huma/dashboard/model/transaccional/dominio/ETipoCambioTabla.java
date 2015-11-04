@@ -138,6 +138,12 @@ public enum ETipoCambioTabla {
 			return new ObjectoCambio(this,cambio.getName().getName(), Collections.emptyList());
 		}
 
+		@Override
+		public boolean isCambioRevesible() {
+			return false;
+		}
+
+
 	},
 	ADD_COLUMN {
 		@Override
@@ -188,6 +194,11 @@ public enum ETipoCambioTabla {
 		public String inicioComandoBuscar() {
 			return "ALTER TABLE";
 		}
+		@Override
+		public boolean isCambioRevesible() {
+			return false;
+		}
+
 
 	},
 	RENAME_COLUMN {
@@ -205,6 +216,11 @@ public enum ETipoCambioTabla {
 		@Override
 		public String inicioComandoBuscar() {
 			return "ALTER TABLE";
+		}
+
+		@Override
+		public boolean isCambioRevesible() {
+			return false;
 		}
 	},
 	ADD_CONSTRAINT {
@@ -244,5 +260,9 @@ public enum ETipoCambioTabla {
 		} catch (JSQLParserException e) {
 		}
 		 return null;
+	}
+
+	public boolean isCambioRevesible(){
+		return true;
 	}
 }

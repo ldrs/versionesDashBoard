@@ -27,8 +27,6 @@ public class WSVersionesConfirmaVersion {
 	@Inject
 	private @Servicio ServicioVersion servicioVersion;
 
-
-
 	@GET
 	public String confirmaVersion(@PathParam("id") String id){
 		EntJobDespliegueVersion job = servicioJobDespliegueVersion.getJob(id);

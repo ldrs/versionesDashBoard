@@ -26,7 +26,7 @@ public class DeployVersion extends ADeployVersion{
 		String urlBaseEjecucionJob =  getURLDeployEjecucionJob();
 		InvocadorJenkins invocadorJenkins = nuevoInvocador();
 		invocadorJenkins.setURL(urlBaseEjecucionJob+"buildWithParameters");
-		invocadorJenkins.adicionarParametro("URL_CALLBACK_DASHBOARD", getConfiguracionGeneral().getRutaDashBoard()+"api/versionConfirma/"+ job.getId());
+		invocadorJenkins.adicionarParametro("URL_CALLBACK_DASHBOARD", getConfiguracionGeneral().getRutaDashBoard()+"api/versionConfirma/confirmaSubidaJob/"+ job.getId());
 
 		getServicioVersion().buscaPropiedades(getVersion()).forEach(propiedad -> invocadorJenkins.adicionarParametro(propiedad.getPropiedad(), propiedad.getValor()));
 
