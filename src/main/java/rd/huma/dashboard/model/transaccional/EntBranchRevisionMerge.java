@@ -3,10 +3,15 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="BRANCH_REVISION_MERGE")
+@NamedQueries({
+	@NamedQuery(name = "buscarOrigenDestino.revisionMerge",query = "SELECT E FROM EntBranchRevisionMerge E where E.revisionOrigen = :ori and E.revisionDestino = :des")
+})
 public class EntBranchRevisionMerge extends AEntModelo {
 
 	/**

@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.background.ejecutores.svn.revision;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,8 +8,8 @@ import rd.huma.dashboard.model.transaccional.EntAplicacionCatalogoCambio;
 
 public class InterpretadorCambioRevision {
 
-	private List<EntAplicacionCatalogoCambio> catalogoCambioExcluyentes;
-	private List<EntAplicacionCatalogoCambio> catalogoCambioOtros;
+	private List<EntAplicacionCatalogoCambio> catalogoCambioExcluyentes = new ArrayList<>();
+	private List<EntAplicacionCatalogoCambio> catalogoCambioOtros = new  ArrayList<>();
 
 	public InterpretadorCambioRevision(List<EntAplicacionCatalogoCambio> catalogos) {
 		for (EntAplicacionCatalogoCambio catalogo : catalogos) {

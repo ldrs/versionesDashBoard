@@ -6,9 +6,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="BRANCH_MERGE")
+@Table(name="BRANCH_MERGE", uniqueConstraints = @UniqueConstraint(name = "BRANCH_MERGE_UK", columnNames = {"origen_id","destino_id"}))
 @NamedQueries({
 	@NamedQuery(name="buscaPorOrigen.branchMerge",query="select E from EntBranchMerge E join E.origen B where B.branch = :branch"),
 	@NamedQuery(name="buscaPorDestino.branchMerge",query="select E from EntBranchMerge E where E.destino = :branch"),

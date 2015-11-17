@@ -3,6 +3,8 @@ package rd.huma.dashboard.servicios.transaccional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -22,20 +24,24 @@ public class ServicioTicketSysaid {
 	@Inject
 	private EntityManager entityManager;
 
+	private static Lock lock = new ReentrantLock();
+
 
 	public EntTicketSysAid encuentraOSalva(Long numero) {
-		synchronized(numero){
-			Optional<EntTicketSysAid> ticket = buscarPorNumero(numero);
+		Optional<EntTicketSysAid> ticket = buscarPorNumero(numero);
+		if (ticket.isPresent()){
+			return ticket.get();
+		}
+		lock.lock();
+		try{
+			ticket = buscarPorNumero(numero);
 			if (ticket.isPresent()){
 				return ticket.get();
-			}else{
-				ticket = buscarPorNumero(numero);
-				if (ticket.isPresent()){
-					return ticket.get();
-				}
-
-				return nuevoSysAid(numero);
 			}
+
+			return nuevoSysAid(numero);
+		}finally{
+			lock.unlock();
 		}
 	}
 

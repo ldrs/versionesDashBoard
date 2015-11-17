@@ -16,7 +16,7 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 @Entity
 @Table(name="SERVIDOR")
 @NamedQueries({
-			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb"),
+			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb and apagado = false"),
 			@NamedQuery(name="buscarPorBranch.servidor",query = "SELECT E from EntServidor E join E.versionActual V  where V.branchOrigen = :branch"),
 			@NamedQuery(name="buscarPorVersion.servidor",query = "SELECT E from EntServidor E join E.versionActual V  where V.id = :id"),
 			@NamedQuery(name="buscarPorRepositorio.servidor",query = "SELECT E from EntServidor E  where E.baseDatos = :bsd")
@@ -55,6 +55,8 @@ public class EntServidor extends AEntModelo {
 	@JoinColumn
 	@ManyToOne
 	private EntVersion versionActual;
+
+	private boolean apagado;
 
 
 	public String getNombre() {
@@ -198,6 +200,14 @@ public class EntServidor extends AEntModelo {
 			return false;
 		}
 		return true;
+	}
+
+	public void setApagado(boolean apagado) {
+		this.apagado = apagado;
+	}
+
+	public boolean isApagado() {
+		return apagado;
 	}
 
 }

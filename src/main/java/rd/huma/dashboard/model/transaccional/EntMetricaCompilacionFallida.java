@@ -27,6 +27,10 @@ public class EntMetricaCompilacionFallida extends AEntModelo {
 
 	private int jobNumero;
 
+	private String branch;
+
+	private long revision;
+
 
 	public EntPersona getAutor() {
 		return autor;
@@ -54,5 +58,21 @@ public class EntMetricaCompilacionFallida extends AEntModelo {
 
 	public void setJobNumero(int jobNumero) {
 		this.jobNumero = jobNumero;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public long getRevision() {
+		return revision;
+	}
+
+	public void setRevision(long revision) {
+		this.revision = revision;
 	}
 }

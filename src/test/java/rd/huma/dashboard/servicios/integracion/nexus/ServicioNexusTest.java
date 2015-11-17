@@ -20,7 +20,7 @@ public class ServicioNexusTest {
 		ServicioNexus.nuevo(new EntConfiguracionGeneral()).eliminarModulo("dr.gov.sigef", "admfinanciera", "10.0.1.0.0");
 	}
 
-	@Test
+	@Test  @Ignore
 	public void versionesSinTag(){
 
 		EntAplicacion aplicacion = new EntAplicacion();

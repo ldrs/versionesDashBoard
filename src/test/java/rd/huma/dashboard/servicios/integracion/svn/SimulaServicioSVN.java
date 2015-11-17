@@ -11,6 +11,7 @@ public class SimulaServicioSVN {
 		EntAplicacion aplicacion = new EntAplicacion();
 		aplicacion.setSvnPath("sigef");
 		aplicacion.setJiraKey("SGF");
+		aplicacion.setRutaPathTrunk("/trunk/sigef");
 		svn.configurar(new EntConfiguracionGeneral(), aplicacion);
 		return svn;
 	}

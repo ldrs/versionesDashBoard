@@ -94,6 +94,6 @@ public class EntGrupoPersonaDetalle extends AEntModelo implements Comparable<Ent
 
 	@Override
 	public int compareTo(EntGrupoPersonaDetalle o) {
-		return o.grupoPersona.compareTo(o.grupoPersona) + o.persona.compareTo(o.persona);
+		return o.grupoPersona.compareTo(grupoPersona) + o.persona.compareTo(persona);
 	}
 }

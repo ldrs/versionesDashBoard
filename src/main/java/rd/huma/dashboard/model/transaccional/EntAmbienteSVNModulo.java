@@ -45,8 +45,4 @@ public class EntAmbienteSVNModulo extends AEntModelo  {
 	public void setArtefacto(Artefacto artefacto) {
 		this.artefacto = artefacto;
 	}
-
-
-
-
 }

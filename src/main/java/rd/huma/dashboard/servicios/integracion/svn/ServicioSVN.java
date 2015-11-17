@@ -16,6 +16,8 @@ import rd.huma.dashboard.util.IOUtil;
 
 public class ServicioSVN {
 
+	public static final String SEPERADOR_REVISION = "------------------------------------------------------------------------";
+
 	private EntConfiguracionGeneral configuracionGeneral;
 
 	private EntAplicacion aplicacion;
@@ -109,6 +111,14 @@ public class ServicioSVN {
 		ServicioSVN servicioSVN = new ServicioSVN();
 		servicioSVN.configurar(ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get(), aplicacion);
 		return servicioSVN;
+	}
+
+	public String buscaRevisiones(String branch, long revisionUltima) {
+		 return ejecutarSvn("svn log --stop-on-copy --verbose --use-merge-history ",  toBranches(branch).append('@').append(revisionUltima));
+	}
+
+	public EntAplicacion getAplicacion() {
+		return aplicacion;
 	}
 
 }

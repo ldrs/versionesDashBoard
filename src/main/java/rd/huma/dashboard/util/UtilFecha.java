@@ -13,12 +13,24 @@ public class UtilFecha {
 
 	private static final String FORMATO_FECHA = "dd/MM/yyyy HH:mm a";
 
+	private static final String FORMATO_FECHA_SVN = "yyyy-MM-dd HH:mm:ss";
+
 	private UtilFecha() {
 	}
 
 	public static Instant getFechaJenkins(String fecha){
 		 try {
 			return new  SimpleDateFormat("YYYY-MM-DD_hh-mm-ss").parse(fecha).toInstant();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new DateTimeParseException(e.getMessage(),"",1,e);
+		}
+	}
+
+
+	public static Instant getFechaSVN(String fecha){
+		 try {
+			return new  SimpleDateFormat(FORMATO_FECHA_SVN).parse(fecha.substring(0, 19)).toInstant();
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new DateTimeParseException(e.getMessage(),"",1,e);

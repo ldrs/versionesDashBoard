@@ -37,7 +37,7 @@ public class ProcesarSVNRevisionesTest {
 		configuracionJava.setAplicacion(servicioSVN.getAplicacion());
 
 
-		new ProcesarSVNReviciones().ejecutar(servicioSVN,Arrays.asList(configuracionJava,configuracionRecursos), modulos(servicioSVN.getAplicacion()) , catalogos(servicioSVN.getAplicacion()),  Arrays.asList(branch));
+		//new ProcesarSVNReviciones().ejecutar(servicioSVN,Arrays.asList(configuracionJava,configuracionRecursos), modulos(servicioSVN.getAplicacion()) , catalogos(servicioSVN.getAplicacion()),  Arrays.asList(branch));
 	}
 
 	private List<EntAplicacionConfiguracionSubModulo> modulos(EntAplicacion aplicacion){

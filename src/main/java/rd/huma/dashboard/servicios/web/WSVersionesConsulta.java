@@ -42,17 +42,17 @@ import rd.huma.dashboard.util.UtilFecha;
 @Path("versionConsulta")
 public class WSVersionesConsulta {
 
-	@Inject
-	private @Servicio ServicioVersion servicioVersion;
+	@Inject @Servicio
+	private  ServicioVersion servicioVersion;
 
-	@Inject
-	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+	@Inject @Servicio
+	private  ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
-	@Inject
-	private @Servicio ServicioRepositorioDatos servicioRepositorioDatos;
+	@Inject @Servicio
+	private  ServicioRepositorioDatos servicioRepositorioDatos;
 
-	@Inject
-	private @Servicio ServicioServidor servicioServidor;
+	@Inject @Servicio
+	private  ServicioServidor servicioServidor;
 
 	@GET
 	@Produces("text/plain")
@@ -233,19 +233,19 @@ public class WSVersionesConsulta {
 
 	private JsonArrayBuilder consultaJiras(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaJiras(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaJiras(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 
 	private JsonArrayBuilder consultaTickets(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaTickets(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaTickets(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 
 	private JsonArrayBuilder consultaPropiedades(EntVersion version){
 		JsonArrayBuilder builder = createArrayBuilder();
-		servicioVersion.buscaPropiedades(version).stream().forEach(j -> {agrega(builder, j);});
+		servicioVersion.buscaPropiedades(version).stream().forEach(j -> agrega(builder, j));
 		return builder;
 	}
 
@@ -364,17 +364,16 @@ class ObjectoCambioAgrupado{
 		if (!(obj instanceof ObjectoCambioAgrupado)) {
 			return false;
 		}
-		ObjectoCambioAgrupado other = (ObjectoCambioAgrupado) obj;
 		if (objectoCambio == null) {
-			if (other.objectoCambio != null) {
+			if (((ObjectoCambioAgrupado) obj).objectoCambio != null) {
 				return false;
 			}
 		}
-		 if (!objectoCambio.getCambioTabla().equals(other.objectoCambio.getCambioTabla())) {
+		 if (objectoCambio.getCambioTabla()!=null && !objectoCambio.getCambioTabla().equals( ((ObjectoCambioAgrupado) obj).objectoCambio.getCambioTabla())) {
 				return false;
 		 }
 
-		 if (!objectoCambio.getNombre().equals(other.objectoCambio.getNombre())) {
+		 if (!objectoCambio.getNombre().equals(((ObjectoCambioAgrupado) obj).objectoCambio.getNombre())) {
 				return false;
 		 }
 

@@ -116,7 +116,7 @@
 									</div>
 
 									<div class="tickets">
-										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+										<div  style="float: left; padding-right: 15px" ng-repeat="ticket in version.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gob.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 										<div  style="float: left; padding-right: 15px" ng-repeat="jira in version.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 
 									</div>
@@ -158,7 +158,7 @@
 						<div class="servidorVersion"><a  title="Numero de la version" href="version.html?versionId={{servidor.version.id}}">{{servidor.version.numero}}</a> </div>
 						<div class="servidorVersion"><a title="Branch de la version" href="branch.html?branch={{servidor.version.branch}}">{{servidor.version.branch}}</a> </div>
 						<div class="tickets servidorTick" style="display: {{servidor.estiloOcupado}}">
-							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gov.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
+							<div  style="float: left; padding-right: 15px" ng-repeat="ticket in servidor.tickets | orderBy"><a href="http://serviciossiafe.hacienda.gob.do:8080/index.jsp#/SREdit.jsp?QuickAcess&amp;id={{ticket}}" target="sysaid">{{ticket}}</a> </div>
 							<div  style="float: left; padding-right: 15px" ng-repeat="jira in servidor.jiras | orderBy"><a href="http://172.16.7.42:8080/browse/{{jira}}" target="jira">{{jira}}</a></div>
 						</div>
 						<div class="button" style="display: {{servidor.css}}" ng-click="undeploy(servidor)">Undeploy</div>

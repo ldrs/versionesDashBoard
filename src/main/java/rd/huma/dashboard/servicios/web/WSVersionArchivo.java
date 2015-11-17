@@ -28,15 +28,15 @@ public class WSVersionArchivo {
 
 	private static final Logger LOGGER = Logger.getLogger(WSVersionArchivo.class.getName());
 
-	@Inject
-	private @Servicio ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+	@Inject @Servicio
+	private  ServicioJobDespliegueVersion servicioJobDespliegueVersion;
 
-	@Inject
-	private @Servicio ServicioVersion servicioVersion;
+	@Inject @Servicio
+	private  ServicioVersion servicioVersion;
 
 
-	@Inject
-	private @Servicio ServicioRepositorioDatos servicioRepositorioDatos;
+	@Inject @Servicio
+	private ServicioRepositorioDatos servicioRepositorioDatos;
 
 	@GET
 	@Produces("application/zip")
@@ -53,14 +53,14 @@ public class WSVersionArchivo {
 
 
 		ResponseBuilder response;
-		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntRepositorioDatosScriptEjecutados::getScript)
+		ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), scripts.stream().map(EntRepositorioDatosScriptEjecutados::getScript)
 																															.map(EntVersionScript::getUrlScript)
-																																								.collect(Collectors.toList()))){
-			File fileSQL = servicio.setQuery(true).generar();
-			response = Response.ok((Object) fileSQL);
-			response.header("Content-Disposition","attachment; filename=\"script.zip\"");
+																																							.collect(Collectors.toList()));
+		File fileSQL = servicio.setQuery(true).generar();
+		response = Response.ok((Object) fileSQL);
+		response.header("Content-Disposition","attachment; filename=\"script.zip\"");
 
-		}
+
 		return response.build();
 	}
 
@@ -77,12 +77,12 @@ public class WSVersionArchivo {
 
 		List<EntVersionReporte> reportes = servicioVersion.buscaReportesVersion(jobDespliegueVersion.getVersion());
 		ResponseBuilder response;
-		try (ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), reportes.stream().map(EntVersionReporte::getReporte).collect(Collectors.toList()))){
+		ServicioGeneracionZipFileFromUrls servicio =  new ServicioGeneracionZipFileFromUrls(jobDespliegueVersion.getVersion().getNumero(), reportes.stream().map(EntVersionReporte::getReporte).collect(Collectors.toList()));
 			File fileSQL = servicio.generar();
 			response = Response.ok((Object) fileSQL);
 			response.header("Content-Disposition",	"attachment; filename=\"reporte.zip\"");
 
-		}
+
 		return response.build();
 	}
 

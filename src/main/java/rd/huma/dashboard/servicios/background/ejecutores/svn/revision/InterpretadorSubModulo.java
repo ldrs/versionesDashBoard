@@ -9,10 +9,12 @@ import rd.huma.dashboard.model.transaccional.EntAplicacionConfiguracionSubModulo
 import rd.huma.dashboard.model.transaccional.EntAplicacionModulo;
 import rd.huma.dashboard.model.transaccional.EntAplicacionSubModulo;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoCambioFuente;
+import rd.huma.dashboard.servicios.transaccional.ServicioBranch;
 
 public class InterpretadorSubModulo {
 
 	private List<EntAplicacionConfiguracionSubModulo> subModulosConfiguracion;
+	private ServicioBranch servicioBranch;
 
 	public InterpretadorSubModulo(List<EntAplicacionConfiguracionSubModulo> subModulosConfiguracion) {
 		this.subModulosConfiguracion = subModulosConfiguracion;
@@ -36,19 +38,30 @@ public class InterpretadorSubModulo {
 		EntAplicacionSubModulo padre = null;
 		List<EntAplicacionSubModulo> retorno = new ArrayList<>();
 		for(int idx=0;idx<=indexUltimoSubModulo;idx++){
-			EntAplicacionSubModulo subModulo = getSubModulo(modulo, paths[idx]);
-			subModulo.setSubModuloPadre(padre);
+			EntAplicacionSubModulo subModulo = getSubModulo(modulo,padre, paths[idx]);
 			padre = subModulo;
 			retorno.add(subModulo);
 		}
 		return Optional.of(new LineaInterpretadaSubModulo(retorno, String.join("", Arrays.copyOfRange(paths, indexUltimoSubModulo+1, paths.length)), padre));
 	}
 
-	private EntAplicacionSubModulo getSubModulo(EntAplicacionModulo modulo, String nombre){
+	private EntAplicacionSubModulo getSubModulo(EntAplicacionModulo modulo, EntAplicacionSubModulo padre, String nombre){
+
+		 Optional<EntAplicacionSubModulo> posibleResultado = servicioBranch.getSubModulos(modulo, padre,nombre).stream().findFirst();
+		 if (posibleResultado.isPresent()){
+			 return posibleResultado.get();
+		 }
+
 		 EntAplicacionSubModulo submodulo = new EntAplicacionSubModulo();
 		 submodulo.setNombre(nombre);
 		 submodulo.setModulo(modulo);
-		 return submodulo;
+		 submodulo.setSubModuloPadre(padre);
+
+		 return servicioBranch.grabar(submodulo);
+	}
+
+	public void setServicioBranch(ServicioBranch servicioBranch) {
+		this.servicioBranch = servicioBranch;
 	}
 
 }
@@ -76,5 +89,4 @@ class LineaInterpretadaSubModulo{
 	public List<EntAplicacionSubModulo> getSubModulos() {
 		return subModulos;
 	}
-
 }

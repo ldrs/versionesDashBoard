@@ -21,7 +21,7 @@ import java.util.zip.ZipOutputStream;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
-public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
+public class ServicioGeneracionZipFileFromUrls {
 
 	private static final Logger LOGGER = Logger.getLogger(ServicioGeneracionZipFileFromUrls.class.getName());
 
@@ -127,14 +127,6 @@ public class ServicioGeneracionZipFileFromUrls implements AutoCloseable {
 		if (handlerFalloUrl!=null){
 			handlerFalloUrl.accept(url);
 		}
-	}
-
-	@Override
-	public void close() {
-//		for (File archivo : carpetaTemporal.toFile().listFiles()){
-//			archivo.delete();
-//		}
-//		carpetaTemporal.toFile().delete();
 	}
 
 }

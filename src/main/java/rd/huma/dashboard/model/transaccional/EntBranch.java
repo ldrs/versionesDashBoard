@@ -1,5 +1,6 @@
 package rd.huma.dashboard.model.transaccional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,8 +12,8 @@ import javax.persistence.Table;
 @Table(name="Branch")
 @NamedQueries({
 	@NamedQuery(name="busca.branch",query="select E from EntBranch E where E.branch = :branch"),
-	@NamedQuery(name="buscaOrigenNull.branch",query="select E from EntBranch E where origen is null"),
-	@NamedQuery(name="buscaBranchesSinMerge.branch",query="select E from EntBranch E where merge=false")
+	@NamedQuery(name="buscaOrigenNull.branch",query="select E from EntBranch E where E.origen is null"),
+	@NamedQuery(name="buscaBranchesSinMerge.branch",query="select E from EntBranch E where E.merge=false")
 })
 public class EntBranch extends AEntModelo {
 
@@ -25,7 +26,7 @@ public class EntBranch extends AEntModelo {
 	@JoinColumn
 	private EntAplicacion aplicacion;
 
-
+	@Column(unique = true)
 	private String branch;
 
 	private String origen;

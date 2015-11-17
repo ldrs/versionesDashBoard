@@ -40,6 +40,7 @@ public enum ETipoCambioTabla {
 			return null;
 		}
 
+		@Override
 		public String regex(){
 			return "(?s).*\\bINSERT INTO \\b.*";
 		}
@@ -87,7 +88,7 @@ public enum ETipoCambioTabla {
 
 		}
 
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bCREATE TABLE \\b.*";
 		}
@@ -103,7 +104,7 @@ public enum ETipoCambioTabla {
 
 			return new ObjectoCambio(this,cambio.getView().getName(), Collections.emptyList());
 		}
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bCREATE VIEW \\b.*";
 		}
@@ -119,7 +120,7 @@ public enum ETipoCambioTabla {
 
 			return new ObjectoCambio(this,cambio.getView().getName(), Collections.emptyList());
 		}
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bCREATE OR REPLACE VIEW S \\b.*";
 		}
@@ -153,7 +154,7 @@ public enum ETipoCambioTabla {
 			return new ObjectoCambio(this,alter.getTable().getName(),  Arrays.asList(alter.getColumnName()));
 		}
 
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bALTER TABLE\b.*\bADD \\b.*";
 		}
@@ -185,7 +186,7 @@ public enum ETipoCambioTabla {
 			return new ObjectoCambio(this,alter.getTable().getName(), Arrays.asList(alter.getColumnName()));
 		}
 
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bALTER TABLE\b.*\bDROP COLUMN\\b.*";
 		}
@@ -208,7 +209,7 @@ public enum ETipoCambioTabla {
 
 			return new ObjectoCambio(this,alter.getTable().getName(), Arrays.asList(alter.getColumnName()));
 		}
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bALTER TABLE\b.*\bRENAME COLUMN\\b.*";
 		}
@@ -231,7 +232,7 @@ public enum ETipoCambioTabla {
 			query = UtilString.subStringDespues(query, "ALTER TABLE ");
 			return new ObjectoCambio(this, query.substring(0, query.indexOf(' ')).trim(), alter.getColumnsNames());
 		}
-
+		@Override
 		public String regex(){
 			return "(?s).*\\bALTER TABLE\\b.*\\bADD CONSTRAINT\\b.*";
 		}

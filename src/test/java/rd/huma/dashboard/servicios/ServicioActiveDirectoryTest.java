@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
@@ -7,7 +8,7 @@ import rd.huma.dashboard.servicios.integracion.activedirectory.ServicioActiveDir
 
 public class ServicioActiveDirectoryTest {
 
-	@Test
+	@Test @Ignore
 	public void probar(){
 		ServicioActiveDirectory bla = new ServicioActiveDirectory(new EntConfiguracionGeneral(), "pedro.gonzalez", "01234567");
 		if (bla.isValido()){

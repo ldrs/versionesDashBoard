@@ -8,24 +8,28 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 
 public class BuscadorJiraEnComentario {
 
-	private static final String NUMERICO = "[0-9]+"; 
-	
+	private static final String NUMERICO = "[0-9]+";
+
 	private String comentario;
 	private String llaveJira;
-	
+	private boolean agregaKey;
+
 	private BuscadorJiraEnComentario(String comentario, String llaveJira) {
 		this.comentario = comentario;
 		this.llaveJira = llaveJira+"-";
 	}
 
-
-
 	public List<EntJira> encuentraJira(){
+		return encuentraJira(comentario);
+	}
+
+
+	public List<EntJira> encuentraJira(String comentario){
 		if (comentario==null || comentario.isEmpty()){
 			return Collections.emptyList();
 		}
 		List<EntJira> lst = new ArrayList<>();
-		int indice; 
+		int indice;
 
 		String restanteComentario = comentario;
 		while ( (indice=restanteComentario.indexOf(llaveJira))!=-1 ){
@@ -39,20 +43,27 @@ public class BuscadorJiraEnComentario {
 				}else{
 					if (posicionNumero!=-1){
 						EntJira jira = new EntJira();
-						jira.setNumero(restanteComentario.substring(posicionNumero, c));
+						String numero = restanteComentario.substring(posicionNumero, c);
+						jira.setNumero(agregaKey? llaveJira+numero : numero );
 						lst.add(jira);
 						break;
 					}
 				}
 			}
 		}
-		
+
 		return lst;
-	} 
-	
-	
+	}
+
+
 	public static BuscadorJiraEnComentario of(String comentario, String llaveJira){
 		return new BuscadorJiraEnComentario(comentario, llaveJira);
 	}
-	
+
+	public static BuscadorJiraEnComentario of(String llaveJira){
+		BuscadorJiraEnComentario tmp = new BuscadorJiraEnComentario(null, llaveJira);
+		tmp.agregaKey = true;
+		return tmp;
+	}
+
 }

@@ -49,7 +49,7 @@ public class UtilString {
 		if (buscar == null){
 			return false;
 		}
-		return valor.contains(valor);
+		return valor.contains(buscar);
 	}
 
 	public static boolean noContiene(String valor, String buscar){
@@ -60,5 +60,28 @@ public class UtilString {
 			return false;
 		}
 		return !valor.contains(buscar);
+	}
+
+	public static boolean sonIguales(String valor, String valor2){
+		if (valor2 == valor){
+			return true;
+		}
+		if (valor == null && valor2!=null){
+			return false;
+		}
+		return valor.equals(valor2);
+	}
+
+	public static boolean sonDiferentes(String valor, String valor2){
+		if (valor2 != valor){
+			return true;
+		}
+		if (valor == null && valor2!=null){
+			return true;
+		}
+		if (valor == null && valor2==null){
+			return false;
+		}
+		return !valor.equals(valor2);
 	}
 }

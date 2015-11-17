@@ -1,7 +1,5 @@
 package rd.huma.dashboard.servicios.integracion.svn.util;
 
-import org.junit.Test;
-
 import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
 import rd.huma.dashboard.servicios.integracion.svn.SimulaServicioSVN;
 

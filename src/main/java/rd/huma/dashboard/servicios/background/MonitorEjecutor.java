@@ -17,6 +17,7 @@ import rd.huma.dashboard.servicios.background.ejecutores.nexus.EjecutorBorrarVer
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaMergeBranches;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaOrigenNull;
+import rd.huma.dashboard.servicios.background.ejecutores.svn.revision.EjecutorSVNRevisiones;
 import rd.huma.dashboard.servicios.background.ejecutores.sysaid.EjecutorSysAidBuscaActualizacion;
 
 @ApplicationScoped
@@ -37,10 +38,13 @@ public class MonitorEjecutor {
 
 		scheduler.scheduleAtFixedRate(new EjecutorMonitoreoJobEstadoPendiente(), 1, 5, TimeUnit.MINUTES);
 
-		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaMergeBranches(), 1, 5, TimeUnit.MINUTES);
-		scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaOrigenNull(), 1, 5, TimeUnit.MINUTES);
+		//scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaMergeBranches(), 1, 5, TimeUnit.MINUTES);
+		//scheduler.scheduleAtFixedRate(new EjecutorSVNBuscaOrigenNull(), 1, 5, TimeUnit.MINUTES);
 
 		scheduler.scheduleAtFixedRate(new EjecutorSysAidBuscaActualizacion(), 1, 10, TimeUnit.MINUTES);
+
+		scheduler.scheduleAtFixedRate(new EjecutorSVNRevisiones(), 1, 800, TimeUnit.MINUTES);
+
 	}
 
 	@PreDestroy

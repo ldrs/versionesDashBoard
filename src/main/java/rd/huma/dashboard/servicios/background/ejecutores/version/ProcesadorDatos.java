@@ -37,7 +37,7 @@ class ProcesadorDatos {
 		procesadorTickets.getJiras().forEach(j->  jiraGrabados.add(procesarJira(j.getNumero(), j.getEstado())));
 		jiraGrabados.forEach(this::grabarVersionJira);
 		Set<String> duenos = procesadorTickets.getDuenos();
-		duenos.remove(version.getAutor());
+		duenos.remove(version.getAutor().getUsuarioSvn());
 		duenos.stream().forEach(d ->  servicioVersion.crearVersionParticipante(d, version) );
 		procesadorTickets.getTicketSysAid().stream().forEach(t -> manejaTicketsSysAid(t.getNumero()));
 

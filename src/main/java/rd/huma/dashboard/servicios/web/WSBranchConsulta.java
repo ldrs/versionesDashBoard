@@ -33,13 +33,11 @@ import rd.huma.dashboard.util.UtilString;
 @Path("branchConsulta")
 public class WSBranchConsulta {
 
-	//private static Logger LOGGER = Logger.getLogger("NODOS");
+	@Inject @Servicio
+	private  ServicioVersion servicioVersion;
 
-	@Inject
-	private @Servicio ServicioVersion servicioVersion;
-
-	@Inject
-	private @Servicio ServicioBranch servicioBranch;
+	@Inject @Servicio
+	private  ServicioBranch servicioBranch;
 
 	@GET
 	@Path("consulta/{branch}")
@@ -221,7 +219,6 @@ public class WSBranchConsulta {
 class Nodo implements Comparable<Nodo>{
 	private String nombre;
 	private long revision;
-	private EntBranch branch;
 	private Set<Nodo> hijos = new TreeSet<>();
 	private SortedSet<EntBranch> destinos = WSBranchConsulta.nuevaRama();
 	private SortedSet<EntBranch> origenes  = WSBranchConsulta.nuevaRama();
@@ -247,10 +244,6 @@ class Nodo implements Comparable<Nodo>{
 	@Override
 	public int compareTo(Nodo o) {
 		return Long.compare(revision, o.revision);
-	}
-
-	public EntBranch getBranch() {
-		return branch;
 	}
 
 	public SortedSet<EntBranch> getOrigenes() {

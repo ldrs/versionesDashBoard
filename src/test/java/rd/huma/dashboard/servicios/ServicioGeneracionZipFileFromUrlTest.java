@@ -15,11 +15,11 @@ public class ServicioGeneracionZipFileFromUrlTest {
 	public void probar(){
 		List<String> listas = Arrays.asList(new String[]{"http://172.16.7.35:9880/svn/sigef/trunk/scripts/gastos/SA9799-SGf2357-Gasto-ReporteDinamicoImputacionDelGasto.sql"});
 
-		 try (ServicioGeneracionZipFileFromUrls s = new ServicioGeneracionZipFileFromUrls("reporte",listas)){
-			  File file = s.generar();
-			 if (file.exists()){
-				 System.out.println("funciona + " +file.getPath());
-			 }
-		 };
+		 ServicioGeneracionZipFileFromUrls s = new ServicioGeneracionZipFileFromUrls("reporte",listas);
+		 File file = s.generar();
+		 if (file.exists()){
+			 System.out.println("funciona + " +file.getPath());
+		 }
+
 	}
 }

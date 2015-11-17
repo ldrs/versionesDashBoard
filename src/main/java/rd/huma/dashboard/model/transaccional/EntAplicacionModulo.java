@@ -3,10 +3,15 @@ package rd.huma.dashboard.model.transaccional;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="APLICACION_MODULO")
+@NamedQueries({
+	@NamedQuery(name="buscar.modulo",query="SELECT E FROM EntAplicacionModulo E where E.aplicacion = :app and E.nombre = :nombre")
+})
 public class EntAplicacionModulo extends AEntModelo {
 
 	/**
