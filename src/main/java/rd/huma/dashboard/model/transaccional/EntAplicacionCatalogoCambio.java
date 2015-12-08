@@ -33,6 +33,8 @@ public class EntAplicacionCatalogoCambio extends AEntModelo{
 
 	private boolean otro;
 
+	private String nombre;
+
 	public EntAplicacion getAplicacion() {
 		return aplicacion;
 	}
@@ -63,6 +65,14 @@ public class EntAplicacionCatalogoCambio extends AEntModelo{
 
 	public void setAgrupador(boolean agrupador) {
 		this.agrupador = agrupador;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

@@ -25,7 +25,10 @@ var dibujaReporte = function(url,contenedor,titulo,subtitulo){
 	            }
 	        },
 
-	        series: datosReporte.series
+	        series: datosReporte.series,
+	          credits: {
+		      enabled: false
+  			}
 	    });
 	});
 }

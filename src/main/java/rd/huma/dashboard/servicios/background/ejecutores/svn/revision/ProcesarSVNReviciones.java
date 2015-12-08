@@ -172,6 +172,9 @@ public class ProcesarSVNReviciones {
 	private void parseoLinea(String linea,EntBranchRevision eRevision,BranchUltimaRevision branch, Map<String, EntBranchRevisionCambio> cambios){
 		String[] partesLineas = linea.split(" ");
 		String lineaCambio = partesLineas[1];
+		if (lineaCambio.isEmpty()){
+			return;
+		}
 
 		String branchInterpetado = interpretaBranch(lineaCambio.substring(1));
 		if (branchInterpetado!=null && !branch.getBranch().equals(branchInterpetado)){
@@ -237,6 +240,7 @@ public class ProcesarSVNReviciones {
 	}
 
 	private void guardarCambios(ETipoCambioFuente cambioFuente, LineaInterpretadaSubModulo intepretacion, EntAplicacionCatalogoCambio catalogo, Map<String, EntBranchRevisionCambio> cambios){
+
 		String llave = catalogo.getId()+intepretacion.getSubModuloActual().getId();
 		EntBranchRevisionCambio cambio = cambios.get(llave);
 		if (cambio == null){

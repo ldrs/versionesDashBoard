@@ -23,11 +23,12 @@ public class InterpretadorSubModulo {
 	public Optional<LineaInterpretadaSubModulo> interperta(EntAplicacionModulo modulo, ETipoCambioFuente cambioFuente, String cambio){
 
 		String[] paths = cambio.split("/");
+
 		if (!paths[paths.length-1].contains(".")){
 			return Optional.empty();
 		}
 		int indexUltimoSubModulo = paths.length-2;
-		for (int idx = paths.length-2;idx>=0;idx--){
+		for (int idx = paths.length-2;idx>0;idx--){
 			String pathActual = paths[idx];
 			for (EntAplicacionConfiguracionSubModulo configuracionSubModulo : subModulosConfiguracion) {
 				if (pathActual.startsWith(configuracionSubModulo.getAntes())){
@@ -37,16 +38,24 @@ public class InterpretadorSubModulo {
 		}
 		EntAplicacionSubModulo padre = null;
 		List<EntAplicacionSubModulo> retorno = new ArrayList<>();
-		for(int idx=0;idx<=indexUltimoSubModulo;idx++){
+		for(int idx=1;idx<=indexUltimoSubModulo;idx++){
 			EntAplicacionSubModulo subModulo = getSubModulo(modulo,padre, paths[idx]);
+			if (subModulo == null){
+				break;
+			}
 			padre = subModulo;
 			retorno.add(subModulo);
+		}
+		if (padre == null){
+			return Optional.empty();
 		}
 		return Optional.of(new LineaInterpretadaSubModulo(retorno, String.join("", Arrays.copyOfRange(paths, indexUltimoSubModulo+1, paths.length)), padre));
 	}
 
 	private EntAplicacionSubModulo getSubModulo(EntAplicacionModulo modulo, EntAplicacionSubModulo padre, String nombre){
-
+		if (nombre.isEmpty()){
+			return null;
+		}
 		 Optional<EntAplicacionSubModulo> posibleResultado = servicioBranch.getSubModulos(modulo, padre,nombre).stream().findFirst();
 		 if (posibleResultado.isPresent()){
 			 return posibleResultado.get();

@@ -15,8 +15,6 @@ import rd.huma.dashboard.servicios.background.ejecutores.fila.eliminacion.Ejecut
 import rd.huma.dashboard.servicios.background.ejecutores.jenkins.monitoreo.EjecutorMonitoreoJobEstadoPendiente;
 import rd.huma.dashboard.servicios.background.ejecutores.nexus.EjecutorBorrarVersionesNexus;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.ambiente.EjecutorModulosAmbienteSVN;
-import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaMergeBranches;
-import rd.huma.dashboard.servicios.background.ejecutores.svn.branch.EjecutorSVNBuscaOrigenNull;
 import rd.huma.dashboard.servicios.background.ejecutores.svn.revision.EjecutorSVNRevisiones;
 import rd.huma.dashboard.servicios.background.ejecutores.sysaid.EjecutorSysAidBuscaActualizacion;
 

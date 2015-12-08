@@ -3,16 +3,13 @@ package rd.huma.dashboard.servicios.integracion.sysaid;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
-
-import rd.huma.dashboard.model.sysaid.Ticket;
-import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
-
 import com.ilient.api.ApiServiceRequest;
-import com.ilient.api.ApiServiceRequest.CustomFields.Entry;
 import com.ilient.api.ApiServiceRequestActivity;
 import com.ilient.api.SysaidApiService;
 import com.ilient.api.SysaidApiServiceService;
+
+import rd.huma.dashboard.model.sysaid.Ticket;
+import rd.huma.dashboard.model.transaccional.EntConfiguracionGeneral;
 
 public class ServicioIntegracionTest {
 
