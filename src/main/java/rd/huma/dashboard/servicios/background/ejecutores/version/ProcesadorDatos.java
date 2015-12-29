@@ -8,6 +8,7 @@ import java.util.Set;
 
 import rd.huma.dashboard.model.transaccional.EntBranch;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntJiraEstado;
 import rd.huma.dashboard.model.transaccional.EntVersion;
 import rd.huma.dashboard.model.transaccional.EntVersionJira;
 import rd.huma.dashboard.model.transaccional.EntVersionScript;
@@ -34,7 +35,7 @@ class ProcesadorDatos {
 
 	public void grabarDatos(){
 		List<EntJira> jiraGrabados = new ArrayList<>();
-		procesadorTickets.getJiras().forEach(j->  jiraGrabados.add(procesarJira(j.getNumero(), j.getEstado())));
+		procesadorTickets.getJiras().forEach(j->  jiraGrabados.add(procesarJira(j.getNumero(),j.getJiraEstado())));
 		jiraGrabados.forEach(this::grabarVersionJira);
 		Set<String> duenos = procesadorTickets.getDuenos();
 		duenos.remove(version.getAutor().getUsuarioSvn());
@@ -67,8 +68,8 @@ class ProcesadorDatos {
 		}
 	}
 
-	private EntJira procesarJira(String numeroJira, String estado){
-		return servicioJira.encuentraOSalva(numeroJira, estado);
+	private EntJira procesarJira(String numeroJira, EntJiraEstado entJiraEstado){
+		return servicioJira.encuentraOSalva(numeroJira, entJiraEstado);
 	}
 
 	private void manejaTicketsSysAid(long numero){

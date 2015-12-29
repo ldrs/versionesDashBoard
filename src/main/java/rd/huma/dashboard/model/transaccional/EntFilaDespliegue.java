@@ -27,8 +27,6 @@ public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaD
 
 	private boolean pideAutorizacion;
 
-	private String estadosJiras;
-
 	private boolean permiteSinTicketSysAid;
 
 	public EntAmbienteAplicacion getAmbiente() {
@@ -43,13 +41,6 @@ public class EntFilaDespliegue extends AEntModelo implements Comparable<EntFilaD
 	}
 	public void setPideAutorizacion(boolean pideAutorizacion) {
 		this.pideAutorizacion = pideAutorizacion;
-	}
-
-	public String getEstadosJiras() {
-		return estadosJiras;
-	}
-	public void setEstadosJiras(String estadosJiras) {
-		this.estadosJiras = estadosJiras;
 	}
 
 	public boolean isPermiteSinTicketSysAid() {

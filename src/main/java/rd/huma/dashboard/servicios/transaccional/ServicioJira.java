@@ -1,5 +1,6 @@
 package rd.huma.dashboard.servicios.transaccional;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
@@ -7,8 +8,11 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import rd.huma.dashboard.model.transaccional.EntAmbiente;
 import rd.huma.dashboard.model.transaccional.EntJira;
+import rd.huma.dashboard.model.transaccional.EntJiraEstado;
 import rd.huma.dashboard.model.transaccional.EntJiraParticipante;
+import rd.huma.dashboard.servicios.integracion.jira.CacheJiraEstado;
 
 @Stateless
 @Servicio
@@ -37,7 +41,8 @@ public class ServicioJira {
 		return entityManager.merge(jira);
 	}
 
-	public EntJira encuentraOSalva(String numero, String estado) {
+
+	public EntJira encuentraOSalva(String numero, EntJiraEstado entJiraEstado) {
 		Optional<EntJira> posible =  encuentra(numero);
 		if (posible.isPresent()){
 			return posible.get();
@@ -51,7 +56,10 @@ public class ServicioJira {
 
 			EntJira jira = new EntJira();
 			jira.setNumero(numero);
-			jira.setEstado(estado);
+			if (entJiraEstado != null){
+				jira.setJiraEstado(encuentraOSalvaJiraEstado(entJiraEstado.getCodigo(),entJiraEstado.getDescripcion()));
+			}
+
 			entityManager.persist(jira);
 			return jira;
 		}
@@ -73,4 +81,35 @@ public class ServicioJira {
 		entityManager.persist(participanteFull);
 	}
 
+	public List<EntJiraEstado> buscaEstado(String codigo){
+		return entityManager.createNamedQuery("buscar.jiraEstado",EntJiraEstado.class).setParameter("cod", codigo).getResultList();
+	}
+
+
+	public EntJiraEstado encuentraOSalvaJiraEstado(String codigo, String descripcion){
+		List<EntJiraEstado> resultado = buscaEstado(codigo);
+		if (resultado.isEmpty()){
+
+			synchronized(codigo){
+				resultado = buscaEstado(codigo);
+				if (resultado.isEmpty()){
+					EntJiraEstado jiraEstado = new EntJiraEstado();
+					jiraEstado.setCodigo(codigo);
+					jiraEstado.setDescripcion(descripcion);
+					entityManager.persist(jiraEstado);
+					CacheJiraEstado.asignarJiraEstado(jiraEstado);
+					return jiraEstado;
+				}
+			}
+		}
+		return resultado.stream().findFirst().get();
+	}
+
+	public List<EntJira> buscarTodos() {
+		return entityManager.createNamedQuery("todos.jira",EntJira.class).getResultList();
+	}
+
+	public Optional<EntAmbiente> getAmbientePorEstado(EntJiraEstado estadoJiraServidor) {
+		return entityManager.createNamedQuery("ambientePorEstado.ambienteJiraEstado",EntAmbiente.class).setParameter("est", estadoJiraServidor).getResultList().stream().findFirst();
+	}
 }

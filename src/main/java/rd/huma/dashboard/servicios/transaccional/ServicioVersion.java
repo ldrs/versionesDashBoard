@@ -470,4 +470,11 @@ public class ServicioVersion {
 	public <T extends AEntModelo> void crear(T entidad) {
 		entityManager.persist(entidad);
 	}
+
+	public List<EntVersion> buscarVersionActivasAntesDeLaFecha(Set<EEstadoVersion> estados, Instant fecha) {
+		return entityManager.createNamedQuery("buscarPorEstadoAntesFecha.version",EntVersion.class)
+									.setParameter("est", estados)
+									.setParameter("fecha", Timestamp.from(fecha))
+									.getResultList();
+	}
 }

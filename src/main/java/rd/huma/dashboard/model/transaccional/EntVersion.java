@@ -29,7 +29,8 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 				  @NamedQuery(name ="metricaAgrupadaYear.version",query="SELECT count(E),E.svnOrigen, FUNCTION('MONTH',e.fechaRegistro) from EntVersion E group by E.svnOrigen, FUNCTION('MONTH',e.fechaRegistro)"),
 				  @NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E order by E.fechaRegistro desc"),
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
-				  @NamedQuery(name="buscarPorEstadoReciente.version",query="SELECT E from EntVersion E where E.estado in :est and E.fechaRegistro>= :fecha"),
+				  @NamedQuery(name="buscarPorEstadoReciente.version",query="SELECT E from EntVersion E where E.estado in :est and E.fechaRegistro>= :fecha order by E.fechaRegistro desc"),
+				  @NamedQuery(name="buscarPorEstadoAntesFecha.version",query="SELECT E from EntVersion E where E.estado in :est and E.fechaRegistro< :fecha order by E.fechaRegistro"),
 
 				  @NamedQuery(name="buscarPorNumero.version",query="SELECT E from EntVersion E where E.numero in :num"),
 				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri"),
@@ -51,6 +52,7 @@ public class EntVersion extends AEntModelo implements Serializable{
 	@JoinColumn
 	@ManyToOne
 	private EntPersona autor;
+
 	private String branchOrigen;
 	private String revisionSVN;
 

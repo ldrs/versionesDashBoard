@@ -1,5 +1,7 @@
 package rd.huma.dashboard.servicios.background.ejecutores.nexus;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 	public void ejecutar() {
 		 this.servicioVersion = ServicioVersion.getInstanciaTransaccional();
 		 servicioNexus = ServicioNexus.nuevo();
+		 borrarVersionesNexusLuego2Meses();
 		 eliminaDuplicaciones();
 		 borrarVersionesNoExistenTag();
 		 borrarVersionesExpiraronProduccion();
@@ -75,14 +78,20 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 		}
 	}
 
+	private void borrarVersionesNexusLuego2Meses(){
+		servicioVersion.buscarVersionActivasAntesDeLaFecha(getEstadosActivos(), Instant.now().minus(70, ChronoUnit.DAYS)).forEach(this::eliminaModulos);
+	}
+
 	private void eliminaDuplicaciones(){
-		  servicioVersion.buscaBranchVersionesDuplicadas(getEstadosActivos()).forEach(this::eliminaVersionesViejasDuplicadaBranch);
+		servicioVersion.buscaBranchVersionesDuplicadas(getEstadosActivos()).forEach(this::eliminaVersionesViejasDuplicadaBranch);
 	}
 
 	private void eliminaVersionesViejasDuplicadaBranch(String branch){
-		List<EntVersion> versiones = servicioVersion.buscaPorBranch(branch);
+		List<EntVersion> versiones = servicioVersion.buscaPorBranch(branch).stream().filter(b -> b.getFechaRegistro().isAfter(Instant.now().minus(3, ChronoUnit.DAYS))).collect(Collectors.toList());
 		versiones.sort( (c1, c2) -> c1.getFechaRegistro().compareTo(c2.getFechaRegistro()));
-		versiones.subList(0, versiones.size()-2).forEach(this::eliminaModulos);
+		if (versiones.size()>2){
+			versiones.subList(0, versiones.size()-2).forEach(this::eliminaModulos);
+		}
 	}
 
 	private void eliminaModulos(EntVersion version){

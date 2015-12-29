@@ -17,6 +17,7 @@ import rd.huma.dashboard.model.transaccional.EntVersionScript;
 import rd.huma.dashboard.model.transaccional.EntVersionScriptJira;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoParticipante;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoScript;
+import rd.huma.dashboard.servicios.integracion.jira.CacheJiraEstado;
 import rd.huma.dashboard.servicios.integracion.svn.util.ServicioUltimaRevisionSVN;
 import rd.huma.dashboard.servicios.integracion.svn.util.UltimaRevision;
 
@@ -62,7 +63,7 @@ public class ColectorInformacionFieldsJira {
 		adicionarScript(fields.getScriptDespuesSubida(), ETipoScript.DESPUES_SUBIDA);
 		adicionarReportes(fields.getReportes());
 
-		jira.setEstado(fields.getStatus().getStatusCategory().getName());
+		jira.setJiraEstado(CacheJiraEstado.at(fields));
 	}
 
 	private void adicionarReportes(String grupoReportes) {
@@ -86,10 +87,7 @@ public class ColectorInformacionFieldsJira {
 
 	private boolean existeReporte(String url){
 		UltimaRevision ultimaRevision = new ServicioUltimaRevisionSVN(url).revision();
-		if (ultimaRevision == null){
-			return false;
-		}
-		return true;
+		return ultimaRevision != null;
 	}
 
 	private void adicionarScript(String datoScript, ETipoScript tipoScript){

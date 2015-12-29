@@ -40,11 +40,11 @@ class InicializacionAmbienteAplicacion {
 			EntAmbienteAplicacion ambienteAplicacion = servicioAmbiente.nuevoAmbienteAplicacion(ambiente, aplicacion);
 			if (ambiente.getOrden()==1 && aplicacion.getOrden()==1){ //Pruebas Desarrollo
 				creaServidoresAplicacionSigefDesarrollo(ambienteAplicacion);
-				EntFilaDespliegue fila = servicioFila.nuevaFila(ambienteAplicacion, "Abierto,Creado,En curso,Nuevo");
+				EntFilaDespliegue fila = servicioFila.nuevaFila(ambienteAplicacion);
 				fila.setPermiteSinTicketSysAid(true);
 				servicioFila.actualizarEntidad(fila);
 			}else{
-				servicioFila.nuevaFila(ambienteAplicacion, "Verificado");
+				servicioFila.nuevaFila(ambienteAplicacion);
 			}
 		}
 	}

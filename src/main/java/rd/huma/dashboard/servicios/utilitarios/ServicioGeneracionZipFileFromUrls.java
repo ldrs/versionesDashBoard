@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -110,8 +111,13 @@ public class ServicioGeneracionZipFileFromUrls {
 				Path archivoCrear = Paths.get(carpetaTemporal.toString(), nombreScript);
 				Files.deleteIfExists(archivoCrear);
 				Path path = Files.createFile(archivoCrear);
+
 				try (OutputStream out = Files.newOutputStream(path)){
-					out.write(resultado.readEntity(String.class).getBytes()) ;
+					if (query){
+						out.write(resultado.readEntity(String.class).getBytes()) ;
+					}else{
+						UtilIO.copiar(resultado.readEntity(InputStream.class), out);
+					}
 					out.flush();
 				}
 				files.add(path);
@@ -128,5 +134,7 @@ public class ServicioGeneracionZipFileFromUrls {
 			handlerFalloUrl.accept(url);
 		}
 	}
+
+
 
 }

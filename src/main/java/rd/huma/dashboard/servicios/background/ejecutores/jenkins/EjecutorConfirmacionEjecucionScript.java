@@ -34,13 +34,6 @@ public class EjecutorConfirmacionEjecucionScript extends AEjecutor {
 	public void ejecutarDespuesScript(){
 
 		if (job.getTipoScript() == ETipoScript.ANTES_SUBIDA){
-			ServicioJobDespliegueVersion servicioJob = ServicioJobDespliegueVersion.getInstanciaTransaccional();
-			EntJobDespliegueVersion jobVersion = servicioJob.buscarPorJobRelacionado(job);
-			if (jobVersion!=null){
-				new DeployVersion(jobVersion).ejecutar();
-			}
-
-
 		}else if (job.getTipoScript() == ETipoScript.ANTES_SUBIDA_REINTENTO){
 			List<EntVersionScript> scriptsDespues = ServicioVersion.getInstanciaTransaccional().getScriptDespuesEjecucion(job.getVersion());
 			if (!scriptsDespues.isEmpty()){

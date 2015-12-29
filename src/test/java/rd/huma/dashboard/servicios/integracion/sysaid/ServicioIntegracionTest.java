@@ -3,8 +3,12 @@ package rd.huma.dashboard.servicios.integracion.sysaid;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Test;
+
 import com.ilient.api.ApiServiceRequest;
+import com.ilient.api.ApiServiceRequest.CustomFields.Entry;
 import com.ilient.api.ApiServiceRequestActivity;
+import com.ilient.api.ApiTask;
 import com.ilient.api.SysaidApiService;
 import com.ilient.api.SysaidApiServiceService;
 
@@ -17,24 +21,25 @@ public class ServicioIntegracionTest {
 	private static final String USER_ID = "integrador";
 	private static final String PASS_ID = "integrador";
 
-	//@Test
+	@Test
 	public void probar(){
 		SysaidApiService service = new SysaidApiServiceService().getSysaidApiServicePort();
 		long sessionId = service.login(ACCONT_ID,USER_ID,PASS_ID);
 
 
-		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10221);
+		ApiServiceRequest sr = (ApiServiceRequest)service. loadById(sessionId,new ApiServiceRequest(),10051);
 		ApiServiceRequestActivity at = new ApiServiceRequestActivity();
-		at.setSrID(10221);
-		List<String> datos = service.executeSelectQuery(sessionId, at, null);
+		List<String> datos = service.executeSelectQuery(sessionId, new ApiServiceRequest(), "status=18");
+
 		for (String dato : datos) {
 			System.out.println("Dato ->"+dato);
-			ApiServiceRequestActivity moreData = (ApiServiceRequestActivity)service. loadById(sessionId,new ApiServiceRequestActivity(),dato);
-
-			System.out.println("MoreData-> " +moreData.getDescription());
-			System.out.println("MoreData-> " +moreData.getCustNotes());
-			System.out.println("MoreData ->"+ moreData.getId());
 		}
+//			ApiServiceRequestActivity moreData = (ApiServiceRequestActivity)service. loadById(sessionId,new ApiServiceRequestActivity(),dato);
+//
+//			System.out.println("MoreData-> " +moreData.getDescription());
+//			System.out.println("MoreData-> " +moreData.getCustNotes());
+//			System.out.println("MoreData ->"+ moreData.getId());
+//		}
 
 
 	//	System.out.println(sr.getDescription());
@@ -44,14 +49,21 @@ public class ServicioIntegracionTest {
 //
 
 
-
-	//	System.out.println(sr.getAssignedTo());
+//
+//		System.out.println(sr.getAssignedTo());
 //		for (Entry  entry : sr.getCustomFields().getEntry()){
 //			System.out.println(entry.getKey() + "-" + entry.getValue());
 //		}
-
-
-
+//		System.out.println(sr.getUserManager());
+//		ApiTask apiTask = new ApiTask();
+//		apiTask.setCiId(10051);
+//
+//		ApiTask actividad = (ApiTask) service.loadById(sessionId, apiTask, apiTask);
+//		//actividad.
+//
+//		if (actividad!=null){
+//			System.out.println("Hello");
+//		}
 		service.logout(sessionId);
 	}
 

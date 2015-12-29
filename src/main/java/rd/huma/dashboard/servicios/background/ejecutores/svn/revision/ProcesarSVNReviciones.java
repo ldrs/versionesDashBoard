@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import rd.huma.dashboard.model.transaccional.EntAplicacion;
@@ -21,8 +22,12 @@ import rd.huma.dashboard.model.transaccional.EntJira;
 import rd.huma.dashboard.model.transaccional.dato.BranchUltimaRevision;
 import rd.huma.dashboard.model.transaccional.dominio.ETipoCambioFuente;
 import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraEnComentario;
+import rd.huma.dashboard.servicios.integracion.jira.BuscadorJiraRestApi;
+import rd.huma.dashboard.servicios.integracion.jira.ETipoQueryJira;
+import rd.huma.dashboard.servicios.integracion.jira.JiraQuery;
 import rd.huma.dashboard.servicios.integracion.svn.ServicioSVN;
 import rd.huma.dashboard.servicios.transaccional.ServicioBranch;
+import rd.huma.dashboard.servicios.transaccional.ServicioConfiguracionGeneral;
 import rd.huma.dashboard.servicios.transaccional.ServicioJira;
 import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
 import rd.huma.dashboard.util.Holder;
@@ -112,7 +117,8 @@ public class ProcesarSVNReviciones {
 	private void guardarJirasEncontrados(EntBranchRevision revision, Set<EntJira> jirasEncontrados) {
 		ServicioJira servicioJira = ServicioJira.getInstanciaTransaccional();
 		for (EntJira entJira : jirasEncontrados) {
-			EntJira jiraReal = servicioJira.encuentraOSalva(entJira.getNumero(),"nose");
+
+			EntJira jiraReal = servicioJira.encuentra(entJira.getNumero()).orElseGet(creaJiraReal(entJira.getNumero()));
 			if (servicioBranch.buscarRevisionJira(revision, jiraReal).isEmpty()){
 				EntBranchRevisionJira revisionJira = new EntBranchRevisionJira();
 				revisionJira.setJira(jiraReal);
@@ -120,6 +126,29 @@ public class ProcesarSVNReviciones {
 				servicioBranch.grabar(revisionJira);
 			}
 		}
+	}
+
+	private Supplier<EntJira> creaJiraReal(String numero){
+		return new Supplier<EntJira>() {
+
+			@Override
+			public EntJira get() {
+				EntJira jiraRetorno = null;
+				try{
+					Optional<EntJira> encontroJira = new BuscadorJiraRestApi(new JiraQuery(ServicioConfiguracionGeneral.getCacheConfiguracionGeneral().get(), ETipoQueryJira.KEY, numero)).encuentra().stream().findFirst();
+					if (encontroJira.isPresent()){
+						return ServicioJira.getInstanciaTransaccional().encuentraOSalva(numero, encontroJira.get().getJiraEstado());
+					}
+
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+				jiraRetorno = new EntJira();
+				jiraRetorno.setNumero(numero);
+				jiraRetorno.setTicketFalso(true);
+				return ServicioJira.getInstanciaTransaccional().salva(jiraRetorno);
+			}
+		};
 	}
 
 	private void intepretacionLinea(int i,String linea, Holder<EntBranchRevision> holder, BranchUltimaRevision branch, Set<EntJira> jirasEncontrados,Set<RevisionMerge> merges, Map<String, EntBranchRevisionCambio> cambios){

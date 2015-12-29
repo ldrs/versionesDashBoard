@@ -1,13 +1,19 @@
 package rd.huma.dashboard.model.transaccional;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_JIRA")
-@NamedQueries({@NamedQuery(name="buscar.jiraNumero",query="SELECT E from EntJira E where e.numero = :numJira")})
+@NamedQueries({
+				@NamedQuery(name="buscar.jiraNumero",query="SELECT E from EntJira E where e.numero = :numJira"),
+				@NamedQuery(name="todos.jira",query="SELECT E from EntJira E where E.ticketFalso = false")
+				}
+		)
 public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	/**
@@ -18,7 +24,11 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 
 	private String numero;
 
-	private String estado;
+	private boolean ticketFalso;
+
+	@JoinColumn
+	@ManyToOne
+	private EntJiraEstado jiraEstado;
 
 	public String getNumero() {
 		return numero;
@@ -28,12 +38,11 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 		this.numero = numero;
 	}
 
-	public String getEstado() {
-		return estado;
+	public void setJiraEstado(EntJiraEstado jiraEstado) {
+		this.jiraEstado = jiraEstado;
 	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public EntJiraEstado getJiraEstado() {
+		return jiraEstado;
 	}
 
 	@Override
@@ -69,5 +78,13 @@ public class EntJira extends AEntModelo implements Comparable<EntJira> {
 	@Override
 	public int compareTo(EntJira o) {
 		return o.numero.compareTo(numero);
+	}
+
+	public boolean isTicketFalso() {
+		return ticketFalso;
+	}
+
+	public void setTicketFalso(boolean ticketFalso) {
+		this.ticketFalso = ticketFalso;
 	}
 }

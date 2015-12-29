@@ -157,10 +157,9 @@ public class ServicioFila {
 		servicioVersion.crearAlerta(versionAlerta);
 	}
 
-	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente, String estadosJiras){
+	public EntFilaDespliegue nuevaFila(EntAmbienteAplicacion ambiente){
 		EntFilaDespliegue fila = new EntFilaDespliegue();
 		fila.setAmbiente(ambiente);
-		fila.setEstadosJiras(estadosJiras);
 		entityManager.persist(fila);
 		return fila;
 	}

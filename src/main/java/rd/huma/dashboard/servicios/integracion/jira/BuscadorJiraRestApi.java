@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
+import rd.huma.dashboard.model.jira.Fields;
 import rd.huma.dashboard.model.jira.Histories;
 import rd.huma.dashboard.model.jira.Issues;
 import rd.huma.dashboard.model.jira.Jiras;
@@ -17,7 +18,7 @@ public class BuscadorJiraRestApi {
 
 	private List<Issues> issues = Collections.emptyList();
 	private JiraQuery jiraQuery;
-	private boolean ejecuto = false;
+	private boolean ejecuto;
 	private Jiras jiras;
 
 	public BuscadorJiraRestApi(	JiraQuery jiraQuery){
@@ -34,16 +35,16 @@ public class BuscadorJiraRestApi {
 						;
 		if (jiras.getIssues()!=null){
 			this.issues = Arrays.asList(jiras.getIssues());
-			issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey(), j.getFields().getStatus().getName())));
+			issues.stream().forEach( j -> jiraRetorno.add(nuevoJira(j.getKey(), j.getFields())));
 		}
 
 		return jiraRetorno;
 	}
 
-	private EntJira nuevoJira(String numero, String estado){
+	private EntJira nuevoJira(String numero, Fields camposJira){
 		EntJira nuevoJira = new EntJira();
 		nuevoJira.setNumero(numero);
-		nuevoJira.setEstado(estado);
+		nuevoJira.setJiraEstado(CacheJiraEstado.at(camposJira));
 		return nuevoJira;
 	}
 

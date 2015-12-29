@@ -27,13 +27,11 @@ public class EjecutorDespliegueVersionJenkins extends AEjecutor {
 		ServicioVersion servicioVersion = ServicioVersion.getInstanciaTransaccional();
 
 		List<EntVersionScript> scriptAntesEjecucion = servicioVersion.getScriptAntesEjecucion(job.getVersion());
-		ADeployVersion deploy;
-		if (scriptAntesEjecucion.isEmpty() && !tieneScriptPorEjecutar(scriptAntesEjecucion) ){
-			deploy = new DeployVersion(job);
-		}else{
-			deploy = new DeployVersionScript(job, true, scriptAntesEjecucion);
+
+		if (!scriptAntesEjecucion.isEmpty() && tieneScriptPorEjecutar(scriptAntesEjecucion) ){
+			new DeployVersionScript(job, true, scriptAntesEjecucion).ejecutar();
 		}
-		deploy.ejecutar();
+		new DeployVersion(job).ejecutar();
 	}
 
 	private boolean tieneScriptPorEjecutar(List<EntVersionScript> scripts){
