@@ -40,7 +40,7 @@ public class ProcesaFilaDeployAutomatico {
 												.filter(filaVersion -> filaVersion.isAutorizadaVersion())
 												.filter(filaVersion -> !fila.isPideAutorizacion() || (fila.isPideAutorizacion() && Instant.now().isAfter(filaVersion.getFechaParaDesplegar()))  )
 												.collect(Collectors.toList());
-		filas.stream().filter(v -> !v.isProcesandoDeploy()).findFirst().ifPresent(this::intentaDeploy);
+		filas.stream().filter(v -> !v.isProcesandoDeploy()).forEach(this::intentaDeploy);
 	}
 
 	public Predicate<EntFilaDespliegueVersion> filtra(){

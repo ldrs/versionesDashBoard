@@ -20,7 +20,7 @@ public class ServicioNexusTest {
 		ServicioNexus.nuevo(new EntConfiguracionGeneral()).eliminarModulo("dr.gov.sigef", "admfinanciera", "10.0.1.0.0");
 	}
 
-	@Test  @Ignore
+	@Test
 	public void versionesSinTag(){
 
 		EntAplicacion aplicacion = new EntAplicacion();
@@ -36,7 +36,7 @@ public class ServicioNexusTest {
 		List<String> versiones = servicioNexus.getVersions(artifact);
 		for (String version : versiones) {
 			String[] numeros = version.split("\\.");
-			if (numeros.length ==3 && Long.valueOf(numeros[2])<300){
+			if (numeros.length ==3 && Long.valueOf(numeros[2])<700){
 
 				System.out.println(version);
 				for (EntVersionModulo m : modulos) {

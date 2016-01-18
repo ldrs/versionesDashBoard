@@ -166,9 +166,11 @@ public class ProcesarSVNReviciones {
 				eRevision.setRevision(revision);
 				eRevision.setPersona(servicioPersona.buscaOCreaPersona(partes[1].trim()));
 				eRevision.setFechaRevision(UtilFecha.getFechaSVN(partes[2].trim()));
-				servicioBranch.grabar(eRevision);
+				if (eRevision.getRevision()>0){
+					servicioBranch.grabar(eRevision);
+				}
 			}
-		}else if (i>1){
+		}else if (i>1 && eRevision.getRevision()>0){
 			linea = linea.trim();
 			if (intepretaCambios && (linea.startsWith("M ") || linea.startsWith("A ") || linea.startsWith("D "))){
 				parseoLinea(linea,eRevision, branch,cambios);
