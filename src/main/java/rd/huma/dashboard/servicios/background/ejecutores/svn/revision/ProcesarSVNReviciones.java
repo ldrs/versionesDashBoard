@@ -172,7 +172,7 @@ public class ProcesarSVNReviciones {
 			}
 		}else if (i>1 && eRevision.getRevision()>0){
 			linea = linea.trim();
-			if (intepretaCambios && (linea.startsWith("M ") || linea.startsWith("A ") || linea.startsWith("D "))){
+			if (intepretaCambios && lineaRepresentaCambio(linea)){
 				parseoLinea(linea,eRevision, branch,cambios);
 			}else{
 				if (linea.startsWith("Merged via: r")){
@@ -182,6 +182,10 @@ public class ProcesarSVNReviciones {
 				}
 			}
 		}
+	}
+
+	private boolean lineaRepresentaCambio(String linea){
+		return linea.startsWith("M ") || linea.startsWith("A ") || linea.startsWith("D ");
 	}
 
 	private void intepracionJiras(EntBranchRevision eRevision, String linea,Set<EntJira> jirasEncontrados) {

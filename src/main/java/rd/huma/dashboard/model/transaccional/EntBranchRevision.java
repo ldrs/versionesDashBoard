@@ -50,7 +50,9 @@ public class EntBranchRevision extends AEntModelo{
 	}
 
 	public void setRevision(long revision) {
-		this.revision = revision;
+		if (revision>0){
+			this.revision = revision;
+		}
 	}
 
 	public String getBranch() {
