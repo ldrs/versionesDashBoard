@@ -11,7 +11,8 @@ import javax.persistence.Table;
 @Table(name="AMBIENTE_APLICACION")
 @NamedQueries(
 		{
-			@NamedQuery(name ="buscar.ambienteAplicacion", query = "SELECT E FROM EntAmbienteAplicacion E join E.aplicacion A where A.id = :app")
+			@NamedQuery(name ="buscar.ambienteAplicacion", query = "SELECT E FROM EntAmbienteAplicacion E join E.aplicacion A where A.id = :app"),
+			@NamedQuery(name ="buscarUnico.ambienteAplicacion", query = "SELECT E FROM EntAmbienteAplicacion E  where E.id = :app")
 		}
 		)
 

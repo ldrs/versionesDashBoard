@@ -8,12 +8,21 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 
+import rd.huma.dashboard.antipatron.dto.Servidor;
 import rd.huma.dashboard.model.transaccional.EntFilaDespliegue;
 import rd.huma.dashboard.model.transaccional.EntPersona;
 import rd.huma.dashboard.model.transaccional.EntServidor;
@@ -29,9 +38,15 @@ import rd.huma.dashboard.servicios.transaccional.ServicioAmbiente;
 import rd.huma.dashboard.servicios.transaccional.ServicioFila;
 import rd.huma.dashboard.servicios.transaccional.ServicioJobDespliegueVersion;
 import rd.huma.dashboard.servicios.transaccional.ServicioPersona;
+import rd.huma.dashboard.servicios.transaccional.ServicioRepositorioDatos;
 import rd.huma.dashboard.servicios.transaccional.ServicioServidor;
 import rd.huma.dashboard.servicios.transaccional.ServicioVersion;
+import rd.huma.dashboard.servicios.utilitarios.UtilJSON;
 import rd.huma.dashboard.util.UtilFecha;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 @Path("servidores")
 public class WSServidores {
 
@@ -41,16 +56,16 @@ public class WSServidores {
 	private @Servicio @Inject ServicioFila servicioFila;
 	private @Servicio @Inject ServicioPersona servicioPersona;
 	private @Servicio @Inject ServicioJobDespliegueVersion servicioJobDespliegueVersion;
+	private @Servicio @Inject ServicioRepositorioDatos servicioRepositorio;
+
+	private  @Context Request request;
 
 
 	@GET
 	@Path("ambiente/{ambiente}")
 	public String servidores(@PathParam("ambiente") String ambiente){
 		JsonArrayBuilder builder = createArrayBuilder();
-		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(toJson(s))
-
-										);
-
+		getServidores(ambiente).stream().filter(s -> s.getBaseDatos()!=null) .forEach(s -> builder.add(toJson(s)));
 		return builder.build().toString();
 	}
 
@@ -150,9 +165,63 @@ public class WSServidores {
 		return toJson(servidor).build().toString();
 	}
 
-	private JsonObjectBuilder toJson(EntServidor s){
+
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public JsonArray getServidores(){
+		return servicioServidor.getServidores().stream().map(s-> toJson(s)).collect(UtilJSON.toJsonArray()).build();
+	}
+
+	@GET
+	@Path("/{idServidor}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getServidor(@PathParam("idServidor") String idServidor){
+		String json = null;
+		ObjectWriter ow = new ObjectMapper().setSerializationInclusion(Include.NON_NULL).writer().withDefaultPrettyPrinter();
+		try{
+			json = ow.writeValueAsString(servicioServidor.getServidor(idServidor));
+		}catch(Exception e){
+			json = Json.createObjectBuilder().build().toString();
+		}
+		return json;
+	}
+
+
+	@PUT
+	@Path("/{idServidor}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void actualizarServidor(@PathParam("idServidor") String idServidor, final Servidor servidor){
+		if(servidor != null){
+			EntServidor server = servicioServidor.getServidorPorId(idServidor);
+			server.setNombre(servidor.getNombre());
+			server.setRutaEntrada(servidor.getRutaEntrada());
+			server.setNombreServidorJenkins(servidor.getNombreServidorJenkins());
+			server.setAmbiente(servicioAmbiente.getAmbienteAplicacion(servidor.getAmbiente()));
+			server.setBaseDatos(servicioRepositorio.getRepositorioDato(servidor.getBaseDatos()));
+
+			servicioServidor.actualizarServidor(server);
+		}
+	}
+
+	@POST
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void  crearServidor(Servidor servidor){
+		servicioServidor.nuevoServidor( servicioAmbiente.getAmbienteAplicacion(servidor.getAmbiente()),
+										servicioRepositorio.getRepositorioDato(servidor.getBaseDatos()),
+										servidor.getNombre(), servidor.getRutaEntrada(), servidor.getNombreServidorJenkins() );
+	}
+
+
+
+
+	private  JsonObjectBuilder toJson(EntServidor s){
 		return createObjectBuilder()
 		.add("nombre", s.getNombre())
+		.add("nombreServidorJenkins", s.getNombreServidorJenkins())
 		.add("css", "none")
 		.add("ruta", s.getRutaEntrada())
 		.add("id",s.getId())
@@ -196,7 +265,6 @@ public class WSServidores {
 		}else{
 			JsonArrayBuilder duenos = createArrayBuilder();
 			servicioFila.getDuenosVersion(version).forEach(d -> duenos.add(d.getId()));
-
 			rt.add("numero", version.getNumero());
 			rt.add("branch", version.getBranchOrigen());
 			rt.add("id", version.getId());
@@ -226,4 +294,7 @@ public class WSServidores {
 		servicioVersion.buscaJiras(version).forEach(j -> arreglo.add(j.getJira().getNumero()));
 		return arreglo;
 	}
+
+
+
 }

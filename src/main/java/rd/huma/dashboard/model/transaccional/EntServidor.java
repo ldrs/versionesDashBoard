@@ -11,15 +11,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import rd.huma.dashboard.model.transaccional.dominio.EEstadoServidor;
 
 @Entity
 @Table(name="SERVIDOR")
+@JsonIgnoreProperties({ "usuario", "password" })
 @NamedQueries({
 			@NamedQuery(name="buscar.servidor",query = "SELECT E from EntServidor E join E.ambiente A  where A.id = :amb and apagado = false"),
 			@NamedQuery(name="buscarPorBranch.servidor",query = "SELECT E from EntServidor E join E.versionActual V  where V.branchOrigen = :branch"),
 			@NamedQuery(name="buscarPorVersion.servidor",query = "SELECT E from EntServidor E join E.versionActual V  where V.id = :id"),
-			@NamedQuery(name="buscarPorRepositorio.servidor",query = "SELECT E from EntServidor E  where E.baseDatos = :bsd")
+			@NamedQuery(name="buscarPorRepositorio.servidor",query = "SELECT E from EntServidor E  where E.baseDatos = :bsd"),
+			@NamedQuery(name="buscarTodos.servidor", query ="SELECT S FROM EntServidor S"),
+			@NamedQuery(name="buscarPorID.servidor", query ="SELECT e FROM EntServidor e WHERE e.id = :id")
 		})
 public class EntServidor extends AEntModelo {
 
@@ -97,7 +102,7 @@ public class EntServidor extends AEntModelo {
 		this.usuario = usuario;
 	}
 	public String getPassword() {
-		return new String(Base64.getDecoder().decode(password.getBytes())).substring(getId().length());
+		return password == null ? null : new String(Base64.getDecoder().decode(password.getBytes())).substring(getId().length());
 	}
 	public void setPassword(String password) {
 		this.password =  new String(Base64.getEncoder().encode((getId()+password).getBytes()));

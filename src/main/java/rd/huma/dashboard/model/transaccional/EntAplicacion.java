@@ -96,9 +96,6 @@ public class EntAplicacion extends AEntModelo {
 		this.rutaSvnAmbiente = rutaSvnAmbiente;
 	}
 
-	public String getNombreJobJenkins() {
-		return nombreJobDeployJenkins;
-	}
 
 	public void setNombreJobDeployJenkins(String jobJenkinsDeployements) {
 		this.nombreJobDeployJenkins = jobJenkinsDeployements;
