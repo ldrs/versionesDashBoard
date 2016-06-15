@@ -3,34 +3,39 @@
                     {{mensaje}}
      </div>
 	
-                        <form role="form">
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <input name="nombre" ng-model="servidor.nombre" class="form-control" >                             
+                        <form  name="formServidor" role="form">
+                            
+                            <div class="form-group" ng-class="{ 'has-error': formServidor.nombre.$touched && formServidor.nombre.$invalid }">
+                                <label>Nombre</label>                                 
+                                <input name="nombre" ng-model="servidor.nombre" class="form-control" required />                             
                             </div>
-                            <div class="form-group">
+                            
+                            <div class="form-group" ng-class="{ 'has-error': formServidor.rutaEntrada.$touched && formServidor.rutaEntrada.$invalid }">
                                 <label>Ruta Entrada</label>
-                                <input name="rutaEntrada" ng-model="servidor.rutaEntrada" class="form-control">                             
+                                <input name="rutaEntrada" ng-model="servidor.rutaEntrada" class="form-control" required />                             
                             </div>
-                            <div class="form-group">
-                                <label>Nombre Servidor Jenkins</label>
-                                <input name="nombreServidorJenkins" ng-model="servidor.nombreServidorJenkins" class="form-control">                             
-                            </div>                            
-                                                                                    
-                             <div class="form-group">
+                            
+                            <div class="form-group" ng-class="{ 'has-error': formServidor.nombreServidorJenkins.$touched && formServidor.nombreServidorJenkins.$invalid }">
+	                                <label>Nombre Servidor Jenkins</label>                               
+		                            <input name="nombreServidorJenkins" ng-model="servidor.nombreServidorJenkins" class="form-control" required />	  																                             
+                            </div>     
+                            
+                            <div class="form-group" ng-class="{ 'has-error': formServidor.ambiente.$touched && formServidor.ambiente.$invalid }">
                                 <label>Ambiente </label>
-                              <select ng-model="ambienteSeleccionado" class="form-control"
+                              <select name="ambiente" ng-model="ambienteSeleccionado" class="form-control" required
                                 		ng-options="ambienteAplicacion as ambienteAplicacion.nombreAmbiente for ambienteAplicacion in ambientes track by ambienteAplicacion.id" ></select>                                
                             </div>                            
-                              <div class="form-group">
+                            
+                            <div class="form-group" ng-class="{ 'has-error': formServidor.repositorioDatos.$touched && formServidor.repositorioDatos.$invalid }" >
                                 <label>Configuraci&oacute;n Base de Datos</label>
-                                <select ng-model="repositorioDatoSeleccionado" class="form-control"
+                                <select name="repositorioDatos" ng-model="repositorioDatoSeleccionado" class="form-control" required
                                 		ng-options="repositorioDato as repositorioDato.nombreRepositorio for repositorioDato in repositorioDatos track by repositorioDato.id" ></select>                                
-                            </div>                                                                                                                    
+                            </div>
+                            
                              <div class="form-group">
                                 <label>Estado</label>
                                 <p class="form-control-static">{{ estadoServidor }}</p>
                             </div>                                                                                                                                                              
-                            <a ng-click="actualizaServidor()" class="btn btn-primary">Actualizar</a>                          
+                            <button ng-disabled="formServidor.$invalid" ng-click="actualizaServidor()" class="btn btn-primary">Actualizar</button>                          
                         </form>
 </div>	

@@ -1,4 +1,4 @@
-var _dashBoardConfig = angular.module('configDashBoardApp', ['ngRoute','ngResource']);
+var _dashBoardConfig = angular.module('configDashBoardApp', ['ngRoute','ngResource','ngMessages']);
 
 		_dashBoardConfig.config(['$routeProvider',
 		                  function($routeProvider){
