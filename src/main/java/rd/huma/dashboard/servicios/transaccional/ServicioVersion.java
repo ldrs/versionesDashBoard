@@ -471,10 +471,15 @@ public class ServicioVersion {
 		entityManager.persist(entidad);
 	}
 
-	public List<EntVersion> buscarVersionActivasAntesDeLaFecha(Set<EEstadoVersion> estados, Instant fecha) {
+	public List<EntVersion> buscarVersionNoBorradasAntesDeLaFecha(Set<EEstadoVersion> estados, Instant fecha) {
 		return entityManager.createNamedQuery("buscarPorEstadoAntesFecha.version",EntVersion.class)
-									.setParameter("est", estados)
 									.setParameter("fecha", Timestamp.from(fecha))
 									.getResultList();
+	}
+
+	public void eliminar(EntVersion version) {
+		EntVersion versionInt = entityManager.find(EntVersion.class, version.getId());
+		versionInt.informaEliminado();
+		entityManager.merge(versionInt);
 	}
 }

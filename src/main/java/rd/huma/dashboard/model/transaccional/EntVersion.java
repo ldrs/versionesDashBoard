@@ -30,7 +30,7 @@ import rd.huma.dashboard.model.transaccional.dominio.EEstadoVersion;
 				  @NamedQuery(name="buscar.versionTodas",query="SELECT E from EntVersion E order by E.fechaRegistro desc"),
 				  @NamedQuery(name="buscarPorEstado.version",query="SELECT E from EntVersion E where E.estado in :est"),
 				  @NamedQuery(name="buscarPorEstadoReciente.version",query="SELECT E from EntVersion E where E.estado in :est and E.fechaRegistro>= :fecha order by E.fechaRegistro desc"),
-				  @NamedQuery(name="buscarPorEstadoAntesFecha.version",query="SELECT E from EntVersion E where E.estado in :est and E.fechaRegistro< :fecha order by E.fechaRegistro"),
+				  @NamedQuery(name="buscarPorEstadoAntesFecha.version",query="SELECT E from EntVersion E where E.eliminado = false and E.fechaRegistro< :fecha order by E.fechaRegistro"),
 
 				  @NamedQuery(name="buscarPorNumero.version",query="SELECT E from EntVersion E where E.numero in :num"),
 				  @NamedQuery(name="buscarPorNumeroOrigen.version", query = "SELECT E from EntVersion E where E.numero = :num and svnOrigen = :sOri"),
@@ -72,6 +72,11 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 
 	private String inicioJob;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaEliminacion = Timestamp.from(Instant.now());
+
+	private boolean eliminado;
 
 	public String getNumero() {
 		return numero;
@@ -157,6 +162,21 @@ public class EntVersion extends AEntModelo implements Serializable{
 
 	public int getMinutosCompiladoVersion() {
 		return minutosCompiladoVersion;
+	}
+
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+
+
+	public Date getFechaEliminacion() {
+		return fechaEliminacion;
+	}
+
+	public void informaEliminado(){
+		eliminado = true;
+		fechaEliminacion = Timestamp.from(Instant.now());
 	}
 
 	@Override

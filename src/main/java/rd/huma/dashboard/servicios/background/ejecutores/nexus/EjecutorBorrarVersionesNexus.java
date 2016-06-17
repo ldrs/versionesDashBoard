@@ -50,7 +50,7 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 				if (!tags.contains(version)){
 					Optional<EntVersion> posibleVersion = servicioVersion.buscaPorNumero(version).stream().findFirst();
 					if (posibleVersion.isPresent()){
-						eliminaModulos(posibleVersion.get());
+						elimina(posibleVersion.get());
 					}else{
 						for (EntVersionModulo moduloFalso : modulos){
 							moduloFalso.getVersion().setNumero(version);
@@ -62,8 +62,17 @@ public class EjecutorBorrarVersionesNexus extends AEjecutor {
 		}
 	}
 
+
+
+
+	private void elimina(EntVersion entVersion) {
+		eliminaModulos(entVersion);
+		servicioVersion.eliminar(entVersion);
+	}
+
+
 	private void borrarVersionesNexusLuego15Dias(){
-		servicioVersion.buscarVersionActivasAntesDeLaFecha(getEstadosActivos(), Instant.now().minus(18, ChronoUnit.DAYS)).forEach(this::eliminaModulos);
+		servicioVersion.buscarVersionNoBorradasAntesDeLaFecha(getEstadosActivos(), Instant.now().minus(18, ChronoUnit.DAYS)).forEach(this::elimina);
 	}
 
 	/**

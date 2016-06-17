@@ -36,7 +36,7 @@ public class ServicioNexusTest {
 		List<String> versiones = servicioNexus.getVersions(artifact);
 		for (String version : versiones) {
 			String[] numeros = version.split("\\.");
-			if (numeros.length ==3 && Long.valueOf(numeros[2])<1250){
+			if (numeros.length ==3 && Long.valueOf(numeros[2])<1400){
 
 				System.out.println(version);
 				for (EntVersionModulo m : modulos) {
