@@ -61,7 +61,6 @@ public class ServicioServidor {
 		servidorDatos.setVersionActual(version);
 		servidorDatos.setEstadoServidor(version == null ? EEstadoServidor.LIBRE : EEstadoServidor.OCUPADO_DESPLIEGE_EN_PROCESO);
 		entityManager.persist(servidorDatos);
-
 	}
 
 	public List<EntServidor> getServidoresPorVersion(String id) {
@@ -78,5 +77,13 @@ public class ServicioServidor {
 
 	public EntServidor actualizarServidor(EntServidor servidor) {
 		return entityManager.merge(servidor);
+	}
+
+	public List<EntServidor> getServidores(){
+		return entityManager.createNamedQuery("buscarTodos.servidor", EntServidor.class).getResultList();
+	}
+
+	public EntServidor getServidor(String id){
+		return entityManager.createNamedQuery("buscarPorID.servidor", EntServidor.class).setParameter("id", id).getSingleResult();
 	}
 }

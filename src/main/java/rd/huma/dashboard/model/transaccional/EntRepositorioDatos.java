@@ -12,14 +12,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="REPOSITORIO_DATOS")
 @NamedQueries({
 	@NamedQuery(name = "buscar.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.esquema = :sc and E.servicio = :serv"),
 	@NamedQuery(name = "buscarPorAll.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.host = :host and E.esquema = :sc and E.servicio = :serv"),
 	@NamedQuery(name = "todosActivos.repositorioDatos", query = "SELECT E from EntRepositorioDatos E where E.activo = true"),
+	@NamedQuery(name = "todos.repositorioDatos", query = "FROM EntRepositorioDatos")
 	})
-
+@JsonIgnoreProperties({ "fechaRegistro", "ultimaActualizacion" })
 public class EntRepositorioDatos extends AEntModelo {
 
 	/**

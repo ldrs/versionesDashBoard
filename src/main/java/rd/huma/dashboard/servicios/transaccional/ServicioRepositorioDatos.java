@@ -159,4 +159,12 @@ public class ServicioRepositorioDatos {
 	public List<EntRepositorioDatos> repositoriosActivos() {
 		return entityManager.createNamedQuery("todosActivos.repositorioDatos",EntRepositorioDatos.class).getResultList();
 	}
+
+	public List<EntRepositorioDatos> repositorios() {
+		return entityManager.createNamedQuery("todos.repositorioDatos",EntRepositorioDatos.class).getResultList();
+	}
+
+	public EntRepositorioDatos getRepositorioDato(String id){
+		return entityManager.createQuery("SELECT R FROM EntRepositorioDatos R WHERE R.id = :id ", EntRepositorioDatos.class).setParameter("id", id).getSingleResult();
+	}
 }

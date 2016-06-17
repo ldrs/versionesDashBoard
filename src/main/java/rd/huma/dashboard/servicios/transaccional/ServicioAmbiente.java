@@ -69,4 +69,12 @@ public class ServicioAmbiente {
 		return personas;
 	}
 
+	public List<EntAmbienteAplicacion> getAmbientes(){
+		return entityManager.createQuery(" FROM EntAmbienteAplicacion amb ORDER BY amb.ambiente.orden ASC", EntAmbienteAplicacion.class).getResultList();
+	}
+
+	public EntAmbienteAplicacion getAmbienteAplicacion(String id) {
+		return entityManager.createNamedQuery("buscarUnico.ambienteAplicacion",EntAmbienteAplicacion.class).setParameter("app", id).getSingleResult();
+	}
+
 }
